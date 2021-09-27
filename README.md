@@ -14,6 +14,8 @@
 
 # Enjoy 🙂
 
-Check out our website for more information
+Our website: https://dockalttab.netlify.app
 
-https://dockalttab.netlify.app
+And check out our sister app:
+
+https://dockexpose.netlify.app

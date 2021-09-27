@@ -6,7 +6,6 @@
 //
 #import "AppDelegate.h"
 
-//todo: change below var, too fast (just for debugging)
 const float DOCKPOS_DELAY = 5; //update overlayPID, dockPos every x minutes
 const float TICK_DELAY = 0.8; //call main fn every x seconds
 const float MINIMAL_DELAY = 0.05; //minimum seconds before UI refresh is guaranteed
@@ -15,26 +14,28 @@ const int CONTEXTDISTANCE = 150; //dock testPoint/contextmenu's approx. distance
 int isMinimized(NSString* tar) {
     int numWindows = 0; //# minimized windows on active space
     CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionAll|kCGWindowListExcludeDesktopElements, kCGNullWindowID);
-    for (int i = 0; i < CFArrayGetCount(windowList); i++) {
+    long int windowCount = CFArrayGetCount(windowList);
+    for (int i = 0; i < windowCount; i++) {
         //get dictionary data
         NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
         if (![tar isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]] || [[win objectForKey:@"kCGWindowLayer"] intValue] != 0) continue;
         // Get the AXUIElement windowList (e.g. elementList)
         int winPID = [[win objectForKey:@"kCGWindowOwnerPID"] intValue];
-        CFArrayRef elementList;
         AXUIElementRef appRef = AXUIElementCreateApplication(winPID);
+        CFArrayRef elementList;
         AXUIElementCopyAttributeValue(appRef, kAXWindowsAttribute, (CFTypeRef *)&elementList);
         bool onActiveSpace = YES;
         //loop through looking for minimized && onActiveSpace
-        for (int j = 0; j < CFArrayGetCount(elementList); j++) {
+        long int numElements = elementList ? CFArrayGetCount(elementList) : 0;
+        for (int j = 0; j < numElements; j++) {
             AXUIElementRef winElement = CFArrayGetValueAtIndex(elementList, j);
             CFBooleanRef winMinimized;
             AXUIElementCopyAttributeValue(winElement, kAXMinimizedAttribute, (CFTypeRef *)&winMinimized);
             if (winMinimized == kCFBooleanTrue && onActiveSpace) numWindows++;
             CFRelease(winMinimized);
         }
-        CFRelease(elementList);
     }
+//    CFRelease(elementList); //apparently i may be overreleasing, causing crashes?
     CFRelease(windowList);
 //    NSLog(@"found %d minimized windows", numWindows);
     return numWindows;
@@ -82,7 +83,8 @@ NSMutableArray* getWindowIdsForOwner(NSString *owner) {
     if (!owner || [@"" isEqual:owner]) return nil;
     CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
     NSMutableArray *windowNumberList = [NSMutableArray new];
-    for (int i = 0; i < CFArrayGetCount(windowList); i++) {
+    long int windowCount = CFArrayGetCount(windowList);
+    for (int i = 0; i < windowCount; i++) {
         NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
         if (![owner isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]]) continue;
         [windowNumberList addObject:[win objectForKey:@"kCGWindowNumber"]];
@@ -184,7 +186,7 @@ int tickCounter = 0;
 - (void)timerTick: (NSTimer*) arg {
     //check if we need to update overlayPID, dockPos
     const int UPDATE_NUM_TICKS = (DOCKPOS_DELAY * 60) / TICK_DELAY;
-    if (tickCounter && tickCounter % UPDATE_NUM_TICKS) {
+    if (tickCounter && tickCounter % UPDATE_NUM_TICKS == 0) {
         dockPos = getDockPosition();
         overlayPID = getPID(@"com.lwouis.alt-tab-macos");
     }
