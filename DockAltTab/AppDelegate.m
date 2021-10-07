@@ -148,11 +148,6 @@ void AltTabHide(AppDelegate* app) {
     [app->targetApp setString:@""];
     triggerKeycode(53);
 }
-void flashUIThenClose(void) { //auto-close window after 2 seconds
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 2), dispatch_get_main_queue(), ^(void){
-        [[[NSApp windows] firstObject] close];
-    });
-}
 
 //AppDelegate / Lifecycle / Interval Timer
 int tickCounter = 0;
@@ -161,8 +156,8 @@ int tickCounter = 0;
 @end
 
 @implementation AppDelegate
+@synthesize isMenuItemChecked;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    flashUIThenClose();
     appAliases = @{
         @"Visual Studio Code": @"Code",
         @"Adobe Lightroom Classic": @"Lightroom Classic",
@@ -247,5 +242,21 @@ int tickCounter = 0;
     [timer invalidate];
     timer = nil;
     if (_systemWideAccessibilityObject) CFRelease(_systemWideAccessibilityObject);
+}
+- (void) awakeFromNib {
+    menuItemCheckbox.state = YES; //default, //todo: save pref to json file & load here
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
+    [[statusItem button] setImage:[NSImage imageNamed:@"MenuIcon"]];
+    [statusItem setMenu:menu];
+	}
+- (IBAction) preferences:(id)sender {
+    [NSApp activateIgnoringOtherApps:YES];
+    [_window makeKeyAndOrderFront:nil];
+}
+- (IBAction) quit:(id)sender {
+    [NSApp terminate:nil];
+}
+- (IBAction)toggleMenuItem:(id)sender {
+    [statusItem setVisible:isMenuItemChecked];
 }
 @end

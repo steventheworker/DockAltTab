@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BF05E49D26F2E389005E8AA2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BF05E49C26F2E389005E8AA2 /* README.md */; };
+		BF1CFE7D270DA26400A74F33 /* MenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BF1CFE7C270DA26400A74F33 /* MenuIcon.png */; };
 		BF597B8726F0804F00584C37 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF597B8626F0804F00584C37 /* AppDelegate.m */; };
 		BF597B8C26F0805000584C37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF597B8A26F0805000584C37 /* MainMenu.xib */; };
 		BF597B8F26F0805000584C37 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BF597B8E26F0805000584C37 /* main.m */; };
@@ -16,6 +17,7 @@
 
 /* Begin PBXFileReference section */
 		BF05E49C26F2E389005E8AA2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BF1CFE7C270DA26400A74F33 /* MenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuIcon.png; sourceTree = "<group>"; };
 		BF597B8226F0804F00584C37 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF597B8526F0804F00584C37 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BF597B8626F0804F00584C37 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				BF597B8A26F0805000584C37 /* MainMenu.xib */,
 				BF597B8D26F0805000584C37 /* Info.plist */,
 				BF597B8E26F0805000584C37 /* main.m */,
+				BF1CFE7C270DA26400A74F33 /* MenuIcon.png */,
 				BF597B9026F0805000584C37 /* DockAltTab.entitlements */,
 			);
 			path = DockAltTab;
@@ -125,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF05E49D26F2E389005E8AA2 /* README.md in Resources */,
+				BF1CFE7D270DA26400A74F33 /* MenuIcon.png in Resources */,
 				BF7C987B26FA0C1400118FB0 /* Assets.xcassets in Resources */,
 				BF597B8C26F0805000584C37 /* MainMenu.xib in Resources */,
 			);
@@ -283,6 +287,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.DockAltTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -302,6 +307,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.DockAltTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
