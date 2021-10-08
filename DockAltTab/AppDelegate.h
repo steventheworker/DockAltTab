@@ -15,10 +15,10 @@
     @public NSMutableString  *dockPos;
     pid_t                   dockPID;
     @public pid_t           overlayPID;
-    BOOL isMenuItemChecked;
     NSStatusItem *statusItem;
-    IBOutlet NSMenu *menu;
-    __weak IBOutlet NSButton *menuItemCheckbox;
+    IBOutlet NSMenu *menu; //menu icon contextmenu
+    __weak IBOutlet NSButton *menuItemCheckBox;
+    BOOL isMenuItemChecked;
 }
 @property BOOL isMenuItemChecked;
 @end

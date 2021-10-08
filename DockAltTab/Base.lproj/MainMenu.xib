@@ -16,7 +16,7 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="menu" destination="guj-qY-jVo" id="pkD-ix-zEE"/>
-                <outlet property="menuItemCheckbox" destination="Mp4-rJ-OfA" id="yFP-qZ-4DE"/>
+                <outlet property="menuItemCheckBox" destination="Mp4-rJ-OfA" id="8LE-Kd-eqz"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>

@@ -244,11 +244,12 @@ int tickCounter = 0;
     if (_systemWideAccessibilityObject) CFRelease(_systemWideAccessibilityObject);
 }
 - (void) awakeFromNib {
-    menuItemCheckbox.state = YES; //default, //todo: save pref to json file & load here
+    menuItemCheckBox.state = YES; //default, //todo: save pref to json file & load here
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
     [[statusItem button] setImage:[NSImage imageNamed:@"MenuIcon"]];
     [statusItem setMenu:menu];
-	}
+    [statusItem setVisible:menuItemCheckBox.state]; //without this, could get stuck not showing...?
+}
 - (IBAction) preferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
     [_window makeKeyAndOrderFront:nil];
