@@ -6,6 +6,7 @@
 //
 #import "AppDelegate.h"
 
+NSString* versionLink = @"https://dockalttab.netlify.app/currentversion.txt";
 const float DOCKPOS_DELAY = 5; //update overlayPID, dockPos every x minutes
 const float TICK_DELAY = 0.8; //call main fn every x seconds
 const float MINIMAL_DELAY = 0.05; //minimum seconds before UI refresh is guaranteed
@@ -39,6 +40,22 @@ int isMinimized(NSString* tar) {
     CFRelease(windowList);
 //    NSLog(@"found %d minimized windows", numWindows);
     return numWindows;
+}
+NSString * getDataFrom(NSString *url) {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    NSError *error = nil;
+    NSHTTPURLResponse *responseCode = nil;
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error]; //todo: fix warning
+    if ([responseCode statusCode] != 200) {
+        NSLog(@"Error getting %@, HTTP status code %li", url, [responseCode statusCode]);
+        return nil;
+    }
+    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
+}
+NSString* getCurrentVersion(void) {
+    return getDataFrom(versionLink);
 }
 NSScreen* screenWithPoint(NSPoint p) {
     for (NSScreen *candidate in [NSScreen screens])
@@ -176,6 +193,7 @@ int tickCounter = 0;
                                            selector:@selector(timerTick:)
                                            userInfo:nil
                                             repeats:YES];
+    appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSLog(@"timer started");
 }
 - (void)timerTick: (NSTimer*) arg {
@@ -253,6 +271,10 @@ int tickCounter = 0;
 - (IBAction) preferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
     [_window makeKeyAndOrderFront:nil];
+    if (!mostCurrentVersion)
+        mostCurrentVersion = getCurrentVersion();
+    [[appVersionRef cell] setTitle:[@"v" stringByAppendingString:appVersion]];
+    [[updateRemindRef cell] setTitle: mostCurrentVersion == NULL ? @"No internet; Update check failed" : (mostCurrentVersion == appVersion) ? @"You're on the latest release." : [@"Version " stringByAppendingString: [mostCurrentVersion stringByAppendingString: @" has been released. You should update soon."]]];
 }
 - (IBAction) quit:(id)sender {
     [NSApp terminate:nil];

@@ -19,6 +19,10 @@
     IBOutlet NSMenu *menu; //menu icon contextmenu
     __weak IBOutlet NSButton *menuItemCheckBox;
     BOOL isMenuItemChecked;
+    NSString* appVersion;
+    NSString* mostCurrentVersion;
+    __weak IBOutlet NSTextField *appVersionRef;
+    __weak IBOutlet NSTextField *updateRemindRef;
 }
 @property BOOL isMenuItemChecked;
 @end

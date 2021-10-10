@@ -15,8 +15,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="appVersionRef" destination="Unp-fA-czf" id="b6v-c8-NVo"/>
                 <outlet property="menu" destination="guj-qY-jVo" id="pkD-ix-zEE"/>
                 <outlet property="menuItemCheckBox" destination="Mp4-rJ-OfA" id="8LE-Kd-eqz"/>
+                <outlet property="updateRemindRef" destination="s7c-oN-Ba8" id="vIH-ej-gbP"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -704,6 +706,24 @@
                             <binding destination="Voe-Tx-rLC" name="value" keyPath="isMenuItemChecked" id="Ioz-hv-ihP"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Unp-fA-czf">
+                        <rect key="frame" x="225" y="324" width="30" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="v0.0" id="5gf-41-djY">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s7c-oN-Ba8">
+                        <rect key="frame" x="-2" y="286" width="484" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="You're on the latest release." id="NDZ-51-jOD">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
             <point key="canvasLocation" x="200" y="400"/>
