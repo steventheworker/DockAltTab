@@ -118,10 +118,15 @@ void setActiveApp(NSString *tar) {
 }
 
 //Show / Hide "Overlay"
+void triggerEscape(NSString* from) {
+    if ([from isEqual:@"Adobe Premiere Pro 2021"]) return;
+    triggerKeycode(53);
+}
 void AltTabShow(NSString *tar, NSUInteger numWindows, AppDelegate* app) {
     if ([app->targetApp isEqual:tar]) return; //don't hide, don't show & maintain/keep pointing @ tar
     if (![@"" isEqual:app->targetApp] && app->targetApp) {
-        triggerKeycode(53); //if overlay currently visible  =>  trigger Escape key (Otherwise AltTab will keep/merge different app windows)
+        triggerEscape(app->targetApp); //if overlay currently visible (Otherwise AltTab will keep/merge different app windows)
+        
         [app->targetApp setString:@""];
         //settimeout & try again once Escaped old AltTab overlay
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * MINIMAL_DELAY), dispatch_get_main_queue(), ^(void){
@@ -163,7 +168,7 @@ void AltTabShow(NSString *tar, NSUInteger numWindows, AppDelegate* app) {
 void AltTabHide(AppDelegate* app) {
     if (!app->targetApp || [app->targetApp isEqual:@""]) return;
     [app->targetApp setString:@""];
-    triggerKeycode(53);
+    triggerEscape(app->targetApp);
 }
 
 //AppDelegate / Lifecycle / Interval Timer
@@ -248,7 +253,7 @@ int tickCounter = 0;
     NSUInteger numWindows = 0;
     if (showOverlay) { //only calc numWindows if mouse is on dock/dock app icon
         numWindows = [getWindowIdsForOwner(axTitle) count];
-        if (numWindows == 0 || (numWindows == 1 && [axTitle isEqual:@"Finder"])) showOverlay = NO;
+        if (numWindows == 0 || ((numWindows == 1 || numWindows == 7) && [axTitle isEqual:@"Finder"])) showOverlay = NO; //7 == no. subprocesses launched after launching 1 finder, so finder has 8 processes (if it has 1 window open). Therefore, if finder has 0 windows it can either have 7 or 1 processes running at the time.
     }
 
     //show / hide
