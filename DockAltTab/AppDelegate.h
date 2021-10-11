@@ -15,6 +15,7 @@
     @public NSMutableString  *dockPos;
     pid_t                   dockPID;
     @public pid_t           overlayPID;
+    @public int numFinderProcesses;
     NSStatusItem *statusItem;
     IBOutlet NSMenu *menu; //menu icon contextmenu
     __weak IBOutlet NSButton *menuItemCheckBox;

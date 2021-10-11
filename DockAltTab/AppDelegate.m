@@ -9,7 +9,7 @@
 NSString* versionLink = @"https://dockalttab.netlify.app/currentversion.txt";
 const float DOCKPOS_DELAY = 5; //update overlayPID, dockPos every x minutes
 const float TICK_DELAY = 0.8; //call main fn every x seconds
-const float MINIMAL_DELAY = 0.05; //minimum seconds before UI refresh is guaranteed
+const float MINIMAL_DELAY = 0.07; //minimum seconds before UI refresh is guaranteed
 const int CONTEXTDISTANCE = 150; //dock testPoint/contextmenu's approx. distance from pointer
 //lib
 int isMinimized(NSString* tar) {
@@ -171,6 +171,13 @@ void AltTabHide(AppDelegate* app) {
     triggerEscape(app->targetApp);
 }
 
+int DEFAULTFINDERSUBPROCESSES = 7; //from my experience, after you relaunch, and move from 0 windows (1 process, since finder is ALWAYS running) to 1 window, it's usually 1windowprocess + 7 subprocesses (8 processes for 1 window     OR     1 / 7 processes for 0 windows)
+void onLogin(AppDelegate* app) {
+    app->numFinderProcesses = (unsigned) [getWindowIdsForOwner(@"Finder") count]; //in case no. of subprocesses not the same as default (can change after long enough w/o relaunching 💩)
+    if (app->numFinderProcesses == 1) app->numFinderProcesses = DEFAULTFINDERSUBPROCESSES; //finder only ever has <7 after login/relaunch
+}
+
+
 //AppDelegate / Lifecycle / Interval Timer
 int tickCounter = 0;
 @interface AppDelegate ()
@@ -180,6 +187,7 @@ int tickCounter = 0;
 @implementation AppDelegate
 @synthesize isMenuItemChecked;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    onLogin(self);
     appAliases = @{
         @"Visual Studio Code": @"Code",
         @"Adobe Lightroom Classic": @"Lightroom Classic",
@@ -253,7 +261,7 @@ int tickCounter = 0;
     NSUInteger numWindows = 0;
     if (showOverlay) { //only calc numWindows if mouse is on dock/dock app icon
         numWindows = [getWindowIdsForOwner(axTitle) count];
-        if (numWindows == 0 || ((numWindows == 1 || numWindows == 7) && [axTitle isEqual:@"Finder"])) showOverlay = NO; //7 == no. subprocesses launched after launching 1 finder, so finder has 8 processes (if it has 1 window open). Therefore, if finder has 0 windows it can either have 7 or 1 processes running at the time.
+        if (numWindows == 0 || ((numWindows == 1 || numWindows == numFinderProcesses) && [axTitle isEqual:@"Finder"])) showOverlay = NO; //handle finder's weird window subprocesses (Always on)
     }
 
     //show / hide
