@@ -112,6 +112,10 @@ NSMutableArray* getWindowIdsForOwner(NSString *owner) {
     }
     return windowNumberList;
 }
+void setActiveApp(NSString *tar) {
+     NSRunningApplication* app = runningAppFromAxTitle(tar); //only activate apps that aren't yet active (just in case it's slow 🤷‍♀️)
+     if (![app isActive]) [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+}
 NSMutableArray* getWindowIdsForOwnerPID(pid_t PID) {
     if (!PID) return nil;
     CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
