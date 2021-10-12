@@ -3,33 +3,31 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF05E49D26F2E389005E8AA2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BF05E49C26F2E389005E8AA2 /* README.md */; };
-		BF1CFE7D270DA26400A74F33 /* MenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BF1CFE7C270DA26400A74F33 /* MenuIcon.png */; };
-		BF597B8726F0804F00584C37 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF597B8626F0804F00584C37 /* AppDelegate.m */; };
-		BF597B8C26F0805000584C37 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF597B8A26F0805000584C37 /* MainMenu.xib */; };
-		BF597B8F26F0805000584C37 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BF597B8E26F0805000584C37 /* main.m */; };
-		BF7C987B26FA0C1400118FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF7C987A26FA0C1400118FB0 /* Assets.xcassets */; };
+		BFC9001427151E120032B35D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFC9001327151E120032B35D /* AppDelegate.m */; };
+		BFC9001927151E130032B35D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFC9001727151E130032B35D /* MainMenu.xib */; };
+		BFC9001B27151E130032B35D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BFC9001A27151E130032B35D /* main.m */; };
+		BFC9002327151EA20032B35D /* MenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BFC9002227151EA20032B35D /* MenuIcon.png */; };
+		BFC9002527151EDE0032B35D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC9002427151EDE0032B35D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BF05E49C26F2E389005E8AA2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		BF1CFE7C270DA26400A74F33 /* MenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuIcon.png; sourceTree = "<group>"; };
-		BF597B8226F0804F00584C37 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF597B8526F0804F00584C37 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		BF597B8626F0804F00584C37 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BF597B8B26F0805000584C37 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		BF597B8D26F0805000584C37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BF597B8E26F0805000584C37 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BF597B9026F0805000584C37 /* DockAltTab.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DockAltTab.entitlements; sourceTree = "<group>"; };
-		BF7C987A26FA0C1400118FB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BFC9000F27151E120032B35D /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFC9001227151E120032B35D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BFC9001327151E120032B35D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BFC9001827151E130032B35D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BFC9001A27151E130032B35D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BFC9001C27151E130032B35D /* DockAltTab.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DockAltTab.entitlements; sourceTree = "<group>"; };
+		BFC9002227151EA20032B35D /* MenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuIcon.png; sourceTree = "<group>"; };
+		BFC9002427151EDE0032B35D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BFC9002627151F490032B35D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BF597B7F26F0804F00584C37 /* Frameworks */ = {
+		BFC9000C27151E120032B35D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,34 +37,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BF597B7926F0804F00584C37 = {
+		BFC9000627151E120032B35D = {
 			isa = PBXGroup;
 			children = (
-				BF05E49C26F2E389005E8AA2 /* README.md */,
-				BF597B8426F0804F00584C37 /* DockAltTab */,
-				BF597B8326F0804F00584C37 /* Products */,
+				BFC9001127151E120032B35D /* DockAltTab */,
+				BFC9001027151E120032B35D /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		BF597B8326F0804F00584C37 /* Products */ = {
+		BFC9001027151E120032B35D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BF597B8226F0804F00584C37 /* DockAltTab.app */,
+				BFC9000F27151E120032B35D /* DockAltTab.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BF597B8426F0804F00584C37 /* DockAltTab */ = {
+		BFC9001127151E120032B35D /* DockAltTab */ = {
 			isa = PBXGroup;
 			children = (
-				BF597B8526F0804F00584C37 /* AppDelegate.h */,
-				BF7C987A26FA0C1400118FB0 /* Assets.xcassets */,
-				BF597B8626F0804F00584C37 /* AppDelegate.m */,
-				BF597B8A26F0805000584C37 /* MainMenu.xib */,
-				BF597B8D26F0805000584C37 /* Info.plist */,
-				BF597B8E26F0805000584C37 /* main.m */,
-				BF1CFE7C270DA26400A74F33 /* MenuIcon.png */,
-				BF597B9026F0805000584C37 /* DockAltTab.entitlements */,
+				BFC9002627151F490032B35D /* Info.plist */,
+				BFC9001227151E120032B35D /* AppDelegate.h */,
+				BFC9001327151E120032B35D /* AppDelegate.m */,
+				BFC9002427151EDE0032B35D /* Assets.xcassets */,
+				BFC9001727151E130032B35D /* MainMenu.xib */,
+				BFC9001A27151E130032B35D /* main.m */,
+				BFC9002227151EA20032B35D /* MenuIcon.png */,
+				BFC9001C27151E130032B35D /* DockAltTab.entitlements */,
 			);
 			path = DockAltTab;
 			sourceTree = "<group>";
@@ -74,13 +71,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF597B8126F0804F00584C37 /* DockAltTab */ = {
+		BFC9000E27151E120032B35D /* DockAltTab */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BF597B9326F0805000584C37 /* Build configuration list for PBXNativeTarget "DockAltTab" */;
+			buildConfigurationList = BFC9001F27151E130032B35D /* Build configuration list for PBXNativeTarget "DockAltTab" */;
 			buildPhases = (
-				BF597B7E26F0804F00584C37 /* Sources */,
-				BF597B7F26F0804F00584C37 /* Frameworks */,
-				BF597B8026F0804F00584C37 /* Resources */,
+				BFC9000B27151E120032B35D /* Sources */,
+				BFC9000C27151E120032B35D /* Frameworks */,
+				BFC9000D27151E120032B35D /* Resources */,
 			);
 			buildRules = (
 			);
@@ -88,71 +85,71 @@
 			);
 			name = DockAltTab;
 			productName = DockAltTab;
-			productReference = BF597B8226F0804F00584C37 /* DockAltTab.app */;
+			productReference = BFC9000F27151E120032B35D /* DockAltTab.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		BF597B7A26F0804F00584C37 /* Project object */ = {
+		BFC9000727151E120032B35D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
-					BF597B8126F0804F00584C37 = {
-						CreatedOnToolsVersion = 12.5.1;
+					BFC9000E27151E120032B35D = {
+						CreatedOnToolsVersion = 13.0;
 					};
 				};
 			};
-			buildConfigurationList = BF597B7D26F0804F00584C37 /* Build configuration list for PBXProject "DockAltTab" */;
-			compatibilityVersion = "Xcode 9.3";
+			buildConfigurationList = BFC9000A27151E120032B35D /* Build configuration list for PBXProject "DockAltTab" */;
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = BF597B7926F0804F00584C37;
-			productRefGroup = BF597B8326F0804F00584C37 /* Products */;
+			mainGroup = BFC9000627151E120032B35D;
+			productRefGroup = BFC9001027151E120032B35D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BF597B8126F0804F00584C37 /* DockAltTab */,
+				BFC9000E27151E120032B35D /* DockAltTab */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BF597B8026F0804F00584C37 /* Resources */ = {
+		BFC9000D27151E120032B35D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF05E49D26F2E389005E8AA2 /* README.md in Resources */,
-				BF1CFE7D270DA26400A74F33 /* MenuIcon.png in Resources */,
-				BF7C987B26FA0C1400118FB0 /* Assets.xcassets in Resources */,
-				BF597B8C26F0805000584C37 /* MainMenu.xib in Resources */,
+				BFC9002327151EA20032B35D /* MenuIcon.png in Resources */,
+				BFC9002527151EDE0032B35D /* Assets.xcassets in Resources */,
+				BFC9001927151E130032B35D /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BF597B7E26F0804F00584C37 /* Sources */ = {
+		BFC9000B27151E120032B35D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF597B8F26F0805000584C37 /* main.m in Sources */,
-				BF597B8726F0804F00584C37 /* AppDelegate.m in Sources */,
+				BFC9001B27151E130032B35D /* main.m in Sources */,
+				BFC9001427151E120032B35D /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		BF597B8A26F0805000584C37 /* MainMenu.xib */ = {
+		BFC9001727151E130032B35D /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BF597B8B26F0805000584C37 /* Base */,
+				BFC9001827151E130032B35D /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -160,13 +157,13 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		BF597B9126F0805000584C37 /* Debug */ = {
+		BFC9001D27151E130032B35D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -195,7 +192,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -220,13 +216,13 @@
 			};
 			name = Debug;
 		};
-		BF597B9226F0805000584C37 /* Release */ = {
+		BFC9001E27151E130032B35D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -255,7 +251,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -273,16 +268,23 @@
 			};
 			name = Release;
 		};
-		BF597B9426F0805000584C37 /* Debug */ = {
+		BFC9002027151E130032B35D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DockAltTab/DockAltTab.entitlements;
-				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L33QBJT48B;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DockAltTab/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "GPL-3.0";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -290,19 +292,27 @@
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.DockAltTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Debug;
 		};
-		BF597B9526F0805000584C37 /* Release */ = {
+		BFC9002127151E130032B35D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DockAltTab/DockAltTab.entitlements;
-				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L33QBJT48B;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DockAltTab/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "GPL-3.0";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -310,31 +320,32 @@
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.DockAltTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BF597B7D26F0804F00584C37 /* Build configuration list for PBXProject "DockAltTab" */ = {
+		BFC9000A27151E120032B35D /* Build configuration list for PBXProject "DockAltTab" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BF597B9126F0805000584C37 /* Debug */,
-				BF597B9226F0805000584C37 /* Release */,
+				BFC9001D27151E130032B35D /* Debug */,
+				BFC9001E27151E130032B35D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BF597B9326F0805000584C37 /* Build configuration list for PBXNativeTarget "DockAltTab" */ = {
+		BFC9001F27151E130032B35D /* Build configuration list for PBXNativeTarget "DockAltTab" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BF597B9426F0805000584C37 /* Debug */,
-				BF597B9526F0805000584C37 /* Release */,
+				BFC9002027151E130032B35D /* Debug */,
+				BFC9002127151E130032B35D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = BF597B7A26F0804F00584C37 /* Project object */;
+	rootObject = BFC9000727151E120032B35D /* Project object */;
 }
