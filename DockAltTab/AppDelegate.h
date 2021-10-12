@@ -8,20 +8,24 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
+    //publics
+    @public NSMutableString  *targetApp;
+    @public NSMutableString  *dockPos;
+    @public pid_t           overlayPID;
+    @public int             numFinderProcesses;
+    
+    BOOL                    isMenuItemChecked;
+    pid_t                   dockPID;
     AXUIElementRef          _systemWideAccessibilityObject;
     NSTimer                 *timer;
-    @public NSMutableString  *targetApp;
     NSDictionary            *appAliases;
-    @public NSMutableString  *dockPos;
-    pid_t                   dockPID;
-    @public pid_t           overlayPID;
-    @public int numFinderProcesses;
-    NSStatusItem *statusItem;
-    IBOutlet NSMenu *menu; //menu icon contextmenu
+    NSStatusItem            *statusItem;
+    NSString*               appVersion;
+    NSString*               mostCurrentVersion;
+    
+    //ui connections
+    IBOutlet NSMenu *menu;
     __weak IBOutlet NSButton *menuItemCheckBox;
-    BOOL isMenuItemChecked;
-    NSString* appVersion;
-    NSString* mostCurrentVersion;
     __weak IBOutlet NSTextField *appVersionRef;
     __weak IBOutlet NSTextField *updateRemindRef;
 }

@@ -15,10 +15,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
-                <outlet property="appVersionRef" destination="Unp-fA-czf" id="b6v-c8-NVo"/>
-                <outlet property="menu" destination="guj-qY-jVo" id="pkD-ix-zEE"/>
-                <outlet property="menuItemCheckBox" destination="Mp4-rJ-OfA" id="8LE-Kd-eqz"/>
-                <outlet property="updateRemindRef" destination="s7c-oN-Ba8" id="vIH-ej-gbP"/>
+                <outlet property="appVersionRef" destination="Nl9-Lp-NsY" id="Ton-4o-fiq"/>
+                <outlet property="menu" destination="9al-F7-eTW" id="YmT-ZC-oMA"/>
+                <outlet property="menuItemCheckBox" destination="Gpy-4g-cnG" id="Ofr-gI-b0T"/>
+                <outlet property="updateRemindRef" destination="aKX-dW-FTh" id="iu1-NX-Mia"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -685,7 +685,7 @@
             </items>
             <point key="canvasLocation" x="200" y="121"/>
         </menu>
-        <window title="DockAltTab" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="DockAltTab" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
@@ -694,31 +694,30 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mp4-rJ-OfA">
-                        <rect key="frame" x="170" y="162" width="156" height="18"/>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gpy-4g-cnG">
+                        <rect key="frame" x="161" y="171" width="156" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Add icon to menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="nyd-JN-znC">
+                        <buttonCell key="cell" type="check" title="Add icon to menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="DgH-Ai-Fgz">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="toggleMenuItem:" target="Voe-Tx-rLC" id="wHE-zM-nny"/>
-                            <binding destination="Voe-Tx-rLC" name="value" keyPath="isMenuItemChecked" id="Ioz-hv-ihP"/>
+                            <action selector="toggleMenuItem:" target="Voe-Tx-rLC" id="iTF-wX-bJZ"/>
                         </connections>
                     </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Unp-fA-czf">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nl9-Lp-NsY">
                         <rect key="frame" x="225" y="324" width="30" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="v0.0" id="5gf-41-djY">
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="v0.0" id="ayr-11-2ZG">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s7c-oN-Ba8">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aKX-dW-FTh">
                         <rect key="frame" x="-2" y="286" width="484" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="You're on the latest release." id="NDZ-51-jOD">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="You're on the latest release." id="Fd9-6c-fk7">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -728,26 +727,22 @@
             </view>
             <point key="canvasLocation" x="200" y="400"/>
         </window>
-        <menu id="guj-qY-jVo">
+        <menu id="9al-F7-eTW">
             <items>
-                <menuItem title="Preferences" id="p7f-6e-Xzt">
+                <menuItem title="Preferences" id="fA5-pQ-Ofb">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="preferences:" target="Voe-Tx-rLC" id="gL3-Nr-Ob5"/>
+                        <action selector="preferences:" target="Voe-Tx-rLC" id="45M-xA-sHS"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Quit DockAltTab" id="rNy-ae-NfS">
+                <menuItem title="Quit DockAltTab" id="3fy-cg-bPD">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="quit:" target="Voe-Tx-rLC" id="NG1-Xc-c8E"/>
+                        <action selector="quit:" target="Voe-Tx-rLC" id="uPV-0j-CqZ"/>
                     </connections>
                 </menuItem>
             </items>
-            <connections>
-                <outlet property="delegate" destination="BSm-zg-Ke8" id="LyN-1G-TQv"/>
-            </connections>
-            <point key="canvasLocation" x="-160" y="342.5"/>
+            <point key="canvasLocation" x="-187" y="292"/>
         </menu>
-        <userDefaultsController representsSharedInstance="YES" id="BSm-zg-Ke8"/>
     </objects>
 </document>
