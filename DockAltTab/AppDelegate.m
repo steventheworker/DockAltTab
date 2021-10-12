@@ -12,7 +12,7 @@ const float TICK_DELAY = 0.8; //call main fn every x seconds
 const float MINIMAL_DELAY = 0.07; //minimum seconds before UI refresh is guaranteed
 const int CONTEXTDISTANCE = 150; //dock testPoint/contextmenu's approx. distance from pointer
 //lib
-int isMinimized(NSString* tar) {
+int numWindowsMinimized(NSString* tar) {
     int numWindows = 0; //# minimized windows on active space
     CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionAll|kCGWindowListExcludeDesktopElements, kCGNullWindowID);
     long int windowCount = CFArrayGetCount(windowList);
@@ -108,13 +108,22 @@ NSMutableArray* getWindowIdsForOwner(NSString *owner) {
     }
     //only use cpu to check for hidden & minimized windows if not multi-window previews (since we're not creating the previews ourselves, we are just concerned if this is mutli-window because we'll know how many times to go back one preview cmd+tab -> LeftArrow (to always maintain focus on the first window)
     if ([windowNumberList count] < 2) { //hidden & minimized windows (which are not counted in kCGWindowListOptionOnScreenOnly)
-        if (runningAppFromAxTitle(owner).isHidden || isMinimized(owner)) [windowNumberList addObject:@1234]; //todo: properly add these two windowTypes to windowNumberList, but works
+        if (runningAppFromAxTitle(owner).isHidden || numWindowsMinimized(owner)) [windowNumberList addObject:@1234]; //todo: properly add these two windowTypes to windowNumberList, but works
     }
     return windowNumberList;
 }
-void setActiveApp(NSString *tar) {
-    NSRunningApplication* app = runningAppFromAxTitle(tar); //only activate apps that aren't yet active (just in case it's slow 🤷‍♀️)
-    if (![app isActive]) [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+NSMutableArray* getWindowIdsForOwnerPID(pid_t PID) {
+    if (!PID) return nil;
+    CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    NSMutableArray *windowNumberList = [NSMutableArray new];
+    long int windowCount = CFArrayGetCount(windowList);
+    for (int i = 0; i < windowCount; i++) {
+        NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
+        NSNumber* curPID = [win objectForKey:@"kCGWindowOwnerPID"];
+        if (PID != (pid_t) [curPID intValue]) continue;
+        [windowNumberList addObject:win];
+    }
+    return windowNumberList;
 }
 
 //Show / Hide "Overlay"
@@ -167,8 +176,8 @@ void AltTabShow(NSString *tar, NSUInteger numWindows, AppDelegate* app) {
 }
 void AltTabHide(AppDelegate* app) {
     if (!app->targetApp || [app->targetApp isEqual:@""]) return;
-    [app->targetApp setString:@""];
     triggerEscape(app->targetApp);
+    [app->targetApp setString:@""];
 }
 
 int DEFAULTFINDERSUBPROCESSES = 7; //from my experience, after you relaunch, and move from 0 windows (1 process, since finder is ALWAYS running) to 1 window, it's usually 1windowprocess + 7 subprocesses (8 processes for 1 window     OR     1 / 7 processes for 0 windows)
