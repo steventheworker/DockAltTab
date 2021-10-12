@@ -703,6 +703,7 @@
                         </buttonCell>
                         <connections>
                             <action selector="toggleMenuItem:" target="Voe-Tx-rLC" id="iTF-wX-bJZ"/>
+                            <binding destination="Voe-Tx-rLC" name="value" keyPath="isMenuItemChecked" id="9EP-PX-38Z"/>
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nl9-Lp-NsY">
@@ -744,5 +745,6 @@
             </items>
             <point key="canvasLocation" x="-187" y="292"/>
         </menu>
+        <userDefaultsController representsSharedInstance="YES" id="Tk4-nW-t7s"/>
     </objects>
 </document>
