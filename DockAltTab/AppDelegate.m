@@ -99,46 +99,45 @@ NSRunningApplication* runningAppFromAxTitle(NSString* tar) {
 NSMutableArray* getWindowIdsForOwner(NSString *owner) {
     if (!owner || [@"" isEqual:owner]) return nil;
     CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
-    NSMutableArray *windowNumberList = [NSMutableArray new];
+    NSMutableArray *windows = [NSMutableArray new];
     long int windowCount = CFArrayGetCount(windowList);
     for (int i = 0; i < windowCount; i++) {
         NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
         if (![owner isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]]) continue;
-        [windowNumberList addObject:[win objectForKey:@"kCGWindowNumber"]];
+        [windows addObject:[win objectForKey:@"kCGWindowNumber"]];
     }
-    //only use cpu to check for hidden & minimized windows if not multi-window previews (since we're not creating the previews ourselves, we are just concerned if this is mutli-window because we'll know how many times to go back one preview cmd+tab -> LeftArrow (to always maintain focus on the first window)
-    if ([windowNumberList count] < 2) { //hidden & minimized windows (which are not counted in kCGWindowListOptionOnScreenOnly)
-        if (runningAppFromAxTitle(owner).isHidden || numWindowsMinimized(owner)) [windowNumberList addObject:@1234]; //todo: properly add these two windowTypes to windowNumberList, but works
-    }
-    return windowNumberList;
+    return windows;
+}
+NSDictionary* appInfo(NSString* owner) {
+    NSMutableArray* windows = getWindowIdsForOwner(owner); //on screen windows
+    //hidden & minimized (off screen windows)
+    BOOL isHidden = NO;
+    BOOL isMinimized = NO;
+    if (runningAppFromAxTitle(owner).isHidden) isHidden = YES;
+    if (numWindowsMinimized(owner)) isMinimized = YES;
+    //add missing window(s) (a window can be hidden & minimized @ same time (don't want two entries))
+    if (isHidden || isMinimized) [windows addObject:@123456789]; //todo: properly add these two windowTypes to windowNumberList, but works
+    return @{
+        @"windows": windows,
+        @"numWindows": @([windows count]),
+        @"isHidden": [NSNumber numberWithBool:isHidden],
+        @"isMinimized": [NSNumber numberWithBool:isMinimized],
+    };
 }
 void setActiveApp(NSString *tar) {
      NSRunningApplication* app = runningAppFromAxTitle(tar); //only activate apps that aren't yet active (just in case it's slow 🤷‍♀️)
      if (![app isActive]) [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
 }
-NSMutableArray* getWindowIdsForOwnerPID(pid_t PID) {
-    if (!PID) return nil;
-    CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
-    NSMutableArray *windowNumberList = [NSMutableArray new];
-    long int windowCount = CFArrayGetCount(windowList);
-    for (int i = 0; i < windowCount; i++) {
-        NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
-        NSNumber* curPID = [win objectForKey:@"kCGWindowOwnerPID"];
-        if (PID != (pid_t) [curPID intValue]) continue;
-        [windowNumberList addObject:win];
-    }
-    return windowNumberList;
-}
 
 //Show / Hide "Overlay"
-void triggerEscape(NSString* from) {
-    if ([from isEqual:@"Adobe Premiere Pro 2021"]) return;
-    triggerKeycode(53);
+void triggerEscape(AppDelegate* app) {
+    if ([app->targetApp isEqual:@"Adobe Premiere Pro 2021"]) return;
+    triggerKeycode(app->wasMinimized || app->wasHidden ? 53 : 55); //command ((55) is another way to hideOverlay, but this will never produce a beep sound if there's a mistake (unlike escape), it will also annoyingly force whatever minimized/hidden AltTab window is selected into focus (so we still use escape too))
 }
-void AltTabShow(NSString *tar, NSUInteger numWindows, AppDelegate* app) {
+void AltTabShow(NSString *tar, int numWindows, AppDelegate* app) {
     if ([app->targetApp isEqual:tar]) return; //don't hide, don't show & maintain/keep pointing @ tar
     if (![@"" isEqual:app->targetApp] && app->targetApp) {
-        triggerEscape(app->targetApp); //if overlay currently visible (Otherwise AltTab will keep/merge different app windows)
+        triggerEscape(app); //if overlay currently visible (Otherwise AltTab will keep/merge different app windows)
         
         [app->targetApp setString:@""];
         //settimeout & try again once Escaped old AltTab overlay
@@ -174,19 +173,19 @@ void AltTabShow(NSString *tar, NSUInteger numWindows, AppDelegate* app) {
     
     //setTimeout trigger LeftArrow key (go back one window)
     if (numWindows < 2) return;//(ONLY in case of multiple windows) so you're not always awkwardly focused on second window
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * MINIMAL_DELAY), dispatch_get_main_queue(), ^(void){
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * MINIMAL_DELAY * 0.86), dispatch_get_main_queue(), ^(void){
         triggerKeycode(123);
     });
 }
 void AltTabHide(AppDelegate* app) {
     if (!app->targetApp || [app->targetApp isEqual:@""]) return;
-    triggerEscape(app->targetApp);
+    triggerEscape(app);
     [app->targetApp setString:@""];
 }
 
 int DEFAULTFINDERSUBPROCESSES = 7; //from my experience, after you relaunch, and move from 0 windows (1 process, since finder is ALWAYS running) to 1 window, it's usually 1windowprocess + 7 subprocesses (8 processes for 1 window     OR     1 / 7 processes for 0 windows)
 void onLogin(AppDelegate* app) {
-    app->numFinderProcesses = (unsigned) [getWindowIdsForOwner(@"Finder") count]; //in case no. of subprocesses not the same as default (can change after long enough w/o relaunching 💩)
+    app->numFinderProcesses = [[appInfo(@"Finder") valueForKey:@"numWindows"] intValue]; //in case no. of subprocesses not the same as default (can change after long enough w/o relaunching 💩)
     if (app->numFinderProcesses == 1) app->numFinderProcesses = DEFAULTFINDERSUBPROCESSES; //finder only ever has <7 after login/relaunch
 }
 
@@ -269,11 +268,16 @@ int tickCounter = 0;
         }
     }
 
+    
     //showOverlay logic
     bool showOverlay = axPID != dockPID || [axIsApplicationRunning intValue] == 0 ? NO : YES;
-    NSUInteger numWindows = 0;
-    if (showOverlay) { //only calc numWindows if mouse is on dock/dock app icon
-        numWindows = [getWindowIdsForOwner(axTitle) count];
+    int numWindows = 0;
+    if (showOverlay) { //only calc appInfo if mouse is on dock/dock app icon
+        NSDictionary* info = appInfo(axTitle);
+        numWindows = [[info valueForKey:@"numWindows"] intValue];
+        isMinimized = [info[@"isMinimized"] boolValue];
+        isHidden = [info[@"isHidden"] boolValue];
+        // yes or no
         if (numWindows == 0 || ((numWindows == 1 || numWindows == numFinderProcesses) && [axTitle isEqual:@"Finder"])) showOverlay = NO; //handle finder's weird window subprocesses (Always on)
     }
 
@@ -281,6 +285,9 @@ int tickCounter = 0;
     if (showingContextMenu || axPID == overlayPID) return; //maintain overlay showing / hidden
     if (showOverlay) AltTabShow(axTitle, numWindows, self);
     else AltTabHide(self);
+
+    wasHidden = isHidden;
+    wasMinimized = isMinimized;
 }
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
     [timer invalidate];

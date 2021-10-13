@@ -14,6 +14,10 @@
     @public pid_t           overlayPID;
     @public int             numFinderProcesses;
     
+    BOOL                    wasMinimized; //prev appInfo
+    BOOL                    wasHidden; //prev appInfo
+    BOOL                    isHidden; //appInfo
+    BOOL                    isMinimized; //appInfo
     BOOL                    isMenuItemChecked;
     pid_t                   dockPID;
     AXUIElementRef          _systemWideAccessibilityObject;
