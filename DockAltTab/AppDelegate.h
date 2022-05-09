@@ -7,8 +7,59 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+    //permissions
+    @public AXUIElementRef          _systemWideAccessibilityObject;
+    
+    //system state (non-live / eg. periodically updated)
+    @public float           primaryScreenHeight;
+    @public float           primaryScreenWidth;
+    @public float           extendedOffsetX;
+    @public float           extendedOffsetY;
+    @public float           extendedOffsetYBottom;
+    @public float           extScreenWidth;
+    @public float           extScreenHeight;
+    @public CGFloat         dockWidth;
+    @public CGFloat         dockHeight;
+    @public NSString*       dockPos;
+    pid_t                  dockPID;
+    
+    //app stuff
+    NSString*              appVersion;
+    NSString*              mostCurrentVersion;
+    NSTimer*               timer;
+    NSDictionary*          appAliases;
+    NSString*              appDisplayed;
 
+    //UI
+    NSStatusItem            *statusItem;
 
+    __weak IBOutlet NSMenu *menu;
+    __weak IBOutlet NSTextField *appVersionRef;
+    __weak IBOutlet NSTextField *delayLabel;
+    __weak IBOutlet NSTextField *updateRemindRef;
+    BOOL                    isMenuItemChecked;
+    BOOL                    isClickToggleChecked;
+    BOOL                    isLockDockContentsChecked;
+    BOOL                    isLockDockSizeChecked;
+    BOOL                    isLockDockPositionChecked;
+    int                     previewDelay;
+    __weak IBOutlet NSButton *menuItemCheckBox;    
+    __weak IBOutlet NSButton *clickToggleCheckBox;
+    __weak IBOutlet NSButton *lockDockContentsCheckbox;
+    __weak IBOutlet NSButton *lockDockSizeCheckbox;
+    __weak IBOutlet NSButton *lockDockPositionCheckbox;
+    __weak IBOutlet NSSliderCell *previewDelaySlider;
+}
+@property BOOL isMenuItemChecked;
+@property BOOL isClickToggleChecked;
+@property BOOL isLockDockContentsChecked;
+@property BOOL isLockDockSizeChecked;
+@property BOOL isLockDockPositionChecked;
+@property int previewDelay;
+//- (float) timeDiff;
+- (void) dockItemClickHide: (CGPoint)carbonPoint : (NSDictionary*)info;
+- (void) bindClick: (CGEventRef) e;
+- (void) bindScreens;
+- (IBAction) preferences:(id)sender;
 @end
-

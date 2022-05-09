@@ -15,6 +15,16 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="appVersionRef" destination="kBE-1m-b9i" id="hX7-3P-3Sx"/>
+                <outlet property="clickToggleCheckBox" destination="K9P-HQ-vqn" id="nE7-6d-lU7"/>
+                <outlet property="delayLabel" destination="9Eh-go-GrW" id="3Qc-EI-vF8"/>
+                <outlet property="lockDockContentsCheckbox" destination="2qA-Dr-kaN" id="WLU-eC-ANT"/>
+                <outlet property="lockDockPositionCheckbox" destination="8Xf-ze-N6I" id="3g1-MU-1wG"/>
+                <outlet property="lockDockSizeCheckbox" destination="KUb-j5-Idy" id="TGn-YQ-Hmf"/>
+                <outlet property="menu" destination="7wH-0i-7u4" id="e5a-Xh-9Ja"/>
+                <outlet property="menuItemCheckBox" destination="BUI-mm-4RA" id="9z0-kS-Eh1"/>
+                <outlet property="previewDelaySlider" destination="F6r-sH-2qo" id="Adq-0k-0z1"/>
+                <outlet property="updateRemindRef" destination="lXr-Qx-AJz" id="yec-s0-HE4"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -689,8 +699,166 @@
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CCP-aX-Qbi">
+                        <rect key="frame" x="75" y="176" width="108" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Apparition Delay:" id="KU3-Ij-0Ra">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <slider verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ChD-mw-OsW">
+                        <rect key="frame" x="190" y="168" width="96" height="28"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="F6r-sH-2qo">
+                            <connections>
+                                <action selector="changeDelay:" target="Voe-Tx-rLC" id="yBM-W4-3OH"/>
+                            </connections>
+                        </sliderCell>
+                    </slider>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N5E-ek-FXy">
+                        <rect key="frame" x="323" y="177" width="65" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="8I4-AX-KRQ">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Eh-go-GrW">
+                        <rect key="frame" x="288" y="177" width="38" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0" id="0h3-7y-k9G">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kBE-1m-b9i">
+                        <rect key="frame" x="225" y="328" width="30" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="v0.0" id="82b-Kr-jwC">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lXr-Qx-AJz">
+                        <rect key="frame" x="-7" y="300" width="484" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="You're on the latest release." id="vxC-cM-BWb">
+                            <font key="font" metaFont="systemBold"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <box fixedFrame="YES" title="Dock Settings" translatesAutoresizingMaskIntoConstraints="NO" id="OTV-cb-O9V">
+                        <rect key="frame" x="13" y="20" width="454" height="70"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="VLr-jq-ZP9">
+                            <rect key="frame" x="3" y="3" width="448" height="49"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Xf-ze-N6I">
+                                    <rect key="frame" x="8" y="15" width="140" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Lock dock position" bezelStyle="regularSquare" imagePosition="left" inset="2" id="NTS-nO-1ze">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="lockDockPosition:" target="Voe-Tx-rLC" id="vfh-Mt-jVN"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KUb-j5-Idy">
+                                    <rect key="frame" x="166" y="15" width="116" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Lock dock size" bezelStyle="regularSquare" imagePosition="left" inset="2" id="6zc-Xm-Fch">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="lockDockSize:" target="Voe-Tx-rLC" id="SsV-al-cNc"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2qA-Dr-kaN">
+                                    <rect key="frame" x="298" y="15" width="145" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Lock dock contents" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oXb-Oi-fOf">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="lockDockContents:" target="Voe-Tx-rLC" id="yxP-iV-WUY"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <font key="titleFont" metaFont="systemBold" size="14"/>
+                    </box>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w8n-Hj-x4c">
+                        <rect key="frame" x="178" y="59" width="127" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1ki-PJ-IPt">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="kill:" target="Voe-Tx-rLC" id="gYa-Ji-NiU"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K9P-HQ-vqn">
+                        <rect key="frame" x="78" y="240" width="323" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Click dock icons to toggle showing &amp; hiding apps" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VlZ-GH-2eM">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="toggleToggleDockApps:" target="Voe-Tx-rLC" id="GWc-vS-yTe"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BUI-mm-4RA">
+                        <rect key="frame" x="308" y="97" width="156" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Add icon to menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="A5O-q7-Ccy">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="toggleMenuIcon:" target="Voe-Tx-rLC" id="L7x-z7-HOp"/>
+                            <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isMenuItemChecked" id="qh1-br-CFc"/>
+                        </connections>
+                    </button>
+                </subviews>
             </view>
-            <point key="canvasLocation" x="200" y="400"/>
+            <point key="canvasLocation" x="89" y="403"/>
         </window>
+        <menu id="7wH-0i-7u4">
+            <items>
+                <menuItem title="Preferences" id="ptX-Ez-5Xy">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="preferences:" target="Voe-Tx-rLC" id="2Yf-5x-2VS"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Restart Dock   ↺" id="4X9-F8-5Cj">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="kill:" target="Voe-Tx-rLC" id="sEQ-iH-7Y9"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Quit DockAltTab" id="stF-Rf-GWa">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="quit:" target="Voe-Tx-rLC" id="xH5-hN-sRj"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="-113" y="698"/>
+        </menu>
+        <userDefaultsController representsSharedInstance="YES" id="UQx-gq-viT"/>
     </objects>
 </document>
