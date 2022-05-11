@@ -24,19 +24,14 @@ void runApplescript(NSString* scriptName) {
 }
 
 void testAltTab(void) {
-    NSLog(@"one");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1), dispatch_get_main_queue(), ^(void){
         runApplescript(@"showOverlay");
-
     });
-    NSLog(@"one2");
 }
 
 @interface AppDelegate ()
-
 @property (strong) IBOutlet NSWindow *window;
 @end
-
 @implementation AppDelegate
     @synthesize isMenuItemChecked;
     @synthesize isClickToggleChecked;
@@ -44,6 +39,7 @@ void testAltTab(void) {
     @synthesize isLockDockContentsChecked;
     @synthesize isLockDockSizeChecked;
     @synthesize isLockDockPositionChecked;
+/* app */
 - (void)timerTick: (NSTimer*) arg {
     NSPoint mouseLocation = [NSEvent mouseLocation];
     CGPoint pt = [helperLib carbonPointFrom:mouseLocation];
@@ -68,6 +64,8 @@ void testAltTab(void) {
     extendedOffsetY = [extScreen frame].origin.y;
     extendedOffsetYBottom = !extScreen ? 0 : fabs(primaryScreenHeight - extScreenHeight) - extendedOffsetY;
 }
+
+
 /* UI */
 - (IBAction) preferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
