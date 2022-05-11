@@ -12,5 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL) contextMenuExists: (CGPoint)carbonPoint : (NSDictionary*)info;
 + (NSString*) getCurrentVersion;
 + (void) initVars;
++ (void) AltTabShow: (NSString*) appBID;
++ (void) AltTabHide;
 @end
 NS_ASSUME_NONNULL_END

@@ -9,23 +9,9 @@
 #import "src/helperLib.h"
 #import "src/app.h"
 
-void runApplescript(NSString* scriptName) {
-    NSString *compiledScriptPath = [[NSBundle mainBundle] pathForResource:scriptName ofType:@"scpt" inDirectory:@"Scripts"];
-    NSDictionary *error = nil;
-    NSAppleScript *script = [[NSAppleScript alloc] initWithContentsOfURL:[NSURL fileURLWithPath:compiledScriptPath] error:&error];
-    if (error) {
-        NSLog(@"compile error: %@", error);
-    } else {
-       [script executeAndReturnError:&error];
-       if (error) {
-         NSLog(@"run error: %@", error);
-       }
-    }
-}
-
 void testAltTab(void) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1), dispatch_get_main_queue(), ^(void){
-        runApplescript(@"showOverlay");
+        [app AltTabShow: @"com.steventheworker.DockAltTab"]; // later, you can run:  AltTabHide(void)
     });
 }
 
@@ -123,7 +109,7 @@ void testAltTab(void) {
     [app initVars];
     [helperLib listenClicks];
     [helperLib listenScreens];
-    testAltTab(); //    ////////
+    testAltTab(); //    //////// debug line
 }
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
     [timer invalidate];

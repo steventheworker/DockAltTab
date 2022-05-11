@@ -18,6 +18,20 @@ const int DOCK_OFFSET = 5; //5 pixels
 
 
 @implementation app
++ (void) AltTabShow: (NSString*) appBID {
+    NSDictionary *error = nil;
+    NSString* scriptTxt = [NSString stringWithFormat: @"tell application \"AltTab\" to showApp appBID \"%@\"", appBID];
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
+    [script executeAndReturnError:&error];
+    if (error) NSLog(@"run error: %@", error);
+}
++ (void) AltTabHide {
+    NSDictionary *error = nil;
+    NSString* scriptTxt = @"tell application \"AltTab\" to hide";
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
+    [script executeAndReturnError:&error];
+    if (error) NSLog(@"run error: %@", error);
+}
 //initialize app variables (onLaunch)
 + (void) initVars {
     NSLog(@"%@", @"running app :)\n-------------------------------------------------------------------");
@@ -76,7 +90,7 @@ const int DOCK_OFFSET = 5; //5 pixels
     [del->previewDelaySlider setFloatValue:del->previewDelay];
     [[del->delayLabel cell] setTitle: [helperLib twoSigFigs: del->previewDelaySlider.floatValue / 100 * 2]]; // change slider label
 }
-/* utilities */
+/* utilities that depend on (AppDelegate *) */
 + (BOOL) contextMenuExists:(CGPoint) carbonPoint : (NSDictionary*) info {
     AppDelegate* del = [helperLib getApp];
     if ([info[@"role"] isEqual:@"AXMenuItem"] || [info[@"role"] isEqual:@"AXMenu"]) return YES;
