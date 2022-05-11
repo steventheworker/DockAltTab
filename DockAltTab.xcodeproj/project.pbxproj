@@ -11,7 +11,6 @@
 		BF0E91FB2829191D00D21AD5 /* helperLib.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0E91FA2829191D00D21AD5 /* helperLib.m */; };
 		BF0E920128291F0700D21AD5 /* app.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0E920028291F0700D21AD5 /* app.m */; };
 		BF0E921F2829556900D21AD5 /* MenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0E921E2829556900D21AD5 /* MenuIcon.png */; };
-		BF288EE5282C0F7C00505FBB /* Scripts in Resources */ = {isa = PBXBuildFile; fileRef = BF288EE4282C0F7C00505FBB /* Scripts */; };
 		BFE19DEC2825BFA600D72F99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DEB2825BFA600D72F99 /* AppDelegate.m */; };
 		BFE19DF12825BFA800D72F99 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFE19DEF2825BFA800D72F99 /* MainMenu.xib */; };
 		BFE19DF32825BFA800D72F99 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DF22825BFA800D72F99 /* main.m */; };
@@ -24,7 +23,6 @@
 		BF0E91FF28291F0700D21AD5 /* app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = app.h; path = src/app.h; sourceTree = "<group>"; };
 		BF0E920028291F0700D21AD5 /* app.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = app.m; path = src/app.m; sourceTree = "<group>"; };
 		BF0E921E2829556900D21AD5 /* MenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuIcon.png; sourceTree = "<group>"; };
-		BF288EE4282C0F7C00505FBB /* Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Scripts; path = src/Scripts; sourceTree = "<group>"; };
 		BFE19DE72825BFA600D72F99 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFE19DEA2825BFA600D72F99 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BFE19DEB2825BFA600D72F99 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -64,7 +62,6 @@
 		BFE19DE92825BFA600D72F99 /* DockAltTab */ = {
 			isa = PBXGroup;
 			children = (
-				BF288EE4282C0F7C00505FBB /* Scripts */,
 				BFE19DFA2825C63600D72F99 /* Info.plist */,
 				BFE19DEA2825BFA600D72F99 /* AppDelegate.h */,
 				BFE19DEB2825BFA600D72F99 /* AppDelegate.m */,
@@ -141,7 +138,6 @@
 				BF0E921F2829556900D21AD5 /* MenuIcon.png in Resources */,
 				BF0E91F82829142A00D21AD5 /* Assets.xcassets in Resources */,
 				BFE19DF12825BFA800D72F99 /* MainMenu.xib in Resources */,
-				BF288EE5282C0F7C00505FBB /* Scripts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
