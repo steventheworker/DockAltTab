@@ -42,12 +42,12 @@ void hideOverlay(void) {
     pid_t tarPID = [info[@"PID"] intValue];
     if (tarPID == AltTabPID) return;
     NSString* tarBID = @"";
-    if ([info[@"subrole"] isEqual:@"AXApplicationDockItem"]) { // find dock icon's Bundle Identifier w/ app url
+    if ([info[@"subrole"] isEqual:@"AXApplicationDockItem"]) {
         NSURL* appURL;
-        AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);                              //subrole
+        AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
         tarBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
-        tarPID = [helperLib getPID:tarBID];
-    } else { /* instead, get the missing BID w/ tarPID */}
+        tarPID = [helperLib getPID:tarBID]; // tarPID w/ BID
+    } else { /* BID w/ tarPID */}
     
     // ? willShowOverlay
     BOOL willShow = [info[@"running"] intValue] && [info[@"subrole"] isEqual:@"AXApplicationDockItem"];
