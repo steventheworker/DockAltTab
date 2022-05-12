@@ -717,6 +717,9 @@
                                 <action selector="changeDelay:" target="Voe-Tx-rLC" id="yBM-W4-3OH"/>
                             </connections>
                         </sliderCell>
+                        <connections>
+                            <binding destination="Voe-Tx-rLC" name="value" keyPath="self.previewDelay" id="ydO-bK-oqE"/>
+                        </connections>
                     </slider>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N5E-ek-FXy">
                         <rect key="frame" x="323" y="177" width="65" height="16"/>
