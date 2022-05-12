@@ -9,10 +9,18 @@
 #import "src/helperLib.h"
 #import "src/app.h"
 
-void testAltTab(void) {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1), dispatch_get_main_queue(), ^(void){
-        [app AltTabShow: @"com.steventheworker.DockAltTab"]; // later, you can run:  AltTabHide(void)
-    });
+void showOverlay(NSString* appBID) {
+    AppDelegate* del = [helperLib getApp];
+    if ([del->appDisplayed isEqual:appBID]) return;
+    if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
+    del->appDisplayed = appBID;
+    [app AltTabShow:appBID];
+}
+void hideOverlay(void) {
+    AppDelegate* del = [helperLib getApp];
+    if ([del->appDisplayed isEqual:@""]) return;
+    del->appDisplayed = @"";
+    [app AltTabHide];
 }
 
 @interface AppDelegate ()
@@ -31,7 +39,28 @@ void testAltTab(void) {
     CGPoint pt = [helperLib carbonPointFrom:mouseLocation];
     AXUIElementRef el = [helperLib elementAtPoint:pt];
     NSMutableDictionary* info = [NSMutableDictionary dictionaryWithDictionary: [helperLib axInfo:el]];
-//    NSLog(@"%@", info);
+    pid_t tarPID = [info[@"PID"] intValue];
+    if (tarPID == AltTabPID) return;
+    NSString* tarBID = @"";
+    if ([info[@"subrole"] isEqual:@"AXApplicationDockItem"]) { // find dock icon's Bundle Identifier w/ app url
+        NSURL* appURL;
+        AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);                              //subrole
+        tarBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
+        tarPID = [helperLib getPID:tarBID];
+    } else { /* instead, get the missing BID w/ tarPID */}
+    
+    // ? willShowOverlay
+    BOOL willShow = [info[@"running"] intValue] && [info[@"subrole"] isEqual:@"AXApplicationDockItem"];
+    int numWindows = willShow ? (int) [[helperLib getWindowsForOwnerPID:tarPID] count] : 0; // hidden / minimized windows not included
+    if (willShow && [info[@"title"] isEqual:@"Parallels Mac VM"]) numWindows = 1; //if running - 1 window (but numWindows can't see it) //todo: why???
+    if (willShow && numWindows == 0) {
+        if ([helperLib runningAppFromAxTitle: info[@"title"]].isHidden) numWindows = 1;
+        else numWindows = [helperLib numWindowsMinimized:info[@"title"]];
+        if (numWindows == 0) willShow = NO;
+    }
+    
+    willShow ? showOverlay(tarBID) : hideOverlay();
+    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
 - (void) dockItemClickHide:(CGPoint)carbonPoint :(NSDictionary *)info {
     
@@ -109,7 +138,6 @@ void testAltTab(void) {
     [app initVars];
     [helperLib listenClicks];
     [helperLib listenScreens];
-    testAltTab(); //    //////// debug line
 }
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
     [timer invalidate];

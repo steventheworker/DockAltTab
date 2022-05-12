@@ -22,37 +22,6 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     [[helperLib getApp] bindScreens];
 }
 
-//helper's
-int numWindowsMinimized(NSString* tar) {
-    int numWindows = 0; //# minimized windows on active space
-    CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionAll|kCGWindowListExcludeDesktopElements, kCGNullWindowID);
-    long int windowCount = CFArrayGetCount(windowList);
-    for (int i = 0; i < windowCount; i++) {
-        //get dictionary data
-        NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
-        if (![tar isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]] || [[win objectForKey:@"kCGWindowLayer"] intValue] != 0) continue;
-        // Get the AXUIElement windowList (e.g. elementList)
-        int winPID = [[win objectForKey:@"kCGWindowOwnerPID"] intValue];
-        AXUIElementRef appRef = AXUIElementCreateApplication(winPID);
-        CFArrayRef elementList;
-        AXUIElementCopyAttributeValue(appRef, kAXWindowsAttribute, (void *)&elementList);
-        CFRelease(appRef);
-        bool onActiveSpace = YES;
-        //loop through looking for minimized && onActiveSpace
-        long int numElements = elementList ? CFArrayGetCount(elementList) : 0;
-        for (int j = 0; j < numElements; j++) {
-            AXUIElementRef winElement = CFArrayGetValueAtIndex(elementList, j);
-            CFBooleanRef winMinimized;
-            AXUIElementCopyAttributeValue(winElement, kAXMinimizedAttribute, (CFTypeRef *)&winMinimized);
-            if (winMinimized == kCFBooleanTrue && onActiveSpace) numWindows++;
-//            CFRelease(winMinimized);
-        }
-//        CFRelease(elementList); //causes crashes
-    }
-    CFRelease(windowList);
-    return numWindows;
-}
-
 @implementation helperLib
 //formatting
 + (NSString*) twoSigFigs: (float) val {
@@ -128,7 +97,7 @@ int numWindowsMinimized(NSString* tar) {
 //windows
 + (NSMutableArray*) getWindowsForOwner: (NSString *)owner {
     if (!owner || [@"" isEqual:owner]) return nil;
-    CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionAll, kCGNullWindowID);
+    CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionAll | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
     NSMutableArray *ownerWindowList = [NSMutableArray new];
     long int windowCount = CFArrayGetCount(windowList);
     for (int i = 0; i < windowCount; i++) {
@@ -141,7 +110,7 @@ int numWindowsMinimized(NSString* tar) {
 }
 + (NSMutableArray*) getWindowsForOwnerPID:(pid_t) PID {
   if (!PID) return nil;
-  CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+  CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
   NSMutableArray *ownerWindowList = [NSMutableArray new];
   long int windowCount = CFArrayGetCount(windowList);
   for (int i = 0; i < windowCount; i++) {
@@ -173,6 +142,36 @@ int numWindowsMinimized(NSString* tar) {
     }
     return ownerWindowList;
 }
++ (int) numWindowsMinimized: (NSString*) tar {
+    int numWindows = 0; //# minimized windows on active space
+    CFArrayRef windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionAll|kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+    long int windowCount = CFArrayGetCount(windowList);
+    for (int i = 0; i < windowCount; i++) {
+        //get dictionary data
+        NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
+        if (![tar isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]] || [[win objectForKey:@"kCGWindowLayer"] intValue] != 0) continue;
+        // Get the AXUIElement windowList (e.g. elementList)
+        int winPID = [[win objectForKey:@"kCGWindowOwnerPID"] intValue];
+        AXUIElementRef appRef = AXUIElementCreateApplication(winPID);
+        CFArrayRef elementList;
+        AXUIElementCopyAttributeValue(appRef, kAXWindowsAttribute, (void *)&elementList);
+        CFRelease(appRef);
+        bool onActiveSpace = YES;
+        //loop through looking for minimized && onActiveSpace
+        long int numElements = elementList ? CFArrayGetCount(elementList) : 0;
+        for (int j = 0; j < numElements; j++) {
+            AXUIElementRef winElement = CFArrayGetValueAtIndex(elementList, j);
+            CFBooleanRef winMinimized;
+            AXUIElementCopyAttributeValue(winElement, kAXMinimizedAttribute, (CFTypeRef *)&winMinimized);
+            if (winMinimized == kCFBooleanTrue && onActiveSpace) numWindows++;
+//            CFRelease(winMinimized);
+        }
+//        CFRelease(elementList); //causes crashes
+    }
+    CFRelease(windowList);
+    return numWindows;
+}
+
 
 //AXUI elements
 + (AXUIElementRef) elementAtPoint:(CGPoint) carbonPoint {
@@ -216,7 +215,7 @@ int numWindowsMinimized(NSString* tar) {
     BOOL isHidden = NO;
     BOOL isMinimized = NO;
     if ([helperLib runningAppFromAxTitle:owner].isHidden) isHidden = YES;
-    if (numWindowsMinimized(owner)) isMinimized = YES;
+    if ([helperLib numWindowsMinimized:owner]) isMinimized = YES;
     //add missing window(s) (a window can be hidden & minimized @ same time (don't want two entries))
     if (!isHidden && isMinimized) [windows addObject:@123456789]; //todo: properly add these two windowTypes to windowNumberList, but works
     return @{

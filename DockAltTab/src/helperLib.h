@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGPoint) carbonPointFrom: (NSPoint) cocoaPoint;
 + (void) triggerKeycode: (CGKeyCode) key;
 + (NSRunningApplication*) runningAppFromAxTitle: (NSString*) tar;
++ (int) numWindowsMinimized: (NSString *)owner;
 + (NSMutableArray*) getWindowsForOwner: (NSString *)owner;
 + (NSMutableArray*) getWindowsForOwnerPID: (pid_t) PID;
 + (NSMutableArray*) getRealFinderWindows;
