@@ -9,14 +9,21 @@
 #import "src/helperLib.h"
 #import "src/app.h"
 
+/* config */
+const int TICKS_TO_HIDE = 3; // * TICK_DELAY = x seconds
+
+/* show & hide */
+int ticksSinceShown = 0;
 void showOverlay(NSString* appBID) {
     AppDelegate* del = [helperLib getApp];
+    ticksSinceShown = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
     if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
     del->appDisplayed = appBID;
     [app AltTabShow:appBID];
 }
 void hideOverlay(void) {
+    if (ticksSinceShown++ < TICKS_TO_HIDE) return;
     AppDelegate* del = [helperLib getApp];
     if ([del->appDisplayed isEqual:@""]) return;
     del->appDisplayed = @"";
@@ -40,7 +47,11 @@ void hideOverlay(void) {
     AXUIElementRef el = [helperLib elementAtPoint:pt];
     NSMutableDictionary* info = [NSMutableDictionary dictionaryWithDictionary: [helperLib axInfo:el]];
     pid_t tarPID = [info[@"PID"] intValue];
-    if (tarPID == AltTabPID) return;
+    if (tarPID == AltTabPID) {
+        ticksSinceShown = 0;
+        return;
+    }
+
     NSString* tarBID = @"";
     if ([info[@"subrole"] isEqual:@"AXApplicationDockItem"]) {
         NSURL* appURL;
@@ -120,7 +131,7 @@ void hideOverlay(void) {
 }
 - (IBAction) quit:(id)sender {[NSApp terminate:nil];}
 - (IBAction)toggleMenuItem:(id)sender {[statusItem setVisible:isMenuItemChecked];}
-//dock settings
+/* dock settings */
 - (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
 - (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
 - (IBAction)lockDockContents:(id)sender {[helperLib dockSetting: CFSTR("contents-immutable") : (BOOL) lockDockContentsCheckbox.state];}
