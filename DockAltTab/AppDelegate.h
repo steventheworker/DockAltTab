@@ -30,10 +30,11 @@
     NSString*              mostCurrentVersion;
     NSTimer*               timer;
     NSString*              appDisplayed;
+    NSString*              lastAppClickToggled;
+    BOOL                   wasShowingContextMenu;
 
     //UI
     NSStatusItem            *statusItem;
-
     __weak IBOutlet NSMenu *menu;
     __weak IBOutlet NSTextField *appVersionRef;
     __weak IBOutlet NSTextField *delayLabel;
@@ -58,7 +59,7 @@
 @property BOOL isLockDockPositionChecked;
 @property int previewDelay;
 //- (float) timeDiff;
-- (void) dockItemClickHide: (CGPoint)carbonPoint : (NSDictionary*)info;
+- (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info;
 - (void) bindClick: (CGEventRef) e;
 - (void) bindScreens;
 - (IBAction) preferences:(id)sender;

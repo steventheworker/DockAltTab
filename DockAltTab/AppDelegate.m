@@ -77,7 +77,8 @@ void hideOverlay(void) {
         ticksSinceShown = 0;
         return;
     }
-
+    wasShowingContextMenu = [app contextMenuExists:pt : info];
+    if (wasShowingContextMenu) return;
     NSString* tarBID = @"";
     if ([info[@"subrole"] isEqual:@"AXApplicationDockItem"]) {
         NSURL* appURL;
@@ -99,11 +100,56 @@ void hideOverlay(void) {
     willShow ? showOverlay(tarBID) : hideOverlay();
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
-- (void) dockItemClickHide:(CGPoint)carbonPoint :(NSDictionary *)info {
-    
+- (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info {
+    if ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) return;
+    __block BOOL showingContextMenu = [app contextMenuExists: carbonPoint:info]; //checks if contextMenu exists (but only looks around area cursor's placed)
+    if (wasShowingContextMenu || showingContextMenu) {
+        wasShowingContextMenu = NO;
+        return;
+    }
+    NSURL* appURL;
+    AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
+    NSString* clickBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
+//    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
+    NSString* clickTitle = info[@"title"];
+    BOOL isBlacklisted = NO; // = [showBlacklist containsObject:clickTitle];
+    if ([clickTitle isEqual:@"Trash"]) {
+        clickTitle = @"Finder";
+        clickBID = @"com.apple.Finder";
+    }
+    else if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
+    NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
+    BOOL wasAppHidden = [runningApp isHidden];
+    int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
+    float countProcessT = (wasAppHidden ? 0 : 0.333); //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * countProcessT), dispatch_get_main_queue(), ^(void){
+        if (countProcessT) {
+            //test for context menu (x time after click)
+            CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
+            NSDictionary* info2 = [helperLib axInfo:[helperLib elementAtPoint:carbonPoint2]]; //axTitle, axIsApplicationRunning, axPID, axIsAPplicationRunning
+            if ((pid_t)[info2[@"PID"] intValue] != self->dockPID) return;
+            showingContextMenu = [app contextMenuExists: carbonPoint2:info2]; //checks if contextMenu exists (but only looks around area cursor's placed)
+            if (showingContextMenu) return;
+        }
+
+        //show / hide
+        int numProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
+        if ((![self->appDisplayed isEqual:@""] && [self->lastAppClickToggled isEqual:@""]) || numProcesses != oldProcesses) {
+            [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps]; //order of operations important (keep here) (above toggle update)
+            self->lastAppClickToggled = clickBID; //order of operations important (keep here) (below activate)
+            return;
+        }
+        self->lastAppClickToggled = clickBID; //order of operations important (keep here)
+        if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
+        [runningApp hide];
+    });
 }
 - (void) bindClick: (CGEventRef) e {
-    NSLog(@"click");
+    if (!isClickToggleChecked) return;
+    CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
+    AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
+    NSDictionary* info = [helperLib axInfo:el];
+    [self dockItemClickHide: carbonPoint : el : info];
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁
     NSScreen* primScreen = [helperLib getScreen:0];
