@@ -29,7 +29,6 @@
     NSString*              appVersion;
     NSString*              mostCurrentVersion;
     NSTimer*               timer;
-    NSDictionary*          appAliases;
     NSString*              appDisplayed;
 
     //UI

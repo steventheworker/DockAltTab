@@ -7,6 +7,13 @@
 
 #import "helperLib.h"
 
+NSDictionary* appAliases = @{
+    @"Visual Studio Code": @"Code",
+    @"Adobe Lightroom Classic": @"Lightroom Classic",
+    @"iTerm": @"iTerm2",
+    @"PyCharm CE": @"PyCharm"
+};
+
 //prepare click handling
 static CGEventRef handleClick( CGEventRef clickHandler,
                               CGEventTapProxy proxy ,
@@ -180,7 +187,6 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     return (__bridge AXUIElementRef)(CFBridgingRelease(elementUnderCursor));
 }
 + (NSDictionary*) axInfo:(AXUIElementRef)el {
-    AppDelegate* del = [helperLib getApp];
     NSString *axTitle = nil;
     NSNumber *axIsApplicationRunning;
     pid_t axPID = -1;
@@ -189,7 +195,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     CGSize size;
     if (el) {
         AXUIElementCopyAttributeValue(el, kAXTitleAttribute, (void *)&axTitle);
-        axTitle = del->appAliases[axTitle] ? del->appAliases[axTitle] : axTitle; //app's with alias work weird (eg: VScode = Code)
+        axTitle = appAliases[axTitle] ? appAliases[axTitle] : axTitle; //app's with alias work weird (eg: VScode = Code)
         AXUIElementGetPid(el, &axPID);                                                                      //pid
         AXUIElementCopyAttributeValue(el, kAXRoleAttribute, (void*)&role);                                    //role
         AXUIElementCopyAttributeValue(el, kAXSubroleAttribute, (void*)&subrole);                              //subrole

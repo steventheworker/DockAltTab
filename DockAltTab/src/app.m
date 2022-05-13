@@ -10,7 +10,8 @@
 
 //config
 const NSString* versionLink = @"https://dockalttab.netlify.app/currentversion.txt";
-const float TICK_DELAY = 0.22;
+const float TICK_DELAY = 0.22; // seconds
+const float DELAY_MAX = 2; // seconds
 
 //define
 const int CONTEXTDISTANCE = 150; //dock testPoint/contextmenu's approx. distance from pointer
@@ -18,38 +19,16 @@ const int DOCK_OFFSET = 5; //5 pixels
 
 
 @implementation app
-+ (void) AltTabShow: (NSString*) appBID {
-    NSDictionary *error = nil;
-    NSString* scriptTxt = [NSString stringWithFormat: @"tell application \"AltTab\" to showApp appBID \"%@\"", appBID];
-    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
-    [script executeAndReturnError:&error];
-    if (error) NSLog(@"run error: %@", error);
-}
-+ (void) AltTabHide {
-    NSDictionary *error = nil;
-    NSString* scriptTxt = @"tell application \"AltTab\" to hide";
-    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
-    [script executeAndReturnError:&error];
-    if (error) NSLog(@"run error: %@", error);
-}
 //initialize app variables (onLaunch)
 + (void) initVars {
     NSLog(@"%@", @"running app :)\n-------------------------------------------------------------------");
     AppDelegate* del = [helperLib getApp];
-    //definitions
-    NSDictionary* appAliases = @{
-        @"Visual Studio Code": @"Code",
-        @"Adobe Lightroom Classic": @"Lightroom Classic",
-        @"iTerm": @"iTerm2",
-        @"PyCharm CE": @"PyCharm"
-    };
     //functional
     [del bindScreens]; //load screen data
     del->appDisplayed = @"";
     del->dockPos = [helperLib getDockPosition];
     del->dockPID = [helperLib getPID:@"com.apple.dock"]; //todo: refresh dockPID every x or so?
     del->AltTabPID = [helperLib getPID:@"com.lwouis.alt-tab-macos"];
-    del->appAliases = appAliases;
     NSLog(@"(%lu) finder windows/processes found after launch", [[helperLib getRealFinderWindows] count]);
     //UI variables
     del->appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -103,6 +82,21 @@ const int DOCK_OFFSET = 5; //5 pixels
     if ([testInfo[@"role"] isEqual:@"AXMenuItem"] || [testInfo[@"role"] isEqual:@"AXMenu"]) return YES;
     return NO;
 }
++ (void) AltTabShow: (NSString*) appBID {
+    NSDictionary *error = nil;
+    NSString* scriptTxt = [NSString stringWithFormat: @"tell application \"AltTab\" to showApp appBID \"%@\"", appBID];
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
+    [script executeAndReturnError:&error];
+    if (error) NSLog(@"run error: %@", error);
+}
++ (void) AltTabHide {
+    NSDictionary *error = nil;
+    NSString* scriptTxt = @"tell application \"AltTab\" to hide";
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
+    [script executeAndReturnError:&error];
+    if (error) NSLog(@"run error: %@", error);
+}
++ (float) maxDelay {return DELAY_MAX;}
 + (NSString*) getCurrentVersion {return [helperLib get: (NSString*) versionLink];}
 @end
 
