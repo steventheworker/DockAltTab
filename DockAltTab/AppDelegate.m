@@ -107,17 +107,19 @@ void hideOverlay(void) {
         wasShowingContextMenu = NO;
         return;
     }
-    NSURL* appURL;
-    AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
-    NSString* clickBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
 //    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
     NSString* clickTitle = info[@"title"];
+    NSString* clickBID = @"";
     BOOL isBlacklisted = NO; // = [showBlacklist containsObject:clickTitle];
     if ([clickTitle isEqual:@"Trash"]) {
         clickTitle = @"Finder";
         clickBID = @"com.apple.Finder";
+    } else {
+        NSURL* appURL;
+        AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
+        clickBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
+        if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
     }
-    else if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
     int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
