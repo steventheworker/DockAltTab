@@ -10,7 +10,10 @@
 #import "src/app.h"
 
 /* config */
-const int TICKS_TO_HIDE = 3; // * TICK_DELAY = x seconds
+const int TICKS_TO_HIDE = 3; // number of ticks * TICK_DELAY = x seconds
+
+/* global variables */
+BOOL shouldDelayedExpose = NO;
 
 /* show & hide */
 int ticksSinceShown = 0;
@@ -18,9 +21,32 @@ void showOverlay(NSString* appBID) {
     AppDelegate* del = [helperLib getApp];
     ticksSinceShown = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
-    if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
-    del->appDisplayed = appBID;
-    [app AltTabShow:appBID];
+    if (!del->previewDelay || ![del->appDisplayed isEqual:@""]) { // show immediately
+        del->appDisplayed = appBID;
+        if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
+        [app AltTabShow:appBID];
+    } else { // show w/ delay
+        shouldDelayedExpose = YES;
+        NSString* oldBID = appBID;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * (((float)del->previewDelay / 100) * 2)), dispatch_get_main_queue(), ^(void){
+            if (!shouldDelayedExpose) return;
+            if (![oldBID isEqual:del->appDisplayed] && ![del->appDisplayed isEqual:@""]) return;
+            shouldDelayedExpose = NO;
+            CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
+            AXUIElementRef el = [helperLib elementAtPoint:carbonPoint2];
+            NSDictionary* info2 = [helperLib axInfo:el]; //axTitle, axIsApplicationRunning, axPID, axIsAPplicationRunning
+            NSURL* appURL;
+            AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
+            if ([app contextMenuExists: carbonPoint2:info2]) return;
+            pid_t tarPID = (pid_t) [info2[@"PID"] integerValue];
+            if (tarPID != del->dockPID || (tarPID == del->dockPID && ![[[NSBundle bundleWithURL:appURL] bundleIdentifier] isEqual:oldBID])) { } else {
+                del->appDisplayed = oldBID;
+                if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
+                [app AltTabShow:oldBID];
+                
+            }
+        });
+    }
 }
 void hideOverlay(void) {
     if (ticksSinceShown++ < TICKS_TO_HIDE) return;
@@ -71,7 +97,7 @@ void hideOverlay(void) {
     }
     
     willShow ? showOverlay(tarBID) : hideOverlay();
-    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
+//    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
 - (void) dockItemClickHide:(CGPoint)carbonPoint :(NSDictionary *)info {
     
