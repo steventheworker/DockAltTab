@@ -4,7 +4,5 @@
 <dict>
 	<key>LSUIElement</key>
 	<true/>
-	<key>NSAppleEventsUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs to control System Events</string>
 </dict>
 </plist>
