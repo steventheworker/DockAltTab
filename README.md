@@ -1,33 +1,30 @@
 ## DockAltTab
 
-## The #1 Window manager/Task switcher & Companion for AltTab
+## The One and Only companion app for AltTab
 
 ![alt text](https://github.com/steventheworker/DockAltTab/blob/main/DockAltTab/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png?raw=true)
 
-### v1.2 download link https://github.com/steventheworker/DockAltTab/releases/download/v1.2/DockAltTab-v1.2.zip
+### v2.0 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.0/DockAltTab-v2.0.zip
 
 ##### OR ALTERNATIVELY,
 
-### you can compile from our source codes, just remember to give accessibility permissions in system preferences,
+-   compile this repository on Xcode
 
-#### and have AltTab running before launching https://alt-tab-macos.netlify.app
+&nbsp;
+
+Instructions:
+
+-   grant accessibility & automation permissions in system preferences
+-   [AltTab](https://alt-tab-macos.netlify.app) should be running before launching
 
 #
 
-and finally,
-
-Open AltTab. In the "Controls" tab click "Shortcut 2".
-
-Change
-
-Hold &nbsp;&nbsp;&nbsp;⌥&nbsp; &nbsp;&nbsp; and press &nbsp;&nbsp;&nbsp;``&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; to &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;Hold &nbsp;&nbsp;&nbsp;⌘&nbsp;&nbsp;&nbsp; and press &nbsp;&nbsp;&nbsp;` &nbsp;&nbsp;&nbsp;
-
-Finished ✅
-
-# Enjoy 🙂
+# Enjoy 🤗
 
 Our website: https://dockalttab.netlify.app
 
-And check out our sister app:
+And check out our sister app: [Dock Exposé](https://dockexpose.netlify.app)
 
-https://dockexpose.netlify.app
+&nbsp;
+
+Note: DockAltTab will only work with the latest version of AltTab, as it was made scriptable very recently. You can also build our [custom AltTab branch](https://github.com/steventheworker/alt-tab-macos).
