@@ -821,6 +821,7 @@
                         </buttonCell>
                         <connections>
                             <action selector="toggleToggleDockApps:" target="Voe-Tx-rLC" id="GWc-vS-yTe"/>
+                            <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isClickToggleChecked" id="HVu-1g-bVO"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BUI-mm-4RA">

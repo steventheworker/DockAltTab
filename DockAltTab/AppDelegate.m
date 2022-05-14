@@ -14,6 +14,8 @@ const int TICKS_TO_HIDE = 3; // number of ticks * TICK_DELAY = x seconds
 
 /* global variables */
 BOOL shouldDelayedExpose = NO;
+BOOL clickedAfterExpose = NO;
+BOOL dontCheckAgainAfterTrigger = NO; // stop polling AltTab windows to check if user closed it w/ a click (since can't listen for these clicks)
 
 /* show & hide */
 int ticksSinceShown = 0;
@@ -31,13 +33,13 @@ void showOverlay(NSString* appBID) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * (((float)del->previewDelay / 100) * 2)), dispatch_get_main_queue(), ^(void){
             if (!shouldDelayedExpose) return;
             if (![oldBID isEqual:del->appDisplayed] && ![del->appDisplayed isEqual:@""]) return;
-            shouldDelayedExpose = NO;
+            shouldDelayedExpose = NO; // don't run any other dispatch_after's
             CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
             AXUIElementRef el = [helperLib elementAtPoint:carbonPoint2];
             NSDictionary* info2 = [helperLib axInfo:el]; //axTitle, axIsApplicationRunning, axPID, axIsAPplicationRunning
+            if (![info2[@"subrole"] isEqual:@"AXApplicationDockItem"] || [app contextMenuExists: carbonPoint2:info2]) return;
             NSURL* appURL;
             AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
-            if ([app contextMenuExists: carbonPoint2:info2]) return;
             pid_t tarPID = (pid_t) [info2[@"PID"] integerValue];
             if (tarPID != del->dockPID || (tarPID == del->dockPID && ![[[NSBundle bundleWithURL:appURL] bundleIdentifier] isEqual:oldBID])) { } else {
                 del->appDisplayed = oldBID;
@@ -47,6 +49,8 @@ void showOverlay(NSString* appBID) {
             }
         });
     }
+    clickedAfterExpose = NO;
+    dontCheckAgainAfterTrigger = NO;
 }
 void hideOverlay(void) {
     if (ticksSinceShown++ < TICKS_TO_HIDE) return;
@@ -54,6 +58,7 @@ void hideOverlay(void) {
     if ([del->appDisplayed isEqual:@""]) return;
     del->appDisplayed = @"";
     [app AltTabHide];
+    clickedAfterExpose = NO;
 }
 
 @interface AppDelegate ()
@@ -79,13 +84,15 @@ void hideOverlay(void) {
     }
     wasShowingContextMenu = [app contextMenuExists:pt : info];
     if (wasShowingContextMenu) return;
+    NSString* elBID = @"";
     NSString* tarBID = @"";
     if ([info[@"subrole"] isEqual:@"AXApplicationDockItem"]) {
         NSURL* appURL;
         AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
-        tarBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
+        elBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
+        tarBID = elBID;
         tarPID = [helperLib getPID:tarBID]; // tarPID w/ BID
-    } else { /* BID w/ tarPID */}
+    } else { /* tarBID w/ tarPID */}
     
     // ? willShowOverlay
     BOOL willShow = [info[@"running"] intValue] && [info[@"subrole"] isEqual:@"AXApplicationDockItem"];
@@ -95,6 +102,17 @@ void hideOverlay(void) {
         if ([helperLib runningAppFromAxTitle: info[@"title"]].isHidden) numWindows = 1;
         else numWindows = [helperLib numWindowsMinimized:info[@"title"]];
         if (numWindows == 0) willShow = NO;
+    }
+
+    // check if AltTab still open / closed by click (todo: factor in closing by Esc key)
+    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger) {
+        int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
+        if (!ATWindowCount) {
+            if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
+                [self bindClick: (CGEventRef) nil : YES];
+                dontCheckAgainAfterTrigger = YES;
+            }
+        }
     }
     
     willShow ? showOverlay(tarBID) : hideOverlay();
@@ -143,14 +161,15 @@ void hideOverlay(void) {
         }
         self->lastAppClickToggled = clickBID; //order of operations important (keep here)
         if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
-        [runningApp hide];
+        if (clickedAfterExpose) [runningApp hide]; else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     });
 }
-- (void) bindClick: (CGEventRef) e {
+- (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
     if (!isClickToggleChecked) return;
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
+    if (![appDisplayed isEqual:@""] && !clickToClose) clickedAfterExpose = YES;
     [self dockItemClickHide: carbonPoint : el : info];
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁

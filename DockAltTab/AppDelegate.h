@@ -60,7 +60,7 @@
 @property int previewDelay;
 //- (float) timeDiff;
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info;
-- (void) bindClick: (CGEventRef) e;
+- (void) bindClick: (CGEventRef) e : (BOOL) clickToClose;
 - (void) bindScreens;
 - (IBAction) preferences:(id)sender;
 @end

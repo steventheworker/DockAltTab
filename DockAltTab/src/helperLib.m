@@ -20,7 +20,7 @@ static CGEventRef handleClick( CGEventRef clickHandler,
                               CGEventType type ,
                               CGEventRef event ,
                               void * refcon ) {
-    [[helperLib getApp] bindClick:event];
+    [[helperLib getApp] bindClick:event : NO];
     return event;
 }
 //listening to monitors attach / detach
