@@ -23,6 +23,7 @@
     @public CGFloat         dockHeight;
     @public NSString*       dockPos;
     pid_t                  dockPID;
+    pid_t                  finderPID;
     pid_t                  AltTabPID;
 
     //app stuff

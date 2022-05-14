@@ -29,6 +29,7 @@ const int DOCK_OFFSET = 5; //5 pixels
     del->dockPos = [helperLib getDockPosition];
     del->dockPID = [helperLib getPID:@"com.apple.dock"]; //todo: refresh dockPID every x or so?
     del->AltTabPID = [helperLib getPID:@"com.lwouis.alt-tab-macos"];
+    del->finderPID = [helperLib getPID:@"com.apple.Finder"];
     NSLog(@"(%lu) finder windows/processes found after launch", [[helperLib getRealFinderWindows] count]);
     //UI variables
     del->appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];

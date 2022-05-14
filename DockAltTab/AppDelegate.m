@@ -16,6 +16,7 @@ const int TICKS_TO_HIDE = 3; // number of ticks * TICK_DELAY = x seconds
 BOOL shouldDelayedExpose = NO;
 BOOL clickedAfterExpose = NO;
 BOOL dontCheckAgainAfterTrigger = NO; // stop polling AltTab windows to check if user closed it w/ a click (since can't listen for these clicks)
+BOOL finderFrontmost = NO;
 
 /* show & hide */
 int ticksSinceShown = 0;
@@ -120,6 +121,11 @@ void hideOverlay(void) {
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info {
+    NSString* clickTitle = info[@"title"];
+    if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) {
+        pid_t clickPID = [info[@"PID"] intValue];
+        if (clickPID != finderPID) finderFrontmost = NO;
+    }
     if ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) return;
     __block BOOL showingContextMenu = [app contextMenuExists: carbonPoint:info]; //checks if contextMenu exists (but only looks around area cursor's placed)
     if (wasShowingContextMenu || showingContextMenu) {
@@ -127,12 +133,17 @@ void hideOverlay(void) {
         return;
     }
 //    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
-    NSString* clickTitle = info[@"title"];
     NSString* clickBID = @"";
     BOOL isBlacklisted = NO; // = [showBlacklist containsObject:clickTitle];
     if ([clickTitle isEqual:@"Trash"]) {
-        clickTitle = @"Finder";
-        clickBID = @"com.apple.Finder";
+        if (!finderFrontmost) {
+            finderFrontmost = YES;
+            return;
+        } else {
+            clickTitle = @"Finder";
+            clickBID = @"com.apple.Finder";
+    //        lastAppClickToggled = @"com.apple.Finder";
+        }
     } else {
         NSURL* appURL;
         AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
@@ -170,7 +181,7 @@ void hideOverlay(void) {
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
-    if (![appDisplayed isEqual:@""] && !clickToClose) clickedAfterExpose = YES;
+    if ((![appDisplayed isEqual:@""] || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
     [self dockItemClickHide: carbonPoint : el : info];
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁
