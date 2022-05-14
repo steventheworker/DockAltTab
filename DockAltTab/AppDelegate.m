@@ -23,16 +23,17 @@ void showOverlay(NSString* appBID) {
     AppDelegate* del = [helperLib getApp];
     ticksSinceShown = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
-    if (!del->previewDelay || ![del->appDisplayed isEqual:@""]) { // show immediately
+    if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger)) { // show immediately
         del->appDisplayed = appBID;
         if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
         [app AltTabShow:appBID];
+        dontCheckAgainAfterTrigger = NO;
     } else { // show w/ delay
         shouldDelayedExpose = YES;
         NSString* oldBID = appBID;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * (((float)del->previewDelay / 100) * 2)), dispatch_get_main_queue(), ^(void){
             if (!shouldDelayedExpose) return;
-            if (![oldBID isEqual:del->appDisplayed] && ![del->appDisplayed isEqual:@""]) return;
+            if (![oldBID isEqual:del->appDisplayed] && ![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger) return;
             shouldDelayedExpose = NO; // don't run any other dispatch_after's
             CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
             AXUIElementRef el = [helperLib elementAtPoint:carbonPoint2];
@@ -45,12 +46,11 @@ void showOverlay(NSString* appBID) {
                 del->appDisplayed = oldBID;
                 if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
                 [app AltTabShow:oldBID];
-                
+                dontCheckAgainAfterTrigger = NO;
             }
         });
     }
     clickedAfterExpose = NO;
-    dontCheckAgainAfterTrigger = NO;
 }
 void hideOverlay(void) {
     if (ticksSinceShown++ < TICKS_TO_HIDE) return;
@@ -59,6 +59,7 @@ void hideOverlay(void) {
     del->appDisplayed = @"";
     [app AltTabHide];
     clickedAfterExpose = NO;
+    dontCheckAgainAfterTrigger = NO;
 }
 
 @interface AppDelegate ()
