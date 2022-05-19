@@ -6,29 +6,33 @@
 
 ### v2.0 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.0/DockAltTab-v2.0.zip
 
+&nbsp;
+
+&nbsp;
+
+# Note: For the time being, DockAltTab will only work with a [custom AltTab](https://github.com/steventheworker/alt-tab-macos) - by steventheworker.
+
+Download at: [https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip](https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip)
+
+### [Click here for more information](https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994) and please bug [lwouis](https://github.com/lwouis/alt-tab-macos/) about this issue on GitHub or his [discord server](https://discord.gg/CVEPeDufJa).
+
 ##### OR ALTERNATIVELY,
 
 -   compile this repository on Xcode
 
 &nbsp;
 
-Instructions:
+&nbsp;
+
+# Install Instructions:
 
 -   grant accessibility & automation permissions in system preferences
 -   [AltTab](https://alt-tab-macos.netlify.app) should be running before launching
 
 #
 
-# Enjoy 🤗
+## Enjoy 🤗
 
 Our website: https://dockalttab.netlify.app
 
 And check out our sister app: [Dock Exposé](https://dockexpose.netlify.app)
-
-&nbsp;
-
-# Note: For the time being, DockAltTab will only work with a [custom AltTab](https://github.com/steventheworker/alt-tab-macos) - provided by steventheworker.
-
-Download at: [https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip](https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip)
-
-### [Click here for more information](https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994) and please bug [lwouis](https://github.com/lwouis/alt-tab-macos/) about this issue on GitHub or his [discord server](https://discord.gg/CVEPeDufJa).
