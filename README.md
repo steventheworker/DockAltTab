@@ -27,4 +27,8 @@ And check out our sister app: [Dock Exposé](https://dockexpose.netlify.app)
 
 &nbsp;
 
-Note: DockAltTab will only work with the latest version of AltTab, as it was made scriptable very recently. You can also build our [custom AltTab branch](https://github.com/steventheworker/alt-tab-macos).
+# Note: For the time being, DockAltTab will only work with a [custom AltTab](https://github.com/steventheworker/alt-tab-macos) - provided by steventheworker.
+
+Download at: [https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip](https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip)
+
+### [Click here for more information](https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994) and please bug [lwouis](https://github.com/lwouis/alt-tab-macos/) about this issue on GitHub or his [discord server](https://discord.gg/CVEPeDufJa).
