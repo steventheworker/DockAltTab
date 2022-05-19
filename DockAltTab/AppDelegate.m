@@ -19,10 +19,11 @@ BOOL dontCheckAgainAfterTrigger = NO; // stop polling AltTab windows to check if
 BOOL finderFrontmost = NO;
 
 /* show & hide */
+int ticksSinceHide = 0;
 int ticksSinceShown = 0;
 void showOverlay(NSString* appBID) {
     AppDelegate* del = [helperLib getApp];
-    ticksSinceShown = 0;
+    ticksSinceHide = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
     if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger)) { // show immediately
         del->appDisplayed = appBID;
@@ -52,9 +53,10 @@ void showOverlay(NSString* appBID) {
         });
     }
     clickedAfterExpose = NO;
+    ticksSinceShown = 0;
 }
 void hideOverlay(void) {
-    if (ticksSinceShown++ < TICKS_TO_HIDE) return;
+    if (ticksSinceHide++ < TICKS_TO_HIDE) return;
     AppDelegate* del = [helperLib getApp];
     if ([del->appDisplayed isEqual:@""]) return;
     del->appDisplayed = @"";
@@ -81,7 +83,7 @@ void hideOverlay(void) {
     NSMutableDictionary* info = [NSMutableDictionary dictionaryWithDictionary: [helperLib axInfo:el]];
     pid_t tarPID = [info[@"PID"] intValue];
     if (tarPID == AltTabPID) {
-        ticksSinceShown = 0;
+        ticksSinceHide = 0;
         return;
     }
     wasShowingContextMenu = [app contextMenuExists:pt : info];
@@ -107,7 +109,7 @@ void hideOverlay(void) {
     }
 
     // check if AltTab still open / closed by click (todo: factor in closing by Esc key)
-    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger) {
+    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
@@ -117,6 +119,7 @@ void hideOverlay(void) {
         }
     }
     
+    if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
     willShow ? showOverlay(tarBID) : hideOverlay();
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
