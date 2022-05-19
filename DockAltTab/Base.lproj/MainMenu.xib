@@ -24,6 +24,7 @@
                 <outlet property="menu" destination="7wH-0i-7u4" id="e5a-Xh-9Ja"/>
                 <outlet property="menuItemCheckBox" destination="BUI-mm-4RA" id="9z0-kS-Eh1"/>
                 <outlet property="previewDelaySlider" destination="F6r-sH-2qo" id="Adq-0k-0z1"/>
+                <outlet property="unsupportedBox" destination="okj-8c-j1d" id="vPZ-xv-aW8"/>
                 <outlet property="updateRemindRef" destination="lXr-Qx-AJz" id="yec-s0-HE4"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -836,6 +837,50 @@
                             <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isMenuItemChecked" id="qh1-br-CFc"/>
                         </connections>
                     </button>
+                    <box hidden="YES" wantsLayer="YES" boxType="custom" cornerRadius="4" title="Box" id="okj-8c-j1d">
+                        <rect key="frame" x="104" y="138" width="272" height="82"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="RVo-IS-2OI">
+                            <rect key="frame" x="1" y="1" width="270" height="80"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4PA-Jc-Fjt">
+                                    <rect key="frame" x="3" y="61" width="269" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="The official AltTab is currently unsupported." id="FX0-jm-yGu">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jca-r4-c7M">
+                                    <rect key="frame" x="31" y="-1" width="202" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="Download supported AltTab" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wel-Fc-ZI6">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <color key="bezelColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
+                                    <connections>
+                                        <action selector="unsupportedDownloadClick:" target="Voe-Tx-rLC" id="ECG-Xf-JTg"/>
+                                    </connections>
+                                </button>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TM5-bl-gMf">
+                                    <rect key="frame" x="85" y="28" width="92" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="More info" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CIz-W2-OOz">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <color key="bezelColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                    <connections>
+                                        <action selector="unsupportedMoreInfoClick:" target="Voe-Tx-rLC" id="ddk-v4-Qc0"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <color key="fillColor" red="0.41237113402061853" green="0.0050482545309609179" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </box>
                 </subviews>
             </view>
             <point key="canvasLocation" x="89" y="403"/>

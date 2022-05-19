@@ -25,6 +25,7 @@
     pid_t                  dockPID;
     pid_t                  finderPID;
     pid_t                  AltTabPID;
+    BOOL                   unsupportedAltTab;
 
     //app stuff
     NSString*              appVersion;
@@ -52,6 +53,7 @@
     __weak IBOutlet NSButton *lockDockSizeCheckbox;
     __weak IBOutlet NSButton *lockDockPositionCheckbox;
     __weak IBOutlet NSSliderCell *previewDelaySlider;
+    __weak IBOutlet NSBox *unsupportedBox;
 }
 @property BOOL isMenuItemChecked;
 @property BOOL isClickToggleChecked;
