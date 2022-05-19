@@ -12,7 +12,7 @@
 
 &nbsp;
 
-# Note: For the time being, DockAltTab will only work with a [custom AltTab branch](https://github.com/steventheworker/alt-tab-macos) - by steventheworker.
+# [NOTE](): For the time being, DockAltTab will only work with a [custom AltTab branch](https://github.com/steventheworker/alt-tab-macos) - by steventheworker.
 
 [Download here](https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip)
 
