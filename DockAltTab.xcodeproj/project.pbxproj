@@ -292,7 +292,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DockAltTab/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "$(PRODUCT_NAME) needs to control System Events";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "DockAltTab needs to control System Events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "GPL-3.0";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -323,7 +323,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DockAltTab/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "$(PRODUCT_NAME) needs to control System Events";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "DockAltTab needs to control System Events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "GPL-3.0";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
