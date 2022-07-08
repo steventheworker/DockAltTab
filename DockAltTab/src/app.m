@@ -92,7 +92,21 @@ const int DOCK_OFFSET = 5; //5 pixels
 }
 + (void) AltTabShow: (NSString*) appBID {
     NSDictionary *error = nil;
-    NSString* scriptTxt = [NSString stringWithFormat: @"tell application \"AltTab\" to showApp appBID \"%@\"", appBID];
+    AppDelegate* del = [helperLib getApp];
+    NSPoint pt = [NSEvent mouseLocation];
+    int x = 0;
+    int y = 0;
+    if ([del->dockPos isEqual:@"bottom"]) {
+        x = pt.x - del->dockWidth * 2;
+        y = del->dockHeight;
+    } else if ([del->dockPos isEqual:@"left"]) {
+        y = pt.y - del->dockHeight * 2;
+        x = del->dockWidth;
+    } else if ([del->dockPos isEqual:@"right"]) {
+        y = pt.y - del->dockHeight * 2;
+        x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
+    }
+    NSString* scriptTxt = [NSString stringWithFormat: @"tell application \"AltTab\" to showApp appBID \"%@\" x %d y %d %@", appBID, x, y, [del->dockPos isEqual:@"right"] ? @"isRight true" : @""];
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
     [script executeAndReturnError:&error];
     if (error) NSLog(@"run error: %@", error);

@@ -82,6 +82,12 @@ void hideOverlay(void) {
     AXUIElementRef el = [helperLib elementAtPoint:pt];
     NSMutableDictionary* info = [NSMutableDictionary dictionaryWithDictionary: [helperLib axInfo:el]];
     pid_t tarPID = [info[@"PID"] intValue];
+
+    //update dock size, if on dock icon
+    if ([info[@"role"] isEqual:@"AXDockItem"]) {
+        dockWidth = [info[@"width"] floatValue];
+        dockHeight = [info[@"height"] floatValue];
+    }
     if (tarPID == AltTabPID) {
         ticksSinceHide = 0;
         return;
