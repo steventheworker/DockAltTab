@@ -10,7 +10,7 @@
 #import "src/app.h"
 
 /* config */
-const int TICKS_TO_HIDE = 3; // number of ticks * TICK_DELAY = x seconds
+const int TICKS_TO_HIDE = 2; // number of ticks * TICK_DELAY = x seconds
 
 /* global variables */
 BOOL shouldDelayedExpose = NO;

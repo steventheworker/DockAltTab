@@ -10,7 +10,7 @@
 
 //config
 const NSString* versionLink = @"https://dockalttab.netlify.app/currentversion.txt";
-const float TICK_DELAY = 0.22; // seconds
+const float TICK_DELAY = 0.16666665; // 0.33333 / 2   seconds
 const float DELAY_MAX = 2; // seconds
 
 //define
