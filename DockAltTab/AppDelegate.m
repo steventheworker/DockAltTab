@@ -246,7 +246,7 @@ void hideOverlay(void) {
 - (IBAction) quit:(id)sender {[NSApp terminate:nil];}
 - (IBAction)toggleMenuItem:(id)sender {[statusItem setVisible:isMenuItemChecked];}
 - (IBAction)unsupportedMoreInfoClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994"]];}
-- (IBAction)unsupportedDownloadClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/alt-tab-macos/releases/download/v6.37.1/DockAltTab.AltTab.v6.37.1.zip"]];}
+- (IBAction)unsupportedDownloadClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/alt-tab-macos/releases/download/1.1/DockAltTab.AltTab.v6.46.1.zip"]];}
 /* dock settings */
 - (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
 - (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
