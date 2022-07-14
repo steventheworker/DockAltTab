@@ -115,7 +115,7 @@ void hideOverlay(void) {
     }
 
     // check if AltTab still open / closed by click (todo: factor in closing by Esc key)
-    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
+    if (!willShow && ![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
