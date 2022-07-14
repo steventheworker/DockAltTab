@@ -692,7 +692,7 @@
             </items>
             <point key="canvasLocation" x="200" y="121"/>
         </menu>
-        <window title="DockAltTab" visibleAtLaunch="NO" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="DockAltTab" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
@@ -887,18 +887,25 @@
         </window>
         <menu id="7wH-0i-7u4">
             <items>
-                <menuItem title="Preferences" id="ptX-Ez-5Xy">
+                <menuItem title="       Preferences" id="ptX-Ez-5Xy">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="preferences:" target="Voe-Tx-rLC" id="2Yf-5x-2VS"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Restart Dock   ↺" id="4X9-F8-5Cj">
+                <menuItem title="Restart AltTab ↺" id="Boq-A9-2OH">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="AltTabRestart:" target="Voe-Tx-rLC" id="h3c-jI-348"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="         Kill Dock 🔪" id="4X9-F8-5Cj">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="kill:" target="Voe-Tx-rLC" id="sEQ-iH-7Y9"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="OY4-Fk-HIo"/>
                 <menuItem title="Quit DockAltTab" id="stF-Rf-GWa">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
