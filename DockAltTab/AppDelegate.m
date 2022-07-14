@@ -186,6 +186,14 @@ void hideOverlay(void) {
     });
 }
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
+//    NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
+//    BOOL cmdDown = theFlags & NSEventModifierFlagCommand;
+//    BOOL shiftDown = theFlags & NSEventModifierFlagShift;
+//    if (![appDisplayed isEqual:@""]) { // if AltTab showing
+//        if (shiftDown) return;
+//        if (cmdDown /* && mousePID == dockPID */) return;
+//    }
+
     if (!isClickToggleChecked) return;
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
@@ -256,6 +264,7 @@ void hideOverlay(void) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1), dispatch_get_main_queue(), ^(void){
         self->dockPID = [helperLib getPID:@"com.apple.dock"];  //wait for new Dock process to relaunch so we can get the new PID
     });
+    dockPos = [helperLib getDockPosition];
 }
 
 
