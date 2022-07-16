@@ -115,7 +115,7 @@ void hideOverlay(void) {
     }
 
     // check if AltTab still open / closed by click (todo: factor in closing by Esc key)
-    if (!willShow && ![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
+    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
@@ -129,7 +129,7 @@ void hideOverlay(void) {
     willShow ? showOverlay(tarBID) : hideOverlay();
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
-- (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info {
+- (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info : (BOOL) clickToClose {
     NSString* clickTitle = info[@"title"];
     if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) {
         pid_t clickPID = [info[@"PID"] intValue];
@@ -161,6 +161,11 @@ void hideOverlay(void) {
     }
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
+    if (clickToClose) {
+        if (wasAppHidden) [runningApp unhide];
+        else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+        return;
+    }
     int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
     float countProcessT = (wasAppHidden ? 0 : 0.333); //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * countProcessT), dispatch_get_main_queue(), ^(void){
@@ -199,7 +204,7 @@ void hideOverlay(void) {
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
     if ((![appDisplayed isEqual:@""] || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
-    [self dockItemClickHide: carbonPoint : el : info];
+    [self dockItemClickHide: carbonPoint : el : info : clickToClose];
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁
     NSScreen* primScreen = [helperLib getScreen:0];
