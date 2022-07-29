@@ -17,16 +17,18 @@ BOOL shouldDelayedExpose = NO;
 BOOL clickedAfterExpose = NO;
 BOOL dontCheckAgainAfterTrigger = NO; // stop polling AltTab windows to check if user closed it w/ a click (since can't listen for these clicks)
 BOOL finderFrontmost = NO;
+int spaceSwitchCounter = 0; // no. dockClicks since shown
 
 /* show & hide */
 int ticksSinceHide = 0;
 int ticksSinceShown = 0;
-void showOverlay(NSString* appBID) {
+void showOverlay(NSString* appBID, pid_t appPID) {
     AppDelegate* del = [helperLib getApp];
     ticksSinceHide = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
     if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger)) { // show immediately
         del->appDisplayed = appBID;
+        del->appDisplayedPID = appPID;
         if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
         [app AltTabShow:appBID];
         dontCheckAgainAfterTrigger = NO;
@@ -46,6 +48,7 @@ void showOverlay(NSString* appBID) {
             pid_t tarPID = (pid_t) [info2[@"PID"] integerValue];
             if (tarPID != del->dockPID || (tarPID == del->dockPID && ![[[NSBundle bundleWithURL:appURL] bundleIdentifier] isEqual:oldBID])) { } else {
                 del->appDisplayed = oldBID;
+                del->appDisplayedPID = appPID;
                 if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
                 [app AltTabShow:oldBID];
                 dontCheckAgainAfterTrigger = NO;
@@ -54,12 +57,14 @@ void showOverlay(NSString* appBID) {
     }
     clickedAfterExpose = NO;
     ticksSinceShown = 0;
+    if (![del->lastAppClickToggled isEqual:appBID]) spaceSwitchCounter = 0;
 }
 void hideOverlay(void) {
     if (ticksSinceHide++ < TICKS_TO_HIDE) return;
     AppDelegate* del = [helperLib getApp];
     if ([del->appDisplayed isEqual:@""]) return;
     del->appDisplayed = @"";
+    del->appDisplayedPID = (pid_t) 0;
     [app AltTabHide];
     clickedAfterExpose = NO;
     dontCheckAgainAfterTrigger = NO;
@@ -126,7 +131,7 @@ void hideOverlay(void) {
     }
     
     if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
-    willShow ? showOverlay(tarBID) : hideOverlay();
+    willShow ? showOverlay(tarBID, tarPID) : hideOverlay();
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info : (BOOL) clickToClose {
@@ -162,8 +167,9 @@ void hideOverlay(void) {
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
     if (clickToClose) {
-        if (wasAppHidden) [runningApp unhide];
-        else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+        if (wasAppHidden) {
+//            [runningApp unhide];
+        } else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         return;
     }
     int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
@@ -189,6 +195,18 @@ void hideOverlay(void) {
         if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
         if (clickedAfterExpose) [runningApp hide]; else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     });
+    // autohide means dock is hidden (after switching spaces), so we reshow it here
+    NSLog(@"%@", autohide ? @"y" : @"n");
+    if (autohide) {
+        NSString* winCountAllSpaces = [helperLib runScript:[NSString stringWithFormat:@"tell application \"AltTab\" to return countWindows appBID \"%@\"", appDisplayed]];
+        NSLog(@"%d", (int) [[helperLib getWindowsForOwnerPID: appDisplayedPID] count] );
+        if ([winCountAllSpaces intValue] > 1) {
+            if (++spaceSwitchCounter % 3 == 0) [runningApp isHidden] ? 1 : [runningApp hide];
+//            appDisplayed = @""; // "reenable" DockAltTab (ie: accept a new show request on an icon)
+            [app refocusDock];
+        }
+    }
+    //    NSLog(@"%d", spaceSwitchCounter);
 }
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
 //    NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
@@ -198,6 +216,8 @@ void hideOverlay(void) {
 //        if (shiftDown) return;
 //        if (cmdDown /* && mousePID == dockPID */) return;
 //    }
+    //todo: if shiftDown return runApplescript(BTT shift-click-new-window.applescript);
+    //todo: if cmdDown return runApplescript(BTT cmd-click-cycle.applescript);
 
     if (!isClickToggleChecked) return;
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
@@ -239,7 +259,6 @@ void hideOverlay(void) {
     [[updateRemindRef cell] setTitle: mostCurrentVersion == NULL ? @"No internet; Update check failed" : (mostCurrentVersion == appVersion) ? @"You're on the latest release." : [@"Version " stringByAppendingString: [mostCurrentVersion stringByAppendingString: @" has been released. You should update soon."]]];
 }
 - (void) awakeFromNib {
-    //default, //todo: save pref to json file & load here
     isClickToggleChecked = YES;
     clickToggleCheckBox.state = YES;
     menuItemCheckBox.state = YES;
@@ -270,6 +289,7 @@ void hideOverlay(void) {
         self->dockPID = [helperLib getPID:@"com.apple.dock"];  //wait for new Dock process to relaunch so we can get the new PID
     });
     dockPos = [helperLib getDockPosition]; // update dockPos on restart dock
+    autohide = [helperLib dockautohide]; // update dockPos on restart dock
 }
 - (IBAction)AltTabRestart:(id)sender {
     dockPos = [helperLib getDockPosition]; // update dockPos on restart AltTab

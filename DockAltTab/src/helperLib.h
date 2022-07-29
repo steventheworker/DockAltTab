@@ -31,5 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) killDock;
 + (void) dockSetting: (CFStringRef) pref : (BOOL) val;
 + (NSString*) twoSigFigs: (float) val;
++ (BOOL) dockautohide;
++ (NSString*) runScript: (NSString*) scriptTxt;
 @end
 NS_ASSUME_NONNULL_END

@@ -26,12 +26,14 @@
     pid_t                  finderPID;
     pid_t                  AltTabPID;
     BOOL                   unsupportedAltTab;
+    BOOL                   autohide;
 
     //app stuff
     NSString*              appVersion;
     NSString*              mostCurrentVersion;
     NSTimer*               timer;
     NSString*              appDisplayed;
+    pid_t                  appDisplayedPID;
     NSString*              lastAppClickToggled;
     BOOL                   wasShowingContextMenu;
 

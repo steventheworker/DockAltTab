@@ -26,6 +26,8 @@ const int DOCK_OFFSET = 5; //5 pixels
     //functional
     [del bindScreens]; //load screen data
     del->appDisplayed = @"";
+    del->appDisplayedPID = 0;
+    del->autohide = [helperLib dockautohide];
     del->dockPos = [helperLib getDockPosition];
     del->dockPID = [helperLib getPID:@"com.apple.dock"]; //todo: refresh dockPID every x or so?
     del->AltTabPID = [helperLib getPID:@"com.steventheworker.alt-tab-macos"];
@@ -54,6 +56,7 @@ const int DOCK_OFFSET = 5; //5 pixels
         if (del->unsupportedAltTab) [del->unsupportedBox setHidden: NO];
         [del preferences:nil];
     }
+    
 }
 
 /* UI */
@@ -106,17 +109,22 @@ const int DOCK_OFFSET = 5; //5 pixels
         y = pt.y - del->dockHeight * 2;
         x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
     }
-    NSString* scriptTxt = [NSString stringWithFormat: @"tell application \"AltTab\" to showApp appBID \"%@\" x %d y %d %@", appBID, x, y, [del->dockPos isEqual:@"right"] ? @"isRight true" : @""];
-    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
-    [script executeAndReturnError:&error];
-    if (error) NSLog(@"run error: %@", error);
+    [helperLib runScript: [NSString stringWithFormat: @"tell application \"AltTab\" to showApp appBID \"%@\" x %d y %d %@", appBID, x, y, [del->dockPos isEqual:@"right"] ? @"isRight true" : @""]];
 }
 + (void) AltTabHide {
-    NSDictionary *error = nil;
-    NSString* scriptTxt = @"tell application \"AltTab\" to hide";
-    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
-    [script executeAndReturnError:&error];
-    if (error) NSLog(@"run error: %@", error);
+    [helperLib runScript: @"tell application \"AltTab\" to hide"];
+}
++ (void) refocusDock { // reopen / focus the dock w/ fn + a
+    [helperLib runScript: @"tell application \"System Events\"\n\
+        tell application \"AltTab\"\n\
+            hide\n\
+        end tell\n\
+        delay 0.1\n\
+        key down 63\n\
+        delay 0.2\n\
+        key code 0\n\
+        key up 63\n\
+    end tell"];
 }
 + (float) maxDelay {return DELAY_MAX;}
 + (NSString*) getCurrentVersion {return [helperLib get: (NSString*) versionLink];}

@@ -48,6 +48,15 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     }
     return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
++ (NSString*) runScript: (NSString*) scriptTxt {
+    NSDictionary *error = nil;
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource: scriptTxt];
+    if (error) {
+        NSLog(@"run error: %@", error);
+        return @"";
+    }
+    return [[script executeAndReturnError:&error] stringValue];
+}
 
 // point math / screens
 + (CGPoint) carbonPointFrom:(NSPoint) cocoaPoint {
@@ -240,6 +249,10 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 + (NSString*) getDockPosition {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"orientation"];
+}
++ (BOOL) dockautohide {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"autohide"] intValue] > 0;
 }
 + (void) killDock {
     //(Execute shell command) "killall dock"

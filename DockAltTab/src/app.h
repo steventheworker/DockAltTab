@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) initVars;
 + (void) AltTabShow: (NSString*) appBID;
 + (void) AltTabHide;
++ (void) refocusDock;
 + (float) maxDelay;
 
 @end
