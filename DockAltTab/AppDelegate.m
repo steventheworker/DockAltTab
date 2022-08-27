@@ -209,21 +209,26 @@ void hideOverlay(void) {
     //    NSLog(@"%d", spaceSwitchCounter);
 }
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
-//    NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
-//    BOOL cmdDown = theFlags & NSEventModifierFlagCommand;
-//    BOOL shiftDown = theFlags & NSEventModifierFlagShift;
-//    if (![appDisplayed isEqual:@""]) { // if AltTab showing
-//        if (shiftDown) return;
-//        if (cmdDown /* && mousePID == dockPID */) return;
-//    }
-    //todo: if shiftDown return runApplescript(BTT shift-click-new-window.applescript);
-    //todo: if cmdDown return runApplescript(BTT cmd-click-cycle.applescript);
-
+    NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
+    BOOL cmdDown = theFlags & NSEventModifierFlagCommand;
+    BOOL shiftDown = theFlags & NSEventModifierFlagShift;
     if (!isClickToggleChecked) return;
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
     if ((![appDisplayed isEqual:@""] || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
+    if (clickToClose && steviaOS) {
+        if (![appDisplayed isEqual:@""]) { // if AltTab showing
+            if (shiftDown) {
+                [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
+                return;
+            }
+            if (cmdDown && [info[@"PID"] intValue] == dockPID) {
+                [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"cmdClick\""];
+                return;
+            }
+        }
+     }
     [self dockItemClickHide: carbonPoint : el : info : clickToClose];
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁

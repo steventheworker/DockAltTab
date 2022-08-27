@@ -36,6 +36,9 @@ const int DOCK_OFFSET = 5; //5 pixels
         del->AltTabPID = [helperLib getPID:@"com.lwouis.alt-tab-macos"];
     }
     del->finderPID = [helperLib getPID:@"com.apple.Finder"];
+    if ([helperLib getPID:@"com.hegenberg.BetterTouchTool"] != 0 && [[helperLib runScript:@"tell application \"BetterTouchTool\" to return get_number_variable \"steviaOS\""] isEqual:@"1"]) {
+        del->steviaOS = YES;
+    } else del->steviaOS = NO;
     NSLog(@"(%lu) finder windows/processes found after launch", [[helperLib getRealFinderWindows] count]);
     //UI variables
     del->appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];

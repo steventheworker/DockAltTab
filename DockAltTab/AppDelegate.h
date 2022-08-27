@@ -27,6 +27,7 @@
     pid_t                  AltTabPID;
     BOOL                   unsupportedAltTab;
     BOOL                   autohide;
+    BOOL                   steviaOS;
 
     //app stuff
     NSString*              appVersion;
