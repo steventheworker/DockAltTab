@@ -146,6 +146,7 @@ void hideOverlay(void) {
         wasShowingContextMenu = NO;
         return;
     }
+    if (clickToClose) NSLog(@"%d", ++spaceSwitchCounter);
 //    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
     NSString* clickBID = @"";
     BOOL isBlacklisted = NO; // = [showBlacklist containsObject:clickTitle];
@@ -167,7 +168,7 @@ void hideOverlay(void) {
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
     if (clickToClose) {
-        if (wasAppHidden) {
+        if (wasAppHidden && ![appDisplayed isEqual:@""]) {
 //            [runningApp unhide];
         } else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         return;
@@ -201,9 +202,12 @@ void hideOverlay(void) {
         NSString* winCountAllSpaces = [helperLib runScript:[NSString stringWithFormat:@"tell application \"AltTab\" to return countWindows appBID \"%@\"", appDisplayed]];
         NSLog(@"%d", (int) [[helperLib getWindowsForOwnerPID: appDisplayedPID] count] );
         if ([winCountAllSpaces intValue] > 1) {
-            if (++spaceSwitchCounter % 3 == 0) [runningApp isHidden] ? 1 : [runningApp hide];
-//            appDisplayed = @""; // "reenable" DockAltTab (ie: accept a new show request on an icon)
-            [app refocusDock];
+            if (spaceSwitchCounter % 2 == 0) {
+                [runningApp isHidden] ? 1 : [runningApp hide];
+            }
+            else {
+                if (!clickToClose) [app refocusDock: YES];
+            }
         }
     }
     //    NSLog(@"%d", spaceSwitchCounter);

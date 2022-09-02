@@ -117,17 +117,23 @@ const int DOCK_OFFSET = 5; //5 pixels
 + (void) AltTabHide {
     [helperLib runScript: @"tell application \"AltTab\" to hide"];
 }
-+ (void) refocusDock { // reopen / focus the dock w/ fn + a
-    [helperLib runScript: @"tell application \"System Events\"\n\
-        tell application \"AltTab\"\n\
-            hide\n\
-        end tell\n\
++ (void) refocusDock: (BOOL) triggerEscape { // reopen / focus the dock w/ fn + a
+    NSString* triggerEscapeStr = @"";
+    if (triggerEscape) triggerEscapeStr = @"        delay 0.6\n\
+        key code 53";
+    NSString* scriptStr = [NSString stringWithFormat:@"tell application \"System Events\"\n\
+        tell application \"AltTab\" to hide\n\
         delay 0.1\n\
         key down 63\n\
         delay 0.2\n\
         key code 0\n\
-        key up 63\n\
-    end tell"];
+        key up 63\n%@\n\
+    end tell", triggerEscapeStr];
+    [helperLib runScript: scriptStr];
+    if (triggerEscape) {
+        AppDelegate* del = [helperLib getApp];
+        del->appDisplayed = @"";
+    }
 }
 + (float) maxDelay {return DELAY_MAX;}
 + (NSString*) getCurrentVersion {return [helperLib get: (NSString*) versionLink];}
