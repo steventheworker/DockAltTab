@@ -164,7 +164,7 @@ void hideOverlay(void) {
         clickBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
         if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
     }
-    if (autohide && !clickToClose) [app refocusDock: YES];
+    if (autohide && !clickToClose && ![info[@"title"] isEqual: @"Trash"]) [app refocusDock: YES];
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
     
