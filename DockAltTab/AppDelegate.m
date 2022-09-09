@@ -146,7 +146,6 @@ void hideOverlay(void) {
         wasShowingContextMenu = NO;
         return;
     }
-    if (clickToClose) NSLog(@"%d", ++spaceSwitchCounter);
 //    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
     NSString* clickBID = @"";
     BOOL isBlacklisted = NO; // = [showBlacklist containsObject:clickTitle];
@@ -165,16 +164,19 @@ void hideOverlay(void) {
         clickBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
         if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
     }
+    if (autohide && !clickToClose) [app refocusDock: YES];
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
-    if (clickToClose) {
-        if (wasAppHidden && ![appDisplayed isEqual:@""]) {
-//            [runningApp unhide];
-        } else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    
+    if (clickToClose) { // activate/unhide when clicking dock icon while AltTab showing
+        if (wasAppHidden && ![appDisplayed isEqual:@""]) [runningApp unhide];
+        if (![runningApp isActive]) [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         return;
     }
+        
     int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
-    float countProcessT = (wasAppHidden ? 0 : 0.333); //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
+    float countProcessT = (wasAppHidden) ? 0 : 0.333; //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
+//    if (!clickToClose && autohide) countProcessT = 2;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * countProcessT), dispatch_get_main_queue(), ^(void){
         if (countProcessT) {
             //test for context menu (x time after click)
@@ -196,21 +198,41 @@ void hideOverlay(void) {
         if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
         if (clickedAfterExpose) [runningApp hide]; else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     });
+    
+    
+//    NSLog(@"%d", ++spaceSwitchCounter);
+//    if (autohide) {
+//        BOOL willSwitchSpace = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"\n\
+//        tell application \"System Events\" to tell process \"%@\" to return allCount - (count of windows)", appDisplayed, clickTitle]] intValue] != 0; // if app has windows in another spaces, (YES) clicking will switch
+//        if (willSwitchSpace) {
+//            if (spaceSwitchCounter % 4 == 0) {
+//                lastAppClickToggled = clickBID;
+//                NSLog(@"switching!!!");
+//                if (!clickToClose) [app refocusDock: YES];
+//                return;
+//            }
+//            if (spaceSwitchCounter % 2 == 0) {
+//                [runningApp hide]; //immediately hiding prevents space switching, //todo: find less hackish method
+//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.2), dispatch_get_main_queue(), ^(void){
+//                    [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+//                });
+//            }
+//        }
+//    }
+
     // autohide means dock is hidden (after switching spaces), so we reshow it here
-    NSLog(@"%@", autohide ? @"y" : @"n");
-    if (autohide) {
-        NSString* winCountAllSpaces = [helperLib runScript:[NSString stringWithFormat:@"tell application \"AltTab\" to return countWindows appBID \"%@\"", appDisplayed]];
-        NSLog(@"%d", (int) [[helperLib getWindowsForOwnerPID: appDisplayedPID] count] );
-        if ([winCountAllSpaces intValue] > 1) {
-            if (spaceSwitchCounter % 2 == 0) {
-                [runningApp isHidden] ? 1 : [runningApp hide];
-            }
-            else {
-                if (!clickToClose) [app refocusDock: YES];
-            }
-        }
-    }
-    //    NSLog(@"%d", spaceSwitchCounter);
+//    if (autohide) {
+//        NSString* winCountAllSpaces = [helperLib runScript:[NSString stringWithFormat:@"tell application \"AltTab\" to return countWindows appBID \"%@\"", appDisplayed]];
+//        NSLog(@"%d", (int) [[helperLib getWindowsForOwnerPID: appDisplayedPID] count] );
+//        if ([winCountAllSpaces intValue] > 1) {
+//            if (spaceSwitchCounter % 2 == 0) {
+//                [runningApp isHidden] ? 1 : [runningApp hide];
+//            }
+//            else {
+//                if (!clickToClose) [app refocusDock: YES];
+//            }
+//        }
+//    }
 }
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
     NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
