@@ -123,23 +123,23 @@ NSString* lastShowStr = @"";
 }
 + (void) refocusDock: (BOOL) triggerEscape { // reopen / focus the dock w/ fn + a
     NSString* triggerEscapeStr = @"";
-    if (triggerEscape) triggerEscapeStr = @"        delay 0.1\n\
+    if (triggerEscape) triggerEscapeStr = @"        delay 0.15\n\
         key code 53";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * T_TO_SWITCH_SPACE), dispatch_get_main_queue(), ^(void){
         NSString* scriptStr = [NSString stringWithFormat:@"tell application \"System Events\"\n\
             key down 63\n\
             key code 0\n\
             key up 63\n%@\n\
-            tell application \"AltTab\"\n\
-                hide\n\
-                %@\n\
-            end tell\n\
+            #tell application \"AltTab\"\n\
+            #    hide\n\
+            #    %@\n\
+            #end tell\n\
         end tell", triggerEscapeStr, lastShowStr];
         [helperLib runScript: scriptStr];
-//        if (triggerEscape) {
-//            AppDelegate* del = [helperLib getApp];
-//            del->appDisplayed = @"";
-//        }
+        if (triggerEscape) {
+            AppDelegate* del = [helperLib getApp];
+            del->appDisplayed = @"";
+        }
     });
 }
 + (float) maxDelay {return DELAY_MAX;}

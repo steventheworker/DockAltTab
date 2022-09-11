@@ -179,9 +179,15 @@ void hideOverlay(void) {
     if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
     if ([clickTitle isEqual:@"Trash"] && finderFrontmost) return;
 
-//    if (autohide && !clickToClose && ![info[@"title"] isEqual: @"Trash"]) [app refocusDock: YES];
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
+
+    // reopen dock when switching spaces w/ autohide turned on (consistent toggle click behavior)
+    if (autohide && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && !wasAppHidden) {
+        BOOL willSwitchSpace = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"\n\
+        tell application \"System Events\" to tell process \"%@\" to return allCount - (count of windows)", appDisplayed, clickTitle]] intValue] != 0; // if app has windows in another spaces, (YES) clicking will switch
+        if (willSwitchSpace) [app refocusDock: YES];
+    }
     
     if (clickToClose) { // activate/unhide when clicking dock icon while AltTab showing
         if (wasAppHidden && ![appDisplayed isEqual:@""]) [runningApp unhide];
