@@ -14,6 +14,7 @@ const int TICKS_TO_HIDE = 2; // number of ticks * TICK_DELAY = x seconds
 
 /* global variables */
 BOOL shouldDelayedExpose = NO;
+NSString* clickedBeforeDelayedExpose = @""; //appBID clicked on before delay finished
 BOOL clickedAfterExpose = NO;
 BOOL dontCheckAgainAfterTrigger = NO; // stop polling AltTab windows to check if user closed it w/ a click (since can't listen for these clicks)
 BOOL finderFrontmost = NO;
@@ -26,7 +27,7 @@ void showOverlay(NSString* appBID, pid_t appPID) {
     AppDelegate* del = [helperLib getApp];
     ticksSinceHide = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
-    if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger)) { // show immediately
+    if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && ![clickedBeforeDelayedExpose isEqual:del->appDisplayed])) { // show immediately
         del->appDisplayed = appBID;
         del->appDisplayedPID = appPID;
         if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
@@ -49,22 +50,30 @@ void showOverlay(NSString* appBID, pid_t appPID) {
             if (tarPID != del->dockPID || (tarPID == del->dockPID && ![[[NSBundle bundleWithURL:appURL] bundleIdentifier] isEqual:oldBID])) { } else {
                 del->appDisplayed = oldBID;
                 del->appDisplayedPID = appPID;
-                if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
-                [app AltTabShow:oldBID];
+                if (![clickedBeforeDelayedExpose isEqual: oldBID]) {
+                    if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
+                    [app AltTabShow:oldBID];
+                }
                 dontCheckAgainAfterTrigger = NO;
             }
         });
     }
+    clickedBeforeDelayedExpose = @"";
     clickedAfterExpose = NO;
     ticksSinceShown = 0;
+    del->lastAppClickToggled = @"";
     if (![del->lastAppClickToggled isEqual:appBID]) spaceSwitchCounter = 0;
 }
 void hideOverlay(void) {
     if (ticksSinceHide++ < TICKS_TO_HIDE) return;
     AppDelegate* del = [helperLib getApp];
     if ([del->appDisplayed isEqual:@""]) return;
-    del->appDisplayed = @"";
     del->appDisplayedPID = (pid_t) 0;
+    if ([clickedBeforeDelayedExpose isEqual:del->appDisplayed]) {
+        dontCheckAgainAfterTrigger = YES;
+        return;
+    }
+    del->appDisplayed = @"";
     [app AltTabHide];
     clickedAfterExpose = NO;
     dontCheckAgainAfterTrigger = NO;
@@ -131,7 +140,7 @@ void hideOverlay(void) {
     }
     
     if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
-    willShow ? showOverlay(tarBID, tarPID) : hideOverlay();
+    willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay();
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info : (BOOL) clickToClose {
@@ -140,20 +149,12 @@ void hideOverlay(void) {
         pid_t clickPID = [info[@"PID"] intValue];
         if (clickPID != finderPID) finderFrontmost = NO;
     }
-    if ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) return;
-    __block BOOL showingContextMenu = [app contextMenuExists: carbonPoint:info]; //checks if contextMenu exists (but only looks around area cursor's placed)
-    if (wasShowingContextMenu || showingContextMenu) {
-        wasShowingContextMenu = NO;
-        return;
-    }
 //    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
     NSString* clickBID = @"";
-    BOOL isBlacklisted = NO; // = [showBlacklist containsObject:clickTitle];
+    BOOL isBlacklisted = NO; //todo: = [showBlacklist containsObject:clickTitle];
     if ([clickTitle isEqual:@"Trash"]) {
-        if (!finderFrontmost) {
-            finderFrontmost = YES;
-            return;
-        } else {
+        if (!finderFrontmost) finderFrontmost = YES;
+        else {
             clickTitle = @"Finder";
             clickBID = @"com.apple.Finder";
     //        lastAppClickToggled = @"com.apple.Finder";
@@ -161,19 +162,34 @@ void hideOverlay(void) {
     } else {
         NSURL* appURL;
         AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
-        clickBID = [[NSBundle bundleWithURL:appURL] bundleIdentifier];
-        if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
+        clickBID = appURL == nil ? @"non-dock item" : [[NSBundle bundleWithURL:appURL] bundleIdentifier];
     }
-    if (autohide && !clickToClose && ![info[@"title"] isEqual: @"Trash"]) [app refocusDock: YES];
+    
+    //checks to continue
+//    NSLog(@"'%@', '%@'", appDisplayed, lastAppClickToggled);
+    clickedBeforeDelayedExpose = clickBID;
+    appDisplayed = clickBID;
+    if (!isClickToggleChecked) return;
+    __block BOOL showingContextMenu = [app contextMenuExists: carbonPoint:info]; //checks if contextMenu exists (but only looks around area cursor's placed)
+    if (wasShowingContextMenu || showingContextMenu) {
+        wasShowingContextMenu = NO;
+        return;
+    }
+    if ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) return;
+    if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
+    if ([clickTitle isEqual:@"Trash"] && finderFrontmost) return;
+
+//    if (autohide && !clickToClose && ![info[@"title"] isEqual: @"Trash"]) [app refocusDock: YES];
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
     
     if (clickToClose) { // activate/unhide when clicking dock icon while AltTab showing
         if (wasAppHidden && ![appDisplayed isEqual:@""]) [runningApp unhide];
         if (![runningApp isActive]) [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+        lastAppClickToggled = clickBID; //order of operations important (keep here) (below activate)
         return;
     }
-        
+            
     int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
     float countProcessT = (wasAppHidden) ? 0 : 0.333; //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
 //    if (!clickToClose && autohide) countProcessT = 2;
@@ -238,7 +254,6 @@ void hideOverlay(void) {
     NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
     BOOL cmdDown = theFlags & NSEventModifierFlagCommand;
     BOOL shiftDown = theFlags & NSEventModifierFlagShift;
-    if (!isClickToggleChecked) return;
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
@@ -247,11 +262,11 @@ void hideOverlay(void) {
         if (![appDisplayed isEqual:@""]) { // if AltTab showing
             if (shiftDown) {
                 [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
-                return;
+//                return;
             }
             if (cmdDown && [info[@"PID"] intValue] == dockPID) {
                 [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"cmdClick\""];
-                return;
+//                return;
             }
         }
      }
