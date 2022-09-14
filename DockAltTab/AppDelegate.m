@@ -164,7 +164,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 - (void) enableClickToClose {clickedBeforeDelayedExpose = @"";clickedAfterExpose = NO;dontCheckAgainAfterTrigger = NO;ticksSinceShown = 2;} //NSLog(@"%d %d %d %d %d", ![appDisplayed isEqual:@""], !clickedAfterExpose, isClickToggleChecked, !dontCheckAgainAfterTrigger, ticksSinceShown > 1);
 - (void) reopenPreview : (NSString*) cachedApp {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.067), dispatch_get_main_queue(), ^(void){ //wait until cached app guaranteed to be hidden
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.09), dispatch_get_main_queue(), ^(void){ //wait until cached app guaranteed to be hidden
         NSRunningApplication* frontApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
         //apps that are slow to activate (well, technically they auto-activate, but the actual window gets keyboard focus slowly (ie: red yellow green buttons are grey), which adds them to the AltTab popup)
         //todo: find a less hackish method of preventing this preview addition (currently do so by synchronously clogging DockAltTab's thread (until it can tell/talk to the offending process window w/ applescript))
@@ -199,7 +199,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     } else {
         NSURL* appURL;
         AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
-        clickBID = appURL == nil ? @"non-dock item" : [[NSBundle bundleWithURL:appURL] bundleIdentifier];
+        clickBID = ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) || appURL == nil ? @"non-dock item" : [[NSBundle bundleWithURL:appURL] bundleIdentifier];
     }
     
     //checks to continue
