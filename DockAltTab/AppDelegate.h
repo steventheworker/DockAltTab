@@ -68,5 +68,8 @@
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info;
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose;
 - (void) bindScreens;
+- (void) enableClickToClose;
+- (void) reopenDock: (BOOL) triggerEscape;
+- (void) reopenPreview: (NSString*) cachedApp;
 - (IBAction) preferences:(id)sender;
 @end

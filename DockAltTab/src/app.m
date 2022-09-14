@@ -16,7 +16,6 @@ const float DELAY_MAX = 2; // seconds
 //hardcoded apple details
 const int CONTEXTDISTANCE = 150; //dock testPoint/contextmenu's approx. distance from pointer
 const int DOCK_OFFSET = 5; //5 pixels
-const float T_TO_SWITCH_SPACE = 0.666 / 2; // time to wait before reshowing dock (when clicking switches spaces)
 
 //define
 NSString* lastShowStr = @"";
@@ -99,7 +98,7 @@ NSString* lastShowStr = @"";
     if ([testInfo[@"role"] isEqual:@"AXMenuItem"] || [testInfo[@"role"] isEqual:@"AXMenu"]) return YES;
     return NO;
 }
-+ (void) AltTabShow: (NSString*) appBID {
++ (NSString*) getShowString: (NSString*) appBID {
     NSDictionary *error = nil;
     AppDelegate* del = [helperLib getApp];
     NSPoint pt = [NSEvent mouseLocation];
@@ -116,31 +115,13 @@ NSString* lastShowStr = @"";
         x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
     }
     lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\" x %d y %d %@", appBID, x, y, [del->dockPos isEqual:@"right"] ? @"isRight true" : @""];
-    [helperLib runScript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", lastShowStr]];
+    return lastShowStr;
+}
++ (void) AltTabShow: (NSString*) appBID {
+    [helperLib runScript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [app getShowString: appBID]]];
 }
 + (void) AltTabHide {
     [helperLib runScript: @"tell application \"AltTab\" to hide"];
-}
-+ (void) refocusDock: (BOOL) triggerEscape { // reopen / focus the dock w/ fn + a
-    NSString* triggerEscapeStr = @"";
-    if (triggerEscape) triggerEscapeStr = @"        delay 0.15\n\
-        key code 53";
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * T_TO_SWITCH_SPACE), dispatch_get_main_queue(), ^(void){
-        NSString* scriptStr = [NSString stringWithFormat:@"tell application \"System Events\"\n\
-            key down 63\n\
-            key code 0\n\
-            key up 63\n%@\n\
-            #tell application \"AltTab\"\n\
-            #    hide\n\
-            #    %@\n\
-            #end tell\n\
-        end tell", triggerEscapeStr, lastShowStr];
-        [helperLib runScript: scriptStr];
-        if (triggerEscape) {
-            AppDelegate* del = [helperLib getApp];
-            del->appDisplayed = @"";
-        }
-    });
 }
 + (float) maxDelay {return DELAY_MAX;}
 + (NSString*) getCurrentVersion {return [helperLib get: (NSString*) versionLink];}

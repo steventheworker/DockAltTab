@@ -12,13 +12,20 @@
 /* config */
 const int TICKS_TO_HIDE = 2; // number of ticks * TICK_DELAY = x seconds
 
+/* hardcoded apple details */
+const float T_TO_SWITCH_SPACE = 0.666 / 2; // time to wait before reshowing dock (when clicking switches spaces)
+
 /* global variables */
 BOOL shouldDelayedExpose = NO;
 NSString* clickedBeforeDelayedExpose = @""; //appBID clicked on before delay finished
 BOOL clickedAfterExpose = NO;
 BOOL dontCheckAgainAfterTrigger = NO; // stop polling AltTab windows to check if user closed it w/ a click (since can't listen for these clicks)
 BOOL finderFrontmost = NO;
-int spaceSwitchCounter = 0; // no. dockClicks since shown
+int spaceSwitchTicks = 0; // no. ticks since spaceSwitch started
+CGFloat preSwitchIconSizeWidth = 0; //full icon size while mouse @ coordinates (before switching spaces) --space switch is complete when dimensions match
+CGFloat preSwitchIconSizeHeight = 0; //full icon height while mouse @ coordinates (before switching spaces) --space switch is complete when dimensions match
+BOOL finishSpaceSwitch = NO;
+BOOL reopenPreviewsChecked = YES;
 
 /* show & hide */
 int ticksSinceHide = 0;
@@ -62,7 +69,6 @@ void showOverlay(NSString* appBID, pid_t appPID) {
     clickedAfterExpose = NO;
     ticksSinceShown = 0;
     del->lastAppClickToggled = @"";
-    if (![del->lastAppClickToggled isEqual:appBID]) spaceSwitchCounter = 0;
 }
 void hideOverlay(void) {
     if (ticksSinceHide++ < TICKS_TO_HIDE) return;
@@ -77,6 +83,18 @@ void hideOverlay(void) {
     [app AltTabHide];
     clickedAfterExpose = NO;
     dontCheckAgainAfterTrigger = NO;
+}
+const CGFloat ICONFUZZINESS = 0.1; //middle of icon = largest dimensions, top & bottom = +- 0.5px of the middle max
+BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: consider comparing icon positions instead (more accurate?)
+    if (preSwitchIconSizeWidth == 0 && preSwitchIconSizeWidth == 0) return YES;
+    CGFloat diffW = fabs(dockWidth - preSwitchIconSizeWidth);
+    CGFloat diffH = fabs(dockHeight - preSwitchIconSizeHeight);
+    if ((++spaceSwitchTicks >= 5 && diffW <= ICONFUZZINESS && diffH <= ICONFUZZINESS) || spaceSwitchTicks >= 10) {
+        preSwitchIconSizeWidth = 0;
+        preSwitchIconSizeHeight = 0;
+        return YES;
+    }
+    return NO;
 }
 
 @interface AppDelegate ()
@@ -97,6 +115,7 @@ void hideOverlay(void) {
     NSMutableDictionary* info = [NSMutableDictionary dictionaryWithDictionary: [helperLib axInfo:el]];
     pid_t tarPID = [info[@"PID"] intValue];
 
+    if ((autohide || reopenPreviewsChecked) && !isSpaceSwitchComplete(dockWidth, dockHeight)) return;
     //update dock size, if on dock icon
     if ([info[@"role"] isEqual:@"AXDockItem"]) {
         dockWidth = [info[@"width"] floatValue];
@@ -128,7 +147,7 @@ void hideOverlay(void) {
         if (numWindows == 0) willShow = NO;
     }
 
-    // check if AltTab still open / closed by click (todo: factor in closing by Esc key)
+    // clicked to close AltTab previews - check if AltTab still open (todo: factor in closing by Esc key)
     if (![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
@@ -142,6 +161,34 @@ void hideOverlay(void) {
     if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
     willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay();
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
+}
+- (void) enableClickToClose {clickedBeforeDelayedExpose = @"";clickedAfterExpose = NO;dontCheckAgainAfterTrigger = NO;ticksSinceShown = 2;} //NSLog(@"%d %d %d %d %d", ![appDisplayed isEqual:@""], !clickedAfterExpose, isClickToggleChecked, !dontCheckAgainAfterTrigger, ticksSinceShown > 1);
+- (void) reopenPreview : (NSString*) cachedApp {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.067), dispatch_get_main_queue(), ^(void){ //wait until cached app guaranteed to be hidden
+        NSRunningApplication* frontApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+        //apps that are slow to activate (well, technically they auto-activate, but the actual window gets keyboard focus slowly (ie: red yellow green buttons are grey), which adds them to the AltTab popup)
+        //todo: find a less hackish method of preventing this preview addition (currently do so by synchronously clogging DockAltTab's thread (until it can tell/talk to the offending process window w/ applescript))
+        BOOL isExtraSlow = ![cachedApp isEqual:@"org.mozilla.firefox"] && [[frontApp bundleIdentifier] isEqual:@"org.mozilla.firefox"];
+        if (isExtraSlow) [helperLib runScript:[NSString stringWithFormat:@"tell application \"System Events\" to tell process \"%@\" to return window 1", [frontApp localizedName]]]; //tell application \"System Events\" to tell process \"Firefox\" to return enabled of menu item \"Minimize\" of menu 1 of menu bar item \"Window\" of menu bar 1    //original menu item check to see if ready, don't think it worked
+        //show cached app previews & enable "click to close" (to unhide)
+        [app AltTabShow:cachedApp];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.067), dispatch_get_main_queue(), ^(void){[self enableClickToClose];}); //wait until AltTab guaranteed to be visible
+    });
+}
+- (void) reopenDock: (BOOL) triggerEscape { // reopen / focus the dock w/ fn + a (after switching spaces)
+    if (reopenPreviewsChecked) finishSpaceSwitch = YES; // call reopenPreview --after finished hiding
+    if (!autohide) return; //don't reopen dock
+    NSString* triggerEscapeStr = @"";
+    if (triggerEscape) triggerEscapeStr = @"        delay 0.15\n\
+        key code 53";
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * T_TO_SWITCH_SPACE), dispatch_get_main_queue(), ^(void){
+        NSString* scriptStr = [NSString stringWithFormat:@"tell application \"System Events\"\n\
+            key down 63\n\
+            key code 0\n\
+            key up 63\n%@\n\
+        end tell", triggerEscapeStr];
+        [helperLib runScript: scriptStr];
+    });
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info : (BOOL) clickToClose {
     NSString* clickTitle = info[@"title"];
@@ -182,24 +229,36 @@ void hideOverlay(void) {
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
     BOOL wasAppHidden = [runningApp isHidden];
 
-    // reopen dock when switching spaces w/ autohide turned on (consistent toggle click behavior)
-    if (autohide && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && !wasAppHidden) {
+    // reopen preview when clicks switches spaces && reopen dock w/ autohide turned on (consistent toggle click behavior)
+    if ((autohide || reopenPreviewsChecked) && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && !wasAppHidden && [runningApp isActive]) {
         BOOL willSwitchSpace = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"\n\
         tell application \"System Events\" to tell process \"%@\" to return allCount - (count of windows)", appDisplayed, clickTitle]] intValue] != 0; // if app has windows in another spaces, (YES) clicking will switch
-        if (willSwitchSpace) [app refocusDock: YES];
+        if (willSwitchSpace) {
+            preSwitchIconSizeWidth = dockWidth;
+            preSwitchIconSizeHeight = dockHeight;
+            dockWidth = preSwitchIconSizeWidth - (ICONFUZZINESS + 0.1); //"reset" width by barely going outside of range
+            dockHeight = preSwitchIconSizeHeight - (ICONFUZZINESS + 0.1); //"reset" height by barely going outside of range
+            spaceSwitchTicks = 0;
+            [self reopenDock: YES];
+        }
     }
     
     if (clickToClose) { // activate/unhide when clicking dock icon while AltTab showing
         if (wasAppHidden && ![appDisplayed isEqual:@""]) [runningApp unhide];
         if (![runningApp isActive]) [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         lastAppClickToggled = clickBID; //order of operations important (keep here) (below activate)
+        [app AltTabHide]; // hiding solely to reset preview position (AltTabHide does that...)
         return;
     }
-            
+    
+    if (![runningApp isActive]) return;
     int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
     float countProcessT = (wasAppHidden) ? 0 : 0.333; //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
 //    if (!clickToClose && autohide) countProcessT = 2;
+    CGFloat cachedW = preSwitchIconSizeWidth;       // hack to stop timer ticks & clicks (return; early) while in the middle of delayed hiding
+    if (countProcessT) preSwitchIconSizeWidth = 1; // hack to stop timer ticks & clicks (return; early) while in the middle of delayed hiding
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * countProcessT), dispatch_get_main_queue(), ^(void){
+        preSwitchIconSizeWidth = cachedW; //undo hiding hack
         if (countProcessT) {
             //test for context menu (x time after click)
             CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
@@ -219,6 +278,10 @@ void hideOverlay(void) {
         self->lastAppClickToggled = clickBID; //order of operations important (keep here)
         if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
         if (clickedAfterExpose) [runningApp hide]; else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+        
+        if (!finishSpaceSwitch) return; //reopenPreviewsChecked:  show the preview (after switching spaces)
+        finishSpaceSwitch = NO;
+        [self reopenPreview : clickBID];
     });
     
     
@@ -264,6 +327,7 @@ void hideOverlay(void) {
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
     if ((![appDisplayed isEqual:@""] || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
+    
     if (clickToClose && steviaOS) {
         if (![appDisplayed isEqual:@""]) { // if AltTab showing
             if (shiftDown) {
@@ -276,6 +340,12 @@ void hideOverlay(void) {
             }
         }
      }
+    
+    if ([info[@"role"] isEqual:@"AXDockItem"]) {
+        dockWidth = [info[@"width"] floatValue];
+        dockHeight = [info[@"height"] floatValue];
+    }
+    if (!isSpaceSwitchComplete(dockWidth, dockHeight)) return;
     [self dockItemClickHide: carbonPoint : el : info : clickToClose];
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁

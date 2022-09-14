@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL) contextMenuExists: (CGPoint)carbonPoint : (NSDictionary*)info;
 + (NSString*) getCurrentVersion;
 + (void) initVars;
++ (NSString*) getShowString: (NSString*) appBID;
 + (void) AltTabShow: (NSString*) appBID;
 + (void) AltTabHide;
-+ (void) refocusDock: (BOOL) triggerEscape;
 + (float) maxDelay;
 
 @end
