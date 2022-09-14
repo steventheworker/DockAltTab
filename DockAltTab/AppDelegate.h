@@ -69,7 +69,7 @@
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose;
 - (void) bindScreens;
 - (void) enableClickToClose;
-- (void) reopenDock: (BOOL) triggerEscape;
+- (void) reopenDock;
 - (void) reopenPreview: (NSString*) cachedApp;
 - (IBAction) preferences:(id)sender;
 @end

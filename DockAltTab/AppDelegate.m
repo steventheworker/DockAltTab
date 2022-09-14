@@ -175,20 +175,10 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.067), dispatch_get_main_queue(), ^(void){[self enableClickToClose];}); //wait until AltTab guaranteed to be visible
     });
 }
-- (void) reopenDock: (BOOL) triggerEscape { // reopen / focus the dock w/ fn + a (after switching spaces)
+- (void) reopenDock { // reopen / focus the dock w/ fn + a (after switching spaces)
     if (reopenPreviewsChecked) finishSpaceSwitch = YES; // call reopenPreview --after finished hiding
     if (!autohide) return; //don't reopen dock
-    NSString* triggerEscapeStr = @"";
-    if (triggerEscape) triggerEscapeStr = @"        delay 0.15\n\
-        key code 53";
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * T_TO_SWITCH_SPACE), dispatch_get_main_queue(), ^(void){
-        NSString* scriptStr = [NSString stringWithFormat:@"tell application \"System Events\"\n\
-            key down 63\n\
-            key code 0\n\
-            key up 63\n%@\n\
-        end tell", triggerEscapeStr];
-        [helperLib runScript: scriptStr];
-    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * T_TO_SWITCH_SPACE), dispatch_get_main_queue(), ^(void){[helperLib runScript: [app reopenDockStr:YES]];});
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info : (BOOL) clickToClose {
     NSString* clickTitle = info[@"title"];
@@ -239,7 +229,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
             dockWidth = preSwitchIconSizeWidth - (ICONFUZZINESS + 0.1); //"reset" width by barely going outside of range
             dockHeight = preSwitchIconSizeHeight - (ICONFUZZINESS + 0.1); //"reset" height by barely going outside of range
             spaceSwitchTicks = 0;
-            [self reopenDock: YES];
+            [self reopenDock];
         }
     }
     
@@ -283,41 +273,6 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         finishSpaceSwitch = NO;
         [self reopenPreview : clickBID];
     });
-    
-    
-//    NSLog(@"%d", ++spaceSwitchCounter);
-//    if (autohide) {
-//        BOOL willSwitchSpace = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"\n\
-//        tell application \"System Events\" to tell process \"%@\" to return allCount - (count of windows)", appDisplayed, clickTitle]] intValue] != 0; // if app has windows in another spaces, (YES) clicking will switch
-//        if (willSwitchSpace) {
-//            if (spaceSwitchCounter % 4 == 0) {
-//                lastAppClickToggled = clickBID;
-//                NSLog(@"switching!!!");
-//                if (!clickToClose) [app refocusDock: YES];
-//                return;
-//            }
-//            if (spaceSwitchCounter % 2 == 0) {
-//                [runningApp hide]; //immediately hiding prevents space switching, //todo: find less hackish method
-//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.2), dispatch_get_main_queue(), ^(void){
-//                    [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
-//                });
-//            }
-//        }
-//    }
-
-    // autohide means dock is hidden (after switching spaces), so we reshow it here
-//    if (autohide) {
-//        NSString* winCountAllSpaces = [helperLib runScript:[NSString stringWithFormat:@"tell application \"AltTab\" to return countWindows appBID \"%@\"", appDisplayed]];
-//        NSLog(@"%d", (int) [[helperLib getWindowsForOwnerPID: appDisplayedPID] count] );
-//        if ([winCountAllSpaces intValue] > 1) {
-//            if (spaceSwitchCounter % 2 == 0) {
-//                [runningApp isHidden] ? 1 : [runningApp hide];
-//            }
-//            else {
-//                if (!clickToClose) [app refocusDock: YES];
-//            }
-//        }
-//    }
 }
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
     NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;

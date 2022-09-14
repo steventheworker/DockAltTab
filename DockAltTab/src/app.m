@@ -125,5 +125,15 @@ NSString* lastShowStr = @"";
 }
 + (float) maxDelay {return DELAY_MAX;}
 + (NSString*) getCurrentVersion {return [helperLib get: (NSString*) versionLink];}
++ (NSString*) reopenDockStr: (BOOL) triggerEscape { // reopen / focus the dock w/ fn + a (after switching spaces)
+    NSString* triggerEscapeStr = @"";
+    if (triggerEscape) triggerEscapeStr = @"        delay 0.15\n\
+        key code 53";
+    return [NSString stringWithFormat:@"tell application \"System Events\"\n\
+        key down 63\n\
+        key code 0\n\
+        key up 63\n%@\n\
+    end tell", triggerEscapeStr];
+}
 @end
 

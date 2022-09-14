@@ -16,6 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) AltTabShow: (NSString*) appBID;
 + (void) AltTabHide;
 + (float) maxDelay;
-
++ (NSString*) reopenDockStr: (BOOL) triggerEscape;
 @end
 NS_ASSUME_NONNULL_END
