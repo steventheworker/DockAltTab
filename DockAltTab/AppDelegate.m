@@ -148,7 +148,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     }
 
     // clicked to close AltTab previews - check if AltTab still open (todo: factor in closing by Esc key)
-    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && isClickToggleChecked && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
+    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
@@ -199,8 +199,10 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     } else {
         NSURL* appURL;
         AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
-        clickBID = ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) || appURL == nil ? @"non-dock item" : [[NSBundle bundleWithURL:appURL] bundleIdentifier];
+        clickBID = ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) || appURL == nil ? @"" : [[NSBundle bundleWithURL:appURL] bundleIdentifier];
     }
+    if (![appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) [app AltTabHide]; // "hiding" solely to reset preview position (AltTabHide does that...)   --part of the clickToClose conditions from timerTick
+
     
     //checks to continue
 //    NSLog(@"'%@', '%@'", appDisplayed, lastAppClickToggled);
@@ -237,7 +239,6 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         if (wasAppHidden && ![appDisplayed isEqual:@""]) [runningApp unhide];
         if (![runningApp isActive]) [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         lastAppClickToggled = clickBID; //order of operations important (keep here) (below activate)
-        [app AltTabHide]; // hiding solely to reset preview position (AltTabHide does that...)
         return;
     }
     
