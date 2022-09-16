@@ -24,6 +24,7 @@
                 <outlet property="menu" destination="7wH-0i-7u4" id="e5a-Xh-9Ja"/>
                 <outlet property="menuItemCheckBox" destination="BUI-mm-4RA" id="9z0-kS-Eh1"/>
                 <outlet property="previewDelaySlider" destination="F6r-sH-2qo" id="Adq-0k-0z1"/>
+                <outlet property="reopenPreviewsCheckbox" destination="CZ5-xc-4LQ" id="hw0-r7-m7W"/>
                 <outlet property="unsupportedBox" destination="okj-8c-j1d" id="vPZ-xv-aW8"/>
                 <outlet property="updateRemindRef" destination="lXr-Qx-AJz" id="yec-s0-HE4"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -884,11 +885,12 @@
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CZ5-xc-4LQ">
                         <rect key="frame" x="90" y="219" width="303" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Reopen previews on clicks that switch spaces" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PVk-3m-SoM">
+                        <buttonCell key="cell" type="check" title="Reopen previews on clicks that switch spaces" bezelStyle="regularSquare" imagePosition="left" inset="2" id="PVk-3m-SoM">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
+                            <action selector="bindReopenPreviewsSetting:" target="Voe-Tx-rLC" id="Jve-fB-K7D"/>
                             <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isReopenPreviewsChecked" id="8WC-iq-a1C"/>
                         </connections>
                     </button>

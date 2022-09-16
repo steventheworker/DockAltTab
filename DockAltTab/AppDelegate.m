@@ -357,7 +357,8 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     if (!menuItemCheckBox.state) [statusItem setVisible:NO];
 }
 - (IBAction)toggleMenuIcon:(id)sender {[statusItem setVisible:isMenuItemChecked];}
-- (IBAction)toggleToggleDockApps:(id)sender {[[NSUserDefaults standardUserDefaults] setBool: !((BOOL) clickToggleCheckBox.state) forKey:@"isClickToggleChecked"];}  // (!) default true
+- (IBAction)toggleToggleDockApps:(id)sender {isClickToggleChecked = clickToggleCheckBox.state;[[NSUserDefaults standardUserDefaults] setBool: !((BOOL) clickToggleCheckBox.state) forKey:@"isClickToggleChecked"];}  // (!) default true
+- (IBAction)bindReopenPreviewsSetting:(id)sender {isReopenPreviewsChecked = reopenPreviewsCheckbox.state;[[NSUserDefaults standardUserDefaults] setBool: ((BOOL) reopenPreviewsCheckbox.state) forKey:@"isReopenPreviewsChecked"];}  // (!) default false
 - (IBAction)changeDelay:(id)sender {
     [[delayLabel cell] setTitle: [helperLib twoSigFigs: previewDelaySlider.floatValue / 100 * 2]]; // set slider label text
     [[NSUserDefaults standardUserDefaults] setInteger:previewDelaySlider.intValue forKey:@"previewDelay"];

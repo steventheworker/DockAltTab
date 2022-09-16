@@ -75,15 +75,19 @@ NSString* lastShowStr = @"";
     del->isLockDockPositionChecked = CFPreferencesGetAppBooleanValue( CFSTR("position-immutable"), CFSTR("com.apple.dock"), &valid);
     //DockAltTab settings
     del->isClickToggleChecked = ![[NSUserDefaults standardUserDefaults] boolForKey:@"isClickToggleChecked"]; // (!) default true
+    del->isReopenPreviewsChecked = [[NSUserDefaults standardUserDefaults] boolForKey:@"isReopenPreviewsChecked"]; // (!) default false
     del->previewDelay = ((int) [[NSUserDefaults standardUserDefaults] integerForKey:@"previewDelay"]);
     [app syncUI];
 }
 + (void) syncUI {
     AppDelegate* del = [helperLib getApp];
+    //dock settings
     del->lockDockContentsCheckbox.state = del->isLockDockContentsChecked;
     del->lockDockSizeCheckbox.state = del->isLockDockSizeChecked;
     del->lockDockPositionCheckbox.state = del->isLockDockPositionChecked;
+    //DockAltTab settings
     del->clickToggleCheckBox.state = del->isClickToggleChecked;
+    del->reopenPreviewsCheckbox.state = del->isReopenPreviewsChecked;
     [del->previewDelaySlider setFloatValue:del->previewDelay];
     [[del->delayLabel cell] setTitle: [helperLib twoSigFigs: del->previewDelaySlider.floatValue / 100 * 2]]; // change slider label
 }

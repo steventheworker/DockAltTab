@@ -53,6 +53,7 @@
     int                     previewDelay;
     __weak IBOutlet NSButton *menuItemCheckBox;    
     __weak IBOutlet NSButton *clickToggleCheckBox;
+    __weak IBOutlet NSButton *reopenPreviewsCheckbox;
     __weak IBOutlet NSButton *lockDockContentsCheckbox;
     __weak IBOutlet NSButton *lockDockSizeCheckbox;
     __weak IBOutlet NSButton *lockDockPositionCheckbox;
