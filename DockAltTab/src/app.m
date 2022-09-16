@@ -104,7 +104,6 @@ NSString* lastShowStr = @"";
     return NO;
 }
 + (NSString*) getShowString: (NSString*) appBID {
-    NSDictionary *error = nil;
     AppDelegate* del = [helperLib getApp];
     NSPoint pt = [NSEvent mouseLocation];
     int x = 0;

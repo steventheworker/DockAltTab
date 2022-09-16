@@ -68,7 +68,7 @@
 @property BOOL isLockDockPositionChecked;
 @property int previewDelay;
 //- (float) timeDiff;
-- (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info;
+- (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose;
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose;
 - (void) bindScreens;
 - (void) enableClickToClose;
