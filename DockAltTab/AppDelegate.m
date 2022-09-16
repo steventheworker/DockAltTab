@@ -18,6 +18,7 @@ const float T_TO_SWITCH_SPACE = 0.666 / 2; // time to wait before reshowing dock
 /* global variables */
 BOOL shouldDelayedExpose = NO;
 NSString* clickedBeforeDelayedExpose = @""; //appBID clicked on before delay finished
+pid_t clickedBeforeDelayedExposePID = 0; //appPID clicked on before delay finished
 BOOL clickedAfterExpose = NO;
 BOOL dontCheckAgainAfterTrigger = NO; // stop polling AltTab windows to check if user closed it w/ a click (since can't listen for these clicks)
 BOOL finderFrontmost = NO;
@@ -70,13 +71,17 @@ void showOverlay(NSString* appBID, pid_t appPID) {
     ticksSinceShown = 0;
     del->lastAppClickToggled = @"";
 }
-void hideOverlay(void) {
+void hideOverlay(pid_t mousePID, NSString* appBID, pid_t appPID) {
     if (ticksSinceHide++ < TICKS_TO_HIDE) return;
     AppDelegate* del = [helperLib getApp];
     if ([del->appDisplayed isEqual:@""]) return;
     del->appDisplayedPID = (pid_t) 0;
     if ([clickedBeforeDelayedExpose isEqual:del->appDisplayed]) {
-        dontCheckAgainAfterTrigger = YES;
+        if (mousePID == del->dockPID) {
+            if (![del->appDisplayed isEqual:appBID]) clickedBeforeDelayedExpose = @"";
+        } else {
+            if (appPID != clickedBeforeDelayedExposePID) clickedBeforeDelayedExpose = @"";
+        }
         return;
     }
     del->appDisplayed = @"";
@@ -148,18 +153,19 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     }
 
     // clicked to close AltTab previews - check if AltTab still open (todo: factor in closing by Esc key)
-    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) {
+    if (![appDisplayed isEqual:@""] && !clickedAfterExpose && !dontCheckAgainAfterTrigger && ticksSinceShown > 1 && [clickedBeforeDelayedExpose isEqual:@""]) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
                 [self bindClick: (CGEventRef) nil : YES];
                 dontCheckAgainAfterTrigger = YES;
+                NSLog(@"click to close");
             }
         }
     }
     
     if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
-    willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay();
+    willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay([info[@"PID"] intValue], tarBID, tarPID);
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
 - (void) enableClickToClose {clickedBeforeDelayedExpose = @"";clickedAfterExpose = NO;dontCheckAgainAfterTrigger = NO;ticksSinceShown = 2;} //NSLog(@"%d %d %d %d %d", ![appDisplayed isEqual:@""], !clickedAfterExpose, isClickToggleChecked, !dontCheckAgainAfterTrigger, ticksSinceShown > 1);
@@ -182,10 +188,8 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el :(NSDictionary*)info : (BOOL) clickToClose {
     NSString* clickTitle = info[@"title"];
-    if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) {
-        pid_t clickPID = [info[@"PID"] intValue];
-        if (clickPID != finderPID) finderFrontmost = NO;
-    }
+    pid_t clickPID = [info[@"PID"] intValue];
+    if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) if (clickPID != finderPID) finderFrontmost = NO;
 //    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
     NSString* clickBID = @"";
     BOOL isBlacklisted = NO; //todo: = [showBlacklist containsObject:clickTitle];
@@ -205,8 +209,9 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 
     
     //checks to continue
-//    NSLog(@"'%@', '%@'", appDisplayed, lastAppClickToggled);
+    NSLog(@"'%@': %d, '%@', '%d', '%@'", appDisplayed, appDisplayedPID, lastAppClickToggled, clickedAfterExpose, clickedBeforeDelayedExpose);
     clickedBeforeDelayedExpose = clickBID;
+    clickedBeforeDelayedExposePID = clickPID;
     appDisplayed = clickBID;
     if (!isClickToggleChecked) return;
     __block BOOL showingContextMenu = [app contextMenuExists: carbonPoint:info]; //checks if contextMenu exists (but only looks around area cursor's placed)
@@ -216,6 +221,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     }
     if ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) return;
     if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
+    lastAppClickToggled = clickBID;
     if ([clickTitle isEqual:@"Trash"] && finderFrontmost) return;
 
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
@@ -238,7 +244,6 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     if (clickToClose) { // activate/unhide when clicking dock icon while AltTab showing
         if (wasAppHidden && ![appDisplayed isEqual:@""]) [runningApp unhide];
         if (![runningApp isActive]) [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
-        lastAppClickToggled = clickBID; //order of operations important (keep here) (below activate)
         return;
     }
     
@@ -263,10 +268,8 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         int numProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
         if ((![self->appDisplayed isEqual:@""] && [self->lastAppClickToggled isEqual:@""]) || numProcesses != oldProcesses) {
             [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps]; //order of operations important (keep here) (above toggle update)
-            self->lastAppClickToggled = clickBID; //order of operations important (keep here) (below activate)
             return;
         }
-        self->lastAppClickToggled = clickBID; //order of operations important (keep here)
         if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
         if (clickedAfterExpose) [runningApp hide]; else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         
