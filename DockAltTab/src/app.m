@@ -29,6 +29,7 @@ NSString* lastShowStr = @"";
     [del bindScreens]; //load screen data
     del->appDisplayed = @"";
     del->appDisplayedPID = 0;
+    del->lastAppClickToggled = @"";
     del->autohide = [helperLib dockautohide];
     del->dockPos = [helperLib getDockPosition];
     del->dockPID = [helperLib getPID:@"com.apple.dock"]; //todo: refresh dockPID every x or so?

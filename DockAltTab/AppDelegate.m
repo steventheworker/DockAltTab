@@ -35,18 +35,23 @@ void showOverlay(NSString* appBID, pid_t appPID) {
     AppDelegate* del = [helperLib getApp];
     ticksSinceHide = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
-    if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && ![clickedBeforeDelayedExpose isEqual:del->appDisplayed])) { // show immediately
+//    NSLog(@"show %@ %@", del->lastAppClickToggled, clickedBeforeDelayedExpose);
+    //show flags
+    if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && [clickedBeforeDelayedExpose isEqual:@""] && [del->lastAppClickToggled isEqual:@""])) { // show immediately
         del->appDisplayed = appBID;
         del->appDisplayedPID = appPID;
         if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
         [app AltTabShow:appBID];
         dontCheckAgainAfterTrigger = NO;
+        del->lastAppClickToggled = @"";
+        clickedBeforeDelayedExpose = @"";
     } else { // show w/ delay
         shouldDelayedExpose = YES;
         NSString* oldBID = appBID;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * (((float)del->previewDelay / 100) * 2)), dispatch_get_main_queue(), ^(void){
             if (!shouldDelayedExpose) return;
-            if (![oldBID isEqual:del->appDisplayed] && ![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger) return;
+            //delayed show flags
+            if (![oldBID isEqual:del->appDisplayed] && ![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && [del->lastAppClickToggled isEqual:@""]) return;
             shouldDelayedExpose = NO; // don't run any other dispatch_after's
             CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
             AXUIElementRef el = [helperLib elementAtPoint:carbonPoint2];
@@ -63,13 +68,13 @@ void showOverlay(NSString* appBID, pid_t appPID) {
                     [app AltTabShow:oldBID];
                 }
                 dontCheckAgainAfterTrigger = NO;
+                del->lastAppClickToggled = @"";
+                clickedBeforeDelayedExpose = @"";
             }
         });
     }
-    clickedBeforeDelayedExpose = @"";
     clickedAfterExpose = NO;
     ticksSinceShown = 0;
-    del->lastAppClickToggled = @"";
 }
 void hideOverlay(pid_t mousePID, NSString* appBID, pid_t appPID) {
     if (ticksSinceHide++ < TICKS_TO_HIDE) return;
@@ -159,7 +164,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
                 [self bindClick: (CGEventRef) nil : YES];
                 dontCheckAgainAfterTrigger = YES;
-                NSLog(@"click to close");
+//                NSLog(@"click to close");
             }
         }
     }
@@ -209,7 +214,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 
     
     //checks to continue
-    NSLog(@"'%@': %d, '%@', '%d', '%@'", appDisplayed, appDisplayedPID, lastAppClickToggled, clickedAfterExpose, clickedBeforeDelayedExpose);
+//    NSLog(@"'%@': %d, '%@', '%d', '%@'", appDisplayed, appDisplayedPID, lastAppClickToggled, clickedAfterExpose, clickedBeforeDelayedExpose);
     clickedBeforeDelayedExpose = clickBID;
     clickedBeforeDelayedExposePID = clickPID;
     appDisplayed = clickBID;
@@ -221,7 +226,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     }
     if ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) return;
     if (![clickBID isEqual: appDisplayed] && ![clickBID isEqual: lastAppClickToggled] && (/*!clickedAfterExpose &&*/ !isBlacklisted)) return;
-    lastAppClickToggled = clickBID;
+    if (![clickBID isEqual:@""]) lastAppClickToggled = clickBID;
     if ([clickTitle isEqual:@"Trash"] && finderFrontmost) return;
 
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
