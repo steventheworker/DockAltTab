@@ -26,6 +26,7 @@ int spaceSwitchTicks = 0; // no. ticks since spaceSwitch started
 CGFloat preSwitchIconSizeWidth = 0; //full icon size while mouse @ coordinates (before switching spaces) --space switch is complete when dimensions match
 CGFloat preSwitchIconSizeHeight = 0; //full icon height while mouse @ coordinates (before switching spaces) --space switch is complete when dimensions match
 BOOL finishSpaceSwitch = NO;
+BOOL finishedSpaceSwitch = NO;
 
 /* show & hide */
 int ticksSinceHide = 0;
@@ -34,9 +35,10 @@ void showOverlay(NSString* appBID, pid_t appPID) {
     AppDelegate* del = [helperLib getApp];
     ticksSinceHide = 0;
     if ([del->appDisplayed isEqual:appBID]) return;
-//    NSLog(@"show %@ %@", del->lastAppClickToggled, clickedBeforeDelayedExpose);
-    //show flags
-    if (!del->previewDelay || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && [clickedBeforeDelayedExpose isEqual:@""] && [del->lastAppClickToggled isEqual:@""])) { // show immediately
+//    NSLog(@"show '%@'  '%@'  %d", del->lastAppClickToggled, clickedBeforeDelayedExpose, del->appDisplayedPID);
+    //show immediately flags
+    BOOL reopenedAfterSwitch = del->isReopenPreviewsChecked && finishedSpaceSwitch;
+    if (!del->previewDelay || reopenedAfterSwitch || (![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && [clickedBeforeDelayedExpose isEqual:@""] && [del->lastAppClickToggled isEqual:@""])) { // show immediately
         del->appDisplayed = appBID;
         del->appDisplayedPID = appPID;
         if (![del->appDisplayed isEqual:@""]) [app AltTabHide]; // hide other apps previews
@@ -80,6 +82,7 @@ void hideOverlay(pid_t mousePID, NSString* appBID, pid_t appPID) {
     AppDelegate* del = [helperLib getApp];
     if ([del->appDisplayed isEqual:@""]) return;
     del->appDisplayedPID = (pid_t) 0;
+    finishedSpaceSwitch = NO;
     if ([clickedBeforeDelayedExpose isEqual:del->appDisplayed]) {
         if (mousePID == del->dockPID) {
             if (![del->appDisplayed isEqual:appBID]) clickedBeforeDelayedExpose = @"";
@@ -119,7 +122,6 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     @synthesize isLockDockPositionChecked;
 /* app */
 - (void)timerTick: (NSTimer*) arg {
-    NSLog(@"%d", isReopenPreviewsChecked);
     NSPoint mouseLocation = [NSEvent mouseLocation];
     CGPoint pt = [helperLib carbonPointFrom:mouseLocation];
     AXUIElementRef el = [helperLib elementAtPoint:pt];
@@ -243,6 +245,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
             dockWidth = preSwitchIconSizeWidth - (ICONFUZZINESS + 0.1); //"reset" width by barely going outside of range
             dockHeight = preSwitchIconSizeHeight - (ICONFUZZINESS + 0.1); //"reset" height by barely going outside of range
             spaceSwitchTicks = 0;
+            finishedSpaceSwitch = NO;
             [self reopenDock];
         }
     }
@@ -281,6 +284,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         
         if (!finishSpaceSwitch) return; //isReopenPreviewsChecked:  show the preview (after switching spaces)
         finishSpaceSwitch = NO;
+        finishedSpaceSwitch = YES;
         [self reopenPreview : clickBID];
     });
 }
