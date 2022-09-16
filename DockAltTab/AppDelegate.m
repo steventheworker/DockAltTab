@@ -26,7 +26,6 @@ int spaceSwitchTicks = 0; // no. ticks since spaceSwitch started
 CGFloat preSwitchIconSizeWidth = 0; //full icon size while mouse @ coordinates (before switching spaces) --space switch is complete when dimensions match
 CGFloat preSwitchIconSizeHeight = 0; //full icon height while mouse @ coordinates (before switching spaces) --space switch is complete when dimensions match
 BOOL finishSpaceSwitch = NO;
-BOOL reopenPreviewsChecked = YES;
 
 /* show & hide */
 int ticksSinceHide = 0;
@@ -113,19 +112,21 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 @implementation AppDelegate
     @synthesize isMenuItemChecked;
     @synthesize isClickToggleChecked;
+    @synthesize isReopenPreviewsChecked;
     @synthesize previewDelay;
     @synthesize isLockDockContentsChecked;
     @synthesize isLockDockSizeChecked;
     @synthesize isLockDockPositionChecked;
 /* app */
 - (void)timerTick: (NSTimer*) arg {
+    NSLog(@"%d", isReopenPreviewsChecked);
     NSPoint mouseLocation = [NSEvent mouseLocation];
     CGPoint pt = [helperLib carbonPointFrom:mouseLocation];
     AXUIElementRef el = [helperLib elementAtPoint:pt];
     NSMutableDictionary* info = [NSMutableDictionary dictionaryWithDictionary: [helperLib axInfo:el]];
     pid_t tarPID = [info[@"PID"] intValue];
 
-    if ((autohide || reopenPreviewsChecked) && !isSpaceSwitchComplete(dockWidth, dockHeight)) return;
+    if ((autohide || isReopenPreviewsChecked) && !isSpaceSwitchComplete(dockWidth, dockHeight)) return;
     //update dock size, if on dock icon
     if ([info[@"role"] isEqual:@"AXDockItem"]) {
         dockWidth = [info[@"width"] floatValue];
@@ -187,7 +188,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     });
 }
 - (void) reopenDock { // reopen / focus the dock w/ fn + a (after switching spaces)
-    if (reopenPreviewsChecked) finishSpaceSwitch = YES; // call reopenPreview --after finished hiding
+    if (isReopenPreviewsChecked) finishSpaceSwitch = YES; // call reopenPreview --after finished hiding
     if (!autohide) return; //don't reopen dock
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * T_TO_SWITCH_SPACE), dispatch_get_main_queue(), ^(void){[helperLib runScript: [app reopenDockStr:YES]];});
 }
@@ -233,7 +234,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     BOOL wasAppHidden = [runningApp isHidden];
 
     // reopen preview when clicks switches spaces && reopen dock w/ autohide turned on (consistent toggle click behavior)
-    if ((autohide || reopenPreviewsChecked) && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && !wasAppHidden && [runningApp isActive]) {
+    if ((autohide || isReopenPreviewsChecked) && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && !wasAppHidden && [runningApp isActive]) {
         BOOL willSwitchSpace = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"\n\
         tell application \"System Events\" to tell process \"%@\" to return allCount - (count of windows)", appDisplayed, clickTitle]] intValue] != 0; // if app has windows in another spaces, (YES) clicking will switch
         if (willSwitchSpace) {
@@ -278,7 +279,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
         if (clickedAfterExpose) [runningApp hide]; else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         
-        if (!finishSpaceSwitch) return; //reopenPreviewsChecked:  show the preview (after switching spaces)
+        if (!finishSpaceSwitch) return; //isReopenPreviewsChecked:  show the preview (after switching spaces)
         finishSpaceSwitch = NO;
         [self reopenPreview : clickBID];
     });

@@ -46,6 +46,7 @@
     __weak IBOutlet NSTextField *updateRemindRef;
     BOOL                    isMenuItemChecked;
     BOOL                    isClickToggleChecked;
+    BOOL                    isReopenPreviewsChecked;
     BOOL                    isLockDockContentsChecked;
     BOOL                    isLockDockSizeChecked;
     BOOL                    isLockDockPositionChecked;
@@ -60,6 +61,7 @@
 }
 @property BOOL isMenuItemChecked;
 @property BOOL isClickToggleChecked;
+@property BOOL isReopenPreviewsChecked;
 @property BOOL isLockDockContentsChecked;
 @property BOOL isLockDockSizeChecked;
 @property BOOL isLockDockPositionChecked;

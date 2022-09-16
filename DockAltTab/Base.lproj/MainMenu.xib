@@ -814,9 +814,9 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K9P-HQ-vqn">
-                        <rect key="frame" x="78" y="240" width="323" height="18"/>
+                        <rect key="frame" x="66" y="240" width="347" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Click dock icons to toggle showing &amp; hiding apps" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VlZ-GH-2eM">
+                        <buttonCell key="cell" type="check" title="Modify click behavior (toggle showing &amp; hiding apps)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VlZ-GH-2eM">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -881,6 +881,17 @@
                         </view>
                         <color key="fillColor" red="0.41237113402061853" green="0.0050482545309609179" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </box>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CZ5-xc-4LQ">
+                        <rect key="frame" x="90" y="219" width="303" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="check" title="Reopen previews on clicks that switch spaces" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PVk-3m-SoM">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isReopenPreviewsChecked" id="8WC-iq-a1C"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <point key="canvasLocation" x="89" y="403"/>
