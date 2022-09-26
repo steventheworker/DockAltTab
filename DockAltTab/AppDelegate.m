@@ -385,6 +385,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 - (IBAction)AltTabRestart:(id)sender {
     dockPos = [helperLib getDockPosition]; // update dockPos on restart AltTab
+    NSURL* appPath = [[helperLib runningAppFromAxTitle:@"AltTab"] executableURL];
     //(Execute shell command) "kill -9 AltTabPID"
     NSString* killCommand = [@"kill -9 " stringByAppendingString:[@(AltTabPID) stringValue]];
     NSTask *task = [[NSTask alloc] init];
@@ -393,12 +394,11 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     [task launch];
     //make sure old process dead
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.333), dispatch_get_main_queue(), ^(void){
-        //launch w/ applescript
-        NSDictionary *error = nil;
-        NSString* scriptTxt = @"tell application \"AltTab\" to activate";
-        NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
-        [script executeAndReturnError:&error];
-        if (error) NSLog(@"run error: %@", error);
+        if (appPath) { //relaunch w/ path (shell)
+            NSError *error = nil;
+            NSArray *arguments = [NSArray new]; // [NSArray arrayWithObjects:@"Argument1", @"Argument2", nil];
+            [[NSWorkspace sharedWorkspace] launchApplicationAtURL:appPath options:0 configuration:[NSDictionary dictionaryWithObject:arguments forKey:NSWorkspaceLaunchConfigurationArguments] error:&error];
+        } else [helperLib runScript:@"tell application \"AltTab\" to activate"]; //no running AltTab, relaunch w/ applescript
         //make sure new process spawned
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1.22), dispatch_get_main_queue(), ^(void){
            self->AltTabPID = [helperLib getPID:@"com.steventheworker.alt-tab-macos"];
