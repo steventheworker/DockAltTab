@@ -70,6 +70,8 @@ NSString* lastShowStr = @"";
     Boolean valid = false;
     AppDelegate* del = [helperLib getApp];
     //dock settings
+    NSString* dockDelayStr = CFBridgingRelease(CFPreferencesCopyAppValue(CFSTR("autohide-delay"), CFSTR("com.apple.dock")));
+    del->dockDelay = !dockDelayStr ? 0.5 : [dockDelayStr floatValue]; //default 0.5
     del->isLockDockContentsChecked = CFPreferencesGetAppBooleanValue( CFSTR("contents-immutable"), CFSTR("com.apple.dock"), &valid);
     del->isLockDockSizeChecked = CFPreferencesGetAppBooleanValue( CFSTR("size-immutable"), CFSTR("com.apple.dock"), &valid);
     del->isLockDockPositionChecked = CFPreferencesGetAppBooleanValue( CFSTR("position-immutable"), CFSTR("com.apple.dock"), &valid);
@@ -82,6 +84,7 @@ NSString* lastShowStr = @"";
 + (void) syncUI {
     AppDelegate* del = [helperLib getApp];
     //dock settings
+    del->dockDelayInput.floatValue = del->dockDelay;
     del->lockDockContentsCheckbox.state = del->isLockDockContentsChecked;
     del->lockDockSizeCheckbox.state = del->isLockDockSizeChecked;
     del->lockDockPositionCheckbox.state = del->isLockDockPositionChecked;

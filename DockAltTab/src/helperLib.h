@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*) get: (NSString*) url; // http(s) "GET"
 + (void) killDock;
 + (void) dockSetting: (CFStringRef) pref : (BOOL) val;
++ (void) dockSettingFloat: (CFStringRef) pref : (float) val;
 + (NSString*) twoSigFigs: (float) val;
 + (BOOL) dockautohide;
 + (NSString*) runScript: (NSString*) scriptTxt;

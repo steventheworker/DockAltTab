@@ -246,6 +246,10 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     CFPreferencesSetAppValue(pref, !val ? kCFBooleanFalse : kCFBooleanTrue, CFSTR("com.apple.dock"));
     CFPreferencesAppSynchronize(CFSTR("com.apple.dock"));
 }
++ (void) dockSettingFloat:  (CFStringRef) pref : (float) val { //accepts int or Boolean (as int) settings only
+    CFPreferencesSetAppValue(pref, (__bridge CFPropertyListRef _Nullable)([NSNumber numberWithFloat:val]), CFSTR("com.apple.dock"));
+    CFPreferencesAppSynchronize(CFSTR("com.apple.dock"));
+}
 + (NSString*) getDockPosition {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"orientation"];

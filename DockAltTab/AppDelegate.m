@@ -117,6 +117,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     @synthesize isClickToggleChecked;
     @synthesize isReopenPreviewsChecked;
     @synthesize previewDelay;
+    @synthesize dockDelay;
     @synthesize isLockDockContentsChecked;
     @synthesize isLockDockSizeChecked;
     @synthesize isLockDockPositionChecked;
@@ -375,6 +376,18 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 - (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
 - (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
 - (IBAction)lockDockContents:(id)sender {[helperLib dockSetting: CFSTR("contents-immutable") : (BOOL) lockDockContentsCheckbox.state];}
+- (IBAction)setDockDelay:(float)setVal { //onSubmit / enter key / "Continuously Updates Value" checked in bindings
+    setVal = dockDelayInput.floatValue;
+    if (setVal < 0) setVal = dockDelay;
+    dockDelay = setVal;
+    NSLog(@"%f", setVal);
+    [helperLib dockSettingFloat: CFSTR("autohide-delay") : setVal];
+    dockDelayInput.floatValue = setVal;
+}
+- (void)setNilValueForKey:(NSString *)key
+{
+    if ([key isEqual:@"dockDelay"]) dockDelayInput.floatValue = dockDelay; // reset text field value on empty (nil)
+}
 - (IBAction)kill:(id)sender {
     [helperLib killDock];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1), dispatch_get_main_queue(), ^(void){

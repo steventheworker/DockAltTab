@@ -50,6 +50,7 @@
     BOOL                    isLockDockContentsChecked;
     BOOL                    isLockDockSizeChecked;
     BOOL                    isLockDockPositionChecked;
+    float                   dockDelay;
     int                     previewDelay;
     __weak IBOutlet NSButton *menuItemCheckBox;    
     __weak IBOutlet NSButton *clickToggleCheckBox;
@@ -57,6 +58,7 @@
     __weak IBOutlet NSButton *lockDockContentsCheckbox;
     __weak IBOutlet NSButton *lockDockSizeCheckbox;
     __weak IBOutlet NSButton *lockDockPositionCheckbox;
+    __weak IBOutlet NSTextField *dockDelayInput;
     __weak IBOutlet NSSliderCell *previewDelaySlider;
     __weak IBOutlet NSBox *unsupportedBox;
 }
@@ -66,7 +68,8 @@
 @property BOOL isLockDockContentsChecked;
 @property BOOL isLockDockSizeChecked;
 @property BOOL isLockDockPositionChecked;
-@property int previewDelay;
+@property (nonatomic) float dockDelay; // text input value (0 to Infinity)
+@property int previewDelay; // slider value (1 to 100)
 //- (float) timeDiff;
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose;
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose;
