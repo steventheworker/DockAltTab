@@ -4,7 +4,7 @@
 
 ![alt text](https://github.com/steventheworker/DockAltTab/blob/main/DockAltTab/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png?raw=true)
 
-### v2.3 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.3/DockAltTab-v2.3.zip
+### v2.4 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.4/DockAltTab-v2.4.zip
 
 ##### OR ALTERNATIVELY,
 
