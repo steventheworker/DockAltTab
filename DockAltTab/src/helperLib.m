@@ -182,7 +182,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
             if (winMinimized == kCFBooleanTrue && onActiveSpace) numWindows++;
 //            CFRelease(winMinimized);
         }
-//        CFRelease(elementList); //causes crashes
+        if (elementList) CFRelease(elementList);
     }
     CFRelease(windowList);
     return numWindows;
@@ -210,9 +210,9 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         AXUIElementCopyAttributeValue(el, kAXSubroleAttribute, (void*)&subrole);                              //subrole
         AXUIElementCopyAttributeValue(el, kAXIsApplicationRunningAttribute, (void *)&axIsApplicationRunning);  //running?
         AXValueRef sizeAxRef;
-        AXUIElementCopyAttributeValue(el, kAXSizeAttribute, (CFTypeRef*) &sizeAxRef);
+        AXUIElementCopyAttributeValue(el, kAXSizeAttribute, (void*) &sizeAxRef);
         AXValueGetValue(sizeAxRef, kAXValueCGSizeType, &size);
-//        CFRelease(sizeAxRef);
+        if (sizeAxRef) CFRelease(sizeAxRef);
     }
     return [NSDictionary dictionaryWithObjectsAndKeys:
                                 !axTitle ? @"" : axTitle, @"title",
