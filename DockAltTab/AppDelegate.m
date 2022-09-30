@@ -273,7 +273,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
             showingContextMenu = [app contextMenuExists: carbonPoint2:info2]; //checks if contextMenu exists (but only looks around area cursor's placed)
             if (showingContextMenu) return;
         }
-
+        
         //show / hide
         int numProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
         if ((![self->appDisplayed isEqual:@""] && [self->lastAppClickToggled isEqual:@""]) || numProcesses != oldProcesses) {
@@ -281,7 +281,10 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
             return;
         }
         if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
-        if (clickedAfterExpose) [runningApp hide]; else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+        if (clickedAfterExpose || ![runningApp isHidden]) {
+            [runningApp hide];
+            clickedAfterExpose = YES;
+        }else [runningApp activateWithOptions:NSApplicationActivateIgnoringOtherApps];
         
         if (!finishSpaceSwitch) return; //isReopenPreviewsChecked:  show the preview (after switching spaces)
         finishSpaceSwitch = NO;
