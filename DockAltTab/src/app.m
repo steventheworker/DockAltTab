@@ -111,12 +111,17 @@ NSString* lastShowStr = @"";
     NSPoint pt = [NSEvent mouseLocation];
     int x = 0;
     int y = 0;
+    BOOL isOnExtX = pt.x < 0 || (pt.x > del->primaryScreenWidth);
+    BOOL isOnExtY = pt.y < 0 || (pt.y > del->primaryScreenHeight);
+    BOOL isOnExt = isOnExtX || isOnExtY;
     if ([del->dockPos isEqual:@"bottom"]) {
         x = pt.x - del->dockWidth * 2;
         y = del->dockHeight;
+        if (isOnExt) y = y + del->extendedOffsetY;
     } else if ([del->dockPos isEqual:@"left"]) {
         y = pt.y - del->dockHeight * 2;
         x = del->dockWidth;
+        if (isOnExt) x = x - del->extScreenWidth;
     } else if ([del->dockPos isEqual:@"right"]) {
         y = pt.y - del->dockHeight * 2;
         x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
