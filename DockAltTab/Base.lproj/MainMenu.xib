@@ -19,6 +19,7 @@
                 <outlet property="clickToggleCheckBox" destination="K9P-HQ-vqn" id="nE7-6d-lU7"/>
                 <outlet property="delayLabel" destination="9Eh-go-GrW" id="3Qc-EI-vF8"/>
                 <outlet property="dockDelayInput" destination="OVf-LN-RTw" id="KfQ-xP-LO1"/>
+                <outlet property="h_label" destination="e73-yL-iwa" id="ie7-ba-e5J"/>
                 <outlet property="lockDockContentsCheckbox" destination="2qA-Dr-kaN" id="WLU-eC-ANT"/>
                 <outlet property="lockDockPositionCheckbox" destination="8Xf-ze-N6I" id="3g1-MU-1wG"/>
                 <outlet property="lockDockSizeCheckbox" destination="KUb-j5-Idy" id="TGn-YQ-Hmf"/>
@@ -28,6 +29,7 @@
                 <outlet property="reopenPreviewsCheckbox" destination="CZ5-xc-4LQ" id="hw0-r7-m7W"/>
                 <outlet property="unsupportedBox" destination="okj-8c-j1d" id="vPZ-xv-aW8"/>
                 <outlet property="updateRemindRef" destination="lXr-Qx-AJz" id="yec-s0-HE4"/>
+                <outlet property="w_label" destination="OZ7-df-NQc" id="1GL-Ml-nL9"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -946,6 +948,24 @@
                             <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isReopenPreviewsChecked" id="8WC-iq-a1C"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OZ7-df-NQc">
+                        <rect key="frame" x="25" y="284" width="457" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="tell application &quot;AltTab&quot; to" id="hh3-Gr-A6E">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e73-yL-iwa">
+                        <rect key="frame" x="25" y="266" width="457" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="..." id="p31-Fa-voJ">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="9Eh-go-GrW" firstAttribute="leading" secondItem="ChD-mw-OsW" secondAttribute="trailing" constant="6" id="62B-a9-aId"/>

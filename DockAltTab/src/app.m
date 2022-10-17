@@ -127,6 +127,7 @@ NSString* lastShowStr = @"";
         x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
     }
     lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\" x %d y %d %@", appBID, x, y, [del->dockPos isEqual:@"right"] ? @"isRight true" : @""];
+    del->h_label.stringValue = lastShowStr;
     return lastShowStr;
 }
 + (void) AltTabShow: (NSString*) appBID {

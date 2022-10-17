@@ -61,6 +61,9 @@
     __weak IBOutlet NSTextField *dockDelayInput;
     __weak IBOutlet NSSliderCell *previewDelaySlider;
     __weak IBOutlet NSBox *unsupportedBox;
+    
+    __weak IBOutlet NSTextField *w_label;
+    __weak IBOutlet NSTextField *h_label;
 }
 @property BOOL isMenuItemChecked;
 @property BOOL isClickToggleChecked;
