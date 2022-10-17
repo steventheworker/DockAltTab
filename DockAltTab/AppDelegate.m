@@ -302,12 +302,13 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     if ((![appDisplayed isEqual:@""] || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
     
     if (clickToClose && steviaOS) {
-        if (![appDisplayed isEqual:@""]) { // if AltTab showing
+        if (![appDisplayed isEqual:@""] && [info[@"PID"] intValue] == dockPID) { // if AltTab showing
+            shiftDown = shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"];
             if (shiftDown) {
                 [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
 //                return;
             }
-            if (cmdDown && [info[@"PID"] intValue] == dockPID) {
+            if (cmdDown) {
                 [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"cmdClick\""];
 //                return;
             }
@@ -317,6 +318,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     if ([info[@"role"] isEqual:@"AXDockItem"]) {
         dockWidth = [info[@"width"] floatValue];
         dockHeight = [info[@"height"] floatValue];
+        NSLog(@"click - cmd=%d shift=%d", cmdDown, shiftDown);
     }
     if (!isSpaceSwitchComplete(dockWidth, dockHeight)) return;
     [self dockItemClickHide: carbonPoint : el : info : clickToClose];
