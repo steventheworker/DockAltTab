@@ -126,6 +126,10 @@ NSString* lastShowStr = @"";
         y = pt.y - del->dockHeight * 2;
         x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
     }
+    if (!x && !y) { // accessiblity bug (#issue4 on github)  --show default AltTab location (centered)
+        lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\"", appBID];
+        return lastShowStr;
+    }
     lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\" x %d y %d %@", appBID, x, y, [del->dockPos isEqual:@"right"] ? @"isRight true" : @""];
     return lastShowStr;
 }
