@@ -166,7 +166,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
-                [self bindClick: (CGEventRef) nil : YES];
+                [self bindClick: (CGEventRef) nil : kCGEventLeftMouseDown : YES];
                 dontCheckAgainAfterTrigger = YES;
 //                NSLog(@"click to close");
             }
@@ -292,7 +292,10 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         [self reopenPreview : clickBID];
     });
 }
-- (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
+- (void) bindClick: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
+    BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
+    BOOL rightBtn = (etype == kCGEventRightMouseDown);
+    if (rightBtn && !isOverlayShowing) return; // DockAltTab doesn't use right clicks (except if overlayShowing => check if isDockClick then hideOverlay and AXShowMenu (context menu))
     NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
     BOOL ctrlDown = theFlags & NSEventModifierFlagControl;
     BOOL optDown = theFlags & NSEventModifierFlagOption;
@@ -301,10 +304,21 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
-    BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
-    if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
     
-    /* uncomment */ if ([info[@"role"] isEqual:@"AXDockItem"]) NSLog(@"click - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
+//    /* uncomment to restrict log to dock clicks */ if ([info[@"role"] isEqual:@"AXDockItem"])
+//    /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
+    
+    // right clicks
+    if (rightBtn) {
+        if ([info[@"PID"] intValue] == dockPID && isOverlayShowing && !dontCheckAgainAfterTrigger) {
+            dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
+            [app AltTabHide];
+        }
+        return;
+    }
+    
+    // left clicks
+    if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
     if ([info[@"PID"] intValue] == dockPID) {
         if (ctrlDown) {
             if (clickToClose && isOverlayShowing) AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
@@ -314,6 +328,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
                 NSString *path = @"/Users/super/Desktop/important/SystemFiles/click-cmd-cycle-windows.scpt"; //todo: use steviaOSPath (add in afterBTTLaunch.applescript)
                 NSTask *task = [[NSTask alloc] init];// BTT trigger_named  has ~ 7sec delay (on this script only)
                 NSString *commandToRun = [NSString stringWithFormat:@"/usr/bin/osascript -e \'run script \"%@\"'", path];
+
                 NSArray *arguments = [NSArray arrayWithObjects: @"-c" , commandToRun, nil];
                 [task setLaunchPath:@"/bin/sh"];
                 [task setArguments:arguments];
