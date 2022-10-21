@@ -294,18 +294,23 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 - (void) bindClick: (CGEventRef) e : (BOOL) clickToClose {
     NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
+    BOOL ctrlDown = theFlags & NSEventModifierFlagControl;
+    BOOL optDown = theFlags & NSEventModifierFlagOption;
     BOOL cmdDown = theFlags & NSEventModifierFlagCommand;
     BOOL shiftDown = theFlags & NSEventModifierFlagShift;
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
-    if ((![appDisplayed isEqual:@""] || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
+    BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
+    if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
     
-    /* uncomment */ if ([info[@"role"] isEqual:@"AXDockItem"]) NSLog(@"click - cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
-    if (steviaOS && [info[@"PID"] intValue] == dockPID) {
-        BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
-        if (cmdDown) {
-            if (clickToClose && isOverlayShowing) { // only runScript if overlay still visible (because overlay hides keystrokes from BTT)
+    /* uncomment */ if ([info[@"role"] isEqual:@"AXDockItem"]) NSLog(@"click - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
+    if ([info[@"PID"] intValue] == dockPID) {
+        if (ctrlDown) {
+            if (clickToClose && isOverlayShowing) AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
+            return; // [Control] + Click:  always prevent clickToggle
+        } else if (optDown) {return;} else if (cmdDown) { // [Option] + Click:  always prevent clickToggle
+            if (steviaOS && clickToClose && isOverlayShowing) { // only runScript if overlay still visible (because overlay hides keystrokes from BTT)
                 NSString *path = @"/Users/super/Desktop/important/SystemFiles/click-cmd-cycle-windows.scpt"; //todo: use steviaOSPath (add in afterBTTLaunch.applescript)
                 NSTask *task = [[NSTask alloc] init];// BTT trigger_named  has ~ 7sec delay (on this script only)
                 NSString *commandToRun = [NSString stringWithFormat:@"/usr/bin/osascript -e \'run script \"%@\"'", path];
@@ -314,11 +319,11 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
                 [task setArguments:arguments];
                 [task launch];
             }
-           return; // [Command] + Click:  always prevent dockItemClickHide
+           return; // [Command] + Click:  always prevent clickToggle
         } else {
             shiftDown = shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"]; // overlay absorbs modifier keys => get true keyState from AltTab
-            if (shiftDown && clickToClose && isOverlayShowing) [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
-            if (shiftDown) return; // [Shift] + Click: always prevent dockItemClickHide
+            if (steviaOS && shiftDown && clickToClose && isOverlayShowing) [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
+            if (shiftDown) return; // [Shift] + Click: always prevent clickToggle
         }
      }
     
