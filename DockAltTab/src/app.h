@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 @interface app : NSObject
@@ -17,5 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) AltTabHide;
 + (float) maxDelay;
 + (NSString*) reopenDockStr: (BOOL) triggerEscape;
++ (void) activateApp: (NSRunningApplication*) app;
 @end
 NS_ASSUME_NONNULL_END

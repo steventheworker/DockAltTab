@@ -143,6 +143,10 @@ NSString* lastShowStr = @"";
 }
 + (float) maxDelay {return DELAY_MAX;}
 + (NSString*) getCurrentVersion {return [helperLib get: (NSString*) versionLink];}
++ (void) activateApp: (NSRunningApplication*) app {
+    [app activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+    if ([[app localizedName] isEqual:@"Firefox"]) [helperLib runScript:@"tell application \"System Events\" to tell process \"Firefox\" to perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))"];
+}
 + (NSString*) reopenDockStr: (BOOL) triggerEscape { // reopen / focus the dock w/ fn + a (after switching spaces)
     NSString* triggerEscapeStr = @"";
     if (triggerEscape) triggerEscapeStr = @"        delay 0.15\n\
