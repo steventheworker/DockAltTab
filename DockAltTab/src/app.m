@@ -23,7 +23,9 @@ NSString* lastShowStr = @"";
 @implementation app
 //initialize app variables (onLaunch)
 + (void) initVars {
-    NSLog(@"%@", @"running app :)\n-------------------------------------------------------------------");
+    NSLog(@"DockAltTab started\n----------------------------------------------------------------------------");
+    [helperLib listenClicks];
+    [helperLib listenScreens];
     AppDelegate* del = [helperLib getApp];
     //functional
     [del bindScreens]; //load screen data

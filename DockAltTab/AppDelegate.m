@@ -301,24 +301,30 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     NSDictionary* info = [helperLib axInfo:el];
     if ((![appDisplayed isEqual:@""] || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
     
-    if (clickToClose && steviaOS) {
-        if (![appDisplayed isEqual:@""] && [info[@"PID"] intValue] == dockPID) { // if AltTab showing
-            shiftDown = shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"];
-            if (shiftDown) {
-                [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
-//                return;
+    /* uncomment */ if ([info[@"role"] isEqual:@"AXDockItem"]) NSLog(@"click - cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
+    if (steviaOS && [info[@"PID"] intValue] == dockPID) {
+        BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
+        if (cmdDown) {
+            if (clickToClose && isOverlayShowing) { // only runScript if overlay still visible (because overlay hides keystrokes from BTT)
+                NSString *path = @"/Users/super/Desktop/important/SystemFiles/click-cmd-cycle-windows.scpt"; //todo: use steviaOSPath (add in afterBTTLaunch.applescript)
+                NSTask *task = [[NSTask alloc] init];// BTT trigger_named  has ~ 7sec delay (on this script only)
+                NSString *commandToRun = [NSString stringWithFormat:@"/usr/bin/osascript -e \'run script \"%@\"'", path];
+                NSArray *arguments = [NSArray arrayWithObjects: @"-c" , commandToRun, nil];
+                [task setLaunchPath:@"/bin/sh"];
+                [task setArguments:arguments];
+                [task launch];
             }
-            if (cmdDown) {
-                [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"cmdClick\""];
-//                return;
-            }
+           return; // [Command] + Click:  always prevent dockItemClickHide
+        } else {
+            shiftDown = shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"]; // overlay absorbs modifier keys => get true keyState from AltTab
+            if (shiftDown && clickToClose && isOverlayShowing) [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
+            if (shiftDown) return; // [Shift] + Click: always prevent dockItemClickHide
         }
      }
     
     if ([info[@"role"] isEqual:@"AXDockItem"]) {
         dockWidth = [info[@"width"] floatValue];
         dockHeight = [info[@"height"] floatValue];
-        NSLog(@"click - cmd=%d shift=%d", cmdDown, shiftDown);
     }
     if (!isSpaceSwitchComplete(dockWidth, dockHeight)) return;
     [self dockItemClickHide: carbonPoint : el : info : clickToClose];
@@ -435,12 +441,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 
 
 /* Lifecycle */
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    NSLog(@"DockAltTab started");
-    [app initVars];
-    [helperLib listenClicks];
-    [helperLib listenScreens];
-}
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {[app initVars];}
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
     [timer invalidate];
     timer = nil;
