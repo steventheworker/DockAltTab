@@ -312,8 +312,15 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     // right clicks
     if (rightBtn) {
         if ([info[@"PID"] intValue] == dockPID && isOverlayShowing && !dontCheckAgainAfterTrigger) {
-            dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
             [app AltTabHide];
+            dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
+            if (CGEventGetIntegerValueField(e, kCGMouseEventSubtype) == 0) { // (0) virtual clicks (BTT)/external mouse  (1)?(2)?  (3) Trackpad
+                setTimeout(^{
+                    if ([app contextMenuExists:carbonPoint : info]) return;
+                    AXUIElementRef el = [helperLib elementAtPoint:carbonPoint]; // can't access old el from dispatch_after
+                    AXUIElementPerformAction(el, CFSTR("AXShowMenu")); // virtual clicks/BTT click needs extra help (probably from being a little slower)
+                }, 100);
+            }
         }
         return;
     }
