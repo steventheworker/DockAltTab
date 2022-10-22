@@ -314,11 +314,15 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         if ([info[@"PID"] intValue] == dockPID && isOverlayShowing && !dontCheckAgainAfterTrigger) {
             [app AltTabHide];
             dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
-            if (!steviaOS) setTimeout(^{ /* handle virtual clicks, but triggering ctrl + (left click) w/ BetterTouchTool (aka steviaOS) is better  --because it flickers less */
-                if ([app contextMenuExists:carbonPoint : info]) return;
-                AXUIElementRef el = [helperLib elementAtPoint:[helperLib carbonPointFrom: [NSEvent mouseLocation]]]; // can't access old el from dispatch_after
-                if ([[helperLib axInfo:el][@"title"] isEqual: info[@"title"]]) AXUIElementPerformAction(el, CFSTR("AXShowMenu")); // virtual clicks/BTT click needs extra help (probably from being a little slower)
-            }, 107);
+            [helperLib runScript:@"delay 0.003"]; // setTimeout/dispatch_after blocks are unable to see dock el's, but blocking thread like this works
+
+            carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
+            el = [helperLib elementAtPoint:carbonPoint];
+            info = [helperLib axInfo:el];
+            
+            if ([app contextMenuExists:carbonPoint : info])  return NSLog(@"context already existed");
+            AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
+            NSLog(@" obj-c show contextmenu");
         }
         return;
     }
@@ -331,7 +335,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
             return; // [Control] + Click:  always prevent clickToggle
         } else if (optDown) {return;} else if (cmdDown) { // [Option] + Click:  always prevent clickToggle
             if (steviaOS && clickToClose && isOverlayShowing) { // only runScript if overlay still visible (because overlay hides keystrokes from BTT)
-                NSString *path = @"/Users/super/Desktop/important/SystemFiles/click-cmd-cycle-windows.scpt"; //todo: use steviaOSPath (add in afterBTTLaunch.applescript)
+                NSString *path = [NSString stringWithFormat:@"%@/click-cmd-cycle-windows.scpt", steviaOSSystemFiles];
                 NSTask *task = [[NSTask alloc] init];// BTT trigger_named  has ~ 7sec delay (on this script only)
                 NSString *commandToRun = [NSString stringWithFormat:@"/usr/bin/osascript -e \'run script \"%@\"'", path];
 

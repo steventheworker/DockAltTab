@@ -28,6 +28,7 @@
     BOOL                   unsupportedAltTab;
     BOOL                   autohide;
     BOOL                   steviaOS;
+    NSString*              steviaOSSystemFiles;
 
     //app stuff
     NSString*              appVersion;

@@ -41,8 +41,10 @@ NSString* lastShowStr = @"";
         del->AltTabPID = [helperLib getPID:@"com.lwouis.alt-tab-macos"];
     }
     del->finderPID = [helperLib getPID:@"com.apple.Finder"];
-    if ([helperLib getPID:@"com.hegenberg.BetterTouchTool"] != 0 && [[helperLib runScript:@"tell application \"BetterTouchTool\" to return get_number_variable \"steviaOS\""] isEqual:@"1"]) {
+    
+    if ([helperLib getPID:@"com.hegenberg.BetterTouchTool"] != 0 && [[helperLib runScript:@"tell application \"BetterTouchTool\" to get_number_variable \"steviaOS\""] isEqual:@"1"]) {
         del->steviaOS = YES;
+        del->steviaOSSystemFiles = [app fullDirPath: [helperLib runScript:@"tell application \"BetterTouchTool\" to get_string_variable \"steviaOSSystemFiles\""]];
     } else del->steviaOS = NO;
     NSLog(@"(%lu) finder windows/processes found after launch", [[helperLib getRealFinderWindows] count]);
     //UI variables
@@ -98,8 +100,8 @@ NSString* lastShowStr = @"";
 }
 /* utilities that depend on (AppDelegate *) */
 + (BOOL) contextMenuExists:(CGPoint) carbonPoint : (NSDictionary*) info {
-    AppDelegate* del = [helperLib getApp];
     if ([info[@"role"] isEqual:@"AXMenuItem"] || [info[@"role"] isEqual:@"AXMenu"]) return YES;
+    AppDelegate* del = [helperLib getApp];
     int multiplierX = [del->dockPos isEqual:@"left"] || [del->dockPos isEqual:@"right"] ? ([del->dockPos isEqual:@"left"] ? 1 : -1) : 0;
     int multiplierY = [del->dockPos isEqual:@"bottom"] ? -1 : 0;
     CGPoint testPoint = CGPointMake(carbonPoint.x + multiplierX * CONTEXTDISTANCE, carbonPoint.y + multiplierY * CONTEXTDISTANCE); //check if there is an open AXMenu @ testPoint next to the mouseLocation (DockLeft +x, DockRight -x, DockBottom -y)
@@ -157,5 +159,11 @@ NSString* lastShowStr = @"";
         key up 63\n%@\n\
     end tell", triggerEscapeStr];
 }
+//misc.
++ (NSString*) fullDirPath: (NSString*) _path {
+    unichar char1 = [_path characterAtIndex:0];
+    if ([[NSString stringWithCharacters:&char1 length:1] isEqual:@"~"]) {
+        return [NSString stringWithFormat:@"%@%@", NSHomeDirectory(), [_path substringFromIndex:1]];
+    } else return _path;
+}
 @end
-
