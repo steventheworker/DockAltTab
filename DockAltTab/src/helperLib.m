@@ -56,7 +56,6 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     }
     return [[script executeAndReturnError:&error] stringValue];
 }
-+ (void) setTimeout: (void(^)(void)) cb : (int) delay {dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * (delay)), dispatch_get_main_queue(), cb);}
 
 // point math / screens
 + (CGPoint) carbonPointFrom:(NSPoint) cocoaPoint {

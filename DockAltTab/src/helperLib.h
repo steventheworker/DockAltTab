@@ -15,7 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 // misc
 + (NSString*) get: (NSString*) url; // http(s) "GET"
 + (NSString*) runScript: (NSString*) scriptTxt;
-+ (void) setTimeout: (void(^)(void)) cb : (int) delay;
 // point math / screens
 + (CGPoint) carbonPointFrom: (NSPoint) cocoaPoint;
 + (NSScreen*) getScreen: (int) screenIndex;

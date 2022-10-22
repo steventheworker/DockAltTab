@@ -8,12 +8,13 @@
 #import "AppDelegate.h"
 #import "src/helperLib.h"
 #import "src/app.h"
+#import "src/globals.h"
 
 /* config */
 const int TICKS_TO_HIDE = 2; // number of ticks * TICK_DELAY = x seconds
 
 /* hardcoded apple details */
-const float T_TO_SWITCH_SPACE = 0.666 / 2; // time to wait before reshowing dock (when clicking switches spaces)
+const float T_TO_SWITCH_SPACE = 666 / 2; // (ms) time to wait before reshowing dock (when clicking switches spaces)
 
 /* global variables */
 BOOL shouldDelayedExpose = NO;
@@ -49,11 +50,11 @@ void showOverlay(NSString* appBID, pid_t appPID) {
     } else { // show w/ delay
         shouldDelayedExpose = YES;
         NSString* oldBID = appBID;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * (((float)del->previewDelay / 100) * 2)), dispatch_get_main_queue(), ^(void){
+        setTimeout(^(void) {
             if (!shouldDelayedExpose) return;
             //delayed show flags
             if (![oldBID isEqual:del->appDisplayed] && ![del->appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && [del->lastAppClickToggled isEqual:@""]) return;
-            shouldDelayedExpose = NO; // don't run any other dispatch_after's
+            shouldDelayedExpose = NO; // don't run any other setTimeout's
             CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
             AXUIElementRef el = [helperLib elementAtPoint:carbonPoint2];
             NSDictionary* info2 = [helperLib axInfo:el]; //axTitle, axIsApplicationRunning, axPID, axIsAPplicationRunning
@@ -72,7 +73,7 @@ void showOverlay(NSString* appBID, pid_t appPID) {
                 del->lastAppClickToggled = @"";
                 clickedBeforeDelayedExpose = @"";
             }
-        });
+        }, (int) ( ((float) del->previewDelay / 100 /* slider range */) * 2 /* slider max val */ * 1000 /* msec */) );
     }
     clickedAfterExpose = NO;
     ticksSinceShown = 0;
@@ -179,7 +180,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 - (void) enableClickToClose {clickedBeforeDelayedExpose = @"";clickedAfterExpose = NO;dontCheckAgainAfterTrigger = NO;ticksSinceShown = 2;} //NSLog(@"%d %d %d %d %d", ![appDisplayed isEqual:@""], !clickedAfterExpose, isClickToggleChecked, !dontCheckAgainAfterTrigger, ticksSinceShown > 1);
 - (void) reopenPreview : (NSString*) cachedApp {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.09), dispatch_get_main_queue(), ^(void){ //wait until cached app guaranteed to be hidden
+    setTimeout(^{ //wait until cached app guaranteed to be hidden
         NSRunningApplication* frontApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
         //apps that are slow to activate (well, technically they auto-activate, but the actual window gets keyboard focus slowly (ie: red yellow green buttons are grey), which adds them to the AltTab popup)
         //todo: find a less hackish method of preventing this preview addition (currently do so by synchronously clogging DockAltTab's thread (until it can tell/talk to the offending process window w/ applescript))
@@ -187,13 +188,13 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         if (isExtraSlow) [helperLib runScript:[NSString stringWithFormat:@"tell application \"System Events\" to tell process \"%@\" to return window 1", [frontApp localizedName]]]; //tell application \"System Events\" to tell process \"Firefox\" to return enabled of menu item \"Minimize\" of menu 1 of menu bar item \"Window\" of menu bar 1    //original menu item check to see if ready, don't think it worked
         //show cached app previews & enable "click to close" (to unhide)
         [app AltTabShow:cachedApp];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.067), dispatch_get_main_queue(), ^(void){[self enableClickToClose];}); //wait until AltTab guaranteed to be visible
-    });
+        setTimeout(^{[self enableClickToClose];}, 67); //wait until AltTab guaranteed to be visible
+    }, 90);
 }
 - (void) reopenDock { // reopen / focus the dock w/ fn + a (after switching spaces)
     if (isReopenPreviewsChecked) finishSpaceSwitch = YES; // call reopenPreview --after finished hiding
     if (!autohide) return; //don't reopen dock
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * T_TO_SWITCH_SPACE), dispatch_get_main_queue(), ^(void){[helperLib runScript: [app reopenDockStr:YES]];});
+    setTimeout(^{[helperLib runScript: [app reopenDockStr:YES]];}, T_TO_SWITCH_SPACE);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose {
     NSString* clickTitle = info[@"title"];
@@ -259,11 +260,11 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     
     if (![runningApp isActive]) return;
     int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
-    float countProcessT = (wasAppHidden) ? 0 : 0.333; //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
-//    if (!clickToClose && autohide) countProcessT = 2;
+    float countProcessT = (wasAppHidden) ? 0 : 333; //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
+//    if (!clickToClose && autohide) countProcessT = 2000;
     CGFloat cachedW = preSwitchIconSizeWidth;       // hack to stop timer ticks & clicks (return; early) while in the middle of delayed hiding
     if (countProcessT) preSwitchIconSizeWidth = 1; // hack to stop timer ticks & clicks (return; early) while in the middle of delayed hiding
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * countProcessT), dispatch_get_main_queue(), ^(void){
+    setTimeout(^{
         preSwitchIconSizeWidth = cachedW; //undo hiding hack
         if (countProcessT) {
             //test for context menu (x time after click)
@@ -290,7 +291,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         finishSpaceSwitch = NO;
         finishedSpaceSwitch = YES;
         [self reopenPreview : clickBID];
-    });
+    }, countProcessT);
 }
 - (void) bindClick: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
     BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
@@ -421,9 +422,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 - (IBAction)kill:(id)sender {
     [helperLib killDock];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1), dispatch_get_main_queue(), ^(void){
-        self->dockPID = [helperLib getPID:@"com.apple.dock"];  //wait for new Dock process to relaunch so we can get the new PID
-    });
+    setTimeout(^{self->dockPID = [helperLib getPID:@"com.apple.dock"];}, 1000); //wait for new Dock process to relaunch so we can get the new PID
     dockPos = [helperLib getDockPosition]; // update dockPos on restart dock
     autohide = [helperLib dockautohide]; // update dockPos on restart dock
 }
@@ -437,14 +436,14 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     [task setArguments:@[ @"-c", killCommand]];
     [task launch];
     //make sure old process dead
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 0.333), dispatch_get_main_queue(), ^(void){
+    setTimeout(^{
         if (appPath) { //relaunch w/ path (shell)
             NSError *error = nil;
             NSArray *arguments = [NSArray new]; // [NSArray arrayWithObjects:@"Argument1", @"Argument2", nil];
             [[NSWorkspace sharedWorkspace] launchApplicationAtURL:appPath options:0 configuration:[NSDictionary dictionaryWithObject:arguments forKey:NSWorkspaceLaunchConfigurationArguments] error:&error];
         } else [helperLib runScript:@"tell application \"AltTab\" to activate"]; //no running AltTab, relaunch w/ applescript
         //make sure new process spawned
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * 1.22), dispatch_get_main_queue(), ^(void){
+        setTimeout(^{
            self->AltTabPID = [helperLib getPID:@"com.steventheworker.alt-tab-macos"];
             if (self->AltTabPID == 0) {
                 self->unsupportedAltTab = YES;
@@ -455,8 +454,8 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
                 self->unsupportedAltTab = NO;
                 [self->unsupportedBox setHidden: YES];
             }
-        });
-    });
+        }, 1220);
+    }, 333);
 }
 
 
