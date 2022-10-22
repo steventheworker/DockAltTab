@@ -56,22 +56,13 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     }
     return [[script executeAndReturnError:&error] stringValue];
 }
++ (void) setTimeout: (void(^)(void)) cb : (int) delay {dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * (delay)), dispatch_get_main_queue(), cb);}
 
 // point math / screens
 + (CGPoint) carbonPointFrom:(NSPoint) cocoaPoint {
     NSScreen* screen = [helperLib getScreen:0];
     float menuScreenHeight = NSMaxY([screen frame]);
     return CGPointMake(cocoaPoint.x,  menuScreenHeight - cocoaPoint.y);
-}
-+ (void) triggerKeycode:(CGKeyCode) key {
-    CGEventSourceRef src = CGEventSourceCreate(kCGEventSourceStateHIDSystemState);
-    CGEventRef down = CGEventCreateKeyboardEvent(src, key, true);
-    CGEventRef up = CGEventCreateKeyboardEvent(src, key, false);
-    CGEventPost(kCGHIDEventTap, down);
-    CGEventPost(kCGHIDEventTap, up);
-    CFRelease(down);
-    CFRelease(up);
-    CFRelease(src);
 }
 + (NSScreen*) getScreen: (int) screenIndex {
     NSScreen* screen = nil;
@@ -86,6 +77,17 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     if (screen && screenIndex && ![screen frame].origin.x && ![screen frame].origin.y) screen = nil;
     return screen;
 }
++ (void) triggerKeycode:(CGKeyCode) key {
+    CGEventSourceRef src = CGEventSourceCreate(kCGEventSourceStateHIDSystemState);
+    CGEventRef down = CGEventCreateKeyboardEvent(src, key, true);
+    CGEventRef up = CGEventCreateKeyboardEvent(src, key, false);
+    CGEventPost(kCGHIDEventTap, down);
+    CGEventPost(kCGHIDEventTap, up);
+    CFRelease(down);
+    CFRelease(up);
+    CFRelease(src);
+}
+
 
 //app stuff
 + (AppDelegate *) getApp {return ((AppDelegate *)[[helperLib sharedApplication] delegate]);}
@@ -188,7 +190,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 }
 
 
-//AXUI elements
+// AXUIelements
 + (AXUIElementRef) elementAtPoint:(CGPoint) carbonPoint {
     AXUIElementRef elementUnderCursor = NULL;
     AXUIElementCopyElementAtPosition([helperLib getApp]->_systemWideAccessibilityObject, carbonPoint.x, carbonPoint.y, &elementUnderCursor);

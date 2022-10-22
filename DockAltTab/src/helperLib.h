@@ -10,29 +10,38 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @interface helperLib : NSObject {}
-+ (NSString*) getDockPosition;
-+ (pid_t) getPID: (NSString*) tar;
-+ (NSDictionary*) appInfo: (NSString*) owner;
-+ (NSScreen*) getScreen: (int) screenIndex;
+// formatting
++ (NSString*) twoSigFigs: (float) val;
+// misc
++ (NSString*) get: (NSString*) url; // http(s) "GET"
++ (NSString*) runScript: (NSString*) scriptTxt;
++ (void) setTimeout: (void(^)(void)) cb : (int) delay;
+// point math / screens
 + (CGPoint) carbonPointFrom: (NSPoint) cocoaPoint;
++ (NSScreen*) getScreen: (int) screenIndex;
 + (void) triggerKeycode: (CGKeyCode) key;
+// app stuff
++ (AppDelegate *) getApp;
++ (NSApplication *) sharedApplication;
++ (pid_t) getPID: (NSString*) tar;
 + (NSRunningApplication*) runningAppFromAxTitle: (NSString*) tar;
+// windows
 + (int) numWindowsMinimized: (NSString *)owner;
 + (NSMutableArray*) getWindowsForOwner: (NSString *)owner;
 + (NSMutableArray*) getWindowsForOwnerPID: (pid_t) PID;
 + (NSMutableArray*) getRealFinderWindows;
-+ (NSApplication *) sharedApplication;
-+ (AXUIElementRef) elementAtPoint: (CGPoint) carbonPoint;
+// AXUIElement
 + (NSDictionary*) axInfo: (AXUIElementRef) el;
-+ (void) listenScreens;
-+ (void) listenClicks;
-+ (AppDelegate *) getApp;
-+ (NSString*) get: (NSString*) url; // http(s) "GET"
-+ (void) killDock;
++ (NSDictionary*) appInfo: (NSString*) owner;
++ (AXUIElementRef) elementAtPoint: (CGPoint) carbonPoint;
+// dock stuff
 + (void) dockSetting: (CFStringRef) pref : (BOOL) val;
 + (void) dockSettingFloat: (CFStringRef) pref : (float) val;
-+ (NSString*) twoSigFigs: (float) val;
++ (NSString*) getDockPosition;
 + (BOOL) dockautohide;
-+ (NSString*) runScript: (NSString*) scriptTxt;
++ (void) killDock;
+//event listening
++ (void) listenScreens;
++ (void) listenClicks;
 @end
 NS_ASSUME_NONNULL_END
