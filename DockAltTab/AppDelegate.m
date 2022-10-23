@@ -296,7 +296,6 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 - (void) bindClick: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
     BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
     BOOL rightBtn = (etype == kCGEventRightMouseDown);
-    if (rightBtn && !isOverlayShowing) return; // DockAltTab doesn't use right clicks (except if overlayShowing => check if isDockClick then hideOverlay and AXShowMenu (context menu))
     NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
     BOOL ctrlDown = theFlags & NSEventModifierFlagControl;
     BOOL optDown = theFlags & NSEventModifierFlagOption;
@@ -306,27 +305,52 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
     
-    /* uncomment to restrict log to dock clicks */ if ([info[@"role"] isEqual:@"AXDockItem"])
-    /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
+//    /* uncomment to restrict log to dock clicks */ if ([info[@"role"] isEqual:@"AXDockItem"])
+//    /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
     
     // right clicks
     if (rightBtn) {
-        if ([info[@"PID"] intValue] == dockPID && isOverlayShowing && !dontCheckAgainAfterTrigger) {
-            [app AltTabHide];
-            dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
-            [helperLib runScript:@"delay 0.003"]; // setTimeout/dispatch_after blocks are unable to see dock el's, but blocking thread like this works
-
-            carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
-            el = [helperLib elementAtPoint:carbonPoint];
-            info = [helperLib axInfo:el];
-            
-            if ([app contextMenuExists:carbonPoint : info])  return NSLog(@"context already existed");
-            AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
-            NSLog(@" obj-c show contextmenu");
-        }
+        if ([info[@"PID"] intValue] == dockPID) {
+            wasShowingContextMenu = YES;
+            if (isOverlayShowing && !dontCheckAgainAfterTrigger) {
+                [app AltTabHide];
+                dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
+                // only modify trackpad clicks from double taps
+//                if (CGEventGetIntegerValueField(e, kCGMouseEventSubtype) == 3 && isTrackpadDoubleTap) { // is trackpad? (virtual BTT trackpad clicks don't count (they're 0))   defaults read com.apple.AppleMultitouchTrackpad "TrackpadRightClick"
+//                    AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
+//                    NSLog(@"trackpad two finger tap struggles");
+//                }
+                
+                
+                //modify all devices
+//                [helperLib runScript:@""]; // setTimeout/dispatch_after blocks are unable to see dock el's, but blocking thread like this works
+                
+//                carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
+//                el = [helperLib elementAtPoint:carbonPoint];
+//                NSString* oldTitle = info[@"title"];
+//                info = [helperLib axInfo:el];
+//
+//                if ([app contextMenuExists:carbonPoint : info])  return NSLog(@"contextMenuExists -> rightClick");
+//                if (![info[@"title"] isEqual:oldTitle]) return NSLog(@"too much movement");
+//                AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
+//                NSLog(@" obj-c show contextmenu");
+            }
+        } else {} // ignore clicks not on dock
         return;
     }
-    
+    if (wasShowingContextMenu) {
+        wasShowingContextMenu = NO;
+        return; // NSLog(@"wasShowingContextMenu");
+    }
+    //else{ //    [helperLib runScript:@"delay .333"];
+//        if ([app contextMenuExists:carbonPoint : info]) {
+//            wasShowingContextMenu = NO;
+//            [helperLib runScript:@"tell application \"System Events\" to key code 53"]; // send escape key to close (sometimes two contextmenu's pop up)
+//            return NSLog(@"contextMenuExists -> left click -> esc");
+//        }
+//    }
+
+//    NSLog(@"left click no menu");
     // left clicks
     if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
     if ([info[@"PID"] intValue] == dockPID) {
