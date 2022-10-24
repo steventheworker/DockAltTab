@@ -20,13 +20,29 @@ const int DOCK_OFFSET = 5; //5 pixels
 //define
 NSString* lastShowStr = @"";
 
+void askForAccessibility(void) {
+    NSDictionary* options = @{(__bridge NSString*)(kAXTrustedCheckOptionPrompt) : @YES};
+    if (!AXIsProcessTrustedWithOptions((__bridge CFDictionaryRef)options)) {
+        [NSTimer scheduledTimerWithTimeInterval:3.0
+        repeats:YES
+        block:^(NSTimer* timer) {
+            if (AXIsProcessTrusted()) { // [self relaunchIfProcessTrusted];
+                [NSTask launchedTaskWithLaunchPath:[[NSBundle mainBundle] executablePath] arguments:@[]];
+                [NSApp terminate:nil];
+            }
+        }];
+    }
+}
 @implementation app
 //initialize app variables (onLaunch)
 + (void) initVars {
     NSLog(@"DockAltTab started\n----------------------------------------------------------------------------");
-    [helperLib listenClicks];
-    [helperLib listenScreens];
+    //permissions
     AppDelegate* del = [helperLib getApp];
+    del->_systemWideAccessibilityObject = AXUIElementCreateSystemWide();
+    [helperLib listenClicks]; // ask for input monitoring first
+    askForAccessibility();
+    [helperLib listenScreens];
     //functional
     [del bindScreens]; //load screen data
     del->appDisplayed = @"";
@@ -49,8 +65,6 @@ NSString* lastShowStr = @"";
     NSLog(@"(%lu) finder windows/processes found after launch", [[helperLib getRealFinderWindows] count]);
     //UI variables
     del->appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    //permissions
-    del->_systemWideAccessibilityObject = AXUIElementCreateSystemWide();
     //interval Timer @ TICK_DELAY seconds, check to render something / stop rendering when mouse enters/leaves the dock
     del->timer = [NSTimer scheduledTimerWithTimeInterval:TICK_DELAY
                                                         target:del
