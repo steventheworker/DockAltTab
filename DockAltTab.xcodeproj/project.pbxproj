@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF0A905F290F6D230088A4F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BF0A905E290F6D230088A4F8 /* README.md */; };
 		BF0E91F82829142A00D21AD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF0E91F72829142A00D21AD5 /* Assets.xcassets */; };
 		BF0E91FB2829191D00D21AD5 /* helperLib.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0E91FA2829191D00D21AD5 /* helperLib.m */; };
 		BF0E920128291F0700D21AD5 /* app.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0E920028291F0700D21AD5 /* app.m */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF0A905E290F6D230088A4F8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BF0E91F72829142A00D21AD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF0E91F92829191D00D21AD5 /* helperLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = helperLib.h; sourceTree = "<group>"; };
 		BF0E91FA2829191D00D21AD5 /* helperLib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = helperLib.m; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		BFE19DDE2825BFA600D72F99 = {
 			isa = PBXGroup;
 			children = (
+				BF0A905E290F6D230088A4F8 /* README.md */,
 				BFE19DE92825BFA600D72F99 /* DockAltTab */,
 				BFE19DE82825BFA600D72F99 /* Products */,
 			);
@@ -150,6 +153,7 @@
 			files = (
 				BF0E921F2829556900D21AD5 /* MenuIcon.png in Resources */,
 				BF0E91F82829142A00D21AD5 /* Assets.xcassets in Resources */,
+				BF0A905F290F6D230088A4F8 /* README.md in Resources */,
 				BFE19DF12825BFA800D72F99 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

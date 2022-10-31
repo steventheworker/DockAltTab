@@ -32,3 +32,10 @@
 Our website: https://dockalttab.netlify.app
 
 And check out our sister app: [Dock Exposé](https://dockexpose.netlify.app)
+
+
+&nbsp;
+
+&nbsp;
+
+**Note &nbsp; (Firefox users ONLY):** &nbsp; to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022)
