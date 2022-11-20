@@ -34,8 +34,7 @@ void askForAccessibility(void) {
     }
 }
 @implementation app
-//initialize app variables (onLaunch)
-+ (void) initVars {
++ (void) init { //initialize app variables (onLaunch)
     NSLog(@"DockAltTab started\n----------------------------------------------------------------------------");
     //permissions
     AppDelegate* del = [helperLib getApp];
@@ -76,11 +75,10 @@ void askForAccessibility(void) {
 
     //check for updates on launch
     del->mostCurrentVersion = [app getCurrentVersion];
-    if (del->mostCurrentVersion != del->appVersion || del->unsupportedAltTab) {
+    if (del->unsupportedAltTab || del->mostCurrentVersion == nil || (del->mostCurrentVersion != del->appVersion && !([del->appVersion floatValue] > [del->mostCurrentVersion floatValue]))) {
         if (del->unsupportedAltTab) [del->unsupportedBox setHidden: NO];
         [del preferences:nil];
     }
-    
 }
 
 /* UI */
@@ -112,7 +110,6 @@ void askForAccessibility(void) {
     [del->previewDelaySlider setFloatValue:del->previewDelay];
     [[del->delayLabel cell] setTitle: [helperLib twoSigFigs: del->previewDelaySlider.floatValue / 100 * 2]]; // change slider label
 }
-/* utilities that depend on (AppDelegate *) */
 + (BOOL) contextMenuExists:(CGPoint) carbonPoint : (NSDictionary*) info {
     if ([info[@"role"] isEqual:@"AXMenuItem"] || [info[@"role"] isEqual:@"AXMenu"]) return YES;
     AppDelegate* del = [helperLib getApp];
@@ -136,13 +133,22 @@ void askForAccessibility(void) {
         x = pt.x - del->dockWidth * 2;
         y = del->dockHeight;
         if (isOnExt) y = y + del->extendedOffsetY;
+        
+        if (isOnExt) [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f * 2,  y: %f + %f", pt.x, del->dockWidth, del->dockHeight, del->extendedOffsetY]];
+        else [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f * 2, y: %f", pt.x, del->dockWidth, del->dockHeight]];
     } else if ([del->dockPos isEqual:@"left"]) {
         y = pt.y - del->dockHeight * 2;
         x = del->dockWidth;
         if (isOnExt) x = x - del->extScreenWidth;
+        
+        if (isOnExt) [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f,  y: %f - %f * 2", del->dockWidth, del->extScreenWidth, pt.y, del->dockHeight]];
+        else [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f,  y: %f - %f * 2", del->dockWidth, pt.y, del->dockHeight]];
     } else if ([del->dockPos isEqual:@"right"]) {
         y = pt.y - del->dockHeight * 2;
         x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
+        
+        if (pt.x > del->primaryScreenWidth) [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f + %f - %f,  y: %f - %f * 2", del->primaryScreenWidth, del->extScreenWidth, del->dockWidth, pt.y, del->dockHeight]];
+        else [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f,  y: %f - %f * 2", del->primaryScreenWidth, del->dockWidth, pt.y, del->dockHeight]];
     }
     if (!x && !y) { // accessiblity bug (#issue4 on github)  --show default AltTab location (centered)
         lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\"", appBID];
@@ -173,6 +179,7 @@ void askForAccessibility(void) {
         key up 63\n%@\n\
     end tell", triggerEscapeStr];
 }
+
 //misc.
 + (NSString*) fullDirPath: (NSString*) _path {
     unichar char1 = [_path characterAtIndex:0];

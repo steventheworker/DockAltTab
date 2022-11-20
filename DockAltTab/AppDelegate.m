@@ -407,22 +407,26 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 
 /* Bindings / UI handlers */
 - (IBAction) preferences:(id)sender {
-    [NSApp activateIgnoringOtherApps:YES];
-    [_window makeKeyAndOrderFront:nil];
-    if (!mostCurrentVersion)
-        mostCurrentVersion = [app getCurrentVersion];
-    [[appVersionRef cell] setTitle:[@"v" stringByAppendingString:appVersion]];
+    NSColor* titColor;NSString* tit;
+    if (!mostCurrentVersion) mostCurrentVersion = [app getCurrentVersion];
+    BOOL greaterVersion = mostCurrentVersion != nil && [appVersion floatValue] > [mostCurrentVersion floatValue];
     if (mostCurrentVersion == NULL) [[updateRemindRef cell] setTitle: @"No internet; Update check failed"];
     else {
-        if (mostCurrentVersion == appVersion) {
-            [[updateRemindRef cell] setTitle: @"You're on the latest release."];
-            [updateRemindRef setTextColor:[NSColor greenColor]];
+        if (greaterVersion) {
+            tit = @"This is a pre⚙️release.";
+            titColor = [NSColor systemBlueColor];
+        } else if ([mostCurrentVersion isEqual:appVersion]) {
+            tit = @"You're on the latest release.";
+            titColor = [NSColor greenColor];
         } else {
-            [[updateRemindRef cell] setTitle: [@"Version " stringByAppendingString: [mostCurrentVersion stringByAppendingString: @" has been released. You should update soon."]]];
-            [updateRemindRef setTextColor:[NSColor redColor]];
-        }
+            tit = [@"Version " stringByAppendingString: [mostCurrentVersion stringByAppendingString: @" has been released. You should update soon."]];
+            titColor = [NSColor redColor];        }
     }
-    [[updateRemindRef cell] setTitle: mostCurrentVersion == NULL ? @"No internet; Update check failed" : (mostCurrentVersion == appVersion) ? @"You're on the latest release." : [@"Version " stringByAppendingString: [mostCurrentVersion stringByAppendingString: @" has been released. You should update soon."]]];
+    [NSApp activateIgnoringOtherApps:YES];
+    [_window makeKeyAndOrderFront:nil];
+    [[appVersionRef cell] setTitle: greaterVersion ? [NSString stringWithFormat:@"v%@ >v%@", appVersion, mostCurrentVersion] : [@"v" stringByAppendingString: appVersion]];
+    [[updateRemindRef cell] setTitle: tit];
+    [updateRemindRef setTextColor: titColor];
 }
 - (IBAction)kill:(id)sender {
     [helperLib killDock];
@@ -501,7 +505,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     [statusItem setVisible:YES]; //without this, could stay hidden away
     if (!menuItemCheckBox.state) [statusItem setVisible:NO];
 }
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {[app initVars];}
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {[app init];}
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
     [timer invalidate];
     timer = nil;
