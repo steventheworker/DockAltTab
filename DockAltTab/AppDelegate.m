@@ -110,6 +110,9 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     return NO;
 }
 
+/*
+    AppDelate
+*/
 @interface AppDelegate ()
 @property (strong) IBOutlet NSWindow *window;
 @end
@@ -122,7 +125,9 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     @synthesize isLockDockContentsChecked;
     @synthesize isLockDockSizeChecked;
     @synthesize isLockDockPositionChecked;
-/* app */
+/*
+   General / Event Listener Methods
+*/
 - (void)timerTick: (NSTimer*) arg {
     NSPoint mouseLocation = [NSEvent mouseLocation];
     CGPoint pt = [helperLib carbonPointFrom:mouseLocation];
@@ -396,7 +401,11 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 
 
-/* UI */
+/*
+    Bindings & LifeCycle
+*/
+
+/* Bindings / UI handlers */
 - (IBAction) preferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
     [_window makeKeyAndOrderFront:nil];
@@ -414,44 +423,6 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         }
     }
     [[updateRemindRef cell] setTitle: mostCurrentVersion == NULL ? @"No internet; Update check failed" : (mostCurrentVersion == appVersion) ? @"You're on the latest release." : [@"Version " stringByAppendingString: [mostCurrentVersion stringByAppendingString: @" has been released. You should update soon."]]];
-}
-- (void) awakeFromNib {
-    isClickToggleChecked = YES;
-    clickToggleCheckBox.state = YES;
-    menuItemCheckBox.state = YES;
-    //set menu bar item/icon
-    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
-    [[statusItem button] setImage:[NSImage imageNamed:@"MenuIcon"]];
-    [statusItem setMenu:menu];
-    [statusItem setVisible:YES]; //without this, could stay hidden away
-    if (!menuItemCheckBox.state) [statusItem setVisible:NO];
-}
-- (IBAction)toggleMenuIcon:(id)sender {[statusItem setVisible:isMenuItemChecked];}
-- (IBAction)toggleToggleDockApps:(id)sender {isClickToggleChecked = clickToggleCheckBox.state;[[NSUserDefaults standardUserDefaults] setBool: !((BOOL) clickToggleCheckBox.state) forKey:@"isClickToggleChecked"];}  // (!) default true
-- (IBAction)bindReopenPreviewsSetting:(id)sender {isReopenPreviewsChecked = reopenPreviewsCheckbox.state;[[NSUserDefaults standardUserDefaults] setBool: ((BOOL) reopenPreviewsCheckbox.state) forKey:@"isReopenPreviewsChecked"];}  // (!) default false
-- (IBAction)changeDelay:(id)sender {
-    [[delayLabel cell] setTitle: [helperLib twoSigFigs: previewDelaySlider.floatValue / 100 * 2]]; // set slider label text
-    [[NSUserDefaults standardUserDefaults] setInteger:previewDelaySlider.intValue forKey:@"previewDelay"];
-}
-- (IBAction) quit:(id)sender {[NSApp terminate:nil];}
-- (IBAction)toggleMenuItem:(id)sender {[statusItem setVisible:isMenuItemChecked];}
-- (IBAction)unsupportedMoreInfoClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994"]];}
-- (IBAction)unsupportedDownloadClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/alt-tab-macos/releases/download/1.2/DockAltTab.AltTab.v6.46.1.zip"]];}
-/* dock settings */
-- (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
-- (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
-- (IBAction)lockDockContents:(id)sender {[helperLib dockSetting: CFSTR("contents-immutable") : (BOOL) lockDockContentsCheckbox.state];}
-- (IBAction)setDockDelay:(float)setVal { //onSubmit / enter key / "Continuously Updates Value" checked in bindings
-    setVal = dockDelayInput.floatValue;
-    if (setVal < 0) setVal = dockDelay;
-    dockDelay = setVal;
-    NSLog(@"%f", setVal);
-    [helperLib dockSettingFloat: CFSTR("autohide-delay") : setVal];
-    dockDelayInput.floatValue = setVal;
-}
-- (void)setNilValueForKey:(NSString *)key
-{
-    if ([key isEqual:@"dockDelay"]) dockDelayInput.floatValue = dockDelay; // reset text field value on empty (nil)
 }
 - (IBAction)kill:(id)sender {
     [helperLib killDock];
@@ -491,8 +462,45 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     }, 333);
 }
 
+/* DockAltTab setting handlers */
+- (IBAction)toggleMenuIcon:(id)sender {[statusItem setVisible:isMenuItemChecked];}
+- (IBAction)toggleToggleDockApps:(id)sender {isClickToggleChecked = clickToggleCheckBox.state;[[NSUserDefaults standardUserDefaults] setBool: !((BOOL) clickToggleCheckBox.state) forKey:@"isClickToggleChecked"];}  // (!) default true
+- (IBAction)bindReopenPreviewsSetting:(id)sender {isReopenPreviewsChecked = reopenPreviewsCheckbox.state;[[NSUserDefaults standardUserDefaults] setBool: ((BOOL) reopenPreviewsCheckbox.state) forKey:@"isReopenPreviewsChecked"];}  // (!) default false
+- (IBAction)changeDelay:(id)sender {
+    [[delayLabel cell] setTitle: [helperLib twoSigFigs: previewDelaySlider.floatValue / 100 * 2]]; // set slider label text
+    [[NSUserDefaults standardUserDefaults] setInteger:previewDelaySlider.intValue forKey:@"previewDelay"];
+}
+- (IBAction) quit:(id)sender {[NSApp terminate:nil];}
+- (IBAction)toggleMenuItem:(id)sender {[statusItem setVisible:isMenuItemChecked];}
+- (IBAction)unsupportedMoreInfoClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994"]];}
+- (IBAction)unsupportedDownloadClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/alt-tab-macos/releases/download/1.2/DockAltTab.AltTab.v6.46.1.zip"]];}
+
+/* dock setting handlers */
+- (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
+- (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
+- (IBAction)lockDockContents:(id)sender {[helperLib dockSetting: CFSTR("contents-immutable") : (BOOL) lockDockContentsCheckbox.state];}
+- (IBAction)setDockDelay:(float)setVal { //onSubmit / enter key / "Continuously Updates Value" checked in bindings
+    setVal = dockDelayInput.floatValue;
+    if (setVal < 0) setVal = dockDelay;
+    dockDelay = setVal;
+    NSLog(@"%f", setVal);
+    [helperLib dockSettingFloat: CFSTR("autohide-delay") : setVal];
+    dockDelayInput.floatValue = setVal;
+}
+
 
 /* Lifecycle */
+- (void) awakeFromNib {
+    isClickToggleChecked = YES;
+    clickToggleCheckBox.state = YES;
+    menuItemCheckBox.state = YES;
+    //set menu bar item/icon
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
+    [[statusItem button] setImage:[NSImage imageNamed:@"MenuIcon"]];
+    [statusItem setMenu:menu];
+    [statusItem setVisible:YES]; //without this, could stay hidden away
+    if (!menuItemCheckBox.state) [statusItem setVisible:NO];
+}
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {[app initVars];}
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
     [timer invalidate];
@@ -501,4 +509,8 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 }
 - (void)applicationWillTerminate:(NSNotification *)aNotification {/* Insert code here to tear down your application */}
 - (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app {return NO;}
+- (void)setNilValueForKey:(NSString *)key // nil UI handling
+{
+    if ([key isEqual:@"dockDelay"]) dockDelayInput.floatValue = dockDelay; // reset text field value on empty (nil)
+}
 @end
