@@ -4,7 +4,7 @@
 
 ![alt text](https://github.com/steventheworker/DockAltTab/blob/main/DockAltTab/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png?raw=true)
 
-### v2.5 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.5/DockAltTab-v2.5.zip
+### v2.6 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.6/DockAltTab-v2.6.zip
 
 ##### OR ALTERNATIVELY,
 
@@ -32,7 +32,6 @@
 Our website: https://dockalttab.netlify.app
 
 And check out our sister app: [Dock Exposé](https://dockexpose.netlify.app)
-
 
 &nbsp;
 
