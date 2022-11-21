@@ -125,6 +125,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     @synthesize isLockDockContentsChecked;
     @synthesize isLockDockSizeChecked;
     @synthesize isLockDockPositionChecked;
+    @synthesize isShowHiddenChecked;
 /*
    General / Event Listener Methods
 */
@@ -509,6 +510,9 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 - (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
 - (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
 - (IBAction)lockDockContents:(id)sender {[helperLib dockSetting: CFSTR("contents-immutable") : (BOOL) lockDockContentsCheckbox.state];}
+- (IBAction)toggleDifferentiateHidden:(id)sender {
+    [helperLib dockSetting: CFSTR("showhidden") : (BOOL) showHiddenCheckbox.state];
+}
 - (IBAction)setDockDelay:(float)setVal { //onSubmit / enter key / "Continuously Updates Value" checked in bindings
     setVal = dockDelayInput.floatValue;
     if (setVal < 0) setVal = dockDelay;

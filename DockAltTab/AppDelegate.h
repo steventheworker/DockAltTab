@@ -52,6 +52,7 @@
     BOOL                    isLockDockContentsChecked;
     BOOL                    isLockDockSizeChecked;
     BOOL                    isLockDockPositionChecked;
+    BOOL                    isShowHiddenChecked;
     float                   dockDelay;
     int                     previewDelay;
     __weak IBOutlet NSButton *menuItemCheckBox;    
@@ -60,6 +61,7 @@
     __weak IBOutlet NSButton *lockDockContentsCheckbox;
     __weak IBOutlet NSButton *lockDockSizeCheckbox;
     __weak IBOutlet NSButton *lockDockPositionCheckbox;
+    __weak IBOutlet NSButton *showHiddenCheckbox;
     __weak IBOutlet NSTextField *dockDelayInput;
     __weak IBOutlet NSSliderCell *previewDelaySlider;
     __weak IBOutlet NSBox *unsupportedBox;
@@ -70,6 +72,7 @@
 @property BOOL isLockDockContentsChecked;
 @property BOOL isLockDockSizeChecked;
 @property BOOL isLockDockPositionChecked;
+@property BOOL isShowHiddenChecked;
 @property (nonatomic) float dockDelay; // text input value (0 to Infinity)
 @property int previewDelay; // slider value (1 to 100)
 //- (float) timeDiff;

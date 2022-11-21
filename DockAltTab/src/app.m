@@ -95,6 +95,7 @@ void askForAccessibility(void) {
     del->isLockDockContentsChecked = CFPreferencesGetAppBooleanValue( CFSTR("contents-immutable"), CFSTR("com.apple.dock"), &valid);
     del->isLockDockSizeChecked = CFPreferencesGetAppBooleanValue( CFSTR("size-immutable"), CFSTR("com.apple.dock"), &valid);
     del->isLockDockPositionChecked = CFPreferencesGetAppBooleanValue( CFSTR("position-immutable"), CFSTR("com.apple.dock"), &valid);
+    del->isShowHiddenChecked = CFPreferencesGetAppBooleanValue( CFSTR("showhidden"), CFSTR("com.apple.dock"), &valid);
     //DockAltTab settings
     del->isClickToggleChecked = ![[NSUserDefaults standardUserDefaults] boolForKey:@"isClickToggleChecked"]; // (!) default true
     del->isReopenPreviewsChecked = [[NSUserDefaults standardUserDefaults] boolForKey:@"isReopenPreviewsChecked"]; // (!) default false
@@ -108,6 +109,7 @@ void askForAccessibility(void) {
     del->lockDockContentsCheckbox.state = del->isLockDockContentsChecked;
     del->lockDockSizeCheckbox.state = del->isLockDockSizeChecked;
     del->lockDockPositionCheckbox.state = del->isLockDockPositionChecked;
+    del->showHiddenCheckbox.state = del->isShowHiddenChecked;
     //DockAltTab settings
     del->clickToggleCheckBox.state = del->isClickToggleChecked;
     del->reopenPreviewsCheckbox.state = del->isReopenPreviewsChecked;

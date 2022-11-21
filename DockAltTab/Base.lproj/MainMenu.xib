@@ -27,6 +27,7 @@
                 <outlet property="menuItemCheckBox" destination="BUI-mm-4RA" id="9z0-kS-Eh1"/>
                 <outlet property="previewDelaySlider" destination="F6r-sH-2qo" id="Adq-0k-0z1"/>
                 <outlet property="reopenPreviewsCheckbox" destination="CZ5-xc-4LQ" id="hw0-r7-m7W"/>
+                <outlet property="showHiddenCheckbox" destination="lld-GI-9pn" id="I4z-U3-BQd"/>
                 <outlet property="unsupportedBox" destination="okj-8c-j1d" id="vPZ-xv-aW8"/>
                 <outlet property="updateRemindRef" destination="lXr-Qx-AJz" id="yec-s0-HE4"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -1087,83 +1088,5 @@
             <point key="canvasLocation" x="-113" y="698"/>
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="UQx-gq-viT"/>
-        <view id="MUV-4D-qHl">
-            <rect key="frame" x="0.0" y="0.0" width="460" height="326"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ISA-2Y-Cdl">
-                    <rect key="frame" x="19" y="276" width="82" height="23"/>
-                    <buttonCell key="cell" type="roundTextured" title="Homepage" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ElV-tl-2Tp">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8dy-Ec-MBp">
-                    <rect key="frame" x="19" y="140" width="115" height="23"/>
-                    <constraints>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="S2x-1z-ab3"/>
-                    </constraints>
-                    <buttonCell key="cell" type="roundTextured" title="Buy me a coffee" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Gdc-EV-yqH">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hpp-F0-bvM">
-                    <rect key="frame" x="19" y="245" width="71" height="23"/>
-                    <buttonCell key="cell" type="roundTextured" title="Releases" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Mqr-yR-h2b">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PIW-QX-MFv">
-                    <rect key="frame" x="19" y="211" width="95" height="23"/>
-                    <buttonCell key="cell" type="roundTextured" title="Report a bug" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mIV-GG-rmJ">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2EN-di-Ede">
-                    <rect key="frame" x="196" y="116" width="69" height="32"/>
-                    <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3Lx-8k-kHh">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="u4Z-bq-wYp">
-                    <rect key="frame" x="19" y="175" width="115" height="23"/>
-                    <buttonCell key="cell" type="roundTextured" title="Join the Discord" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pGX-ch-pqx">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                </button>
-            </subviews>
-            <constraints>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hpp-F0-bvM" secondAttribute="trailing" constant="20" symbolic="YES" id="0J7-07-ujT"/>
-                <constraint firstItem="u4Z-bq-wYp" firstAttribute="leading" secondItem="8dy-Ec-MBp" secondAttribute="leading" id="7v7-9Z-W6Q"/>
-                <constraint firstItem="8dy-Ec-MBp" firstAttribute="top" secondItem="u4Z-bq-wYp" secondAttribute="bottom" constant="15" id="AJ7-Rp-jw0"/>
-                <constraint firstItem="ISA-2Y-Cdl" firstAttribute="leading" secondItem="hpp-F0-bvM" secondAttribute="leading" id="H3i-gc-f9p"/>
-                <constraint firstAttribute="bottom" secondItem="2EN-di-Ede" secondAttribute="bottom" constant="123" id="O2Z-1r-1JM"/>
-                <constraint firstItem="PIW-QX-MFv" firstAttribute="top" secondItem="hpp-F0-bvM" secondAttribute="bottom" constant="14" id="PAK-JG-GIg"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ISA-2Y-Cdl" secondAttribute="trailing" constant="20" symbolic="YES" id="R0z-HT-U0G"/>
-                <constraint firstItem="PIW-QX-MFv" firstAttribute="leading" secondItem="u4Z-bq-wYp" secondAttribute="leading" id="U2Y-tJ-6iP"/>
-                <constraint firstItem="ISA-2Y-Cdl" firstAttribute="leading" secondItem="MUV-4D-qHl" secondAttribute="leading" constant="20" symbolic="YES" id="UJV-Ub-4Sx"/>
-                <constraint firstItem="2EN-di-Ede" firstAttribute="centerX" secondItem="MUV-4D-qHl" secondAttribute="centerX" id="aih-j0-CAq"/>
-                <constraint firstItem="u4Z-bq-wYp" firstAttribute="centerX" secondItem="8dy-Ec-MBp" secondAttribute="centerX" id="apX-Jd-TFf"/>
-                <constraint firstItem="hpp-F0-bvM" firstAttribute="top" secondItem="ISA-2Y-Cdl" secondAttribute="bottom" constant="11" id="bKf-W0-Qdv"/>
-                <constraint firstItem="hpp-F0-bvM" firstAttribute="leading" secondItem="PIW-QX-MFv" secondAttribute="leading" id="diU-6D-6H2"/>
-                <constraint firstItem="ISA-2Y-Cdl" firstAttribute="top" secondItem="MUV-4D-qHl" secondAttribute="top" constant="28" id="epn-xs-Bv3"/>
-                <constraint firstItem="u4Z-bq-wYp" firstAttribute="top" secondItem="PIW-QX-MFv" secondAttribute="bottom" constant="16" id="xHR-zh-6Pz"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="PIW-QX-MFv" secondAttribute="trailing" constant="20" symbolic="YES" id="xvx-Ju-pA3"/>
-            </constraints>
-            <backgroundFilters>
-                <ciFilter name="CIGaussianBlur">
-                    <configuration>
-                        <null key="inputImage"/>
-                        <real key="inputRadius" value="10"/>
-                    </configuration>
-                </ciFilter>
-            </backgroundFilters>
-            <point key="canvasLocation" x="681" y="461"/>
-        </view>
     </objects>
 </document>
