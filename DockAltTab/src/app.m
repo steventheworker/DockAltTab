@@ -121,6 +121,8 @@ void askForAccessibility(void) {
     if ([testInfo[@"role"] isEqual:@"AXMenuItem"] || [testInfo[@"role"] isEqual:@"AXMenu"]) return YES;
     return NO;
 }
+
+// applescript fn's
 + (NSString*) getShowString: (NSString*) appBID {
     AppDelegate* del = [helperLib getApp];
     NSPoint pt = [NSEvent mouseLocation];
@@ -178,6 +180,16 @@ void askForAccessibility(void) {
         key code 0\n\
         key up 63\n%@\n\
     end tell", triggerEscapeStr];
+}
+
+//CGEvent
++ (void) sendClick : (CGPoint) pt {
+    CGEventRef click1_down = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, pt, kCGMouseButtonLeft);
+    CGEventRef click1_up = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, pt, kCGMouseButtonLeft);
+    CGEventPost(kCGHIDEventTap, click1_down);
+    CGEventPost(kCGHIDEventTap, click1_up);
+    CFRelease(click1_up);
+    CFRelease(click1_down);
 }
 
 //misc.

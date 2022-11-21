@@ -19,5 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (float) maxDelay;
 + (NSString*) reopenDockStr: (BOOL) triggerEscape;
 + (void) activateApp: (NSRunningApplication*) app;
++ (void) sendClick : (CGPoint) pt;
 @end
 NS_ASSUME_NONNULL_END

@@ -12,7 +12,7 @@
 
 /* config */
 const int TICKS_TO_HIDE = 2; // number of ticks * TICK_DELAY = x seconds
-
+const NSArray* showBlacklist = @[@"Spotlight Search"]; // title of the app to ignore
 /* hardcoded apple details */
 const float T_TO_SWITCH_SPACE = 666 / 2; // (ms) time to wait before reshowing dock (when clicking switches spaces)
 
@@ -167,6 +167,15 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
         if (numWindows == 0) willShow = NO;
     }
 
+    if (![appDisplayed isEqual:@""] && [info[@"title"] isEqual:@"Spotlight Search"] && !dontCheckAgainAfterTrigger) {
+        int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
+        if (!ATWindowCount) {
+            NSLog(@"appdisplayed %@", appDisplayed);
+            [app sendClick: pt];
+            dontCheckAgainAfterTrigger = YES;
+        }
+    }
+
     // clicked to close AltTab previews - check if AltTab still open (todo: factor in closing by Esc key)
     if (![appDisplayed isEqual:@""] && !clickedAfterExpose && !dontCheckAgainAfterTrigger && ticksSinceShown > 1 && [clickedBeforeDelayedExpose isEqual:@""]) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
@@ -178,7 +187,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
             }
         }
     }
-    
+    if ([showBlacklist containsObject: info[@"title"]]) willShow = NO;
     if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
     willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay([info[@"PID"] intValue], tarBID, tarPID);
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
@@ -207,7 +216,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) if (clickPID != finderPID) finderFrontmost = NO;
 //    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
     NSString* clickBID = @"";
-    BOOL isBlacklisted = NO; //todo: = [showBlacklist containsObject:clickTitle];
+    BOOL isBlacklisted = [showBlacklist containsObject:clickTitle];
     if ([clickTitle isEqual:@"Trash"]) {
         if (!finderFrontmost) finderFrontmost = YES;
         else {
@@ -227,7 +236,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 //    NSLog(@"'%@': %d, '%@', '%d', '%@'", appDisplayed, appDisplayedPID, lastAppClickToggled, clickedAfterExpose, clickedBeforeDelayedExpose);
     clickedBeforeDelayedExpose = clickBID;
     clickedBeforeDelayedExposePID = clickPID;
-    appDisplayed = clickBID;
+    if (![showBlacklist containsObject:clickTitle]) appDisplayed = clickBID;
     if (!isClickToggleChecked) return;
     __block BOOL showingContextMenu = [app contextMenuExists: carbonPoint:info]; //checks if contextMenu exists (but only looks around area cursor's placed)
     if (wasShowingContextMenu || showingContextMenu) {
