@@ -170,7 +170,6 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     if (![appDisplayed isEqual:@""] && [info[@"title"] isEqual:@"Spotlight Search"] && !dontCheckAgainAfterTrigger) {
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
-            NSLog(@"appdisplayed %@", appDisplayed);
             [app sendClick: pt];
             dontCheckAgainAfterTrigger = YES;
         }
