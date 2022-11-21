@@ -135,22 +135,13 @@ void askForAccessibility(void) {
         x = pt.x - del->dockWidth * 2;
         y = del->dockHeight;
         if (isOnExt) y = y + del->extendedOffsetY;
-        
-        if (isOnExt) [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f * 2,  y: %f + %f", pt.x, del->dockWidth, del->dockHeight, del->extendedOffsetY]];
-        else [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f * 2, y: %f", pt.x, del->dockWidth, del->dockHeight]];
     } else if ([del->dockPos isEqual:@"left"]) {
         y = pt.y - del->dockHeight * 2;
         x = del->dockWidth;
         if (isOnExt) x = x - del->extScreenWidth;
-        
-        if (isOnExt) [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f,  y: %f - %f * 2", del->dockWidth, del->extScreenWidth, pt.y, del->dockHeight]];
-        else [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f,  y: %f - %f * 2", del->dockWidth, pt.y, del->dockHeight]];
     } else if ([del->dockPos isEqual:@"right"]) {
         y = pt.y - del->dockHeight * 2;
         x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
-        
-        if (pt.x > del->primaryScreenWidth) [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f + %f - %f,  y: %f - %f * 2", del->primaryScreenWidth, del->extScreenWidth, del->dockWidth, pt.y, del->dockHeight]];
-        else [[del->appVersionRef cell] setTitle: [NSString stringWithFormat:@"x: %f - %f,  y: %f - %f * 2", del->primaryScreenWidth, del->dockWidth, pt.y, del->dockHeight]];
     }
     if (!x && !y) { // accessiblity bug (#issue4 on github)  --show default AltTab location (centered)
         lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\"", appBID];
