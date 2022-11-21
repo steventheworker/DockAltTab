@@ -253,7 +253,8 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 }
 + (NSString*) getDockPosition {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"orientation"];
+    NSString* pos = [[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"orientation"];
+    return pos ? pos : @"bottom";
 }
 + (BOOL) dockautohide {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
