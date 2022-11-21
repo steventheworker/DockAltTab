@@ -1018,7 +1018,7 @@
                                     <rect key="frame" x="117" y="5" width="229" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="kill/restart dock to apply to current session" id="6nV-6q-g9E">
-                                        <font key="font" metaFont="system" size="11"/>
+                                        <font key="font" metaFont="smallSystem"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -1030,6 +1030,9 @@
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
+                                    <connections>
+                                        <action selector="toggleDifferentiateHidden:" target="Voe-Tx-rLC" id="VqT-QH-6yJ"/>
+                                    </connections>
                                 </button>
                             </subviews>
                         </view>
