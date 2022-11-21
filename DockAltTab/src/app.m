@@ -73,10 +73,14 @@ void askForAccessibility(void) {
     [app bindSettings];
     NSLog(@"timer successfully started");
 
+    //init UI
+    [del->LinksBox setHidden: YES];
+    [del->unsupportedBox setHidden: YES];
+
     //check for updates on launch
     del->mostCurrentVersion = [app getCurrentVersion];
     if (del->unsupportedAltTab || del->mostCurrentVersion == nil || (del->mostCurrentVersion != del->appVersion && !([del->appVersion floatValue] > [del->mostCurrentVersion floatValue]))) {
-        if (del->unsupportedAltTab) [del->unsupportedBox setHidden: NO];
+        if (del->unsupportedAltTab) [app viewToFront: del->unsupportedBox]; //unhide & put in front of stack
         [del preferences:nil];
     }
 }
@@ -189,5 +193,17 @@ void askForAccessibility(void) {
     if ([[NSString stringWithCharacters:&char1 length:1] isEqual:@"~"]) {
         return [NSString stringWithFormat:@"%@%@", NSHomeDirectory(), [_path substringFromIndex:1]];
     } else return _path;
+}
++ (void) viewToFront: (NSView*) v {
+    [v setHidden:NO];
+    NSView* superview = [v superview];
+    [v removeFromSuperview];
+    [superview addSubview: v];
+}
++ (void) viewToBack: (NSView*) v {
+    [v setHidden:YES];
+    NSView* superview = [v superview];
+    [v removeFromSuperview];
+    [superview addSubview:v positioned:NSWindowBelow relativeTo:nil];
 }
 @end

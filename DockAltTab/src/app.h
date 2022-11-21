@@ -20,5 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*) reopenDockStr: (BOOL) triggerEscape;
 + (void) activateApp: (NSRunningApplication*) app;
 + (void) sendClick : (CGPoint) pt;
++ (void) viewToFront: (NSView*) v;
++ (void) viewToBack: (NSView*) v;
 @end
 NS_ASSUME_NONNULL_END

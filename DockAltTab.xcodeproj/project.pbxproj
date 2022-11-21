@@ -319,7 +319,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				MARKETING_VERSION = 2.51;
+				MARKETING_VERSION = 2.49;
 				PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.DockAltTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -350,7 +350,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
-				MARKETING_VERSION = 2.51;
+				MARKETING_VERSION = 2.49;
 				PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.DockAltTab;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

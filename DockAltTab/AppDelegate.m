@@ -412,6 +412,24 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 /*
     Bindings & LifeCycle
 */
+/* Links Box */
+- (IBAction)homeLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app"]];}
+- (IBAction)donateLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app/#donate"]];}
+- (IBAction)releasesLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/releases"]];}
+- (IBAction)sourceLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/issues"]];}
+- (IBAction)discordLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://discord.com/invite/f54j8hHxdJ"]];}
+- (IBAction)linksBoxToggle:(id)sender {
+    [LinksBox setHidden: ![LinksBox isHidden]];
+    if ([LinksBox isHidden]) { //send to bottom of stack
+        NSView* superview = [LinksBox superview];
+        [LinksBox removeFromSuperview];
+        [superview addSubview:LinksBox positioned:NSWindowBelow relativeTo:nil];
+    } else { //send to top of stack
+        NSView* superview = [LinksBox superview];
+        [LinksBox removeFromSuperview];
+        [superview addSubview: LinksBox];
+    }
+}
 
 /* Bindings / UI handlers */
 - (IBAction) preferences:(id)sender {
@@ -463,7 +481,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
            self->AltTabPID = [helperLib getPID:@"com.steventheworker.alt-tab-macos"];
             if (self->AltTabPID == 0) {
                 self->unsupportedAltTab = YES;
-                [self->unsupportedBox setHidden: NO];
+                [app viewToFront: self->unsupportedBox];
                 self->AltTabPID = [helperLib getPID:@"com.lwouis.alt-tab-macos"];
                 [self preferences:nil];
             } else {
