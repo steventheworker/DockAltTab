@@ -237,7 +237,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     clickedBeforeDelayedExpose = clickBID;
     clickedBeforeDelayedExposePID = clickPID;
     if (![showBlacklist containsObject:clickTitle]) appDisplayed = clickBID;
-    if (!isClickToggleChecked) return;
+    if (!isClickToggleChecked || [info[@"subrole"] isEqual:@"AXHandoffDockItem"]) return;
     __block BOOL showingContextMenu = [app contextMenuExists: carbonPoint:info]; //checks if contextMenu exists (but only looks around area cursor's placed)
     if (wasShowingContextMenu || showingContextMenu) {
         wasShowingContextMenu = NO;
