@@ -34,18 +34,25 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     return [NSString stringWithFormat:@"%.02f", val];
 }
 //misc
-+ (NSString *) get: (NSString *) url {
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setHTTPMethod:@"GET"];
-    [request setURL:[NSURL URLWithString:url]];
-    NSError *error = nil;
-    NSHTTPURLResponse *responseCode = nil;
-    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error]; //todo: fix warning
-    if ([responseCode statusCode] != 200) {
-        NSLog(@"Error getting %@, HTTP status code %li", url, [responseCode statusCode]);
-        return nil;
-    }
-    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
++ (void) fetchBinary: (NSString*) url : (void(^)(NSData* _Nullable data)) cb {
+    [[NSURLSession.sharedSession dataTaskWithURL:[NSURL URLWithString:url] completionHandler:
+        ^(NSData* _Nullable data, NSURLResponse* _Nullable response, NSError * _Nullable error) { cb(data); }
+    ] resume];
+}
++ (void) fetch: (NSString*) url : (void(^)(NSString* data)) cb { // fetchString
+    [self fetchBinary:url : ^(NSData * _Nullable data) {
+        cb([[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    }];
+}
++ (void) fetchJSONArray: (NSString*) url : (void(^)(NSArray* data)) cb {
+    [self fetchBinary:url : ^(NSData * _Nullable data) {
+        cb([NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:(void*) nil]);
+    }];
+}
++ (void) fetchJSONDict: (NSString*) url : (void(^)(NSDictionary* data)) cb {
+    [self fetchBinary:url : ^(NSData * _Nullable data) {
+        cb([NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:(void*) nil]);
+    }];
 }
 + (NSString*) runScript: (NSString*) scriptTxt {
     NSDictionary *error = nil;

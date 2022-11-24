@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface app : NSObject
 + (BOOL) contextMenuExists: (CGPoint)carbonPoint : (NSDictionary*)info;
-+ (NSString*) getCurrentVersion;
++ (void) getCurrentVersion;
 + (void) init;
 + (NSString*) getShowString: (NSString*) appBID;
 + (void) AltTabShow: (NSString*) appBID;
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*) reopenDockStr: (BOOL) triggerEscape;
 + (void) activateApp: (NSRunningApplication*) app;
 + (void) sendClick : (CGPoint) pt;
-+ (void) viewToFront: (NSView*) v;
-+ (void) viewToBack: (NSView*) v;
++ (void) viewToFront: (NSView*) v; // send to top layer
++ (void) viewToBack: (NSView*) v; // send to bottom layer
 @end
 NS_ASSUME_NONNULL_END

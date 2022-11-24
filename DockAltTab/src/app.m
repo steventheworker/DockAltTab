@@ -7,7 +7,7 @@
 
 #import "app.h"
 #import "helperLib.h"
-
+#import "globals.h"
 //config
 const NSString* versionLink = @"https://dockalttab.netlify.app/currentversion.txt";
 const float TICK_DELAY = 0.16666665; // 0.33333 / 2   seconds
@@ -74,13 +74,12 @@ void askForAccessibility(void) {
     NSLog(@"timer successfully started");
 
     //init UI
+    [[del->appVersionRef cell] setTitle: [@"v" stringByAppendingString: del->appVersion]];
     [del->LinksBox setHidden: YES];
     [del->unsupportedBox setHidden: YES];
-
-    //check for updates on launch
-    del->mostCurrentVersion = [app getCurrentVersion];
-    if (del->unsupportedAltTab || del->mostCurrentVersion == nil || (del->mostCurrentVersion != del->appVersion && !([del->appVersion floatValue] > [del->mostCurrentVersion floatValue]))) {
-        if (del->unsupportedAltTab) [app viewToFront: del->unsupportedBox]; //unhide & put in front of stack
+    if ([del->updateToggleCheckbox intValue]) [app getCurrentVersion];
+    if (del->unsupportedAltTab) {
+        [app viewToFront: del->unsupportedBox]; //unhide & put in front of stack
         [del preferences:nil];
     }
 }
@@ -97,6 +96,7 @@ void askForAccessibility(void) {
     del->isLockDockPositionChecked = CFPreferencesGetAppBooleanValue( CFSTR("position-immutable"), CFSTR("com.apple.dock"), &valid);
     del->isShowHiddenChecked = CFPreferencesGetAppBooleanValue( CFSTR("showhidden"), CFSTR("com.apple.dock"), &valid);
     //DockAltTab settings
+    [del->updateToggleCheckbox setIntValue: ![[NSUserDefaults standardUserDefaults] boolForKey:@"isUpdateToggleChecked"]]; // (!) default true
     del->isClickToggleChecked = ![[NSUserDefaults standardUserDefaults] boolForKey:@"isClickToggleChecked"]; // (!) default true
     del->isReopenPreviewsChecked = [[NSUserDefaults standardUserDefaults] boolForKey:@"isReopenPreviewsChecked"]; // (!) default false
     del->previewDelay = ((int) [[NSUserDefaults standardUserDefaults] integerForKey:@"previewDelay"]);
@@ -163,7 +163,32 @@ void askForAccessibility(void) {
     [helperLib runScript: @"tell application \"AltTab\" to hide"];
 }
 + (float) maxDelay {return DELAY_MAX;}
-+ (NSString*) getCurrentVersion {return [helperLib get: (NSString*) versionLink];}
++ (void) getCurrentVersion {
+    AppDelegate* app = [helperLib getApp];
+    [helperLib fetch: (NSString*) versionLink : ^(NSString* data) {
+        if (![data isEqual:@""]) app->mostCurrentVersion = data;
+        setTimeout(^{ // prevents error: [NSCell setTitle:] must be used from main thread only
+            BOOL greaterVersion = app->mostCurrentVersion != nil && [app->appVersion floatValue] > [app->mostCurrentVersion floatValue];
+            if (app->mostCurrentVersion == NULL) [[app->updateRemindRef cell] setTitle: @"No internet; Update check failed"];
+            else {
+                NSColor* titColor;NSString* tit;
+                if (greaterVersion) {
+                    tit = @"This is a pre⚙️release.";
+                    titColor = [NSColor systemBlueColor];
+                } else if ([app->mostCurrentVersion isEqual:app->appVersion]) {
+                    tit = @"You're on the latest release.";
+                    titColor = [NSColor greenColor];
+                } else {
+                    tit = [@"Version " stringByAppendingString: [app->mostCurrentVersion stringByAppendingString: @" has been released. You should update soon."]];
+                    titColor = [NSColor redColor];
+                    [app preferences:nil];
+                }
+                [[app->updateRemindRef cell] setTitle: tit];
+                [app->updateRemindRef setTextColor: titColor];
+            }
+        }, 0);
+    }];
+}
 + (void) activateApp: (NSRunningApplication*) app {
     [app activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     if ([[app localizedName] isEqual:@"Firefox"]) [helperLib runScript:@"tell application \"System Events\" to tell process \"Firefox\" to perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))"];

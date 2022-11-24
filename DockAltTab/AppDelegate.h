@@ -55,7 +55,8 @@
     BOOL                    isShowHiddenChecked;
     float                   dockDelay;
     int                     previewDelay;
-    __weak IBOutlet NSButton *menuItemCheckBox;    
+    __weak IBOutlet NSButton *menuItemCheckBox;
+    __weak IBOutlet NSButton *updateToggleCheckbox;
     __weak IBOutlet NSButton *clickToggleCheckBox;
     __weak IBOutlet NSButton *reopenPreviewsCheckbox;
     __weak IBOutlet NSButton *lockDockContentsCheckbox;

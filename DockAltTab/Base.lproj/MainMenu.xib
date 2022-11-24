@@ -30,6 +30,7 @@
                 <outlet property="showHiddenCheckbox" destination="lld-GI-9pn" id="I4z-U3-BQd"/>
                 <outlet property="unsupportedBox" destination="okj-8c-j1d" id="vPZ-xv-aW8"/>
                 <outlet property="updateRemindRef" destination="lXr-Qx-AJz" id="yec-s0-HE4"/>
+                <outlet property="updateToggleCheckbox" destination="aFp-mk-n72" id="W2G-YS-fdQ"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -883,8 +884,8 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="K9P-HQ-vqn">
-                                    <rect key="frame" x="48" y="92" width="348" height="18"/>
+                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K9P-HQ-vqn">
+                                    <rect key="frame" x="8" y="82" width="348" height="18"/>
                                     <buttonCell key="cell" type="check" title="Modify click behavior (toggle showing &amp; hiding apps)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VlZ-GH-2eM">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -894,8 +895,8 @@
                                         <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isClickToggleChecked" id="HVu-1g-bVO"/>
                                     </connections>
                                 </button>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CZ5-xc-4LQ">
-                                    <rect key="frame" x="72" y="71" width="303" height="18"/>
+                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CZ5-xc-4LQ">
+                                    <rect key="frame" x="32" y="61" width="303" height="18"/>
                                     <buttonCell key="cell" type="check" title="Reopen previews on clicks that switch spaces" bezelStyle="regularSquare" imagePosition="left" inset="2" id="PVk-3m-SoM">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -913,10 +914,21 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
+                                <button verticalHuggingPriority="750" id="aFp-mk-n72">
+                                    <rect key="frame" x="8" y="112" width="200" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Check for updates on launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="u6N-1r-Fyf">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="toggleLaunchUpdates:" target="Voe-Tx-rLC" id="3o1-Ym-Izb"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="K9P-HQ-vqn" firstAttribute="top" secondItem="IUj-Vs-1CV" secondAttribute="top" constant="20" symbolic="YES" id="5da-cX-MUR"/>
-                                <constraint firstItem="CZ5-xc-4LQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IUj-Vs-1CV" secondAttribute="leading" symbolic="YES" id="60M-Q7-Av6"/>
+                                <constraint firstItem="CZ5-xc-4LQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IUj-Vs-1CV" secondAttribute="leading" constant="20" symbolic="YES" id="60M-Q7-Av6"/>
                                 <constraint firstItem="ChD-mw-OsW" firstAttribute="leading" secondItem="CCP-aX-Qbi" secondAttribute="trailing" constant="12" id="9sa-gL-KdZ"/>
                                 <constraint firstItem="CCP-aX-Qbi" firstAttribute="centerY" secondItem="ChD-mw-OsW" secondAttribute="centerY" id="EjU-24-nC9"/>
                                 <constraint firstAttribute="trailing" secondItem="N5E-ek-FXy" secondAttribute="trailing" constant="70" id="Gws-2S-mid"/>
@@ -946,24 +958,14 @@
                             <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isMenuItemChecked" id="qh1-br-CFc"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="w8n-Hj-x4c">
-                        <rect key="frame" x="178" y="89" width="127" height="32"/>
-                        <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1ki-PJ-IPt">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="kill:" target="Voe-Tx-rLC" id="gYa-Ji-NiU"/>
-                        </connections>
-                    </button>
                     <box title="Dock Settings" translatesAutoresizingMaskIntoConstraints="NO" id="OTV-cb-O9V">
                         <rect key="frame" x="13" y="10" width="454" height="115"/>
                         <view key="contentView" wantsLayer="YES" id="VLr-jq-ZP9">
                             <rect key="frame" x="4" y="5" width="446" height="92"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Xf-ze-N6I">
-                                    <rect key="frame" x="26" y="57" width="140" height="18"/>
+                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Xf-ze-N6I">
+                                    <rect key="frame" x="301" y="66" width="140" height="18"/>
                                     <buttonCell key="cell" type="check" title="Lock dock position" bezelStyle="regularSquare" imagePosition="left" inset="2" id="NTS-nO-1ze">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -972,8 +974,8 @@
                                         <action selector="lockDockPosition:" target="Voe-Tx-rLC" id="vfh-Mt-jVN"/>
                                     </connections>
                                 </button>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KUb-j5-Idy">
-                                    <rect key="frame" x="164" y="57" width="116" height="18"/>
+                                <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KUb-j5-Idy">
+                                    <rect key="frame" x="305" y="37" width="116" height="18"/>
                                     <buttonCell key="cell" type="check" title="Lock dock size" bezelStyle="regularSquare" imagePosition="left" inset="2" id="6zc-Xm-Fch">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -982,18 +984,8 @@
                                         <action selector="lockDockSize:" target="Voe-Tx-rLC" id="SsV-al-cNc"/>
                                     </connections>
                                 </button>
-                                <button verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="2qA-Dr-kaN">
-                                    <rect key="frame" x="296" y="57" width="145" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Lock dock contents" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oXb-Oi-fOf">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="lockDockContents:" target="Voe-Tx-rLC" id="yxP-iV-WUY"/>
-                                    </connections>
-                                </button>
-                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OVf-LN-RTw">
-                                    <rect key="frame" x="109" y="29" width="53" height="21"/>
+                                <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OVf-LN-RTw">
+                                    <rect key="frame" x="95" y="6" width="53" height="21"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="-1" drawsBackground="YES" id="P9N-hG-GlV">
                                         <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="VZi-Rp-3jb"/>
                                         <font key="font" metaFont="system"/>
@@ -1010,32 +1002,34 @@
                                         </binding>
                                     </connections>
                                 </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nRA-rG-aCp">
-                                    <rect key="frame" x="168" y="32" width="65" height="16"/>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nRA-rG-aCp">
+                                    <rect key="frame" x="154" y="9" width="65" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="Yfo-52-tLF">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KO6-Kg-Z68">
-                                    <rect key="frame" x="26" y="32" width="77" height="16"/>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KO6-Kg-Z68">
+                                    <rect key="frame" x="12" y="9" width="77" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Dock Delay:" id="o5v-XA-bUC">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="G7Y-aY-4PV">
-                                    <rect key="frame" x="109" y="5" width="229" height="14"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="kill/restart dock to apply to current session" id="6nV-6q-g9E">
-                                        <font key="font" metaFont="smallSystem"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
+                                <button verticalHuggingPriority="750" misplaced="YES" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="2qA-Dr-kaN">
+                                    <rect key="frame" x="301" y="5" width="145" height="18"/>
+                                    <buttonCell key="cell" type="check" title="Lock dock contents" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oXb-Oi-fOf">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="lockDockContents:" target="Voe-Tx-rLC" id="yxP-iV-WUY"/>
+                                    </connections>
+                                </button>
                                 <button verticalHuggingPriority="750" id="lld-GI-9pn">
-                                    <rect key="frame" x="237" y="27" width="184" height="22"/>
+                                    <rect key="frame" x="12" y="51" width="184" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="Differentiate hidden apps" bezelStyle="regularSquare" imagePosition="left" inset="2" id="iFm-aQ-3yT">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1051,7 +1045,6 @@
                                 <constraint firstItem="OVf-LN-RTw" firstAttribute="top" secondItem="8Xf-ze-N6I" secondAttribute="bottom" constant="8" symbolic="YES" id="3Bk-hk-qez"/>
                                 <constraint firstItem="nRA-rG-aCp" firstAttribute="leading" secondItem="OVf-LN-RTw" secondAttribute="trailing" constant="8" symbolic="YES" id="3Mq-T6-kPA"/>
                                 <constraint firstAttribute="trailing" secondItem="lld-GI-9pn" secondAttribute="trailing" constant="25" id="65S-vy-x84"/>
-                                <constraint firstItem="G7Y-aY-4PV" firstAttribute="centerX" secondItem="KUb-j5-Idy" secondAttribute="centerX" id="951-c8-6F4"/>
                                 <constraint firstItem="KUb-j5-Idy" firstAttribute="baseline" secondItem="2qA-Dr-kaN" secondAttribute="baseline" id="Dxk-H0-22G"/>
                                 <constraint firstItem="KUb-j5-Idy" firstAttribute="centerX" secondItem="VLr-jq-ZP9" secondAttribute="centerX" id="GUv-oc-qtt"/>
                                 <constraint firstItem="nRA-rG-aCp" firstAttribute="baseline" secondItem="lld-GI-9pn" secondAttribute="firstBaseline" id="Gp5-3p-0cW"/>
@@ -1061,16 +1054,27 @@
                                 <constraint firstItem="KUb-j5-Idy" firstAttribute="leading" secondItem="8Xf-ze-N6I" secondAttribute="trailing" id="QyJ-PQ-gfR"/>
                                 <constraint firstItem="8Xf-ze-N6I" firstAttribute="leading" secondItem="KO6-Kg-Z68" secondAttribute="leading" id="Rwb-xf-d9o"/>
                                 <constraint firstAttribute="trailing" secondItem="2qA-Dr-kaN" secondAttribute="trailing" constant="5" id="XJR-fe-X9I"/>
-                                <constraint firstItem="G7Y-aY-4PV" firstAttribute="top" secondItem="lld-GI-9pn" secondAttribute="bottom" constant="9" id="hze-8V-zxz"/>
                                 <constraint firstItem="2qA-Dr-kaN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KUb-j5-Idy" secondAttribute="trailing" constant="8" symbolic="YES" id="q9h-hp-ki9"/>
                                 <constraint firstItem="8Xf-ze-N6I" firstAttribute="baseline" secondItem="KUb-j5-Idy" secondAttribute="baseline" id="w4I-4b-tkY"/>
                             </constraints>
                         </view>
                         <font key="titleFont" metaFont="systemBold" size="14"/>
                     </box>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="scL-LI-AmK">
+                        <rect key="frame" x="164" y="133" width="157" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Check for updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lrp-lZ-9mw">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <action selector="checkForUpdates:" target="Voe-Tx-rLC" id="wkh-XT-pX9"/>
+                        </connections>
+                    </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lXr-Qx-AJz">
                         <rect key="frame" x="-7" y="310" width="484" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="You're on the latest release." id="vxC-cM-BWb">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="-" id="vxC-cM-BWb">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1097,9 +1101,20 @@
                             <action selector="linksBoxToggle:" target="Voe-Tx-rLC" id="lxa-LY-3Ac"/>
                         </connections>
                     </button>
+                    <button toolTip="kill/restart the dock to apply these settings to the current session" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KXJ-2g-eik">
+                        <rect key="frame" x="184" y="-4" width="127" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="m50-Hb-mcx">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <action selector="kill:" target="Voe-Tx-rLC" id="Ozf-UT-VXB"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="w8n-Hj-x4c" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="EiT-Mj-1SZ" secondAttribute="leading" symbolic="YES" id="4At-HV-6Oe"/>
                     <constraint firstAttribute="trailing" secondItem="lXr-Qx-AJz" secondAttribute="trailing" constant="5" id="4uS-oU-VVT"/>
                     <constraint firstItem="rIa-XP-LET" firstAttribute="top" secondItem="lXr-Qx-AJz" secondAttribute="bottom" constant="10" id="50a-sa-QGH"/>
                     <constraint firstItem="lXr-Qx-AJz" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="-5" id="G9q-d8-nwr"/>
@@ -1110,8 +1125,6 @@
                     <constraint firstItem="lXr-Qx-AJz" firstAttribute="top" secondItem="kBE-1m-b9i" secondAttribute="bottom" constant="2" id="T7i-m1-LMC"/>
                     <constraint firstItem="BUI-mm-4RA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="YVW-sX-G6w"/>
                     <constraint firstItem="ZuN-GN-bng" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="bmD-JJ-Kgt"/>
-                    <constraint firstItem="w8n-Hj-x4c" firstAttribute="top" secondItem="okj-8c-j1d" secondAttribute="bottom" constant="23" id="flV-Oh-crR"/>
-                    <constraint firstAttribute="trailing" secondItem="w8n-Hj-x4c" secondAttribute="trailing" constant="182" id="gOy-nM-yPM"/>
                     <constraint firstAttribute="trailing" secondItem="ZuN-GN-bng" secondAttribute="trailing" constant="20" id="jR9-FE-Ubx"/>
                     <constraint firstItem="ZuN-GN-bng" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kBE-1m-b9i" secondAttribute="trailing" constant="8" symbolic="YES" id="md0-Pd-zXV"/>
                     <constraint firstItem="kBE-1m-b9i" firstAttribute="centerX" secondItem="rIa-XP-LET" secondAttribute="centerX" id="oKa-ZB-7jd"/>

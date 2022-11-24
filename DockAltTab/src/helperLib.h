@@ -13,7 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 // formatting
 + (NSString*) twoSigFigs: (float) val;
 // misc
-+ (NSString*) get: (NSString*) url; // http(s) "GET"
++ (void) fetchBinary: (NSString*) url : (void(^)(NSData* _Nullable data)) cb;
++ (void) fetch: (NSString*) url : (void(^)(NSString* data)) cb;
++ (void) fetchJSONArray: (NSString*) url : (void(^)(NSArray* data)) cb;
++ (void) fetchJSONDict: (NSString*) url : (void(^)(NSDictionary* data)) cb;
 + (NSString*) runScript: (NSString*) scriptTxt;
 // point math / screens
 + (CGPoint) carbonPointFrom: (NSPoint) cocoaPoint;
