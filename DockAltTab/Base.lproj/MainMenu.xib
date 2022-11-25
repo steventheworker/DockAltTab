@@ -701,7 +701,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -773,7 +773,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SaR-Gw-d3o">
-                                <rect key="frame" x="19" y="140" width="115" height="23"/>
+                                <rect key="frame" x="19" y="140" width="116" height="23"/>
                                 <buttonCell key="cell" type="roundTextured" title="Buy me a coffee" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Z6-U3-lHM">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -783,7 +783,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g9x-Od-tHb">
-                                <rect key="frame" x="19" y="245" width="71" height="23"/>
+                                <rect key="frame" x="19" y="245" width="72" height="23"/>
                                 <buttonCell key="cell" type="roundTextured" title="Releases" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qDG-Oi-xrW">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -793,7 +793,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ybr-mO-nCJ">
-                                <rect key="frame" x="19" y="211" width="95" height="23"/>
+                                <rect key="frame" x="19" y="211" width="96" height="23"/>
                                 <buttonCell key="cell" type="roundTextured" title="Report a bug" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1fG-9z-KiQ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -803,7 +803,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PSX-Ha-32n">
-                                <rect key="frame" x="196" y="116" width="69" height="32"/>
+                                <rect key="frame" x="195" y="116" width="70" height="32"/>
                                 <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NOF-vU-HQr">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -813,7 +813,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XJa-d4-D6q">
-                                <rect key="frame" x="19" y="175" width="115" height="23"/>
+                                <rect key="frame" x="19" y="175" width="116" height="23"/>
                                 <buttonCell key="cell" type="roundTextured" title="Join the Discord" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="B6W-Up-SOp">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -948,23 +948,23 @@
                         <font key="titleFont" metaFont="systemBold"/>
                     </box>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BUI-mm-4RA">
-                        <rect key="frame" x="320" y="130.5" width="144" height="18"/>
+                        <rect key="frame" x="320" y="131" width="144" height="18"/>
                         <buttonCell key="cell" type="check" title="Add icon to menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="A5O-q7-Ccy">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system" size="12"/>
+                            <font key="font" metaFont="cellTitle"/>
                         </buttonCell>
                         <connections>
                             <action selector="toggleMenuIcon:" target="Voe-Tx-rLC" id="L7x-z7-HOp"/>
                             <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isMenuItemChecked" id="qh1-br-CFc"/>
                         </connections>
                     </button>
-                    <box title="Dock Settings" translatesAutoresizingMaskIntoConstraints="NO" id="OTV-cb-O9V">
+                    <box toolTip="kill/restart the dock to apply these settings to the current session" title="Dock Settings" translatesAutoresizingMaskIntoConstraints="NO" id="OTV-cb-O9V">
                         <rect key="frame" x="13" y="20" width="454" height="103"/>
-                        <view key="contentView" wantsLayer="YES" id="VLr-jq-ZP9">
+                        <view key="contentView" toolTip="kill/restart the dock to apply these settings to the current session" wantsLayer="YES" id="VLr-jq-ZP9">
                             <rect key="frame" x="4" y="5" width="446" height="80"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Xf-ze-N6I">
+                                <button toolTip="disable &quot;position on screen&quot; submenu from white strip right click menu" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Xf-ze-N6I">
                                     <rect key="frame" x="301" y="52" width="140" height="18"/>
                                     <buttonCell key="cell" type="check" title="Lock dock position" bezelStyle="regularSquare" imagePosition="left" inset="2" id="NTS-nO-1ze">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -974,7 +974,7 @@
                                         <action selector="lockDockPosition:" target="Voe-Tx-rLC" id="vfh-Mt-jVN"/>
                                     </connections>
                                 </button>
-                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OVf-LN-RTw">
+                                <textField toolTip="dock autohide dock reveal delay" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OVf-LN-RTw">
                                     <rect key="frame" x="95" y="16" width="53" height="21"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="-1" drawsBackground="YES" id="P9N-hG-GlV">
                                         <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="VZi-Rp-3jb"/>
@@ -992,7 +992,7 @@
                                         </binding>
                                     </connections>
                                 </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nRA-rG-aCp">
+                                <textField toolTip="kill/restart the dock to apply these settings to the current session" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nRA-rG-aCp">
                                     <rect key="frame" x="154" y="19" width="65" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="Yfo-52-tLF">
                                         <font key="font" metaFont="system"/>
@@ -1000,7 +1000,7 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KO6-Kg-Z68">
+                                <textField toolTip="dock autohide dock reveal delay" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KO6-Kg-Z68">
                                     <rect key="frame" x="12" y="19" width="77" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Dock Delay:" id="o5v-XA-bUC">
                                         <font key="font" metaFont="system"/>
@@ -1008,7 +1008,7 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="2qA-Dr-kaN">
+                                <button toolTip="prevent changing favorites (app icons) by drag and drop" verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="2qA-Dr-kaN">
                                     <rect key="frame" x="301" y="9" width="145" height="18"/>
                                     <buttonCell key="cell" type="check" title="Lock dock contents" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oXb-Oi-fOf">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1018,7 +1018,7 @@
                                         <action selector="lockDockContents:" target="Voe-Tx-rLC" id="yxP-iV-WUY"/>
                                     </connections>
                                 </button>
-                                <button verticalHuggingPriority="750" id="lld-GI-9pn">
+                                <button toolTip="make app icons opaque for hidden apps" verticalHuggingPriority="750" id="lld-GI-9pn">
                                     <rect key="frame" x="12" y="49" width="184" height="22"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="check" title="Differentiate hidden apps" bezelStyle="regularSquare" imagePosition="left" inset="2" id="iFm-aQ-3yT">
@@ -1029,7 +1029,7 @@
                                         <action selector="toggleDifferentiateHidden:" target="Voe-Tx-rLC" id="VqT-QH-6yJ"/>
                                     </connections>
                                 </button>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KUb-j5-Idy">
+                                <button toolTip="disable dragging the white strip to resize" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KUb-j5-Idy">
                                     <rect key="frame" x="301" y="31" width="116" height="18"/>
                                     <buttonCell key="cell" type="check" title="Lock dock size" bezelStyle="regularSquare" imagePosition="left" inset="2" id="6zc-Xm-Fch">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1062,7 +1062,7 @@
                         <font key="titleFont" metaFont="systemBold" size="14"/>
                     </box>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="scL-LI-AmK">
-                        <rect key="frame" x="162" y="136" width="157" height="32"/>
+                        <rect key="frame" x="161" y="136" width="158" height="32"/>
                         <buttonCell key="cell" type="push" title="Check for updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lrp-lZ-9mw">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -1089,7 +1089,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZuN-GN-bng">
-                        <rect key="frame" x="382" y="333" width="85" height="32"/>
+                        <rect key="frame" x="381" y="333" width="86" height="32"/>
                         <buttonCell key="cell" type="push" title="🔗Links" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QAK-Ew-4Sq">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -1099,7 +1099,7 @@
                         </connections>
                     </button>
                     <button toolTip="kill/restart the dock to apply these settings to the current session" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KXJ-2g-eik">
-                        <rect key="frame" x="177" y="9" width="127" height="32"/>
+                        <rect key="frame" x="176" y="9" width="128" height="32"/>
                         <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="m50-Hb-mcx">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
