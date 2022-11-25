@@ -1,8 +1,6 @@
-## DockAltTab
+# DockAltTab ![alt text](https://github.com/steventheworker/DockAltTab/blob/main/DockAltTab/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png?raw=true)
 
-## The One and Only companion app for AltTab
-
-![alt text](https://github.com/steventheworker/DockAltTab/blob/main/DockAltTab/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png?raw=true)
+### The One and Only companion app for AltTab
 
 ### v2.6 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.6/DockAltTab-v2.6.zip
 
@@ -22,8 +20,10 @@
 
 # Install Instructions:
 
--   grant accessibility & automation permissions in system preferences
--   [AltTab](https://alt-tab-macos.netlify.app) should be running before launching
+-   Grant Accessibility & Input Monitoring permissions, it will then ask for Automation.
+    -   After Input Monitoring is granted, if the downloads folder is on the dock, clicking it will also produce a prompt for Files & Folders permissions
+-   NOTE: &nbsp; [AltTab](https://github.com/steventheworker/alt-tab-macos/releases/) must be running before launching
+-   Optional: &nbsp; (**Firefox users** ONLY): &nbsp; to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022)
 
 #
 
@@ -32,9 +32,3 @@
 Our website: https://dockalttab.netlify.app
 
 And check out our sister app: [Dock Exposé](https://dockexpose.netlify.app)
-
-&nbsp;
-
-&nbsp;
-
-**Note &nbsp; (Firefox users ONLY):** &nbsp; to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022)

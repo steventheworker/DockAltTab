@@ -414,10 +414,10 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     Bindings & LifeCycle
 */
 /* Links Box */
-- (IBAction)homeLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockExpose.netlify.appreferral=appClick"]];}
-- (IBAction)donateLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockExpose.netlify.app/?referral=appClick#donate"]];}
-- (IBAction)releasesLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/Dock-Expos--home/releases"]];}
-- (IBAction)sourceLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/Dock-Expos--home/issues"]];}
+- (IBAction)homeLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app/?referral=appClick"]];}
+- (IBAction)donateLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app/?referral=appClick#donate"]];}
+- (IBAction)releasesLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/releases"]];}
+- (IBAction)sourceLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/issues"]];}
 - (IBAction)discordLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://discord.com/invite/f54j8hHxdJ"]];}
 - (IBAction)linksBoxToggle:(id)sender {
     [LinksBox setHidden: ![LinksBox isHidden]];
