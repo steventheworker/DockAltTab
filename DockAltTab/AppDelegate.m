@@ -109,13 +109,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     }
     return NO;
 }
-void launchLaunchpad(void) { // DockAltTab.app file is an alias pointing to a DerivedData debug build
-    NSWorkspaceOpenConfiguration *config = [NSWorkspaceOpenConfiguration configuration];
-    NSURL* url = [NSURL URLWithString: @"file:///System/Applications/Launchpad.app"];
-    [[NSWorkspace sharedWorkspace] openApplicationAtURL:url configuration:config completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {
-        NSLog(@"%@", error);
-    }];
-}
+void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:[NSURL URLWithString: @"file:///System/Applications/Launchpad.app"] configuration:[NSWorkspaceOpenConfiguration configuration] completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {}];}
 /*
     AppDelate
 */
