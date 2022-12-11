@@ -109,7 +109,13 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     }
     return NO;
 }
-
+void launchLaunchpad(void) { // DockAltTab.app file is an alias pointing to a DerivedData debug build
+    NSWorkspaceOpenConfiguration *config = [NSWorkspaceOpenConfiguration configuration];
+    NSURL* url = [NSURL URLWithString: @"file:///System/Applications/Launchpad.app"];
+    [[NSWorkspace sharedWorkspace] openApplicationAtURL:url configuration:config completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {
+        NSLog(@"%@", error);
+    }];
+}
 /*
     AppDelate
 */
@@ -178,6 +184,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
 
     // clicked to close AltTab previews - check if AltTab still open (todo: factor in closing by Esc key)
     if (![appDisplayed isEqual:@""] && !clickedAfterExpose && !dontCheckAgainAfterTrigger && ticksSinceShown > 1 && [clickedBeforeDelayedExpose isEqual:@""]) {
+        if ([info[@"title"] isEqual:@"Launchpad"]) launchLaunchpad();
         int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
         if (!ATWindowCount) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
@@ -320,7 +327,7 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     NSDictionary* info = [helperLib axInfo:el];
     
 //    /* uncomment to restrict log to dock clicks */ if ([info[@"role"] isEqual:@"AXDockItem"])
-//    /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
+    /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
     
     // right clicks
     if (rightBtn) {
