@@ -28,10 +28,12 @@ CGFloat preSwitchIconSizeWidth = 0; //full icon size while mouse @ coordinates (
 CGFloat preSwitchIconSizeHeight = 0; //full icon height while mouse @ coordinates (before switching spaces) --space switch is complete when dimensions match
 BOOL finishSpaceSwitch = NO;
 BOOL finishedSpaceSwitch = NO;
-
-/* show & hide */
 int ticksSinceHide = 0;
 int ticksSinceShown = 0;
+
+/*
+    show & hide
+*/
 void showOverlay(NSString* appBID, pid_t appPID) {
     AppDelegate* del = [helperLib getApp];
     ticksSinceHide = 0;
@@ -97,6 +99,10 @@ void hideOverlay(pid_t mousePID, NSString* appBID, pid_t appPID) {
     clickedAfterExpose = NO;
     dontCheckAgainAfterTrigger = NO;
 }
+
+/*
+    helper fn's
+*/
 const CGFloat ICONFUZZINESS = 0.1; //middle of icon = largest dimensions, top & bottom = +- 0.5px of the middle max
 BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: consider comparing icon positions instead (more accurate?)
     if (preSwitchIconSizeWidth == 0 && preSwitchIconSizeWidth == 0) return YES;
@@ -110,6 +116,8 @@ BOOL isSpaceSwitchComplete(CGFloat dockWidth, CGFloat dockHeight) { //todo: cons
     return NO;
 }
 void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:[NSURL URLWithString: @"file:///System/Applications/Launchpad.app"] configuration:[NSWorkspaceOpenConfiguration configuration] completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {}];}
+
+
 /*
     AppDelate
 */
@@ -126,9 +134,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     @synthesize isLockDockSizeChecked;
     @synthesize isLockDockPositionChecked;
     @synthesize isShowHiddenChecked;
-/*
-   General / Event Listener Methods
-*/
+/*      main fn  -  timerTick      */
 - (void)timerTick: (NSTimer*) arg {
     NSPoint mouseLocation = [NSEvent mouseLocation];
     CGPoint pt = [helperLib carbonPointFrom:mouseLocation];
@@ -193,6 +199,11 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay([info[@"PID"] intValue], tarBID, tarPID);
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
+
+
+/*
+   AppDelegate Methods
+*/
 - (void) enableClickToClose {clickedBeforeDelayedExpose = @"";clickedAfterExpose = NO;dontCheckAgainAfterTrigger = NO;ticksSinceShown = 2;} //NSLog(@"%d %d %d %d %d", ![appDisplayed isEqual:@""], !clickedAfterExpose, isClickToggleChecked, !dontCheckAgainAfterTrigger, ticksSinceShown > 1);
 - (void) reopenPreview : (NSString*) cachedApp {
     setTimeout(^{ //wait until cached app guaranteed to be hidden
@@ -308,6 +319,11 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         [self reopenPreview : clickBID];
     }, countProcessT);
 }
+
+
+/*
+   Event handlers
+*/
 - (void) bindClick: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
     BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
     BOOL rightBtn = (etype == kCGEventRightMouseDown);
@@ -412,28 +428,8 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
 
 
 /*
-    Bindings & LifeCycle
+    Menu Bindings / UI handlers
 */
-/* Links Box */
-- (IBAction)homeLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app/?referral=appClick"]];}
-- (IBAction)donateLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app/?referral=appClick#donate"]];}
-- (IBAction)releasesLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/releases"]];}
-- (IBAction)sourceLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/issues"]];}
-- (IBAction)discordLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://discord.com/invite/f54j8hHxdJ"]];}
-- (IBAction)linksBoxToggle:(id)sender {
-    [LinksBox setHidden: ![LinksBox isHidden]];
-    if ([LinksBox isHidden]) { //send to bottom of stack
-        NSView* superview = [LinksBox superview];
-        [LinksBox removeFromSuperview];
-        [superview addSubview:LinksBox positioned:NSWindowBelow relativeTo:nil];
-    } else { //send to top of stack
-        NSView* superview = [LinksBox superview];
-        [LinksBox removeFromSuperview];
-        [superview addSubview: LinksBox];
-    }
-}
-
-/* Bindings / UI handlers */
 - (IBAction) preferences:(id)sender {
     [NSApp activateIgnoringOtherApps:YES];
     [_window makeKeyAndOrderFront:nil];
@@ -476,8 +472,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         }, 1220);
     }, 333);
 }
-
-/* DockAltTab setting handlers */
+/* UI handlers */
 - (IBAction)toggleMenuIcon:(id)sender {[statusItem setVisible:isMenuItemChecked];}
 - (IBAction)toggleLaunchUpdates:(id)sender {
     [[NSUserDefaults standardUserDefaults] setBool: !((BOOL) updateToggleCheckbox.state) forKey:@"isUpdateToggleChecked"];  // (!) default true
@@ -496,7 +491,6 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
 - (IBAction)toggleMenuItem:(id)sender {[statusItem setVisible:isMenuItemChecked];}
 - (IBAction)unsupportedMoreInfoClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994"]];}
 - (IBAction)unsupportedDownloadClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/alt-tab-macos/releases/download/1.2/DockAltTab.AltTab.v6.46.1.zip"]];}
-
 /* dock setting handlers */
 - (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
 - (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
@@ -510,9 +504,29 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     [helperLib dockSettingFloat: CFSTR("autohide-delay") : setVal];
     dockDelayInput.floatValue = setVal;
 }
+/* Links Box */
+- (IBAction)homeLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app/?referral=appClick"]];}
+- (IBAction)donateLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://DockAltTab.netlify.app/?referral=appClick#donate"]];}
+- (IBAction)releasesLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/releases"]];}
+- (IBAction)sourceLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/DockAltTab/issues"]];}
+- (IBAction)discordLink:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://discord.com/invite/f54j8hHxdJ"]];}
+- (IBAction)linksBoxToggle:(id)sender {
+    [LinksBox setHidden: ![LinksBox isHidden]];
+    if ([LinksBox isHidden]) { //send to bottom of stack
+        NSView* superview = [LinksBox superview];
+        [LinksBox removeFromSuperview];
+        [superview addSubview:LinksBox positioned:NSWindowBelow relativeTo:nil];
+    } else { //send to top of stack
+        NSView* superview = [LinksBox superview];
+        [LinksBox removeFromSuperview];
+        [superview addSubview: LinksBox];
+    }
+}
 
 
-/* Lifecycle */
+/*
+    Lifecycle
+*/
 - (void) awakeFromNib {
     isClickToggleChecked = YES;
     clickToggleCheckBox.state = YES;
