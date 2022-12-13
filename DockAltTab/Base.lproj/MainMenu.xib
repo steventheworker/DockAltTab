@@ -879,17 +879,6 @@
                             </ciFilter>
                         </backgroundFilters>
                     </view>
-                    <button toolTip="kill/restart the dock to apply these settings to the current session" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KXJ-2g-eik">
-                        <rect key="frame" x="177" y="9" width="127" height="32"/>
-                        <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="m50-Hb-mcx">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <connections>
-                            <action selector="kill:" target="Voe-Tx-rLC" id="Ozf-UT-VXB"/>
-                        </connections>
-                    </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZuN-GN-bng">
                         <rect key="frame" x="382" y="333" width="85" height="32"/>
                         <buttonCell key="cell" type="push" title="🔗Links" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QAK-Ew-4Sq">
@@ -916,17 +905,6 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="scL-LI-AmK">
-                        <rect key="frame" x="162" y="136" width="157" height="32"/>
-                        <buttonCell key="cell" type="push" title="Check for updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lrp-lZ-9mw">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <connections>
-                            <action selector="checkForUpdates:" target="Voe-Tx-rLC" id="wkh-XT-pX9"/>
-                        </connections>
-                    </button>
                     <box toolTip="kill/restart the dock to apply these settings to the current session" title="Dock Settings" translatesAutoresizingMaskIntoConstraints="NO" id="OTV-cb-O9V">
                         <rect key="frame" x="13" y="20" width="454" height="103"/>
                         <view key="contentView" toolTip="kill/restart the dock to apply these settings to the current session" wantsLayer="YES" id="VLr-jq-ZP9">
@@ -1138,6 +1116,28 @@
                         </view>
                         <font key="titleFont" metaFont="systemBold"/>
                     </box>
+                    <button toolTip="kill/restart the dock to apply these settings to the current session" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KXJ-2g-eik">
+                        <rect key="frame" x="177" y="9" width="127" height="32"/>
+                        <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="m50-Hb-mcx">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <action selector="kill:" target="Voe-Tx-rLC" id="Ozf-UT-VXB"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="scL-LI-AmK">
+                        <rect key="frame" x="162" y="136" width="157" height="32"/>
+                        <buttonCell key="cell" type="push" title="Check for updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lrp-lZ-9mw">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <action selector="checkForUpdates:" target="Voe-Tx-rLC" id="wkh-XT-pX9"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="OTV-cb-O9V" firstAttribute="top" secondItem="BUI-mm-4RA" secondAttribute="bottom" constant="9" id="3h8-bD-ZFF"/>
