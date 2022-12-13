@@ -22,5 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) sendClick : (CGPoint) pt;
 + (void) viewToFront: (NSView*) v; // send to top layer
 + (void) viewToBack: (NSView*) v; // send to bottom layer
++ (int) ATWindowCount: (pid_t) AltTabPID;
 @end
 NS_ASSUME_NONNULL_END

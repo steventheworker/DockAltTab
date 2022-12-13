@@ -42,6 +42,8 @@
     //UI
     NSStatusItem            *statusItem;
     __weak IBOutlet NSView *LinksBox;
+    __weak IBOutlet NSButton *requestScreenRecordingBtn;
+    __weak IBOutlet NSButton *requestScreenRecordingInfoBtn;
     __weak IBOutlet NSMenu *menu;
     __weak IBOutlet NSTextField *appVersionRef;
     __weak IBOutlet NSTextField *delayLabel;

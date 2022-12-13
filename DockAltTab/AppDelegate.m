@@ -182,11 +182,13 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         }
     }
 
-    // clicked to close AltTab previews - check if AltTab still open (todo: factor in closing by Esc key)
+    /*
+        ¿click to close? - polling to see if AltTab window still displayed (if it's not, it was closed by click) (todo: factor in closing by Esc key)
+        if mouse on dock, bindClick w/ clickToClose=true activates / unhides, by sending it a fake/empty click event
+     */
     if (![appDisplayed isEqual:@""] && !clickedAfterExpose && !dontCheckAgainAfterTrigger && ticksSinceShown > 1 && [clickedBeforeDelayedExpose isEqual:@""]) {
         if ([info[@"title"] isEqual:@"Launchpad"]) launchLaunchpad();
-        int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
-        if (!ATWindowCount) {
+        if (![app ATWindowCount: AltTabPID]) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
                 [self bindClick: (CGEventRef) nil : kCGEventLeftMouseDown : YES];
                 dontCheckAgainAfterTrigger = YES;
@@ -194,6 +196,8 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
             }
         }
     }
+    
+    // perform show / hide
     if ([showBlacklist containsObject: info[@"title"]]) willShow = NO;
     if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
     willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay([info[@"PID"] intValue], tarBID, tarPID);
@@ -521,6 +525,18 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         [LinksBox removeFromSuperview];
         [superview addSubview: LinksBox];
     }
+}
+- (IBAction)requestScreenRecordingPermission:(id)sender {
+    BOOL granted = CGPreflightScreenCaptureAccess();
+    if (!granted) granted = CGRequestScreenCaptureAccess();
+    // open @ Screen Recording in Settings
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"x-apple.systempreferences:com.apple.preference.security?Privacy_%s", "ScreenCapture"]]];
+}
+- (IBAction)requestScreenRecordingInfoBtn:(id)sender { /* reveal toolTip on click https://stackoverflow.com/a/41896603 */
+    NSHelpManager *helpManager = [NSHelpManager sharedHelpManager];
+    [helpManager setContextHelp:[[NSAttributedString alloc] initWithString:[requestScreenRecordingInfoBtn toolTip]] forObject:requestScreenRecordingInfoBtn];
+    [helpManager showContextHelpForObject:requestScreenRecordingInfoBtn locationHint:[NSEvent mouseLocation]];
+    [helpManager removeContextHelpForObject:requestScreenRecordingInfoBtn];
 }
 
 

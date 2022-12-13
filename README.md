@@ -23,7 +23,7 @@
 -   Grant Accessibility & Input Monitoring permissions, it will then ask for Automation.
     -   After Input Monitoring is granted, if the downloads folder is on the dock, clicking it will also produce a prompt for Files & Folders permissions
 -   NOTE: &nbsp; [AltTab](https://github.com/steventheworker/alt-tab-macos/releases/) must be running before launching
--   Optional: &nbsp; (**Firefox users** ONLY): &nbsp; to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022)
+-   Optional: &nbsp; (**Firefox users** ONLY): &nbsp; to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022); also helps filter out AltTab windows by title (otherwise click behavior glitches while AltTab preferences is open) 
 
 #
 

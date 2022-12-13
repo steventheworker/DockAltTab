@@ -39,6 +39,7 @@ void askForAccessibility(void) {
     //permissions
     AppDelegate* del = [helperLib getApp];
     del->_systemWideAccessibilityObject = AXUIElementCreateSystemWide();
+    CGRequestScreenCaptureAccess();
     [helperLib listenClicks]; // ask for input monitoring first
     askForAccessibility();
     [helperLib listenScreens];
@@ -81,6 +82,10 @@ void askForAccessibility(void) {
     if (del->unsupportedAltTab) {
         [app viewToFront: del->unsupportedBox]; //unhide & put in front of stack
         [del preferences:nil];
+    }
+    if (CGPreflightScreenCaptureAccess()) {
+        [del->requestScreenRecordingBtn setBezelColor: [NSColor systemGreenColor]];
+        [[del->requestScreenRecordingBtn cell] setTitle:@"Screen Recording permissions granted"];
     }
 }
 
@@ -232,5 +237,15 @@ void askForAccessibility(void) {
     NSView* superview = [v superview];
     [v removeFromSuperview];
     [superview addSubview:v positioned:NSWindowBelow relativeTo:nil];
+}
++ (int) ATWindowCount: (pid_t) AltTabPID {
+    NSMutableArray* wins = [helperLib getWindowsForOwnerPID: AltTabPID];
+    NSInteger count = [wins count];
+    for (NSInteger i = (count - 1); i >= 0; i--) {
+        NSDictionary *win = wins[i];
+        NSString* winName = [win objectForKey:@"kCGWindowName"]; // equal to the name of the tab that's open in preferences, or "" for the previews window, or (null) if no Screen Recording permissions
+        if (winName && ![winName isEqual:@""]) [wins removeObjectAtIndex:i]; // filter out preferences window (titled windows)
+    }
+    return (int) [wins count];
 }
 @end
