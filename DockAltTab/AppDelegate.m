@@ -455,11 +455,12 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     [task setArguments:@[ @"-c", killCommand]];
     [task launch];
     //make sure old process dead
-    setTimeout(^{
+    setTimeout(^{ //relaunch w/ path (shell)
+//        if (appPath) [[NSWorkspace sharedWorkspace] openApplicationAtURL:[NSURL URLWithString: [appPath absoluteString]] configuration:[NSWorkspaceOpenConfiguration configuration] completionHandler:^(NSRunningApplication * _Nullable app, NSError * _Nullable error) {}];
         if (appPath) { //relaunch w/ path (shell)
-            NSError *error = nil;
-            NSArray *arguments = [NSArray new]; // [NSArray arrayWithObjects:@"Argument1", @"Argument2", nil];
-            [[NSWorkspace sharedWorkspace] launchApplicationAtURL:appPath options:0 configuration:[NSDictionary dictionaryWithObject:arguments forKey:NSWorkspaceLaunchConfigurationArguments] error:&error];
+//            NSError *error = nil;
+//            NSArray *arguments = [NSArray new]; // [NSArray arrayWithObjects:@"Argument1", @"Argument2", nil];
+//            [[NSWorkspace sharedWorkspace] launchApplicationAtURL:appPath options:0 configuration:[NSDictionary dictionaryWithObject:arguments forKey:NSWorkspaceLaunchConfigurationArguments] error:&error];
         } else [helperLib runScript:@"tell application \"AltTab\" to activate"]; //no running AltTab, relaunch w/ applescript
         //make sure new process spawned
         setTimeout(^{
@@ -473,6 +474,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
                 self->unsupportedAltTab = NO;
                 [self->unsupportedBox setHidden: YES];
             }
+            NSLog(@"%d", self->AltTabPID);
         }, 1220);
     }, 333);
 }
@@ -494,7 +496,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
 - (IBAction) quit:(id)sender {[NSApp terminate:nil];}
 - (IBAction)toggleMenuItem:(id)sender {[statusItem setVisible:isMenuItemChecked];}
 - (IBAction)unsupportedMoreInfoClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994"]];}
-- (IBAction)unsupportedDownloadClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/alt-tab-macos/releases/download/1.2/DockAltTab.AltTab.v6.46.1.zip"]];}
+- (IBAction)unsupportedDownloadClick:(id)sender {[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/steventheworker/alt-tab-macos/releases/download/1.3/DockAltTab.AltTab.v6.51.0.zip"]];}
 /* dock setting handlers */
 - (IBAction)lockDockPosition:(id)sender {[helperLib dockSetting: CFSTR("position-immutable") : (BOOL) lockDockPositionCheckbox.state];}
 - (IBAction)lockDockSize:(id)sender {[helperLib dockSetting: CFSTR("size-immutable") : (BOOL) lockDockSizeCheckbox.state];}
