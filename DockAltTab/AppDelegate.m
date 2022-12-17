@@ -30,6 +30,7 @@ BOOL finishSpaceSwitch = NO;
 BOOL finishedSpaceSwitch = NO;
 int ticksSinceHide = 0;
 int ticksSinceShown = 0;
+NSDictionary* mouseDownCache;
 
 /*
     show & hide
@@ -190,7 +191,8 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         if ([info[@"title"] isEqual:@"Launchpad"]) launchLaunchpad();
         if (![app ATWindowCount: AltTabPID]) {
             if ([info[@"PID"] intValue] == dockPID && [appDisplayed isEqual:elBID]) {
-                [self bindClick: (CGEventRef) nil : kCGEventLeftMouseDown : YES];
+                [self mousedown: (CGEventRef) nil : kCGEventLeftMouseDown : YES];
+                [self mouseup: (CGEventRef) nil : kCGEventLeftMouseDown : YES];
                 dontCheckAgainAfterTrigger = YES;
 //                NSLog(@"click to close");
             }
@@ -328,7 +330,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
 /*
    Event handlers
 */
-- (void) bindClick: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
+- (void) mouseup: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
     BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
     BOOL rightBtn = (etype == kCGEventRightMouseDown);
     NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
@@ -417,6 +419,17 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     }
     if (!isSpaceSwitchComplete(dockWidth, dockHeight)) return;
     [self dockItemClickHide: carbonPoint : el : info : clickToClose];
+}
+- (void) mousedown: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
+    BOOL rightBtn = (etype == kCGEventRightMouseDown);
+    if (rightBtn) return;
+    NSPoint pos = [NSEvent mouseLocation];
+    CGPoint carbonPoint = [helperLib carbonPointFrom:pos];
+    AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
+    NSDictionary* info = [helperLib axInfo:el]; //axTitle, axIsApplicationRunning, axPID, axIsAPplicationRunning
+    mouseDownCache = @{
+        @"info": info,
+    };
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁
     NSScreen* primScreen = [helperLib getScreen:0];

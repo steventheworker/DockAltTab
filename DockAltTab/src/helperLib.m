@@ -15,11 +15,18 @@ NSDictionary* appAliases = @{
 };
 
 //prepare click handling
-CGEventTapCallBack handleClick(CGEventTapProxy proxy ,
+CGEventTapCallBack handleMouseDown(CGEventTapProxy proxy ,
                                   CGEventType type ,
                                   CGEventRef event ,
                                   void * refcon ) {
-    [[helperLib getApp] bindClick:event : type : NO];
+    [[helperLib getApp] mousedown:event : type : NO];
+    return (CGEventTapCallBack) nil;
+}
+CGEventTapCallBack handleMouseUp(CGEventTapProxy proxy ,
+                                  CGEventType type ,
+                                  CGEventRef event ,
+                                 void * refcon ) {
+    [[helperLib getApp] mouseup:event : type : NO];
     return (CGEventTapCallBack) nil;
 }
 //listening to monitors attach / detach
@@ -278,17 +285,17 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 
 //event listening
 + (void) listenScreens {CGDisplayRegisterReconfigurationCallback((CGDisplayReconfigurationCallBack) proc, (void*) nil);}
-+ (void) listenClicks {
-    CGEventMask emask;
++ (void) listenMouseDown {[helperLib listenMask:CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventRightMouseDown) : handleMouseDown];}
++ (void) listenMouseUp {[helperLib listenMask:CGEventMaskBit(kCGEventLeftMouseUp) | CGEventMaskBit(kCGEventRightMouseUp) : handleMouseUp];}
++ (void) listenMask : (CGEventMask) emask : (CGEventTapCallBack) handler {
     CFMachPortRef myEventTap;
     CFRunLoopSourceRef eventTapRLSrc;
-    emask = CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventRightMouseDown);
     myEventTap = CGEventTapCreate (
         kCGSessionEventTap, // Catch all events for current user session
         kCGTailAppendEventTap, // Append to end of EventTap list
         kCGEventTapOptionListenOnly, // We only listen, we don't modify
         emask,
-        (CGEventTapCallBack) handleClick,
+        handler,
         nil // We need no extra data in the callback
     );
     eventTapRLSrc = CFMachPortCreateRunLoopSource( //runloop source

@@ -80,10 +80,12 @@
 @property int previewDelay; // slider value (1 to 100)
 //- (float) timeDiff;
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose;
-- (void) bindClick: (CGEventRef) e : (CGEventType) type : (BOOL) clickToClose;
+- (void) mousedown: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose;
+- (void) mouseup: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose;
 - (void) bindScreens;
 - (void) enableClickToClose;
 - (void) reopenDock;
 - (void) reopenPreview: (NSString*) cachedApp;
 - (IBAction) preferences:(id)sender;
+- (IBAction)requestScreenRecordingPermission:(id)sender;
 @end

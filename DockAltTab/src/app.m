@@ -39,8 +39,12 @@ void askForAccessibility(void) {
     //permissions
     AppDelegate* del = [helperLib getApp];
     del->_systemWideAccessibilityObject = AXUIElementCreateSystemWide();
-    CGRequestScreenCaptureAccess();
-    [helperLib listenClicks]; // ask for input monitoring first
+    if (!CGPreflightScreenCaptureAccess()) {
+        CGRequestScreenCaptureAccess();
+        [del requestScreenRecordingPermission: nil];
+    }
+    [helperLib listenMouseDown]; // ask for input monitoring first
+    [helperLib listenMouseUp]; // ask for input monitoring first
     askForAccessibility();
     [helperLib listenScreens];
     //functional

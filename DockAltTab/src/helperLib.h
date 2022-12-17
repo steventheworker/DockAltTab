@@ -44,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) killDock;
 //event listening
 + (void) listenScreens;
-+ (void) listenClicks;
++ (void) listenMouseDown;
++ (void) listenMouseUp;
++ (void) listenMask: (CGEventMask) emask : (CGEventTapCallBack) handler;
 @end
 NS_ASSUME_NONNULL_END
