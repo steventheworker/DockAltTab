@@ -23,14 +23,13 @@ NSString* lastShowStr = @"";
 void askForAccessibility(void) {
     NSDictionary* options = @{(__bridge NSString*)(kAXTrustedCheckOptionPrompt) : @YES};
     if (!AXIsProcessTrustedWithOptions((__bridge CFDictionaryRef)options)) {
-        [NSTimer scheduledTimerWithTimeInterval:3.0
-        repeats:YES
-        block:^(NSTimer* timer) {
-            if (AXIsProcessTrusted()) { // [self relaunchIfProcessTrusted];
-                [NSTask launchedTaskWithLaunchPath:[[NSBundle mainBundle] executablePath] arguments:@[]];
-                [NSApp terminate:nil];
-            }
-        }];
+        void (^__block finish) (void)  = ^ {
+            [NSTask launchedTaskWithLaunchPath:[[NSBundle mainBundle] executablePath] arguments:@[]];
+            [NSApp terminate:nil];
+
+        };
+        if (AXIsProcessTrusted()) finish();
+        else setTimeout(^{if (AXIsProcessTrusted()) finish();}, 10000);
     }
 }
 @implementation app
@@ -39,12 +38,12 @@ void askForAccessibility(void) {
     //permissions
     AppDelegate* del = [helperLib getApp];
     del->_systemWideAccessibilityObject = AXUIElementCreateSystemWide();
-    if (!CGPreflightScreenCaptureAccess()) {
-        CGRequestScreenCaptureAccess();
-        [del requestScreenRecordingPermission: nil];
-    }
     [helperLib listenMouseDown]; // ask for input monitoring first
     [helperLib listenMouseUp]; // ask for input monitoring first
+    if (!CGPreflightScreenCaptureAccess()) {
+        CGRequestScreenCaptureAccess(); // ask for screen recording
+        [del requestScreenRecordingPermission: nil];
+    }
     askForAccessibility();
     [helperLib listenScreens];
     //functional

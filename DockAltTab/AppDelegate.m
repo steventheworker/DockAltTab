@@ -333,11 +333,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
 - (void) mouseup: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
     BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
     BOOL rightBtn = (etype == kCGEventRightMouseDown);
-    NSUInteger theFlags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
-    BOOL ctrlDown = theFlags & NSEventModifierFlagControl;
-    BOOL optDown = theFlags & NSEventModifierFlagOption;
-    BOOL cmdDown = theFlags & NSEventModifierFlagCommand;
-    BOOL shiftDown = theFlags & NSEventModifierFlagShift;
+    NSUInteger _flags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;BOOL ctrlDown = _flags & NSEventModifierFlagControl;BOOL optDown = _flags & NSEventModifierFlagOption;BOOL cmdDown = _flags & NSEventModifierFlagCommand;BOOL shiftDown = _flags & NSEventModifierFlagShift;
     CGPoint carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el];
@@ -346,73 +342,12 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
     
     // right clicks
-    if (rightBtn) {
-        if ([info[@"PID"] intValue] == dockPID) {
-            wasShowingContextMenu = YES;
-            if (isOverlayShowing && !dontCheckAgainAfterTrigger) {
-                [app AltTabHide];
-                dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
-                // only modify trackpad clicks from double taps
-//                if (CGEventGetIntegerValueField(e, kCGMouseEventSubtype) == 3 && isTrackpadDoubleTap) { // is trackpad? (virtual BTT trackpad clicks don't count (they're 0))   defaults read com.apple.AppleMultitouchTrackpad "TrackpadRightClick"
-//                    AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
-//                    NSLog(@"trackpad two finger tap struggles");
-//                }
-                
-                
-                //modify all devices
-//                [helperLib runScript:@""]; // setTimeout/dispatch_after blocks are unable to see dock el's, but blocking thread like this works
-                
-//                carbonPoint = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
-//                el = [helperLib elementAtPoint:carbonPoint];
-//                NSString* oldTitle = info[@"title"];
-//                info = [helperLib axInfo:el];
-//
-//                if ([app contextMenuExists:carbonPoint : info])  return NSLog(@"contextMenuExists -> rightClick");
-//                if (![info[@"title"] isEqual:oldTitle]) return NSLog(@"too much movement");
-//                AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
-//                NSLog(@" obj-c show contextmenu");
-            }
-        } else {} // ignore clicks not on dock
-        return;
-    }
-    if (wasShowingContextMenu) {
-        wasShowingContextMenu = NO;
-        return; // NSLog(@"wasShowingContextMenu");
-    }
-    //else{ //    [helperLib runScript:@"delay .333"];
-//        if ([app contextMenuExists:carbonPoint : info]) {
-//            wasShowingContextMenu = NO;
-//            [helperLib runScript:@"tell application \"System Events\" to key code 53"]; // send escape key to close (sometimes two contextmenu's pop up)
-//            return NSLog(@"contextMenuExists -> left click -> esc");
-//        }
+    if (rightBtn) return;
+//    if (wasShowingContextMenu) {
+//        wasShowingContextMenu = NO;
+//        return; // NSLog(@"wasShowingContextMenu");
 //    }
-
-//    NSLog(@"left click no menu");
     // left clicks
-    if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
-    if ([info[@"PID"] intValue] == dockPID) {
-        if (ctrlDown) {
-            if (clickToClose && isOverlayShowing) AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
-            return; // [Control] + Click:  always prevent clickToggle
-        } else if (optDown) {return;} else if (cmdDown) { // [Option] + Click:  always prevent clickToggle
-            if (steviaOS && clickToClose && isOverlayShowing) { // only runScript if overlay still visible (because overlay hides keystrokes from BTT)
-                NSString *path = [NSString stringWithFormat:@"%@/click-cmd-cycle-windows.scpt", steviaOSSystemFiles];
-                NSTask *task = [[NSTask alloc] init];// BTT trigger_named  has ~ 7sec delay (on this script only)
-                NSString *commandToRun = [NSString stringWithFormat:@"/usr/bin/osascript -e \'run script \"%@\"'", path];
-
-                NSArray *arguments = [NSArray arrayWithObjects: @"-c" , commandToRun, nil];
-                [task setLaunchPath:@"/bin/sh"];
-                [task setArguments:arguments];
-                [task launch];
-            }
-           return; // [Command] + Click:  always prevent clickToggle
-        } else {
-            shiftDown = shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"]; // overlay absorbs modifier keys => get true keyState from AltTab
-            if (steviaOS && shiftDown && clickToClose && isOverlayShowing) [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
-            if (shiftDown) return; // [Shift] + Click: always prevent clickToggle
-        }
-     }
-    
     if ([info[@"role"] isEqual:@"AXDockItem"]) {
         dockWidth = [info[@"width"] floatValue];
         dockHeight = [info[@"height"] floatValue];
@@ -421,14 +356,57 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     [self dockItemClickHide: carbonPoint : el : info : clickToClose];
 }
 - (void) mousedown: (CGEventRef) e : (CGEventType) etype : (BOOL) clickToClose {
+    BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
     BOOL rightBtn = (etype == kCGEventRightMouseDown);
+    NSUInteger _flags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;BOOL ctrlDown = _flags & NSEventModifierFlagControl;BOOL optDown = _flags & NSEventModifierFlagOption;BOOL cmdDown = _flags & NSEventModifierFlagCommand;BOOL shiftDown = _flags & NSEventModifierFlagShift;
     if (rightBtn) return;
     NSPoint pos = [NSEvent mouseLocation];
     CGPoint carbonPoint = [helperLib carbonPointFrom:pos];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
     NSDictionary* info = [helperLib axInfo:el]; //axTitle, axIsApplicationRunning, axPID, axIsAPplicationRunning
+    
+    if (rightBtn) {
+        if ([info[@"PID"] intValue] == dockPID) {
+            wasShowingContextMenu = YES;
+            if (isOverlayShowing && !dontCheckAgainAfterTrigger) {
+                [app AltTabHide];
+                dontCheckAgainAfterTrigger = YES; // prevent "clickToClose" from triggering
+            }
+        } else {} // ignore clicks not on dock
+    } else {
+        // left clicks
+        if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
+        if ([info[@"PID"] intValue] == dockPID) {
+            if (ctrlDown) {
+                if (clickToClose && isOverlayShowing) AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
+                return; // [Control] + Click:  always prevent clickToggle
+            } else if (optDown) {return;} else if (cmdDown) { // [Option] + Click:  always prevent clickToggle
+                if (steviaOS && clickToClose && isOverlayShowing) { // only runScript if overlay still visible (because overlay hides keystrokes from BTT)
+                    NSString *path = [NSString stringWithFormat:@"%@/click-cmd-cycle-windows.scpt", steviaOSSystemFiles];
+                    NSTask *task = [[NSTask alloc] init];// BTT trigger_named  has ~ 7sec delay (on this script only)
+                    NSString *commandToRun = [NSString stringWithFormat:@"/usr/bin/osascript -e \'run script \"%@\"'", path];
+
+                    NSArray *arguments = [NSArray arrayWithObjects: @"-c" , commandToRun, nil];
+                    [task setLaunchPath:@"/bin/sh"];
+                    [task setArguments:arguments];
+                    [task launch];
+                }
+               return; // [Command] + Click:  always prevent clickToggle
+            } else {
+                shiftDown = shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"]; // overlay absorbs modifier keys => get true keyState from AltTab
+                if (steviaOS && shiftDown && clickToClose && isOverlayShowing) [helperLib runScript:@"tell application \"BetterTouchTool\" to trigger_named \"shiftClick\""];
+                if (shiftDown) return; // [Shift] + Click: always prevent clickToggle
+            }
+         }
+        
+        if ([info[@"role"] isEqual:@"AXDockItem"]) {
+            dockWidth = [info[@"width"] floatValue];
+            dockHeight = [info[@"height"] floatValue];
+        }
+    }
     mouseDownCache = @{
         @"info": info,
+        @"ctrl": @(ctrlDown),  @"shift": @(shiftDown),  @"opt": @(optDown), @"cmd": @(cmdDown)
     };
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁
