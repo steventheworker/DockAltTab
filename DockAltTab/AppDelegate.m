@@ -466,6 +466,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
                 [self->unsupportedBox setHidden: YES];
             }
             NSLog(@"%d", self->AltTabPID);
+            [helperLib runScript:@"tell application \"System Events\" to tell process \"AltTab\" to if count of windows > 0 then click button 2 of window 1"]; //close AltTab if prefs open on login, which can also happens when you use the login items (recommended), rather than the "Start at login" checkbox (in AltTab prefs)
         }, 1220);
     }, 333);
 }
