@@ -167,7 +167,8 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     
     // ? willShowOverlay
     BOOL willShow = [info[@"running"] intValue] && [info[@"subrole"] isEqual:@"AXApplicationDockItem"];
-    int numWindows = willShow ? (int) [[helperLib getWindowsForOwnerPID:tarPID] count] : 0; // hidden / minimized windows not included
+    int numWindows = !willShow ? 0 : (allSpaces ? [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"", appDisplayed]] intValue]
+        : (int) [[helperLib getWindowsForOwnerPID:tarPID] count]); // hidden / minimized windows not included
     if (willShow && [info[@"title"] isEqual:@"Parallels Mac VM"]) numWindows = 1; //if running - 1 window (but numWindows can't see it) //todo: why???
     if (willShow && numWindows == 0) {
         if ([helperLib runningAppFromAxTitle: info[@"title"]].isHidden) numWindows = 1;

@@ -58,7 +58,7 @@ void askForAccessibility(void) {
     if (del->AltTabPID == 0) {
         del->unsupportedAltTab = YES;
         del->AltTabPID = [helperLib getPID:@"com.lwouis.alt-tab-macos"];
-    }
+    } else del->allSpaces = [[helperLib runScript: @"tell application \"AltTab\" to appSetting named \"spacesToShow\""] intValue] == 0; // 2 == Visible Spaces
     del->finderPID = [helperLib getPID:@"com.apple.Finder"];
     
     if ([helperLib getPID:@"com.hegenberg.BetterTouchTool"] != 0 && [[helperLib runScript:@"tell application \"BetterTouchTool\" to get_number_variable \"steviaOS\""] isEqual:@"1"]) {

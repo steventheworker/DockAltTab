@@ -26,6 +26,7 @@
     pid_t                  finderPID;
     pid_t                  AltTabPID;
     BOOL                   unsupportedAltTab;
+    BOOL                   allSpaces;
     BOOL                   autohide;
     BOOL                   steviaOS;
     NSString*              steviaOSSystemFiles;

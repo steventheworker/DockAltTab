@@ -285,8 +285,8 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 
 //event listening
 + (void) listenScreens {CGDisplayRegisterReconfigurationCallback((CGDisplayReconfigurationCallBack) proc, (void*) nil);}
-+ (void) listenMouseDown {[helperLib listenMask:CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventRightMouseDown) : handleMouseDown];}
-+ (void) listenMouseUp {[helperLib listenMask:CGEventMaskBit(kCGEventLeftMouseUp) | CGEventMaskBit(kCGEventRightMouseUp) : handleMouseUp];}
++ (void) listenMouseDown {[helperLib listenMask:CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventRightMouseDown) : (CGEventTapCallBack) handleMouseDown];}
++ (void) listenMouseUp {[helperLib listenMask:CGEventMaskBit(kCGEventLeftMouseUp) | CGEventMaskBit(kCGEventRightMouseUp) : (CGEventTapCallBack) handleMouseUp];}
 + (void) listenMask : (CGEventMask) emask : (CGEventTapCallBack) handler {
     CFMachPortRef myEventTap;
     CFRunLoopSourceRef eventTapRLSrc;
