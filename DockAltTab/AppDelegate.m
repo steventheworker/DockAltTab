@@ -230,6 +230,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     setTimeout(^{[helperLib runScript: [app reopenDockStr:YES]];}, T_TO_SWITCH_SPACE);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose {
+    if (![mouseDownCache[@"info"][@"title"] isEqual: info[@"title"]] || mouseDownCache[@"ctrl"] || mouseDownCache[@"shift"] || mouseDownCache[@"opt"] || mouseDownCache[@"cmd"]) return; // mouseDown el != mouseUp el
     NSString* clickTitle = info[@"title"];
     pid_t clickPID = [info[@"PID"] intValue];
     if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) if (clickPID != finderPID) finderFrontmost = NO;
@@ -360,7 +361,6 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     BOOL isOverlayShowing = ![appDisplayed isEqual:@""];
     BOOL rightBtn = (etype == kCGEventRightMouseDown);
     NSUInteger _flags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;BOOL ctrlDown = _flags & NSEventModifierFlagControl;BOOL optDown = _flags & NSEventModifierFlagOption;BOOL cmdDown = _flags & NSEventModifierFlagCommand;BOOL shiftDown = _flags & NSEventModifierFlagShift;
-    if (rightBtn) return;
     NSPoint pos = [NSEvent mouseLocation];
     CGPoint carbonPoint = [helperLib carbonPointFrom:pos];
     AXUIElementRef el = [helperLib elementAtPoint:carbonPoint];
