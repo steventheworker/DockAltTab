@@ -176,12 +176,13 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         if (numWindows == 0) willShow = NO;
     }
 
-    if (![appDisplayed isEqual:@""] && [info[@"title"] isEqual:@"Spotlight Search"] && !dontCheckAgainAfterTrigger) {
-        int ATWindowCount = (int) [[helperLib getWindowsForOwnerPID: AltTabPID] count];
-        if (!ATWindowCount) {
+    NSLog(@"%d %d %d", appDisplayedPID, [info[@"title"] isEqual:@"Spotlight Search"], !dontCheckAgainAfterTrigger);
+    if (appDisplayedPID && [info[@"title"] isEqual:@"Spotlight Search"] && !dontCheckAgainAfterTrigger) {
+        if (![app ATWindowCount: AltTabPID]) {
             [app sendClick: pt];
             dontCheckAgainAfterTrigger = YES;
-        }
+            NSLog(@" y");
+        } else             NSLog(@" n");
     }
 
     /*
