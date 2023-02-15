@@ -176,7 +176,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         if (numWindows == 0) willShow = NO;
     }
 
-    NSLog(@"%d %d %d", appDisplayedPID, [info[@"title"] isEqual:@"Spotlight Search"], !dontCheckAgainAfterTrigger);
+//    NSLog(@"%d %d %d", appDisplayedPID, [info[@"title"] isEqual:@"Spotlight Search"], !dontCheckAgainAfterTrigger);
     if (appDisplayedPID && [info[@"title"] isEqual:@"Spotlight Search"] && !dontCheckAgainAfterTrigger) {
         if (![app ATWindowCount: AltTabPID]) {
             [app sendClick: pt];
@@ -231,7 +231,8 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     setTimeout(^{[helperLib runScript: [app reopenDockStr:YES]];}, T_TO_SWITCH_SPACE);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose {
-    if (![mouseDownCache[@"info"][@"title"] isEqual: info[@"title"]] || mouseDownCache[@"ctrl"] || mouseDownCache[@"shift"] || mouseDownCache[@"opt"] || mouseDownCache[@"cmd"]) return; // mouseDown el != mouseUp el
+    BOOL titleChanged = ![mouseDownCache[@"info"][@"title"] isEqual: info[@"title"]]; // check if changed between mousedown & mouseup
+    if (titleChanged || [mouseDownCache[@"ctrl"] intValue] || [mouseDownCache[@"shift"] intValue] || [mouseDownCache[@"opt"] intValue] || [mouseDownCache[@"cmd"] intValue]) return; // mouseDown el != mouseUp el
     NSString* clickTitle = info[@"title"];
     pid_t clickPID = [info[@"PID"] intValue];
     if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) if (clickPID != finderPID) finderFrontmost = NO;
@@ -342,7 +343,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     NSDictionary* info = [helperLib axInfo:el];
     
 //    /* uncomment to restrict log to dock clicks */ if ([info[@"role"] isEqual:@"AXDockItem"])
-    /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
+//    /* uncomment to restrict log all clicks */        NSLog(@"%@ - ctrl=%d opt=%d cmd=%d shift=%d    steviaOS=%d, clicktoClose=%d", rightBtn ? @"right" : @"left", ctrlDown, optDown, cmdDown, shiftDown || [[helperLib runScript:@"tell application \"AltTab\" to keyState key \"Shift\""] isEqual:@"true"], steviaOS, clickToClose);
     
     // right clicks
     if (rightBtn) return;
