@@ -8,6 +8,7 @@
 #import "helperLib.h"
 
 NSDictionary* appAliases = @{
+    @"Parallels Mac VM": @"macOS 12 VM",
     @"Visual Studio Code": @"Code",
     @"Adobe Lightroom Classic": @"Lightroom Classic",
     @"iTerm": @"iTerm2",
