@@ -271,10 +271,8 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     if ([clickTitle isEqual:@"Trash"] && finderFrontmost) return;
 
     NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
-    BOOL wasAppHidden = [runningApp isHidden];
-
     // reopen preview when clicks switches spaces && reopen dock w/ autohide turned on (consistent toggle click behavior)
-    if ((autohide || isReopenPreviewsChecked) && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && !wasAppHidden && [runningApp isActive]) {
+    if ((autohide || isReopenPreviewsChecked) && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && ![runningApp isHidden] && [runningApp isActive]) {
         BOOL willSwitchSpace = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"\n\
         tell application \"System Events\" to tell process \"%@\" to return allCount - (count of windows)", appDisplayed, clickTitle]] intValue] != 0; // if app has windows in another spaces, (YES) clicking will switch
         if (willSwitchSpace) {
@@ -289,45 +287,21 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     }
     
     if (clickToClose) { // activate/unhide when clicking dock icon while AltTab showing
-        if (wasAppHidden && ![appDisplayed isEqual:@""]) [runningApp unhide];
+        if ([runningApp isHidden] && ![appDisplayed isEqual:@""]) [runningApp unhide];
         if (![runningApp isActive]) [app activateApp: runningApp];
         return;
     }
     
-    if (![runningApp isActive]) return;
-    int oldProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
-    float countProcessT = (wasAppHidden) ? 0 : 333; //only skip timeout if:  app is hidden (which means it's already running (ie. not launching / opening a new window))
-//    if (!clickToClose && autohide) countProcessT = 2000;
-    CGFloat cachedW = preSwitchIconSizeWidth;       // hack to stop timer ticks & clicks (return; early) while in the middle of delayed hiding
-    if (countProcessT) preSwitchIconSizeWidth = 1; // hack to stop timer ticks & clicks (return; early) while in the middle of delayed hiding
-    setTimeout(^{
-        preSwitchIconSizeWidth = cachedW; //undo hiding hack
-        if (countProcessT) {
-            //test for context menu (x time after click)
-            CGPoint carbonPoint2 = [helperLib carbonPointFrom: [NSEvent mouseLocation]];
-            NSDictionary* info2 = [helperLib axInfo:[helperLib elementAtPoint:carbonPoint2]]; //axTitle, axIsApplicationRunning, axPID, axIsAPplicationRunning
-            if ((pid_t)[info2[@"PID"] intValue] != self->dockPID) return;
-            showingContextMenu = [app contextMenuExists: carbonPoint2:info2]; //checks if contextMenu exists (but only looks around area cursor's placed)
-            if (showingContextMenu) return;
-        }
-        
-        //show / hide
-        int numProcesses = (int) [[clickTitle isEqual:@"Finder"] ? [helperLib getRealFinderWindows] : [helperLib getWindowsForOwner:clickTitle] count]; //on screen windows
-        if ((![self->appDisplayed isEqual:@""] && [self->lastAppClickToggled isEqual:@""]) || numProcesses != oldProcesses) {
-            [app activateApp: runningApp]; //order of operations important (keep here) (above toggle update)
-            return;
-        }
-        if ([runningApp isHidden] != wasAppHidden) return; //something already changed, don't change it further
-        if (clickedAfterExpose || ![runningApp isHidden]) {
-            [runningApp hide];
-            clickedAfterExpose = YES;
-        }else [app activateApp: runningApp];
-        
-        if (!finishSpaceSwitch) return; //isReopenPreviewsChecked:  show the preview (after switching spaces)
-        finishSpaceSwitch = NO;
-        finishedSpaceSwitch = YES;
-        [self reopenPreview : clickBID];
-    }, countProcessT);
+    if ([mouseDownCache[@"wasAppHidden"] intValue]) [runningApp unhide];
+    else {
+        [runningApp hide];
+    }
+    //        if (clickedAfterExpose || ![runningApp isHidden]) clickedAfterExpose = YES;
+
+//    if (!finishSpaceSwitch) return; //isReopenPreviewsChecked:  show the preview (after switching spaces)
+//    finishSpaceSwitch = NO;
+//    finishedSpaceSwitch = YES;
+//    [self reopenPreview : clickBID];
 }
 
 
@@ -407,9 +381,11 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
             dockHeight = [info[@"height"] floatValue];
         }
     }
+    NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:info[@"title"]];
     mouseDownCache = @{
         @"info": info,
-        @"ctrl": @(ctrlDown),  @"shift": @(shiftDown),  @"opt": @(optDown), @"cmd": @(cmdDown)
+        @"ctrl": @(ctrlDown),  @"shift": @(shiftDown),  @"opt": @(optDown), @"cmd": @(cmdDown),
+        @"wasAppHidden": @([runningApp isHidden])
     };
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁
