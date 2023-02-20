@@ -222,8 +222,8 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         if (isExtraSlow) [helperLib runScript:[NSString stringWithFormat:@"tell application \"System Events\" to tell process \"%@\" to return window 1", [frontApp localizedName]]]; //tell application \"System Events\" to tell process \"Firefox\" to return enabled of menu item \"Minimize\" of menu 1 of menu bar item \"Window\" of menu bar 1    //original menu item check to see if ready, don't think it worked
         //show cached app previews & enable "click to close" (to unhide)
         [app AltTabShow:cachedApp];
-        setTimeout(^{[self enableClickToClose];}, 67); //wait until AltTab guaranteed to be visible
-    }, 90);
+        setTimeout(^{[self enableClickToClose];}, 166+67); //wait until AltTab guaranteed to be visible
+    }, 167+90);
 }
 - (void) reopenDock { // reopen / focus the dock w/ fn + a (after switching spaces)
     if (isReopenPreviewsChecked) finishSpaceSwitch = YES; // call reopenPreview --after finished hiding
@@ -298,10 +298,10 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     }
     //        if (clickedAfterExpose || ![runningApp isHidden]) clickedAfterExpose = YES;
 
-//    if (!finishSpaceSwitch) return; //isReopenPreviewsChecked:  show the preview (after switching spaces)
-//    finishSpaceSwitch = NO;
-//    finishedSpaceSwitch = YES;
-//    [self reopenPreview : clickBID];
+    if (!finishSpaceSwitch) return; //isReopenPreviewsChecked:  show the preview (after switching spaces)
+    finishSpaceSwitch = NO;
+    finishedSpaceSwitch = YES;
+    [self reopenPreview : clickBID];
 }
 
 
