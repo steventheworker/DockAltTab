@@ -2,7 +2,7 @@
 
 ### The One and Only companion app for AltTab
 
-### v2.6 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.6/DockAltTab-v2.6.zip
+### v2.7 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.7/DockAltTab-v2.7.zip
 
 ##### OR ALTERNATIVELY,
 
@@ -12,7 +12,7 @@
 
 # [NOTE](): For the time being, DockAltTab will only work with a [custom AltTab branch](https://github.com/steventheworker/alt-tab-macos/tree/scriptable) - maintained by steventheworker.
 
-[Download here](https://github.com/steventheworker/alt-tab-macos/releases/download/1.3/DockAltTab.AltTab.v6.51.0.zip)
+[Download here](https://github.com/steventheworker/alt-tab-macos/releases/download/1.5/DockAltTab.AltTab.v6.55.0.zip)
 
 ### [Click here for more information](https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994) and please bug [lwouis](https://github.com/lwouis/alt-tab-macos/) to resolve this on [GitHub issues](https://github.com/lwouis/alt-tab-macos/issues) / by sending feedback via the AltTab app / [discord server](https://discord.gg/CVEPeDufJa).
 
