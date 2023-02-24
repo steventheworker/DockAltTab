@@ -231,14 +231,11 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     setTimeout(^{[helperLib runScript: [app reopenDockStr:YES]];}, T_TO_SWITCH_SPACE);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose {
-    BOOL titleChanged = ![mouseDownCache[@"info"][@"title"] isEqual: info[@"title"]]; // check if changed between mousedown & mouseup
-    if (titleChanged || [mouseDownCache[@"ctrl"] intValue] || [mouseDownCache[@"shift"] intValue] || [mouseDownCache[@"opt"] intValue] || [mouseDownCache[@"cmd"] intValue]) return; // mouseDown el != mouseUp el
-    NSString* clickTitle = info[@"title"];
-    pid_t clickPID = [info[@"PID"] intValue];
-    if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) if (clickPID != finderPID) finderFrontmost = NO;
-//    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
     NSString* clickBID = @"";
-    BOOL isBlacklisted = [showBlacklist containsObject:clickTitle];
+    //settle titles, BID
+    NSString* mouseDownTitle = mouseDownCache[@"info"][@"title"];
+    if ([mouseDownTitle isEqual:@"Trash"]) mouseDownTitle = @"Finder";
+    NSString* clickTitle = info[@"title"];
     if ([clickTitle isEqual:@"Trash"]) {
         if (!finderFrontmost) finderFrontmost = YES;
         else {
@@ -251,9 +248,15 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void*)&appURL);// BID w/ app url
         clickBID = ((pid_t) [info[@"PID"] intValue] != dockPID || ![info[@"role"] isEqual:@"AXDockItem"]) || appURL == nil ? @"" : [[NSBundle bundleWithURL:appURL] bundleIdentifier];
     }
+    
+    BOOL titleChanged = ![mouseDownTitle isEqual: clickTitle]; // check if changed between mousedown & mouseup
+    if (titleChanged || [mouseDownCache[@"ctrl"] intValue] || [mouseDownCache[@"shift"] intValue] || [mouseDownCache[@"opt"] intValue] || [mouseDownCache[@"cmd"] intValue]) return; // mouseDown el != mouseUp el
+    pid_t clickPID = [info[@"PID"] intValue];
+    if (![clickTitle isEqual:@"Trash"] && ![clickTitle isEqual:@"Finder"]) if (clickPID != finderPID) finderFrontmost = NO;
+//    clickPID = [helperLib getPID:clickBID]; // tarPID w/ BID
+    BOOL isBlacklisted = [showBlacklist containsObject:clickTitle];
     if (![appDisplayed isEqual:@""] && !dontCheckAgainAfterTrigger && ticksSinceShown > 1) [app AltTabHide]; // "hiding" solely to reset preview position (AltTabHide does that...)   --part of the clickToClose conditions from timerTick
 
-    
     //checks to continue
 //    NSLog(@"'%@': %d, '%@', '%d', '%@'", appDisplayed, appDisplayedPID, lastAppClickToggled, clickedAfterExpose, clickedBeforeDelayedExpose);
     clickedBeforeDelayedExpose = clickBID;
@@ -270,9 +273,9 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     if (![clickBID isEqual:@""]) lastAppClickToggled = clickBID;
     if ([clickTitle isEqual:@"Trash"] && finderFrontmost) return;
 
-    NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:clickTitle];
+    NSRunningApplication* clickApp = [helperLib runningAppFromAxTitle:clickTitle];
     // reopen preview when clicks switches spaces && reopen dock w/ autohide turned on (consistent toggle click behavior)
-    if ((autohide || isReopenPreviewsChecked) && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && ![runningApp isHidden] && [runningApp isActive]) {
+    if ((autohide || isReopenPreviewsChecked) && !clickToClose && ![info[@"title"] isEqual: @"Trash"] && ![clickApp isHidden] && [clickApp isActive]) {
         BOOL willSwitchSpace = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to set allCount to countWindows appBID \"%@\"\n\
         tell application \"System Events\" to tell process \"%@\" to return allCount - (count of windows)", appDisplayed, clickTitle]] intValue] != 0; // if app has windows in another spaces, (YES) clicking will switch
         if (willSwitchSpace) {
@@ -287,14 +290,16 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     }
     
     if (clickToClose) { // activate/unhide when clicking dock icon while AltTab showing
-        if ([runningApp isHidden] && ![appDisplayed isEqual:@""]) [runningApp unhide];
-        if (![runningApp isActive]) [app activateApp: runningApp];
+        if ([clickApp isHidden] && ![appDisplayed isEqual:@""]) [clickApp unhide];
+        if (![clickApp isActive]) [app activateApp: clickApp];
         return;
     }
     
-    if ([mouseDownCache[@"wasAppHidden"] intValue]) [runningApp unhide];
+    NSRunningApplication* runningApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+    NSLog(@"%@ %@ %d %d %d", [runningApp localizedName], mouseDownCache[@"runningApp"], [clickApp isActive], [runningApp isActive]);
+    if ([mouseDownCache[@"wasAppHidden"] intValue]) [clickApp unhide];
     else {
-        [runningApp hide];
+        [clickApp hide];
     }
     //        if (clickedAfterExpose || ![runningApp isHidden]) clickedAfterExpose = YES;
 
@@ -381,11 +386,15 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
             dockHeight = [info[@"height"] floatValue];
         }
     }
-    NSRunningApplication* runningApp = [helperLib runningAppFromAxTitle:info[@"title"]];
+    NSRunningApplication* runningApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+    NSString* clickTitle = info[@"title"];
+    if ([clickTitle isEqual:@"Trash"]) clickTitle = @"Finder";
+    NSRunningApplication* clickApp = [helperLib runningAppFromAxTitle: clickTitle];
     mouseDownCache = @{
         @"info": info,
         @"ctrl": @(ctrlDown),  @"shift": @(shiftDown),  @"opt": @(optDown), @"cmd": @(cmdDown),
-        @"wasAppHidden": @([runningApp isHidden])
+        @"wasAppHidden": @([clickApp isHidden]),
+        @"runningApp": [runningApp localizedName]
     };
 }
 - (void) bindScreens { //todo: 1 external display only atm 👁👄👁
