@@ -90,6 +90,9 @@ void askForAccessibility(void) {
         [del->requestScreenRecordingBtn setBezelColor: [NSColor systemGreenColor]];
         [[del->requestScreenRecordingBtn cell] setTitle:@"Screen Recording permissions granted"];
     }
+    
+    //close AltTab if open, which happens when you use the login items (recommended), rather than the "Start at login" checkbox (in AltTab prefs)
+    if (del->AltTabPID != 0) [helperLib runScript:@"tell application \"System Events\" to tell process \"AltTab\" to if count of windows > 0 then click button 2 of window 1"];
 }
 
 /* UI */
