@@ -14,7 +14,8 @@
 
 [Download here](https://github.com/steventheworker/alt-tab-macos/releases/download/1.5/DockAltTab.AltTab.v6.55.0.zip)
 
-### [Click here for more information](https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994) and please bug [lwouis](https://github.com/lwouis/alt-tab-macos/) to resolve this on [GitHub issues](https://github.com/lwouis/alt-tab-macos/issues) / by sending feedback via the AltTab app / [discord server](https://discord.gg/CVEPeDufJa).
+
+#### To resolve this: raise an issue on [the official repo](https://github.com/lwouis/alt-tab-macos/issues) / sending feedback via the AltTab app /  by contacting [lwouis](https://github.com/lwouis/alt-tab-macos/) via the [AltTab discord server](https://discord.gg/CVEPeDufJa) (expressing interest in <u>[reopening this pull request](https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994)</u> to add an AppleScript dictionary)
 
 &nbsp;
 
