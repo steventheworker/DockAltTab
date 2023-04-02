@@ -134,6 +134,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     for (int i = 0; i < windowCount; i++) {
         NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
         if ([@"Firefox.app" isEqualTo:owner] && [[win objectForKey:@"kCGWindowName"] isEqual:@"Picture-in-Picture"]) continue; // ignore PIP firefox windows   --BUT   @kCGWindowName - requires "Screen Recording" permissions
+        if ([@"Firefox Developer Edition.app" isEqualTo:owner] && [[win objectForKey:@"kCGWindowName"] isEqual:@"Picture-in-Picture"]) continue; // ignore PIP firefox windows   --BUT   @kCGWindowName - requires "Screen Recording" permissions
         if (![owner isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]]) continue;
         [ownerWindowList addObject:win];
     }
@@ -148,6 +149,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
   for (int i = 0; i < windowCount; i++) {
       NSDictionary *win = CFArrayGetValueAtIndex(windowList, i);
       if ([@"Firefox.app" isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]] && [[win objectForKey:@"kCGWindowName"] isEqual:@"Picture-in-Picture"]) continue; // ignore PIP firefox windows   --BUT   @kCGWindowName - requires "Screen Recording" permissions
+      if ([@"Firefox Developer Edition.app" isEqualTo:[win objectForKey:@"kCGWindowOwnerName"]] && [[win objectForKey:@"kCGWindowName"] isEqual:@"Picture-in-Picture"]) continue; // ignore PIP firefox windows   --BUT   @kCGWindowName - requires "Screen Recording" permissions
       if (PID != (pid_t) [[win objectForKey:@"kCGWindowOwnerPID"] intValue]) continue;
       [ownerWindowList addObject:win];
   }

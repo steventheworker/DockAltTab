@@ -218,7 +218,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         NSRunningApplication* frontApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
         //apps that are slow to activate (well, technically they auto-activate, but the actual window gets keyboard focus slowly (ie: red yellow green buttons are grey), which adds them to the AltTab popup)
         //todo: find a less hackish method of preventing this preview addition (currently do so by synchronously clogging DockAltTab's thread (until it can tell/talk to the offending process window w/ applescript))
-        BOOL isExtraSlow = ![cachedApp isEqual:@"org.mozilla.firefox"] && [[frontApp bundleIdentifier] isEqual:@"org.mozilla.firefox"];
+        BOOL isExtraSlow = (![cachedApp isEqual:@"org.mozilla.firefox"] && [[frontApp bundleIdentifier] isEqual:@"org.mozilla.firefox"]) || (![cachedApp isEqual:@"org.mozilla.firefoxdeveloperedition"] && [[frontApp bundleIdentifier] isEqual:@"org.mozilla.firefoxdeveloperedition"]);
         if (isExtraSlow) [helperLib runScript:[NSString stringWithFormat:@"tell application \"System Events\" to tell process \"%@\" to return window 1", [frontApp localizedName]]]; //tell application \"System Events\" to tell process \"Firefox\" to return enabled of menu item \"Minimize\" of menu 1 of menu bar item \"Window\" of menu bar 1    //original menu item check to see if ready, don't think it worked
         //show cached app previews & enable "click to close" (to unhide)
         [app AltTabShow:cachedApp];
