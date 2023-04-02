@@ -297,7 +297,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     
     NSRunningApplication* runningApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
     NSLog(@"%@ %@ %d %d %d", [runningApp localizedName], mouseDownCache[@"runningApp"], [clickApp isActive], [runningApp isActive]);
-    if ([mouseDownCache[@"wasAppHidden"] intValue]) [clickApp unhide];
+    if ([mouseDownCache[@"wasAppHidden"] intValue]) {} //[clickApp unhide];
     else {
         [clickApp hide];
     }
