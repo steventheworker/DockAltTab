@@ -149,7 +149,7 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         dockWidth = [info[@"width"] floatValue];
         dockHeight = [info[@"height"] floatValue];
     }
-    if (tarPID == AltTabPID) {
+    if (tarPID == AltTabPID && ![info[@"subrole"] isEqual:@"AXUnknown"]) {
         ticksSinceHide = 0;
         return;
     }

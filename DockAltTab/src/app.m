@@ -149,16 +149,17 @@ void askForAccessibility(void) {
     BOOL isOnExtY = pt.y < 0 || (pt.y > del->primaryScreenHeight);
     BOOL isOnExt = isOnExtX || isOnExtY;
     if ([del->dockPos isEqual:@"bottom"]) {
-        x = pt.x - del->dockWidth * 2;
-        y = del->dockHeight;
+        x = pt.x;
+        y = del->dockHeight - 1;
         if (isOnExt) y = y + del->extendedOffsetY;
     } else if ([del->dockPos isEqual:@"left"]) {
-        y = pt.y - del->dockHeight * 2;
-        x = del->dockWidth;
+        y = pt.y;
+        x = del->dockWidth - 1;
         if (isOnExt) x = x - del->extScreenWidth;
     } else if ([del->dockPos isEqual:@"right"]) {
-        y = pt.y - del->dockHeight * 2;
-        x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth;
+        y = pt.y;
+        x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth + 7;
+        x += 1;
     }
     if (!x && !y) { // accessiblity bug (#issue4 on github)  --show default AltTab location (centered)
         lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\"", appBID];
