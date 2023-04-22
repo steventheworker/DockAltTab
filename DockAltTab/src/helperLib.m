@@ -220,6 +220,8 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSString *role;
     NSString *subrole;
     CGSize size;
+    CGPoint pt;
+
     if (el) {
         AXUIElementCopyAttributeValue(el, kAXTitleAttribute, (void *)&axTitle);
         axTitle = appAliases[axTitle] ? appAliases[axTitle] : axTitle; //app's with alias work weird (eg: VScode = Code)
@@ -231,6 +233,10 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         AXUIElementCopyAttributeValue(el, kAXSizeAttribute, (void*) &sizeAxRef);
         AXValueGetValue(sizeAxRef, kAXValueCGSizeType, &size);
         if (sizeAxRef) CFRelease(sizeAxRef);
+        CFTypeRef positionRef;
+        AXUIElementCopyAttributeValue(el, kAXPositionAttribute, (void*) &positionRef);
+        AXValueGetValue(positionRef, kAXValueCGPointType, &pt);
+
     }
     return [NSDictionary dictionaryWithObjectsAndKeys:
                                 !axTitle ? @"" : axTitle, @"title",
@@ -239,7 +245,9 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
                                 !role ? @"" : role, @"role",
                                 !subrole ? @"" : subrole, @"subrole",
                                 @(size.width), @"width",
-                                @(size.height), @"height"
+                                @(size.height), @"height",
+                                @(pt.x), @"x",
+                                @(pt.y), @"y"
                                  , nil];
 }
 + (NSDictionary*) appInfo:(NSString*) owner {

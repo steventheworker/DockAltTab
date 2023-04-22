@@ -204,7 +204,10 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     // perform show / hide
     if ([showBlacklist containsObject: info[@"title"]]) willShow = NO;
     if (willShow && ![appDisplayed isEqual:@""]) ticksSinceShown++;
-    willShow && ![clickedBeforeDelayedExpose isEqual: tarBID] ? showOverlay(tarBID, tarPID) : hideOverlay([info[@"PID"] intValue], tarBID, tarPID);
+    if (willShow && ![clickedBeforeDelayedExpose isEqual: tarBID]) {
+        matchedDockIconPos = NSMakePoint([info[@"x"] floatValue], [info[@"y"] floatValue]);
+        showOverlay(tarBID, tarPID);
+    } else hideOverlay([info[@"PID"] intValue], tarBID, tarPID);
 //    NSLog(@"%@ %d",  willShow ? @"y" : @"n", numWindows);
 }
 

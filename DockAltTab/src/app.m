@@ -149,16 +149,16 @@ void askForAccessibility(void) {
     BOOL isOnExtY = pt.y < 0 || (pt.y > del->primaryScreenHeight);
     BOOL isOnExt = isOnExtX || isOnExtY;
     if ([del->dockPos isEqual:@"bottom"]) {
-        x = pt.x;
+        x = del->matchedDockIconPos.x;
         y = del->dockHeight - 1;
         if (isOnExt) y = y + del->extendedOffsetY;
     } else if ([del->dockPos isEqual:@"left"]) {
-        y = pt.y;
+        y = del->matchedDockIconPos.y;
         x = del->dockWidth - 1;
         if (isOnExt) x = x - del->extScreenWidth;
     } else if ([del->dockPos isEqual:@"right"]) {
-        y = pt.y;
-        x = ((pt.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth + 7;
+        y = del->matchedDockIconPos.y;
+        x = ((del->matchedDockIconPos.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth + 7;
         x += 1;
     }
     if (!x && !y) { // accessiblity bug (#issue4 on github)  --show default AltTab location (centered)
