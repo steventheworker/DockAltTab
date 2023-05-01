@@ -149,23 +149,26 @@ void askForAccessibility(void) {
     BOOL isOnExtY = pt.y < 0 || (pt.y > del->primaryScreenHeight);
     BOOL isOnExt = isOnExtX || isOnExtY;
     if ([del->dockPos isEqual:@"bottom"]) {
-        x = del->matchedDockIconPos.x;
+        x = del->matchedDockIconPos.x + del->dockWidth / 2;
         y = del->dockHeight - 1;
         if (isOnExt) y = y + del->extendedOffsetY;
-    } else if ([del->dockPos isEqual:@"left"]) {
-        y = del->matchedDockIconPos.y;
-        x = del->dockWidth - 1;
-        if (isOnExt) x = x - del->extScreenWidth;
-    } else if ([del->dockPos isEqual:@"right"]) {
-        y = del->matchedDockIconPos.y;
-        x = ((del->matchedDockIconPos.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth + 7;
-        x += 1;
+    } else {
+        int mouseScreenHeight = (pt.x <= del->primaryScreenWidth) ? del->primaryScreenHeight : del->extScreenHeight; // todo: multiple monitors, (at least support 1 vertical monitors ASAP)
+        y = mouseScreenHeight - del->matchedDockIconPos.y; // left & right have the same y
+        NSLog(@"%d", mouseScreenHeight - y);
+        if ([del->dockPos isEqual:@"left"]) {
+            x = del->dockWidth - 1;
+            if (isOnExt) x = x - del->extScreenWidth;
+        } else if ([del->dockPos isEqual:@"right"]) {
+            x = ((del->matchedDockIconPos.x <= del->primaryScreenWidth) ? del->primaryScreenWidth : del->primaryScreenWidth + del->extScreenWidth) - del->dockWidth + 7;
+            x += 1;
+        }
     }
     if (!x && !y) { // accessiblity bug (#issue4 on github)  --show default AltTab location (centered)
         lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\"", appBID];
         return lastShowStr;
     }
-    lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\" x %d y %d %@", appBID, x, y, [del->dockPos isEqual:@"right"] ? @"isRight true" : @""];
+    lastShowStr = [NSString stringWithFormat: @"showApp appBID \"%@\" x %d y %d dockPos \"%@\"", appBID, x, y, del->dockPos];
     return lastShowStr;
 }
 + (void) AltTabShow: (NSString*) appBID {
