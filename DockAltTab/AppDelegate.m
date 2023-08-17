@@ -234,6 +234,11 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
     setTimeout(^{[helperLib runScript: [app reopenDockStr:YES]];}, T_TO_SWITCH_SPACE);
 }
 - (void) dockItemClickHide: (CGPoint)carbonPoint : (AXUIElementRef) el : (NSDictionary*)info : (BOOL) clickToClose {
+    if ([info[@"PID"] intValue] == AltTabPID && [info[@"role"] isEqual:@"AXButton"]
+        && [mouseDownCache[@"info"][@"PID"] intValue] == AltTabPID && [mouseDownCache[@"info"][@"role"] isEqual:@"AXButton"]) {
+        // only register click if not a traffic light button
+        return;
+    }
     NSString* clickBID = @"";
     //settle titles, BID
     NSString* mouseDownTitle = mouseDownCache[@"info"][@"title"];
@@ -360,7 +365,12 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         } else {} // ignore clicks not on dock
     } else {
         // left clicks
-        if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) clickedAfterExpose = YES;
+        if ((isOverlayShowing || [info[@"title"] isEqual:@"Trash"]) && !clickToClose) {
+            if ([info[@"PID"] intValue] == AltTabPID && [info[@"role"] isEqual:@"AXButton"]) {} else {
+                // only register click if not a traffic light button
+                clickedAfterExpose = YES;
+            }
+        }
         if ([info[@"PID"] intValue] == dockPID) {
             if (ctrlDown) {
                 if (clickToClose && isOverlayShowing) AXUIElementPerformAction(el, CFSTR("AXShowMenu"));
