@@ -171,8 +171,10 @@ void launchLaunchpad(void) {[[NSWorkspace sharedWorkspace] openApplicationAtURL:
         : (int) [[helperLib getWindowsForOwnerPID:tarPID] count]); // hidden / minimized windows not included
     if (willShow && [info[@"title"] isEqual:@"Parallels Mac VM"]) numWindows = 1; //if running - 1 window (but numWindows can't see it) //todo: why???
     if (willShow && numWindows == 0) {
-        if ([helperLib runningAppFromAxTitle: info[@"title"]].isHidden) numWindows = 1;
-        else numWindows = [helperLib numWindowsMinimized:info[@"title"]];
+        if ([helperLib runningAppFromAxTitle: info[@"title"]].isHidden) {
+            if (allSpaces) numWindows = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to return countWindows appBID \"%@\"", tarBID]] intValue];
+            else numWindows = [[helperLib runScript: [NSString stringWithFormat:@"tell application \"AltTab\" to return countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue]; // the only window count method that counts hidden windows (in the current space)
+        } else numWindows = [helperLib numWindowsMinimized:info[@"title"]];
         if (numWindows == 0) willShow = NO;
     }
 
