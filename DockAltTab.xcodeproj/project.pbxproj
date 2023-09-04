@@ -12,9 +12,10 @@
 		BF0E91FB2829191D00D21AD5 /* helperLib.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0E91FA2829191D00D21AD5 /* helperLib.m */; };
 		BF0E920128291F0700D21AD5 /* app.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0E920028291F0700D21AD5 /* app.m */; };
 		BF0E921F2829556900D21AD5 /* MenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0E921E2829556900D21AD5 /* MenuIcon.png */; };
+		BF10DAF92AA597190067458E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAF72AA597190067458E /* MainMenu.xib */; };
+		BF10DAFB2AA597D70067458E /* prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAFA2AA597D70067458E /* prefs.xib */; };
 		BF15089429038B8B00DF343F /* globals.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15089329038B8B00DF343F /* globals.m */; };
 		BFE19DEC2825BFA600D72F99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DEB2825BFA600D72F99 /* AppDelegate.m */; };
-		BFE19DF12825BFA800D72F99 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFE19DEF2825BFA800D72F99 /* MainMenu.xib */; };
 		BFE19DF32825BFA800D72F99 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DF22825BFA800D72F99 /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -26,12 +27,13 @@
 		BF0E91FF28291F0700D21AD5 /* app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app.h; sourceTree = "<group>"; };
 		BF0E920028291F0700D21AD5 /* app.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = app.m; sourceTree = "<group>"; };
 		BF0E921E2829556900D21AD5 /* MenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuIcon.png; sourceTree = "<group>"; };
+		BF10DAF82AA597190067458E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BF10DAFA2AA597D70067458E /* prefs.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = prefs.xib; path = DockAltTab/prefs.xib; sourceTree = SOURCE_ROOT; };
 		BF15088B2903782B00DF343F /* globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		BF15089329038B8B00DF343F /* globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = globals.m; sourceTree = "<group>"; };
 		BFE19DE72825BFA600D72F99 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFE19DEA2825BFA600D72F99 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BFE19DEB2825BFA600D72F99 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BFE19DF02825BFA800D72F99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BFE19DF22825BFA800D72F99 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BFE19DF42825BFA800D72F99 /* DockAltTab.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DockAltTab.entitlements; sourceTree = "<group>"; };
 		BFE19DFA2825C63600D72F99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -84,11 +86,12 @@
 				BF15089229038AFD00DF343F /* src */,
 				BFE19DEA2825BFA600D72F99 /* AppDelegate.h */,
 				BFE19DEB2825BFA600D72F99 /* AppDelegate.m */,
-				BF0E91F72829142A00D21AD5 /* Assets.xcassets */,
-				BFE19DFA2825C63600D72F99 /* Info.plist */,
-				BFE19DEF2825BFA800D72F99 /* MainMenu.xib */,
 				BFE19DF22825BFA800D72F99 /* main.m */,
+				BF0E91F72829142A00D21AD5 /* Assets.xcassets */,
 				BF0E921E2829556900D21AD5 /* MenuIcon.png */,
+				BF10DAF72AA597190067458E /* MainMenu.xib */,
+				BF10DAFA2AA597D70067458E /* prefs.xib */,
+				BFE19DFA2825C63600D72F99 /* Info.plist */,
 				BFE19DF42825BFA800D72F99 /* DockAltTab.entitlements */,
 			);
 			path = DockAltTab;
@@ -151,10 +154,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF10DAFB2AA597D70067458E /* prefs.xib in Resources */,
 				BF0E921F2829556900D21AD5 /* MenuIcon.png in Resources */,
 				BF0E91F82829142A00D21AD5 /* Assets.xcassets in Resources */,
 				BF0A905F290F6D230088A4F8 /* README.md in Resources */,
-				BFE19DF12825BFA800D72F99 /* MainMenu.xib in Resources */,
+				BF10DAF92AA597190067458E /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,10 +180,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		BFE19DEF2825BFA800D72F99 /* MainMenu.xib */ = {
+		BF10DAF72AA597190067458E /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BFE19DF02825BFA800D72F99 /* Base */,
+				BF10DAF82AA597190067458E /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -315,10 +319,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DockAltTab/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "DockAltTab needs to control System Events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "GPL-3.0";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_UILaunchStoryboardName = MainMenu.xib;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -348,10 +354,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DockAltTab/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "DockAltTab needs to control System Events";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "GPL-3.0";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_UILaunchStoryboardName = MainMenu.xib;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

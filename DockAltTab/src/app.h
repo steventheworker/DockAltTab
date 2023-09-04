@@ -9,19 +9,13 @@
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@interface app : NSObject
-+ (BOOL) contextMenuExists: (CGPoint)carbonPoint : (NSDictionary*)info;
-+ (void) getCurrentVersion;
-+ (void) init;
-+ (NSString*) getShowString: (NSString*) appBID;
-+ (void) AltTabShow: (NSString*) appBID;
-+ (void) AltTabHide;
-+ (float) maxDelay;
-+ (NSString*) reopenDockStr: (BOOL) triggerEscape;
-+ (void) activateApp: (NSRunningApplication*) app;
-+ (void) sendClick : (CGPoint) pt;
-+ (void) viewToFront: (NSView*) v; // send to top layer
-+ (void) viewToBack: (NSView*) v; // send to bottom layer
-+ (int) ATWindowCount: (pid_t) AltTabPID;
+@interface App : NSObject {
+    NSStatusItem* statusItem;
+    NSWindow* permissionWindow;
+    NSWindowController* prefsController;
+}
++ (instancetype) init: (NSWindow*) window : (NSMenu*) menu;
+- (void) openPrefs;
+- (void) addMenuIcon: (NSMenu*) menu;
 @end
 NS_ASSUME_NONNULL_END

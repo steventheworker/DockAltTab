@@ -1,49 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
             <connections>
-                <outlet property="delegate" destination="Voe-Tx-rLC" id="GzC-gU-4Uq"/>
+                <outlet property="delegate" destination="O8a-yd-nmn" id="M1F-VX-LDG"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
+        <customObject id="O8a-yd-nmn" customClass="AppDelegate">
             <connections>
-                <outlet property="LinksBox" destination="Xmb-Bl-fOM" id="mr5-S9-X8T"/>
-                <outlet property="appVersionRef" destination="kBE-1m-b9i" id="hX7-3P-3Sx"/>
-                <outlet property="clickToggleCheckBox" destination="K9P-HQ-vqn" id="nE7-6d-lU7"/>
-                <outlet property="delayLabel" destination="9Eh-go-GrW" id="3Qc-EI-vF8"/>
-                <outlet property="dockDelayInput" destination="OVf-LN-RTw" id="KfQ-xP-LO1"/>
-                <outlet property="lockDockContentsCheckbox" destination="2qA-Dr-kaN" id="WLU-eC-ANT"/>
-                <outlet property="lockDockPositionCheckbox" destination="8Xf-ze-N6I" id="3g1-MU-1wG"/>
-                <outlet property="lockDockSizeCheckbox" destination="KUb-j5-Idy" id="TGn-YQ-Hmf"/>
-                <outlet property="menu" destination="7wH-0i-7u4" id="e5a-Xh-9Ja"/>
-                <outlet property="menuItemCheckBox" destination="BUI-mm-4RA" id="9z0-kS-Eh1"/>
-                <outlet property="previewDelaySlider" destination="F6r-sH-2qo" id="Adq-0k-0z1"/>
-                <outlet property="reopenPreviewsCheckbox" destination="CZ5-xc-4LQ" id="hw0-r7-m7W"/>
-                <outlet property="requestScreenRecordingBtn" destination="X3s-a9-MjK" id="ssb-Hu-DvN"/>
-                <outlet property="requestScreenRecordingInfoBtn" destination="sqF-sN-fEM" id="Hxz-hc-qak"/>
-                <outlet property="showHiddenCheckbox" destination="lld-GI-9pn" id="I4z-U3-BQd"/>
-                <outlet property="unsupportedBox" destination="okj-8c-j1d" id="vPZ-xv-aW8"/>
-                <outlet property="updateRemindRef" destination="lXr-Qx-AJz" id="yec-s0-HE4"/>
-                <outlet property="updateToggleCheckbox" destination="aFp-mk-n72" id="W2G-YS-fdQ"/>
-                <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
+                <outlet property="menu" destination="JBO-vp-NXO" id="zly-UD-jfk"/>
+                <outlet property="window" destination="Op4-Io-Ulw" id="kum-hV-HgB"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
-                <menuItem title="DockAltTab" id="1Xt-HY-uBw">
+                <menuItem title="NewApplication" id="1Xt-HY-uBw">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="DockAltTab" systemMenu="apple" id="uQy-DD-JDr">
+                    <menu key="submenu" title="NewApplication" systemMenu="apple" id="uQy-DD-JDr">
                         <items>
-                            <menuItem title="About DockAltTab" id="5kV-Vb-QxS">
+                            <menuItem title="About NewApplication" id="5kV-Vb-QxS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-1" id="Exp-CZ-Vem"/>
@@ -57,7 +40,7 @@
                                 <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                            <menuItem title="Hide DockAltTab" keyEquivalent="h" id="Olw-nP-bQN">
+                            <menuItem title="Hide NewApplication" keyEquivalent="h" id="Olw-nP-bQN">
                                 <connections>
                                     <action selector="hide:" target="-1" id="PnN-Uc-m68"/>
                                 </connections>
@@ -75,7 +58,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                            <menuItem title="Quit DockAltTab" keyEquivalent="q" id="4sb-4s-VLi">
+                            <menuItem title="Quit NewApplication" keyEquivalent="q" id="4sb-4s-VLi">
                                 <connections>
                                     <action selector="terminate:" target="-1" id="Te7-pn-YzF"/>
                                 </connections>
@@ -688,7 +671,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="DockAltTab Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="NewApplication Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
                                 </connections>
@@ -697,505 +680,47 @@
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="200" y="121"/>
+            <point key="canvasLocation" x="140" y="114"/>
         </menu>
-        <window title="DockAltTab" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="QvC-M9-y7g">
+        <window title="DockAltTab" separatorStyle="none" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="Op4-Io-Ulw">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
-            <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+            <rect key="contentRect" x="196" y="213" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <view key="contentView" id="7yT-sa-POz">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <box wantsLayer="YES" boxType="custom" cornerRadius="4" title="Box" id="okj-8c-j1d">
-                        <rect key="frame" x="94" y="139" width="292" height="82"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <view key="contentView" id="RVo-IS-2OI">
-                            <rect key="frame" x="1" y="1" width="290" height="80"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4PA-Jc-Fjt">
-                                    <rect key="frame" x="10" y="61" width="270" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="The official AltTab is currently unsupported." id="FX0-jm-yGu">
-                                        <font key="font" usesAppearanceFont="YES"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jca-r4-c7M">
-                                    <rect key="frame" x="33" y="-1" width="202" height="32"/>
-                                    <buttonCell key="cell" type="push" title="Download supported AltTab" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Wel-Fc-ZI6">
-                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <color key="bezelColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
-                                    <connections>
-                                        <action selector="unsupportedDownloadClick:" target="Voe-Tx-rLC" id="ECG-Xf-JTg"/>
-                                    </connections>
-                                </button>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TM5-bl-gMf">
-                                    <rect key="frame" x="87" y="28" width="92" height="32"/>
-                                    <buttonCell key="cell" type="push" title="More info" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CIz-W2-OOz">
-                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <color key="bezelColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
-                                    <connections>
-                                        <action selector="unsupportedMoreInfoClick:" target="Voe-Tx-rLC" id="ddk-v4-Qc0"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <constraints>
-                                <constraint firstItem="4PA-Jc-Fjt" firstAttribute="leading" secondItem="RVo-IS-2OI" secondAttribute="leading" constant="12" id="5LT-Hz-pDR"/>
-                                <constraint firstItem="Jca-r4-c7M" firstAttribute="top" secondItem="TM5-bl-gMf" secondAttribute="bottom" constant="9" id="9ZZ-sz-N9A"/>
-                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="TM5-bl-gMf" secondAttribute="trailing" constant="20" symbolic="YES" id="D4s-YA-NTS"/>
-                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Jca-r4-c7M" secondAttribute="trailing" constant="20" symbolic="YES" id="DDY-Ph-e5W"/>
-                                <constraint firstItem="TM5-bl-gMf" firstAttribute="top" secondItem="4PA-Jc-Fjt" secondAttribute="bottom" constant="6" id="I7B-gC-IVV"/>
-                                <constraint firstItem="TM5-bl-gMf" firstAttribute="leading" secondItem="RVo-IS-2OI" secondAttribute="leading" constant="94" id="K6A-j4-J7T"/>
-                                <constraint firstItem="4PA-Jc-Fjt" firstAttribute="top" secondItem="RVo-IS-2OI" secondAttribute="top" constant="3" id="b27-bL-mkq"/>
-                                <constraint firstItem="Jca-r4-c7M" firstAttribute="leading" secondItem="RVo-IS-2OI" secondAttribute="leading" constant="40" id="mpL-zX-HU6"/>
-                                <constraint firstItem="4PA-Jc-Fjt" firstAttribute="centerX" secondItem="RVo-IS-2OI" secondAttribute="centerX" id="o4d-eE-lNe"/>
-                            </constraints>
-                        </view>
-                        <color key="fillColor" red="0.41237113402061853" green="0.0050482545309609179" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    </box>
-                    <view id="Xmb-Bl-fOM">
-                        <rect key="frame" x="10" y="2" width="460" height="326"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UK1-gl-KOY">
-                                <rect key="frame" x="19" y="276" width="82" height="23"/>
-                                <buttonCell key="cell" type="roundTextured" title="Homepage" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PU9-8i-x4h">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="homeLink:" target="Voe-Tx-rLC" id="fg9-Ek-Vf5"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SaR-Gw-d3o">
-                                <rect key="frame" x="19" y="140" width="115" height="23"/>
-                                <buttonCell key="cell" type="roundTextured" title="Buy me a coffee" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Z6-U3-lHM">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="donateLink:" target="Voe-Tx-rLC" id="bUG-jx-RdL"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g9x-Od-tHb">
-                                <rect key="frame" x="19" y="245" width="71" height="23"/>
-                                <buttonCell key="cell" type="roundTextured" title="Releases" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qDG-Oi-xrW">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="releasesLink:" target="Voe-Tx-rLC" id="7gC-Lr-9Qa"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ybr-mO-nCJ">
-                                <rect key="frame" x="19" y="211" width="95" height="23"/>
-                                <buttonCell key="cell" type="roundTextured" title="Report a bug" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1fG-9z-KiQ">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="sourceLink:" target="Voe-Tx-rLC" id="OZ7-wy-yHz"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PSX-Ha-32n">
-                                <rect key="frame" x="196" y="116" width="69" height="32"/>
-                                <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NOF-vU-HQr">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="linksBoxToggle:" target="Voe-Tx-rLC" id="Ukc-4X-0mU"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XJa-d4-D6q">
-                                <rect key="frame" x="19" y="175" width="115" height="23"/>
-                                <buttonCell key="cell" type="roundTextured" title="Join the Discord" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="B6W-Up-SOp">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="discordLink:" target="Voe-Tx-rLC" id="MBo-rV-dyS"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" alphaValue="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="X3s-a9-MjK">
-                                <rect key="frame" x="69" y="6" width="292" height="32"/>
-                                <string key="toolTip">to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022); also helps filter out AltTab windows by title (otherwise click behavior glitches while AltTab preferences is open) </string>
-                                <buttonCell key="cell" type="push" title=" Request Screen Recording permissions" bezelStyle="rounded" image="record.circle" catalog="system" imagePosition="leading" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hB9-bE-fqz">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <color key="bezelColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
-                                <connections>
-                                    <action selector="requestScreenRecordingPermission:" target="Voe-Tx-rLC" id="GUH-MQ-5zi"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sqF-sN-fEM">
-                                <rect key="frame" x="350" y="11" width="31" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <string key="toolTip">to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022); also helps filter out AltTab windows by title (otherwise click behavior glitches while AltTab preferences is open) </string>
-                                <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="info.circle" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="2on-mf-vvH">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="requestScreenRecordingInfoBtn:" target="Voe-Tx-rLC" id="pbP-FF-E8X"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="X3s-a9-MjK" firstAttribute="top" secondItem="PSX-Ha-32n" secondAttribute="bottom" constant="90" id="1Hs-Lt-UVz"/>
-                            <constraint firstAttribute="bottom" secondItem="PSX-Ha-32n" secondAttribute="bottom" constant="123" id="2xu-R0-Xoi"/>
-                            <constraint firstItem="Ybr-mO-nCJ" firstAttribute="leading" secondItem="XJa-d4-D6q" secondAttribute="leading" id="3ZU-X9-xdR"/>
-                            <constraint firstItem="UK1-gl-KOY" firstAttribute="leading" secondItem="g9x-Od-tHb" secondAttribute="leading" id="5Vk-ib-PQK"/>
-                            <constraint firstItem="XJa-d4-D6q" firstAttribute="leading" secondItem="SaR-Gw-d3o" secondAttribute="leading" id="7VH-AN-MkM"/>
-                            <constraint firstItem="SaR-Gw-d3o" firstAttribute="top" secondItem="XJa-d4-D6q" secondAttribute="bottom" constant="15" id="END-uj-Eii"/>
-                            <constraint firstItem="PSX-Ha-32n" firstAttribute="centerX" secondItem="Xmb-Bl-fOM" secondAttribute="centerX" id="Fbt-hh-igb"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="X3s-a9-MjK" secondAttribute="trailing" constant="20" symbolic="YES" id="QBV-v6-B7E"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="g9x-Od-tHb" secondAttribute="trailing" constant="20" symbolic="YES" id="Rgf-wb-dcE"/>
-                            <constraint firstItem="X3s-a9-MjK" firstAttribute="leading" secondItem="Xmb-Bl-fOM" secondAttribute="leading" constant="76" id="Wjk-bE-EAx"/>
-                            <constraint firstItem="UK1-gl-KOY" firstAttribute="top" secondItem="Xmb-Bl-fOM" secondAttribute="top" constant="28" id="ZAT-Ky-R7W"/>
-                            <constraint firstItem="g9x-Od-tHb" firstAttribute="leading" secondItem="Ybr-mO-nCJ" secondAttribute="leading" id="apJ-13-9oz"/>
-                            <constraint firstItem="UK1-gl-KOY" firstAttribute="leading" secondItem="Xmb-Bl-fOM" secondAttribute="leading" constant="20" symbolic="YES" id="gEL-K7-cag"/>
-                            <constraint firstItem="XJa-d4-D6q" firstAttribute="top" secondItem="Ybr-mO-nCJ" secondAttribute="bottom" constant="16" id="h4q-cu-bsM"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ybr-mO-nCJ" secondAttribute="trailing" constant="20" symbolic="YES" id="o4q-7K-UIs"/>
-                            <constraint firstItem="XJa-d4-D6q" firstAttribute="trailing" secondItem="SaR-Gw-d3o" secondAttribute="trailing" id="q7W-m1-nLf"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="UK1-gl-KOY" secondAttribute="trailing" constant="20" symbolic="YES" id="ucc-id-oS8"/>
-                            <constraint firstItem="Ybr-mO-nCJ" firstAttribute="top" secondItem="g9x-Od-tHb" secondAttribute="bottom" constant="14" id="wkn-dr-lZg"/>
-                            <constraint firstItem="g9x-Od-tHb" firstAttribute="top" secondItem="UK1-gl-KOY" secondAttribute="bottom" constant="11" id="x5Z-rF-0qT"/>
-                        </constraints>
-                        <backgroundFilters>
-                            <ciFilter name="CIGaussianBlur">
-                                <configuration>
-                                    <null key="inputImage"/>
-                                    <real key="inputRadius" value="10"/>
-                                </configuration>
-                            </ciFilter>
-                        </backgroundFilters>
-                    </view>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZuN-GN-bng">
-                        <rect key="frame" x="382" y="333" width="85" height="32"/>
-                        <buttonCell key="cell" type="push" title="🔗Links" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QAK-Ew-4Sq">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="linksBoxToggle:" target="Voe-Tx-rLC" id="lxa-LY-3Ac"/>
-                        </connections>
-                    </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kBE-1m-b9i">
-                        <rect key="frame" x="218" y="337" width="45" height="20"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="v0.00" id="82b-Kr-jwC">
-                            <font key="font" metaFont="systemUltraLight" size="17"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lXr-Qx-AJz">
-                        <rect key="frame" x="-7" y="312" width="484" height="16"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="-" id="vxC-cM-BWb">
-                            <font key="font" metaFont="systemBold"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <box toolTip="kill/restart the dock to apply these settings to the current session" title="Dock Settings" translatesAutoresizingMaskIntoConstraints="NO" id="OTV-cb-O9V">
-                        <rect key="frame" x="13" y="20" width="454" height="103"/>
-                        <view key="contentView" toolTip="kill/restart the dock to apply these settings to the current session" wantsLayer="YES" id="VLr-jq-ZP9">
-                            <rect key="frame" x="4" y="5" width="446" height="80"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <button toolTip="disable &quot;position on screen&quot; submenu from white strip right click menu" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Xf-ze-N6I">
-                                    <rect key="frame" x="301" y="52" width="140" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Lock dock position" bezelStyle="regularSquare" imagePosition="left" inset="2" id="NTS-nO-1ze">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="lockDockPosition:" target="Voe-Tx-rLC" id="vfh-Mt-jVN"/>
-                                    </connections>
-                                </button>
-                                <textField toolTip="dock autohide dock reveal delay" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OVf-LN-RTw">
-                                    <rect key="frame" x="95" y="16" width="53" height="21"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="-1" drawsBackground="YES" id="P9N-hG-GlV">
-                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="VZi-Rp-3jb"/>
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <action selector="setDockDelay:" target="Voe-Tx-rLC" id="gdH-wV-fx0"/>
-                                        <binding destination="Voe-Tx-rLC" name="value" keyPath="self.dockDelay" id="0J6-01-MYM">
-                                            <dictionary key="options">
-                                                <string key="NSNullPlaceholder">[Enter]</string>
-                                                <bool key="NSValidatesImmediately" value="YES"/>
-                                            </dictionary>
-                                        </binding>
-                                    </connections>
-                                </textField>
-                                <textField toolTip="kill/restart the dock to apply these settings to the current session" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nRA-rG-aCp">
-                                    <rect key="frame" x="154" y="19" width="65" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="Yfo-52-tLF">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField toolTip="dock autohide dock reveal delay" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KO6-Kg-Z68">
-                                    <rect key="frame" x="12" y="19" width="77" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Dock Delay:" id="o5v-XA-bUC">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <button toolTip="prevent changing favorites (app icons) by drag and drop" verticalHuggingPriority="750" verifyAmbiguity="off" translatesAutoresizingMaskIntoConstraints="NO" id="2qA-Dr-kaN">
-                                    <rect key="frame" x="301" y="9" width="145" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Lock dock contents" bezelStyle="regularSquare" imagePosition="left" inset="2" id="oXb-Oi-fOf">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="lockDockContents:" target="Voe-Tx-rLC" id="yxP-iV-WUY"/>
-                                    </connections>
-                                </button>
-                                <button toolTip="make app icons opaque for hidden apps" verticalHuggingPriority="750" id="lld-GI-9pn">
-                                    <rect key="frame" x="12" y="49" width="184" height="22"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Differentiate hidden apps" bezelStyle="regularSquare" imagePosition="left" inset="2" id="iFm-aQ-3yT">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="toggleDifferentiateHidden:" target="Voe-Tx-rLC" id="VqT-QH-6yJ"/>
-                                    </connections>
-                                </button>
-                                <button toolTip="disable dragging the white strip to resize" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KUb-j5-Idy">
-                                    <rect key="frame" x="301" y="31" width="116" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Lock dock size" bezelStyle="regularSquare" imagePosition="left" inset="2" id="6zc-Xm-Fch">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="lockDockSize:" target="Voe-Tx-rLC" id="SsV-al-cNc"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <constraints>
-                                <constraint firstItem="nRA-rG-aCp" firstAttribute="leading" secondItem="OVf-LN-RTw" secondAttribute="trailing" constant="8" symbolic="YES" id="0Tj-iP-mFj"/>
-                                <constraint firstItem="KO6-Kg-Z68" firstAttribute="leading" secondItem="lld-GI-9pn" secondAttribute="leading" id="1xX-4y-wAk"/>
-                                <constraint firstItem="KUb-j5-Idy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2qA-Dr-kaN" secondAttribute="leading" id="3sy-kC-AfI"/>
-                                <constraint firstItem="8Xf-ze-N6I" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KUb-j5-Idy" secondAttribute="leading" id="4sF-wE-FI8"/>
-                                <constraint firstAttribute="trailing" secondItem="2qA-Dr-kaN" secondAttribute="trailing" id="Adq-vF-zcz"/>
-                                <constraint firstAttribute="trailing" secondItem="KUb-j5-Idy" secondAttribute="trailing" constant="29" id="Nyb-sL-1uY"/>
-                                <constraint firstItem="OVf-LN-RTw" firstAttribute="top" secondItem="lld-GI-9pn" secondAttribute="bottom" constant="13" id="Se1-LU-t3W"/>
-                                <constraint firstItem="KO6-Kg-Z68" firstAttribute="baseline" secondItem="OVf-LN-RTw" secondAttribute="baseline" id="TKW-iF-Oya"/>
-                                <constraint firstAttribute="trailing" secondItem="8Xf-ze-N6I" secondAttribute="trailing" constant="5" id="Uce-9A-7sy"/>
-                                <constraint firstItem="OVf-LN-RTw" firstAttribute="baseline" secondItem="nRA-rG-aCp" secondAttribute="baseline" id="WlQ-CG-Cnd"/>
-                                <constraint firstItem="OVf-LN-RTw" firstAttribute="leading" secondItem="KO6-Kg-Z68" secondAttribute="trailing" constant="8" symbolic="YES" id="iGt-mk-mWL"/>
-                                <constraint firstItem="2qA-Dr-kaN" firstAttribute="top" secondItem="KUb-j5-Idy" secondAttribute="bottom" constant="6" symbolic="YES" id="m8T-Sm-fIe"/>
-                                <constraint firstItem="KUb-j5-Idy" firstAttribute="centerY" secondItem="VLr-jq-ZP9" secondAttribute="centerY" id="r5L-zT-bTg"/>
-                                <constraint firstItem="KUb-j5-Idy" firstAttribute="top" secondItem="8Xf-ze-N6I" secondAttribute="bottom" constant="5" id="xXR-B9-mpW"/>
-                                <constraint firstItem="8Xf-ze-N6I" firstAttribute="top" secondItem="VLr-jq-ZP9" secondAttribute="top" constant="11" id="zux-SN-ro6"/>
-                                <constraint firstItem="2qA-Dr-kaN" firstAttribute="leading" secondItem="nRA-rG-aCp" secondAttribute="trailing" constant="86" id="zxD-M9-G6e"/>
-                            </constraints>
-                        </view>
-                        <font key="titleFont" metaFont="systemBold" size="14"/>
-                    </box>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BUI-mm-4RA">
-                        <rect key="frame" x="320" y="130.5" width="144" height="18"/>
-                        <buttonCell key="cell" type="check" title="Add icon to menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="A5O-q7-Ccy">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="cellTitle"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="toggleMenuIcon:" target="Voe-Tx-rLC" id="L7x-z7-HOp"/>
-                            <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isMenuItemChecked" id="qh1-br-CFc"/>
-                        </connections>
-                    </button>
-                    <box title="DockAltTab Settings" id="rIa-XP-LET">
-                        <rect key="frame" x="13" y="149" width="454" height="151"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <view key="contentView" id="IUj-Vs-1CV">
-                            <rect key="frame" x="4" y="5" width="446" height="129"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CCP-aX-Qbi">
-                                    <rect key="frame" x="67" y="28" width="93" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Preview Delay:" id="KU3-Ij-0Ra">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ChD-mw-OsW">
-                                    <rect key="frame" x="168" y="20" width="110" height="28"/>
-                                    <sliderCell key="cell" continuous="YES" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="F6r-sH-2qo">
-                                        <connections>
-                                            <action selector="changeDelay:" target="Voe-Tx-rLC" id="yBM-W4-3OH"/>
-                                        </connections>
-                                    </sliderCell>
-                                    <connections>
-                                        <binding destination="Voe-Tx-rLC" name="value" keyPath="self.previewDelay" id="ydO-bK-oqE"/>
-                                    </connections>
-                                </slider>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="N5E-ek-FXy">
-                                    <rect key="frame" x="313" y="30" width="65" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="8I4-AX-KRQ">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="K9P-HQ-vqn">
-                                    <rect key="frame" x="8" y="79" width="348" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Modify click behavior (toggle showing &amp; hiding apps)" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="VlZ-GH-2eM">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="toggleToggleDockApps:" target="Voe-Tx-rLC" id="GWc-vS-yTe"/>
-                                        <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isClickToggleChecked" id="HVu-1g-bVO"/>
-                                    </connections>
-                                </button>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CZ5-xc-4LQ">
-                                    <rect key="frame" x="32" y="58" width="303" height="18"/>
-                                    <buttonCell key="cell" type="check" title="Reopen previews on clicks that switch spaces" bezelStyle="regularSquare" imagePosition="left" inset="2" id="PVk-3m-SoM">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="bindReopenPreviewsSetting:" target="Voe-Tx-rLC" id="Jve-fB-K7D"/>
-                                        <binding destination="Voe-Tx-rLC" name="value" keyPath="self.isReopenPreviewsChecked" id="8WC-iq-a1C"/>
-                                    </connections>
-                                </button>
-                                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Eh-go-GrW">
-                                    <rect key="frame" x="276" y="29" width="39" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.00" id="0h3-7y-k9G">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <button verticalHuggingPriority="750" id="aFp-mk-n72">
-                                    <rect key="frame" x="8" y="104" width="200" height="18"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <buttonCell key="cell" type="check" title="Check for updates on launch" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="u6N-1r-Fyf">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="system"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="toggleLaunchUpdates:" target="Voe-Tx-rLC" id="3o1-Ym-Izb"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <constraints>
-                                <constraint firstItem="CCP-aX-Qbi" firstAttribute="centerY" secondItem="ChD-mw-OsW" secondAttribute="centerY" id="4eI-Ct-WUP"/>
-                                <constraint firstAttribute="trailing" secondItem="N5E-ek-FXy" secondAttribute="trailing" constant="70" id="5za-Xv-jxD"/>
-                                <constraint firstItem="ChD-mw-OsW" firstAttribute="top" secondItem="N5E-ek-FXy" secondAttribute="top" id="959-IC-xsM"/>
-                                <constraint firstAttribute="trailing" secondItem="K9P-HQ-vqn" secondAttribute="trailing" constant="90" id="CdH-6z-Zkd"/>
-                                <constraint firstItem="ChD-mw-OsW" firstAttribute="centerX" secondItem="IUj-Vs-1CV" secondAttribute="centerX" id="MFy-uY-g9X"/>
-                                <constraint firstItem="N5E-ek-FXy" firstAttribute="leading" secondItem="9Eh-go-GrW" secondAttribute="trailing" constant="2" id="Nmi-b8-uGw"/>
-                                <constraint firstItem="K9P-HQ-vqn" firstAttribute="leading" secondItem="aFp-mk-n72" secondAttribute="leading" id="RP8-2H-X1a"/>
-                                <constraint firstItem="9Eh-go-GrW" firstAttribute="leading" secondItem="ChD-mw-OsW" secondAttribute="trailing" constant="2" id="S9Y-cN-tNd"/>
-                                <constraint firstItem="ChD-mw-OsW" firstAttribute="baseline" secondItem="9Eh-go-GrW" secondAttribute="baseline" id="TLt-Ou-Zay"/>
-                                <constraint firstItem="CCP-aX-Qbi" firstAttribute="leading" secondItem="IUj-Vs-1CV" secondAttribute="leading" constant="69" id="gZH-Dc-IuX"/>
-                                <constraint firstItem="K9P-HQ-vqn" firstAttribute="top" secondItem="aFp-mk-n72" secondAttribute="bottom" constant="9" id="h1e-X0-4iY"/>
-                                <constraint firstItem="CZ5-xc-4LQ" firstAttribute="top" secondItem="K9P-HQ-vqn" secondAttribute="bottom" constant="5" id="reP-4f-1IP"/>
-                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CZ5-xc-4LQ" secondAttribute="trailing" constant="20" symbolic="YES" id="txH-3t-AMa"/>
-                                <constraint firstItem="CZ5-xc-4LQ" firstAttribute="leading" secondItem="IUj-Vs-1CV" secondAttribute="leading" constant="34" id="uF7-tC-SLr"/>
-                                <constraint firstItem="ChD-mw-OsW" firstAttribute="leading" secondItem="CCP-aX-Qbi" secondAttribute="trailing" constant="12" id="xKs-je-d9U"/>
-                                <constraint firstItem="ChD-mw-OsW" firstAttribute="top" secondItem="CZ5-xc-4LQ" secondAttribute="bottom" constant="13" id="yE6-KM-eiB"/>
-                            </constraints>
-                        </view>
-                        <font key="titleFont" metaFont="systemBold"/>
-                    </box>
-                    <button toolTip="kill/restart the dock to apply these settings to the current session" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KXJ-2g-eik">
-                        <rect key="frame" x="177" y="9" width="127" height="32"/>
-                        <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="m50-Hb-mcx">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <connections>
-                            <action selector="kill:" target="Voe-Tx-rLC" id="Ozf-UT-VXB"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="scL-LI-AmK">
-                        <rect key="frame" x="162" y="136" width="157" height="32"/>
-                        <buttonCell key="cell" type="push" title="Check for updates..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lrp-lZ-9mw">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        <connections>
-                            <action selector="checkForUpdates:" target="Voe-Tx-rLC" id="wkh-XT-pX9"/>
-                        </connections>
-                    </button>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="OTV-cb-O9V" firstAttribute="top" secondItem="BUI-mm-4RA" secondAttribute="bottom" constant="9" id="3h8-bD-ZFF"/>
-                    <constraint firstItem="scL-LI-AmK" firstAttribute="centerX" secondItem="okj-8c-j1d" secondAttribute="centerX" id="47z-p1-oH1"/>
-                    <constraint firstItem="OTV-cb-O9V" firstAttribute="top" secondItem="scL-LI-AmK" secondAttribute="bottom" constant="20" symbolic="YES" id="7Gc-fM-BzV"/>
-                    <constraint firstAttribute="trailing" secondItem="lXr-Qx-AJz" secondAttribute="trailing" constant="5" id="91b-0a-h0I"/>
-                    <constraint firstItem="lXr-Qx-AJz" firstAttribute="top" secondItem="Xmb-Bl-fOM" secondAttribute="top" id="AHe-NJ-K7C"/>
-                    <constraint firstItem="scL-LI-AmK" firstAttribute="centerX" secondItem="KXJ-2g-eik" secondAttribute="centerX" id="BVL-R0-VmT"/>
-                    <constraint firstAttribute="trailing" secondItem="ZuN-GN-bng" secondAttribute="trailing" constant="20" symbolic="YES" id="ETV-Wa-lby"/>
-                    <constraint firstItem="BUI-mm-4RA" firstAttribute="leading" secondItem="scL-LI-AmK" secondAttribute="trailing" constant="10" id="IOA-fn-ULH"/>
-                    <constraint firstItem="scL-LI-AmK" firstAttribute="centerX" secondItem="OTV-cb-O9V" secondAttribute="centerX" id="IiB-yD-sNV"/>
-                    <constraint firstItem="kBE-1m-b9i" firstAttribute="centerX" secondItem="rIa-XP-LET" secondAttribute="centerX" id="K48-3N-pk4"/>
-                    <constraint firstItem="BUI-mm-4RA" firstAttribute="trailing" secondItem="OTV-cb-O9V" secondAttribute="trailing" id="NnO-Fs-tU3"/>
-                    <constraint firstAttribute="bottom" secondItem="scL-LI-AmK" secondAttribute="bottom" constant="143" id="P7m-cW-ewY"/>
-                    <constraint firstItem="BUI-mm-4RA" firstAttribute="trailing" secondItem="rIa-XP-LET" secondAttribute="trailing" id="PBC-Tm-JVo"/>
-                    <constraint firstItem="ZuN-GN-bng" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="TyZ-ap-vrr"/>
-                    <constraint firstItem="ZuN-GN-bng" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kBE-1m-b9i" secondAttribute="trailing" constant="8" symbolic="YES" id="axz-W2-D65"/>
-                    <constraint firstItem="lXr-Qx-AJz" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="-5" id="rXC-fZ-fQR"/>
-                    <constraint firstItem="Xmb-Bl-fOM" firstAttribute="top" secondItem="kBE-1m-b9i" secondAttribute="bottom" constant="9" id="t0N-Cf-mWK"/>
-                    <constraint firstAttribute="bottom" secondItem="KXJ-2g-eik" secondAttribute="bottom" constant="16" id="xLl-5M-TrS"/>
-                </constraints>
             </view>
-            <point key="canvasLocation" x="89" y="403"/>
+            <point key="canvasLocation" x="140" y="-118"/>
         </window>
-        <menu id="7wH-0i-7u4">
+        <menu id="JBO-vp-NXO">
             <items>
-                <menuItem title="       Preferences" id="ptX-Ez-5Xy">
+                <menuItem title="Preferences" id="4XI-cX-BF5">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="preferences:" target="Voe-Tx-rLC" id="2Yf-5x-2VS"/>
+                        <action selector="openPrefs:" target="O8a-yd-nmn" id="mZt-e5-g4d"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Restart AltTab ↺" id="Boq-A9-2OH">
+                <menuItem title="Restart AltTab" id="m8m-cK-DpB">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="AltTabRestart:" target="Voe-Tx-rLC" id="h3c-jI-348"/>
+                        <action selector="restartAltTab:" target="O8a-yd-nmn" id="XGf-dj-x4T"/>
                     </connections>
                 </menuItem>
-                <menuItem title="         Kill Dock 🔪" id="4X9-F8-5Cj">
+                <menuItem title="Kill Dock" id="DKB-Bs-P0A">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="kill:" target="Voe-Tx-rLC" id="sEQ-iH-7Y9"/>
+                        <action selector="killDock:" target="O8a-yd-nmn" id="dF0-e0-iRI"/>
                     </connections>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="OY4-Fk-HIo"/>
-                <menuItem title="Quit DockAltTab" id="stF-Rf-GWa">
+                <menuItem title="Quit DockAltTab" id="yMd-Nu-4Y0">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="quit:" target="Voe-Tx-rLC" id="xH5-hN-sRj"/>
+                        <action selector="quit:" target="-1" id="bUF-Fe-4b9"/>
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="-113" y="698"/>
+            <point key="canvasLocation" x="-220" y="67"/>
         </menu>
-        <userDefaultsController representsSharedInstance="YES" id="UQx-gq-viT"/>
     </objects>
-    <resources>
-        <image name="info.circle" catalog="system" width="15" height="15"/>
-        <image name="record.circle" catalog="system" width="15" height="15"/>
-    </resources>
 </document>
