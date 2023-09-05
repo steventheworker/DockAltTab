@@ -7,7 +7,7 @@
 	<key>SUEnableJavaScript</key>
 	<string>true</string>
 	<key>SUFeedURL</key>
-	<string>https://dockalttab.netlify.app/dockalttab-appcast.xml</string>
+	<string>https://dockalttab.netlify.app/appcast-DockAltTab.xml</string>
 	<key>SUScheduledCheckInterval</key>
 	<string>604800</string>
 	<key>SUEnableAutomaticChecks</key>
