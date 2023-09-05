@@ -22,9 +22,9 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
             <items>
-                <menuItem title="NewApplication" id="1Xt-HY-uBw">
+                <menuItem title="DockAltTab" id="1Xt-HY-uBw">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="NewApplication" systemMenu="apple" id="uQy-DD-JDr">
+                    <menu key="submenu" title="DockAltTab" systemMenu="apple" id="uQy-DD-JDr">
                         <items>
                             <menuItem title="About NewApplication" id="5kV-Vb-QxS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -682,7 +682,7 @@
             </items>
             <point key="canvasLocation" x="140" y="114"/>
         </menu>
-        <window title="DockAltTab" separatorStyle="none" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="Op4-Io-Ulw">
+        <window title="DockAltTab needs some permissions" separatorStyle="none" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="Op4-Io-Ulw">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="213" width="480" height="270"/>
@@ -699,6 +699,16 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="openPrefs:" target="O8a-yd-nmn" id="mZt-e5-g4d"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Check for updates..." id="x2n-Jj-48N">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <binding destination="pIL-RE-lkR" name="target" keyPath="self" id="hNT-i5-Tyo">
+                            <dictionary key="options">
+                                <string key="NSSelectorName">checkForUpdates:</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </menuItem>
                 <menuItem title="Restart AltTab" id="m8m-cK-DpB">
@@ -722,5 +732,7 @@
             </items>
             <point key="canvasLocation" x="-220" y="67"/>
         </menu>
+        <customObject id="pIL-RE-lkR" customClass="SPUStandardUpdaterController"/>
+        <userDefaultsController representsSharedInstance="YES" id="AiQ-vB-MjM"/>
     </objects>
 </document>

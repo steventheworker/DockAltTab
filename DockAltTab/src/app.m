@@ -43,6 +43,11 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
 }
 - (void) appBecameActive: (NSNotification*) notification {
+    // don't raise prefs if sparkle updater visible (may open on launch (and triggers appBecameActive unintentionally))
+    NSArray* windows = [[NSApplication sharedApplication] windows];  // window titles: "DockAltTab needs some permissions", "Item-0" (menubar "window" title), "DockAltTab - preferences", "" (Sparkle update window)
+    for (NSWindow* cur in windows) if (cur.isVisible) if ([[cur title] isEqual: @""]) return;
+    
+    // raise prefs window
     [self openPrefs];
 }
 @end

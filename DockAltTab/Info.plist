@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>SUPublicEDKey</key>
+	<string>T0wESSsYLzTXlEoMASqu3mYVMrqyFur1ao3gfkebqAw=</string>
+	<key>SUEnableJavaScript</key>
+	<string>true</string>
+	<key>SUFeedURL</key>
+	<string>https://dockalttab.netlify.app/dockalttab-appcast.xml</string>
+	<key>SUScheduledCheckInterval</key>
+	<string>604800</string>
+	<key>SUEnableAutomaticChecks</key>
+	<string>true</string>
+</dict>
 </plist>

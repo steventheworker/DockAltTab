@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B8DBCC6FBB174D2169DF08DB /* Pods_DockAltTab.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0683D10C786146384EAD6918 /* Pods_DockAltTab.framework */; };
 		BF0A905F290F6D230088A4F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BF0A905E290F6D230088A4F8 /* README.md */; };
 		BF0E91F82829142A00D21AD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF0E91F72829142A00D21AD5 /* Assets.xcassets */; };
 		BF0E91FB2829191D00D21AD5 /* helperLib.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0E91FA2829191D00D21AD5 /* helperLib.m */; };
@@ -14,12 +15,16 @@
 		BF0E921F2829556900D21AD5 /* MenuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0E921E2829556900D21AD5 /* MenuIcon.png */; };
 		BF10DAF92AA597190067458E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAF72AA597190067458E /* MainMenu.xib */; };
 		BF10DAFB2AA597D70067458E /* prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAFA2AA597D70067458E /* prefs.xib */; };
+		BF10DAFD2AA5B5BE0067458E /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAFC2AA5B5BE0067458E /* Podfile */; };
 		BF15089429038B8B00DF343F /* globals.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15089329038B8B00DF343F /* globals.m */; };
 		BFE19DEC2825BFA600D72F99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DEB2825BFA600D72F99 /* AppDelegate.m */; };
 		BFE19DF32825BFA800D72F99 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DF22825BFA800D72F99 /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0683D10C786146384EAD6918 /* Pods_DockAltTab.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DockAltTab.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		399CEBF6CAE28C2C50B8D479 /* Pods-DockAltTab.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DockAltTab.debug.xcconfig"; path = "Target Support Files/Pods-DockAltTab/Pods-DockAltTab.debug.xcconfig"; sourceTree = "<group>"; };
+		6DC2AC88A5C05A78EAEAD203 /* Pods-DockAltTab.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DockAltTab.release.xcconfig"; path = "Target Support Files/Pods-DockAltTab/Pods-DockAltTab.release.xcconfig"; sourceTree = "<group>"; };
 		BF0A905E290F6D230088A4F8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BF0E91F72829142A00D21AD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BF0E91F92829191D00D21AD5 /* helperLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = helperLib.h; sourceTree = "<group>"; };
@@ -29,6 +34,8 @@
 		BF0E921E2829556900D21AD5 /* MenuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MenuIcon.png; sourceTree = "<group>"; };
 		BF10DAF82AA597190067458E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BF10DAFA2AA597D70067458E /* prefs.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = prefs.xib; path = DockAltTab/prefs.xib; sourceTree = SOURCE_ROOT; };
+		BF10DAFC2AA5B5BE0067458E /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BF10DAFE2AA5B72D0067458E /* DockAltTabDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DockAltTabDebug.entitlements; sourceTree = "<group>"; };
 		BF15088B2903782B00DF343F /* globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		BF15089329038B8B00DF343F /* globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = globals.m; sourceTree = "<group>"; };
 		BFE19DE72825BFA600D72F99 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,12 +51,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8DBCC6FBB174D2169DF08DB /* Pods_DockAltTab.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		48B6D8A5CAC9C751725C1407 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				399CEBF6CAE28C2C50B8D479 /* Pods-DockAltTab.debug.xcconfig */,
+				6DC2AC88A5C05A78EAEAD203 /* Pods-DockAltTab.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		BF15089229038AFD00DF343F /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -68,7 +85,10 @@
 			children = (
 				BF0A905E290F6D230088A4F8 /* README.md */,
 				BFE19DE92825BFA600D72F99 /* DockAltTab */,
+				BF10DAFC2AA5B5BE0067458E /* Podfile */,
 				BFE19DE82825BFA600D72F99 /* Products */,
+				48B6D8A5CAC9C751725C1407 /* Pods */,
+				E531A276B7975602C53246B5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,9 +112,18 @@
 				BF10DAF72AA597190067458E /* MainMenu.xib */,
 				BF10DAFA2AA597D70067458E /* prefs.xib */,
 				BFE19DFA2825C63600D72F99 /* Info.plist */,
+				BF10DAFE2AA5B72D0067458E /* DockAltTabDebug.entitlements */,
 				BFE19DF42825BFA800D72F99 /* DockAltTab.entitlements */,
 			);
 			path = DockAltTab;
+			sourceTree = "<group>";
+		};
+		E531A276B7975602C53246B5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0683D10C786146384EAD6918 /* Pods_DockAltTab.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,9 +133,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFE19DF72825BFA800D72F99 /* Build configuration list for PBXNativeTarget "DockAltTab" */;
 			buildPhases = (
+				ED081F087C750ADFD96D2C1C /* [CP] Check Pods Manifest.lock */,
 				BFE19DE32825BFA600D72F99 /* Sources */,
 				BFE19DE42825BFA600D72F99 /* Frameworks */,
 				BFE19DE52825BFA600D72F99 /* Resources */,
+				784A0DD17CC5BC1D4FD21134 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -154,6 +185,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF10DAFD2AA5B5BE0067458E /* Podfile in Resources */,
 				BF10DAFB2AA597D70067458E /* prefs.xib in Resources */,
 				BF0E921F2829556900D21AD5 /* MenuIcon.png in Resources */,
 				BF0E91F82829142A00D21AD5 /* Assets.xcassets in Resources */,
@@ -163,6 +195,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		784A0DD17CC5BC1D4FD21134 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DockAltTab/Pods-DockAltTab-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DockAltTab/Pods-DockAltTab-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DockAltTab/Pods-DockAltTab-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED081F087C750ADFD96D2C1C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DockAltTab-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BFE19DE32825BFA600D72F99 /* Sources */ = {
@@ -304,10 +378,11 @@
 		};
 		BFE19DF82825BFA800D72F99 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 399CEBF6CAE28C2C50B8D479 /* Pods-DockAltTab.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = DockAltTab/DockAltTab.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DockAltTab/DockAltTabDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -340,6 +415,7 @@
 		};
 		BFE19DF92825BFA800D72F99 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6DC2AC88A5C05A78EAEAD203 /* Pods-DockAltTab.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
