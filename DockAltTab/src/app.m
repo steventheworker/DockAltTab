@@ -14,9 +14,15 @@
     App* app = [[self alloc] init];
     
     // add new app instance's references
-    [app addMenuIcon: menu];
     app->permissionWindow = window;
-
+    
+    if (![app hasRequiredPermissions]) {
+        [app renderAndShowPermissionWindow];
+        return app;
+    }
+    
+    [app addMenuIcon: menu]; // adds menu icon / references
+    
     //load nib/xib prefsWindow
     app->prefsController = [[NSWindowController alloc] initWithWindowNibName:@"prefs"];
     [app->prefsController loadWindow];
@@ -25,17 +31,14 @@
     
     return app;
 }
-- (void) openPrefs {
-    [[prefsController window] setIsVisible: YES];
-//    [prefsController showWindow: [prefsController window]];
-    [helperLib activateWindow: [prefsController window]];
-}
+
 - (void) addMenuIcon: (NSMenu*) menu {
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
     [[statusItem button] setImage: [NSImage imageNamed: @"MenuIcon"]];
     [statusItem setMenu: menu];
     [statusItem setVisible: YES]; //without this, could stay hidden away
 }
+
 
 /* event listening */
 - (void) startListening {
@@ -49,5 +52,35 @@
     
     // raise prefs window
     [self openPrefs];
+}
+
+
+
+- (BOOL) hasRequiredPermissions {
+    BOOL hasAccessibility = AXIsProcessTrustedWithOptions(NULL);
+    BOOL hasInputMonitoring = IOHIDRequestAccess(kIOHIDRequestTypeListenEvent); // doesn't prompt user for keystrokes ((SOMETIMES)) (if used before AXIsProcessTrustedWithOptions)
+    //    BOOL hasScreenRecording = CGPreflightScreenCaptureAccess();
+    return hasAccessibility && hasInputMonitoring;
+}
+/* rendering - app windows (eg: permissionWindow, prefsWindow (via: [app->prefsController window]), etc.) */
+- (void) renderAndShowPermissionWindow {
+    [helperLib activateWindow: self->permissionWindow];
+    //render
+    NSView *mainView = [self->permissionWindow contentView];
+    for (NSView *subview in [mainView subviews]) {
+        if ([subview isKindOfClass:[NSButton class]]) {
+            NSButton *button = (NSButton *)subview;
+            [button setFocusRingType:NSFocusRingTypeNone]; // Remove NSFocusRing (focus border/outline)
+            //colorize on/off permissions
+            if ([button.title isEqual: @"Accessibility"] && AXIsProcessTrustedWithOptions(NULL)) [button setBezelColor: [NSColor systemGreenColor]];
+            if ([button.title isEqual: @"Input Monitoring"] && IOHIDRequestAccess(kIOHIDRequestTypeListenEvent)) [button setBezelColor: [NSColor systemGreenColor]];
+            if ([button.title isEqual: @"Screen Recording"] && CGPreflightScreenCaptureAccess()) [button setBezelColor: [NSColor systemGreenColor]];
+        }
+    }
+}
+- (void) openPrefs {
+    [[prefsController window] setIsVisible: YES];
+    //    [prefsController showWindow: [prefsController window]];
+    [helperLib activateWindow: [prefsController window]];
 }
 @end

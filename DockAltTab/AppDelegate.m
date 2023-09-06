@@ -6,8 +6,9 @@
 //
 
 #import "AppDelegate.h"
-#import "src/app.h"
 #import "src/globals.h"
+#import "src/helperLib.h"
+#import "src/app.h"
 
 App* app = nil;
 
@@ -18,10 +19,27 @@ App* app = nil;
 @property (strong) IBOutlet NSWindow *window;
 @end
 @implementation AppDelegate
+/* menu icon "window" actions */
 - (IBAction)openPrefs:(id)sender {[app openPrefs];}
 - (IBAction)quit:(id)sender {[NSApp terminate:nil];}
 - (IBAction)restartAltTab:(id)sender {}
 - (IBAction)killDock:(id)sender {}
+
+/* permissions window actions */
+- (IBAction)restartApp:(id)sender {[helperLib restartApp];}
+- (IBAction)hasAccessibilityBtn:(id)sender {[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"]];}
+- (IBAction)hasInputMonitoringBtn:(id)sender {[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent"]];}
+- (IBAction)hasScreenRecordingBtn:(id)sender {
+    CGRequestScreenCaptureAccess(); // prompt user / add entry to Screen Recording app list
+    [[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"]];
+}
+- (IBAction)hasScreenRecordingBtnTooltip:(id)sender {
+    NSHelpManager *helpManager = [NSHelpManager sharedHelpManager];
+    [helpManager setContextHelp:[[NSAttributedString alloc] initWithString:[hasScreenRecordingBtnInfoBtn toolTip]] forObject:hasScreenRecordingBtnInfoBtn];
+    [helpManager showContextHelpForObject:hasScreenRecordingBtnInfoBtn locationHint:[NSEvent mouseLocation]];
+    [helpManager removeContextHelpForObject:hasScreenRecordingBtnInfoBtn];
+}
+
 
 /*
     Lifecycle

@@ -11,5 +11,6 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface helperLib : NSObject {}
 + (void) activateWindow: (NSWindow*) window;
++ (void) restartApp;
 @end
 NS_ASSUME_NONNULL_END

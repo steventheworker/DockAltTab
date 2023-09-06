@@ -10,6 +10,7 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     __weak IBOutlet NSMenu *menu;
     
+    __weak IBOutlet NSButton *hasScreenRecordingBtnInfoBtn;
 }
 
 @end
