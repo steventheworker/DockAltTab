@@ -16,7 +16,7 @@
     // add new app instance's references
     app->permissionWindow = window;
     
-    if (![app hasRequiredPermissions]) {
+    if (![app hasRequiredPermissions]) { //app shouldn't do anything until permissions are granted  
         [app renderAndShowPermissionWindow];
         return app;
     }
