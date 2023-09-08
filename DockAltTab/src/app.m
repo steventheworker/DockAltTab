@@ -57,9 +57,10 @@
 
 
 
-- (BOOL) hasRequiredPermissions {
+- (BOOL) hasRequiredPermissions { // also adds permission entries into settings
     BOOL hasAccessibility = AXIsProcessTrustedWithOptions(NULL);
-    BOOL hasInputMonitoring = IOHIDRequestAccess(kIOHIDRequestTypeListenEvent); // doesn't prompt user for keystrokes ((SOMETIMES)) (if used before AXIsProcessTrustedWithOptions)
+    IOHIDRequestAccess(kIOHIDRequestTypeListenEvent); // add input monitoring entry in settings (has to run as start of app lifecycle (will not work any later))
+    BOOL hasInputMonitoring = IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOReturnSuccess;
     //    BOOL hasScreenRecording = CGPreflightScreenCaptureAccess();
     return hasAccessibility && hasInputMonitoring;
 }
@@ -74,7 +75,7 @@
             [button setFocusRingType:NSFocusRingTypeNone]; // Remove NSFocusRing (focus border/outline)
             //colorize on/off permissions
             if ([button.title isEqual: @"Accessibility"] && AXIsProcessTrustedWithOptions(NULL)) [button setBezelColor: [NSColor systemGreenColor]];
-            if ([button.title isEqual: @"Input Monitoring"] && IOHIDRequestAccess(kIOHIDRequestTypeListenEvent)) [button setBezelColor: [NSColor systemGreenColor]];
+            if ([button.title isEqual: @"Input Monitoring"] && IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOReturnSuccess) [button setBezelColor: [NSColor systemGreenColor]];
             if ([button.title isEqual: @"Screen Recording"] && CGPreflightScreenCaptureAccess()) [button setBezelColor: [NSColor systemGreenColor]];
         }
     }
