@@ -61,7 +61,7 @@
     BOOL hasAccessibility = AXIsProcessTrustedWithOptions(NULL);
     IOHIDRequestAccess(kIOHIDRequestTypeListenEvent); // add input monitoring entry in settings (has to run as start of app lifecycle (will not work any later))
     BOOL hasInputMonitoring = IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOReturnSuccess;
-    //    BOOL hasScreenRecording = CGPreflightScreenCaptureAccess();
+//    BOOL hasScreenRecording = CGPreflightScreenCaptureAccess();
     return hasAccessibility && hasInputMonitoring;
 }
 /* rendering - app windows (eg: permissionWindow, prefsWindow (via: [app->prefsController window]), etc.) */
