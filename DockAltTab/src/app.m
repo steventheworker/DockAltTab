@@ -47,11 +47,11 @@
 }
 - (void) appBecameActive: (NSNotification*) notification {
     // don't raise prefs if sparkle updater visible (may open on launch (and triggers appBecameActive unintentionally))
-    NSArray* windows = [[NSApplication sharedApplication] windows];  // window titles: "DockAltTab needs some permissions", "Item-0" (menubar "window" title), "DockAltTab - preferences", "" (Sparkle update window)
-    NSString* appTitle = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
-    for (NSWindow* cur in windows) if (cur.isVisible) if ([[cur title] isEqual: @""] || [[cur title] isEqual: @"Software Update"] || [[cur title] isEqual: [@"Updating %@" stringByAppendingString: appTitle]]) return;
-    
-    // raise prefs window
+    NSArray* windows = [[NSApplication sharedApplication] windows];
+    // don't raise mainWindow if app already has a visible app (ignore menubar icon)
+    for (NSWindow* cur in windows) if (cur.isVisible) {if (cur.level == NSStatusWindowLevel) continue; else return;}
+
+    // raise main window
     [self openPrefs];
 }
 
