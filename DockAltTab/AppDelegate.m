@@ -11,6 +11,7 @@
 #import "src/app.h"
 
 App* app = nil;
+AXUIElementRef systemWideEl = nil;
 
 /*
     AppDelate
@@ -45,7 +46,7 @@ App* app = nil;
     Lifecycle
 */
 - (void) awakeFromNib {/* runs before applicationDidFinishLaunching */}
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {app = [App init: _window : menu];}
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {app = [App init: _window : menu : (systemWideEl = AXUIElementCreateSystemWide())];}
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
 //    [timer invalidate];
 //    timer = nil;

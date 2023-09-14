@@ -13,8 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
     NSStatusItem* statusItem;
     NSWindow* permissionWindow;
     NSWindowController* prefsController;
+    AXUIElementRef systemWideEl;
 }
-+ (instancetype) init: (NSWindow*) window : (NSMenu*) menu;
++ (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideEl;
 - (void) openPrefs;
 - (void) addMenuIcon: (NSMenu*) menu;
 - (void) renderAndShowPermissionWindow;

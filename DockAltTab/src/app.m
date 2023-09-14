@@ -10,11 +10,12 @@
 #import "globals.h"
 
 @implementation App
-+ (instancetype) init: (NSWindow*) window : (NSMenu*) menu {
++ (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideAccessibilityElement {
     App* app = [[self alloc] init];
     
     // add new app instance's references
     app->permissionWindow = window;
+    app->systemWideEl = systemWideAccessibilityElement;
     
     if (![app hasRequiredPermissions]) { //app shouldn't do anything until permissions are granted
         [app renderAndShowPermissionWindow];
@@ -47,6 +48,29 @@
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         NSLog(@"d");
+        CGPoint cursorPos = CGEventGetLocation(event);
+        AXUIElementRef element = NULL;
+        
+        // Create an AXUIElement for the element at the cursor position
+        AXError result = AXUIElementCopyElementAtPosition(self->systemWideEl, cursorPos.x, cursorPos.y, &element);
+        
+        if (result == kAXErrorSuccess && element != NULL) {
+            // Now you have an AXUIElementRef for the element under the cursor
+            // You can use Accessibility API functions to inspect its properties
+            // For example, to get the subrole:
+            CFTypeRef subroleValue;
+            result = AXUIElementCopyAttributeValue(element, kAXSubroleAttribute, &subroleValue);
+            
+            if (result == kAXErrorSuccess && CFGetTypeID(subroleValue) == CFStringGetTypeID()) {
+                NSString *subrole = (__bridge NSString *)subroleValue;
+                
+                NSLog(@"%@",subrole);
+            }
+            
+            // Release the AXUIElement
+            CFRelease(element);
+        }
+
         return YES;
     }];
     [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
@@ -68,10 +92,10 @@
 
 - (BOOL) hasRequiredPermissions { // also adds permission entries into settings
     BOOL hasAccessibility = AXIsProcessTrustedWithOptions(NULL);
-    IOHIDRequestAccess(kIOHIDRequestTypeListenEvent); // add input monitoring entry in settings (has to run as start of app lifecycle (will not work any later))
-    BOOL hasInputMonitoring = IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOReturnSuccess;
+//    IOHIDRequestAccess(kIOHIDRequestTypeListenEvent); // add input monitoring entry in settings (has to run as start of app lifecycle (will not work any later))
+//    BOOL hasInputMonitoring = IOHIDCheckAccess(kIOHIDRequestTypeListenEvent) == kIOReturnSuccess;
 //    BOOL hasScreenRecording = CGPreflightScreenCaptureAccess();
-    return hasAccessibility && hasInputMonitoring;
+    return hasAccessibility;
 }
 /* rendering - app windows (eg: permissionWindow, prefsWindow (via: [app->prefsController window]), etc.) */
 - (void) renderAndShowPermissionWindow {

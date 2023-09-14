@@ -690,11 +690,11 @@
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gzf-ag-OxS">
                         <rect key="frame" x="165" y="154" width="134" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Input Monitoring" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mDT-zf-CiX">
+                        <buttonCell key="cell" type="push" title="Input Monitoring" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mDT-zf-CiX">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
-                        <color key="bezelColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                        <color key="bezelColor" name="AccentColor"/>
                         <connections>
                             <action selector="hasInputMonitoringBtn:" target="O8a-yd-nmn" id="Wr7-cB-9GR"/>
                         </connections>
@@ -755,6 +755,15 @@
                             <action selector="hasScreenRecordingBtnTooltip:" target="O8a-yd-nmn" id="ixM-i2-hWh"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jys-Nt-Qg0">
+                        <rect key="frame" x="181" y="110" width="101" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="----------------" id="qSl-Xk-Wif">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
             <point key="canvasLocation" x="140" y="-118"/>
