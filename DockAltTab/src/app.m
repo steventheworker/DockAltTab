@@ -16,7 +16,7 @@
     // add new app instance's references
     app->permissionWindow = window;
     
-    if (![app hasRequiredPermissions]) { //app shouldn't do anything until permissions are granted  
+    if (![app hasRequiredPermissions]) { //app shouldn't do anything until permissions are granted
         [app renderAndShowPermissionWindow];
         return app;
     }
@@ -44,6 +44,15 @@
 - (void) startListening {
     // on app became active (open prefs window)
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
+    //mouse events
+    [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
+        NSLog(@"d");
+        return YES;
+    }];
+    [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
+        NSLog(@"u");
+        return YES;
+    }];
 }
 - (void) appBecameActive: (NSNotification*) notification {
     // don't raise prefs if sparkle updater visible (may open on launch (and triggers appBecameActive unintentionally))
