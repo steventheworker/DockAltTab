@@ -682,13 +682,13 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" fullSizeContentView="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="213" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
             <view key="contentView" id="7yT-sa-POz">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gzf-ag-OxS">
-                        <rect key="frame" x="165" y="154" width="134" height="32"/>
+                        <rect key="frame" x="165" y="95" width="134" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Input Monitoring" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mDT-zf-CiX">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -733,7 +733,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yr5-PD-D4R">
-                        <rect key="frame" x="20" y="15" width="31" height="30.5"/>
+                        <rect key="frame" x="20" y="15" width="31" height="31"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRefreshFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="ho3-wf-CDP">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -744,7 +744,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lSn-oY-5Eh">
-                        <rect key="frame" x="298" y="72.5" width="16.5" height="24.5"/>
+                        <rect key="frame" x="298" y="73" width="17" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <string key="toolTip">to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022); also helps filter out AltTab windows by title (otherwise click behavior glitches while AltTab preferences is open) </string>
                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="info.square.fill" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="TCx-ZB-9Nr">
@@ -756,7 +756,7 @@
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jys-Nt-Qg0">
-                        <rect key="frame" x="181" y="110" width="101" height="16"/>
+                        <rect key="frame" x="181" y="105" width="101" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="----------------" id="qSl-Xk-Wif">
                             <font key="font" metaFont="system"/>
@@ -811,8 +811,8 @@
         <userDefaultsController representsSharedInstance="YES" id="AiQ-vB-MjM"/>
     </objects>
     <resources>
-        <image name="NSRefreshFreestandingTemplate" width="20" height="20"/>
-        <image name="info.square.fill" catalog="system" width="15" height="14"/>
+        <image name="NSRefreshFreestandingTemplate" width="19" height="19"/>
+        <image name="info.square.fill" catalog="system" width="16" height="14"/>
         <namedColor name="AccentColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
