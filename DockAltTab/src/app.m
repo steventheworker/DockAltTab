@@ -47,33 +47,20 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
-        NSLog(@"d");
         CGPoint cursorPos = CGEventGetLocation(event);
-        AXUIElementRef element = NULL;
+        NSLog(@"d");
         
-        // Create an AXUIElement for the element at the cursor position
-        AXError result = AXUIElementCopyElementAtPosition(self->systemWideEl, cursorPos.x, cursorPos.y, &element);
+        AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
+        NSDictionary* elDict = [helperLib elementDict: el : @{
+            @"subrole": (id)kAXSubroleAttribute,
+            @"pos": (id)kAXPositionAttribute
+        }];
+        NSLog(@"%@", elDict);
         
-        if (result == kAXErrorSuccess && element != NULL) {
-            // Now you have an AXUIElementRef for the element under the cursor
-            // You can use Accessibility API functions to inspect its properties
-            // For example, to get the subrole:
-            CFTypeRef subroleValue;
-            result = AXUIElementCopyAttributeValue(element, kAXSubroleAttribute, &subroleValue);
-            
-            if (result == kAXErrorSuccess && CFGetTypeID(subroleValue) == CFStringGetTypeID()) {
-                NSString *subrole = (__bridge NSString *)subroleValue;
-                
-                NSLog(@"%@",subrole);
-            }
-            
-            // Release the AXUIElement
-            CFRelease(element);
-        }
-
         return YES;
     }];
     [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
+        CGPoint cursorPos = CGEventGetLocation(event);
         NSLog(@"u");
         return YES;
     }];

@@ -10,12 +10,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @interface helperLib : NSObject {}
-+ (void) activateWindow: (NSWindow*) window;
-+ (void) restartApp;
+/* AXUIElement */
++ (void) setSystemWideEl: (AXUIElementRef) el;
++ (AXUIElementRef) elementAtPoint: (CGPoint) pt;
++ (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict;
+/* events*/
 + (CFMachPortRef) listenMask: (CGEventMask) emask : (CGEventTapCallBack) handler;
 + (void) on: (NSString*) eventKey : (BOOL (^)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon)) callback;
 + (void) stopListening;
 + (void) startListening;
 + (NSString*) eventKeyWithEventType: (CGEventType) type;
+/* misc. */
++ (void) activateWindow: (NSWindow*) window;
++ (void) restartApp;
 @end
 NS_ASSUME_NONNULL_END

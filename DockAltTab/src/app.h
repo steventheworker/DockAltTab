@@ -10,12 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @interface App : NSObject {
+    @public
     NSStatusItem* statusItem;
     NSWindow* permissionWindow;
     NSWindowController* prefsController;
     AXUIElementRef systemWideEl;
 }
-+ (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideEl;
++ (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideAccessibilityElement;
 - (void) openPrefs;
 - (void) addMenuIcon: (NSMenu*) menu;
 - (void) renderAndShowPermissionWindow;

@@ -7,6 +7,9 @@
 
 #import "helperLib.h"
 
+AXUIElementRef systemWideElement;
+
+/* events */
 NSMutableArray* eventTapRefs; // CFMachPortRef's (for restarting events / stopping)
 NSMutableDictionary* eventMap; /* array of (BOOL) callbacks (NO = preventDefault) */
 BOOL processEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon) {
@@ -32,10 +35,158 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
 
 
 @implementation helperLib
-+ (void) activateWindow: (NSWindow*) window {
-    [NSApp activateIgnoringOtherApps: YES];
-    [window makeKeyAndOrderFront: nil];
+/* AXUIElement  */
++ (void) setSystemWideEl: (AXUIElementRef) el {systemWideElement = el;} //used in elementAtPoint, etc.
++ (AXUIElementRef) elementAtPoint: (CGPoint) pt {
+    AXUIElementRef element = NULL;
+    AXError result = AXUIElementCopyElementAtPosition(systemWideElement, pt.x, pt.y, &element);
+    if (result != kAXErrorSuccess) NSLog(@"elementAtPoint failed");
+    return element;
 }
++ (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict {
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    for (NSString* attributeName in attributeDict) {
+        id attribute = attributeDict[attributeName];
+/* kAXAllowedValuesAttribute kAXAMPMFieldAttribute kAXCancelButtonAttribute kAXChildrenAttribute kAXCloseButtonAttribute
+ kAXColumnTitleAttribute kAXContentsAttribute kAXDayFieldAttribute kAXDefaultButtonAttribute kAXDescriptionAttribute
+ kAXEnabledAttribute kAXFocusedAttribute kAXGrowAreaAttribute kAXHeaderAttribute kAXHelpAttribute
+ kAXHourFieldAttribute kAXIncrementorAttribute kAXInsertionPointLineNumberAttribute kAXMainAttribute kAXMaxValueAttribute
+ kAXMinimizeButtonAttribute kAXMinimizedAttribute kAXMinuteFieldAttribute kAXMinValueAttribute kAXModalAttribute
+ kAXMonthFieldAttribute kAXNumberOfCharactersAttribute kAXOrientationAttribute kAXParentAttribute kAXPositionAttribute
+ kAXProxyAttribute kAXRoleAttribute kAXRoleDescriptionAttribute kAXSecondFieldAttribute kAXSelectedChildrenAttribute
+ kAXSelectedTextAttribute kAXSelectedTextRangeAttribute kAXSelectedTextRangesAttribute kAXSharedCharacterRangeAttribute kAXSharedTextUIElementsAttribute
+ kAXSizeAttribute kAXSubroleAttribute kAXTitleAttribute kAXToolbarButtonAttribute kAXTopLevelUIElementAttribute
+ kAXURLAttribute kAXValueAttribute kAXValueDescriptionAttribute kAXValueIncrementAttribute kAXVisibleCharacterRangeAttribute
+ kAXVisibleChildrenAttribute kAXVisibleColumnsAttribute kAXWindowAttribute kAXYearFieldAttribute kAXZoomButtonAttribute   */
+        if (attribute == (id)kAXAllowedValuesAttribute) {
+            // Handle kAXAllowedValuesAttribute
+        } else if (attribute == (id)kAXAMPMFieldAttribute) {
+            // Handle kAXAMPMFieldAttribute
+        } else if (attribute == (id)kAXCancelButtonAttribute) {
+            // Handle kAXCancelButtonAttribute
+        } else if (attribute == (id)kAXChildrenAttribute) {
+            // Handle kAXChildrenAttribute
+        } else if (attribute == (id)kAXCloseButtonAttribute) {
+            // Handle kAXCloseButtonAttribute
+        } else if (attribute == (id)kAXColumnTitleAttribute) {
+            // Handle kAXColumnTitleAttribute
+        } else if (attribute == (id)kAXContentsAttribute) {
+            // Handle kAXContentsAttribute
+        } else if (attribute == (id)kAXDayFieldAttribute) {
+            // Handle kAXDayFieldAttribute
+        } else if (attribute == (id)kAXDefaultButtonAttribute) {
+            // Handle kAXDefaultButtonAttribute
+        } else if (attribute == (id)kAXDescriptionAttribute) {
+            // Handle kAXDescriptionAttribute
+        } else if (attribute == (id)kAXEnabledAttribute) {
+            // Handle kAXEnabledAttribute
+        } else if (attribute == (id)kAXFocusedAttribute) {
+            // Handle kAXFocusedAttribute
+        } else if (attribute == (id)kAXGrowAreaAttribute) {
+            // Handle kAXGrowAreaAttribute
+        } else if (attribute == (id)kAXHeaderAttribute) {
+            // Handle kAXHeaderAttribute
+        } else if (attribute == (id)kAXHelpAttribute) {
+            // Handle kAXHelpAttribute
+        } else if (attribute == (id)kAXHourFieldAttribute) {
+            // Handle kAXHourFieldAttribute
+        } else if (attribute == (id)kAXIncrementorAttribute) {
+            // Handle kAXIncrementorAttribute
+        } else if (attribute == (id)kAXInsertionPointLineNumberAttribute) {
+            // Handle kAXInsertionPointLineNumberAttribute
+        } else if (attribute == (id)kAXMainAttribute) {
+            // Handle kAXMainAttribute
+        } else if (attribute == (id)kAXMaxValueAttribute) {
+            // Handle kAXMaxValueAttribute
+        } else if (attribute == (id)kAXMinimizeButtonAttribute) {
+            // Handle kAXMinimizeButtonAttribute
+        } else if (attribute == (id)kAXMinimizedAttribute) {
+            // Handle kAXMinimizedAttribute
+        } else if (attribute == (id)kAXMinuteFieldAttribute) {
+            // Handle kAXMinuteFieldAttribute
+        } else if (attribute == (id)kAXMinValueAttribute) {
+            // Handle kAXMinValueAttribute
+        } else if (attribute == (id)kAXModalAttribute) {
+            // Handle kAXModalAttribute
+        } else if (attribute == (id)kAXMonthFieldAttribute) {
+            // Handle kAXMonthFieldAttribute
+        } else if (attribute == (id)kAXNumberOfCharactersAttribute) {
+            // Handle kAXNumberOfCharactersAttribute
+        } else if (attribute == (id)kAXOrientationAttribute) {
+            // Handle kAXOrientationAttribute
+        } else if (attribute == (id)kAXParentAttribute) {
+            // Handle kAXParentAttribute
+        } else if (attribute == (id)kAXPositionAttribute) {
+            // Handle kAXPositionAttribute
+        } else if (attribute == (id)kAXProxyAttribute) {
+            // Handle kAXProxyAttribute
+        } else if (attribute == (id)kAXRoleAttribute) {
+            // Handle kAXRoleAttribute
+        } else if (attribute == (id)kAXRoleDescriptionAttribute) {
+            // Handle kAXRoleDescriptionAttribute
+        } else if (attribute == (id)kAXSecondFieldAttribute) {
+            // Handle kAXSecondFieldAttribute
+        } else if (attribute == (id)kAXSelectedChildrenAttribute) {
+            // Handle kAXSelectedChildrenAttribute
+        } else if (attribute == (id)kAXSelectedTextAttribute) {
+            // Handle kAXSelectedTextAttribute
+        } else if (attribute == (id)kAXSelectedTextRangeAttribute) {
+            // Handle kAXSelectedTextRangeAttribute
+        } else if (attribute == (id)kAXSelectedTextRangesAttribute) {
+            // Handle kAXSelectedTextRangesAttribute
+        } else if (attribute == (id)kAXSharedCharacterRangeAttribute) {
+            // Handle kAXSharedCharacterRangeAttribute
+        } else if (attribute == (id)kAXSharedTextUIElementsAttribute) {
+            // Handle kAXSharedTextUIElementsAttribute
+        } else if (attribute == (id)kAXSizeAttribute) {
+            // Handle kAXSizeAttribute
+        } else if (attribute == (id)kAXSubroleAttribute) {
+            CFTypeRef subroleValue;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXSubroleAttribute, &subroleValue);
+            if (result == kAXErrorSuccess && CFGetTypeID(subroleValue) == CFStringGetTypeID()) {
+                NSString *subrole = (__bridge NSString *)subroleValue;
+                dict[attributeName] = subrole;
+            } else dict[attributeName] = @"";
+        } else if (attribute == (id)kAXTitleAttribute) {
+            NSString *axTitle = nil;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXTitleAttribute, (void *)&axTitle);
+            if (result == kAXErrorSuccess) {
+                dict[attributeName] = axTitle;
+            } else dict[attributeName] = @"";
+        } else if (attribute == (id)kAXToolbarButtonAttribute) {
+            // Handle kAXToolbarButtonAttribute
+        } else if (attribute == (id)kAXTopLevelUIElementAttribute) {
+            // Handle kAXTopLevelUIElementAttribute
+        } else if (attribute == (id)kAXURLAttribute) {
+            // Handle kAXURLAttribute
+        } else if (attribute == (id)kAXValueAttribute) {
+            // Handle kAXValueAttribute
+        } else if (attribute == (id)kAXValueDescriptionAttribute) {
+            // Handle kAXValueDescriptionAttribute
+        } else if (attribute == (id)kAXValueIncrementAttribute) {
+            // Handle kAXValueIncrementAttribute
+        } else if (attribute == (id)kAXVisibleCharacterRangeAttribute) {
+            // Handle kAXVisibleCharacterRangeAttribute
+        } else if (attribute == (id)kAXVisibleChildrenAttribute) {
+            // Handle kAXVisibleChildrenAttribute
+        } else if (attribute == (id)kAXVisibleColumnsAttribute) {
+            // Handle kAXVisibleColumnsAttribute
+        } else if (attribute == (id)kAXWindowAttribute) {
+            // Handle kAXWindowAttribute
+        } else if (attribute == (id)kAXYearFieldAttribute) {
+            // Handle kAXYearFieldAttribute
+        } else if (attribute == (id)kAXZoomButtonAttribute) {
+            // Handle kAXZoomButtonAttribute
+        } else {
+            // Default case when attribute is not matched
+            dict[attributeName] = @"";
+            NSLog(@"attribute %@ DNE", attributeName);
+        }
+    }
+    return dict;
+}
+
+/* events */
 + (void) on: (NSString*) eventKey : (BOOL (^)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon)) callback {
     if (!eventMap) eventMap = [NSMutableDictionary dictionary];
     if (!eventMap[eventKey]) eventMap[eventKey] = [NSMutableArray array];
@@ -116,6 +267,11 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
     }
 }
 
+/* misc. */
++ (void) activateWindow: (NSWindow*) window {
+    [NSApp activateIgnoringOtherApps: YES];
+    [window makeKeyAndOrderFront: nil];
+}
 /* https://stackoverflow.com/questions/15305845/how-can-a-mac-gui-app-relaunch-itself-without-using-sparkle */
 + (void) restartApp {
     // Get the path to the current running app executable
