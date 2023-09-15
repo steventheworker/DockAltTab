@@ -195,8 +195,6 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
         CFMachPortRef machPort = [self listenMask: [self maskWithEventKey: eventKey] : (CGEventTapCallBack) eventTapCallback];
         [eventTapRefs addObject: (__bridge id) machPort];
         [eventTapRefs addObject: [NSValue valueWithPointer: machPort]];
-
-
     }
     [eventMap[eventKey] addObject: callback];
 }
