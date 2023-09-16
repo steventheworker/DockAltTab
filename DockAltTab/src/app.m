@@ -52,8 +52,13 @@
         
         AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
         NSDictionary* elDict = [helperLib elementDict: el : @{
+            @"title": (id)kAXTitleAttribute,
+            @"role": (id)kAXRoleAttribute,
             @"subrole": (id)kAXSubroleAttribute,
-            @"pos": (id)kAXPositionAttribute
+            @"pos": (id)kAXPositionAttribute,
+            @"size": (id)kAXSizeAttribute,
+            @"running": (id)kAXIsApplicationRunningAttribute,
+            @"PID": (id)kAXPIDAttribute
         }];
         NSLog(@"%@", elDict);
         

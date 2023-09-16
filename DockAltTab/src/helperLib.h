@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
+#define kAXPIDAttribute                CFSTR("AXPID") //dunno why AXUIElementGetPid is so special (no way to get pid with AXUIElementCopyAttributeValue)
+
 NS_ASSUME_NONNULL_BEGIN
 @interface helperLib : NSObject {}
 /* AXUIElement */
