@@ -319,16 +319,20 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
     if (![eventMap[eventKey] count]) { //only create an eventTap if event type has no callbacks yet
         if (eventTapRefs.count == 0) eventTapRefs = [NSMutableArray array]; //must initialize mutableDict in a fn (compile time constants error), may as well do it here
         CFMachPortRef machPort = [self listenMask: [self maskWithEventKey: eventKey] : (CGEventTapCallBack) eventTapCallback];
+//        CFRetain(machPort);
         [eventTapRefs addObject: (__bridge id) machPort];
         [eventTapRefs addObject: [NSValue valueWithPointer: machPort]];
     }
     [eventMap[eventKey] addObject: callback];
 }
 + (void) stopListening {
-    //CFRelease() & remove from array
-}
-+ (void) startListening {
-    //make new eventTap's & add to array
+    for (int i = 0; i < eventTapRefs.count / 2; i++) {
+        id machPortID = [eventTapRefs objectAtIndex: i*2];
+        NSValue* machPortVal = [eventTapRefs objectAtIndex: i*2 + 1];
+        CFRelease(machPortVal.pointerValue);
+    }
+    eventTapRefs = [NSMutableArray array];
+    eventMap = [NSMutableDictionary dictionary];
 }
 //+ (CGEventTapCallBack)eventTapCallback {return &eventTapCallback;} // expose it
 + (CFMachPortRef) listenMask : (CGEventMask) emask : (CGEventTapCallBack) handler {

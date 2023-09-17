@@ -10,7 +10,7 @@
 #import "globals.h"
 
 @implementation App
-+ (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideAccessibilityElement {
++ (instancetype) init: (NSWindow*) window : (NSMenu*) iconMenu : (AXUIElementRef) systemWideAccessibilityElement {
     App* app = [[self alloc] init];
     
     // add new app instance's references
@@ -22,7 +22,7 @@
         return app;
     }
     
-    [app addMenuIcon: menu]; // adds menu icon / references
+    [app addMenuIcon: iconMenu]; // adds menu icon / references
     
     //load nib/xib prefsWindow
     app->prefsController = [[NSWindowController alloc] initWithWindowNibName:@"prefs"];
@@ -34,9 +34,13 @@
 }
 
 - (void) addMenuIcon: (NSMenu*) menu {
+    iconMenu = menu;
+    iconMenuDelegate = [[MenuDelegate alloc] init];
+    [iconMenu setDelegate: (id) iconMenuDelegate];
+    
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
     [[statusItem button] setImage: [NSImage imageNamed: @"MenuIcon"]];
-    [statusItem setMenu: menu];
+    [statusItem setMenu: iconMenu];
     [statusItem setVisible: YES]; //without this, could stay hidden away
 }
 
@@ -60,6 +64,12 @@
             @"running": (id)kAXIsApplicationRunningAttribute,
             @"PID": (id)kAXPIDAttribute
         }];
+        
+        if ([elDict[@"PID"] intValue] == 486) {
+            //dock click
+//            return NO;
+        }
+        
         NSLog(@"%@", elDict);
         
         return YES;

@@ -8,9 +8,7 @@
 #import "AppDelegate.h"
 #import "src/globals.h"
 #import "src/helperLib.h"
-#import "src/app.h"
 
-App* app = nil;
 AXUIElementRef systemWideEl = nil;
 
 /*
@@ -47,7 +45,7 @@ AXUIElementRef systemWideEl = nil;
 */
 - (void) awakeFromNib {/* runs before applicationDidFinishLaunching */}
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    app = [App init: _window : menu : (systemWideEl = AXUIElementCreateSystemWide())];
+    app = [App init: _window : iconMenu : (systemWideEl = AXUIElementCreateSystemWide())];
     [helperLib setSystemWideEl: systemWideEl];
 }
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work

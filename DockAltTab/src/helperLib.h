@@ -20,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (CFMachPortRef) listenMask: (CGEventMask) emask : (CGEventTapCallBack) handler;
 + (void) on: (NSString*) eventKey : (BOOL (^)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon)) callback;
 + (void) stopListening;
-+ (void) startListening;
 + (NSString*) eventKeyWithEventType: (CGEventType) type;
 /* misc. */
 + (void) activateWindow: (NSWindow*) window;

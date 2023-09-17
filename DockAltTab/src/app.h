@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
+#import "MenuDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface App : NSObject {
@@ -15,10 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
     NSWindow* permissionWindow;
     NSWindowController* prefsController;
     AXUIElementRef systemWideEl;
+    NSMenu* iconMenu;
+    MenuDelegate* iconMenuDelegate;
 }
 + (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideAccessibilityElement;
-- (void) openPrefs;
 - (void) addMenuIcon: (NSMenu*) menu;
+- (void) startListening;
+- (void) openPrefs;
 - (void) renderAndShowPermissionWindow;
 @end
 NS_ASSUME_NONNULL_END

@@ -17,7 +17,7 @@
         <customObject id="O8a-yd-nmn" customClass="AppDelegate">
             <connections>
                 <outlet property="hasScreenRecordingBtnInfoBtn" destination="lSn-oY-5Eh" id="GcR-6I-9DG"/>
-                <outlet property="menu" destination="JBO-vp-NXO" id="zly-UD-jfk"/>
+                <outlet property="iconMenu" destination="JBO-vp-NXO" id="lMs-JM-1H4"/>
                 <outlet property="window" destination="Op4-Io-Ulw" id="kum-hV-HgB"/>
             </connections>
         </customObject>
@@ -682,7 +682,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" fullSizeContentView="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="213" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="900"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <view key="contentView" id="7yT-sa-POz">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
