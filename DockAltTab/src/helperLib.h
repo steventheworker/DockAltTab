@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*) eventKeyWithEventType: (CGEventType) type;
 /* misc. */
 + (void) activateWindow: (NSWindow*) window;
++ (NSString*) applescript: (NSString*) scriptTxt;
++ (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb;
 + (void) restartApp;
 @end
 NS_ASSUME_NONNULL_END

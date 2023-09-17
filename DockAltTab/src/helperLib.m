@@ -415,6 +415,50 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
     [NSApp activateIgnoringOtherApps: YES];
     [window makeKeyAndOrderFront: nil];
 }
++ (NSString*) applescript: (NSString*) scriptTxt {
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    __block NSString *result = @"";
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
+        NSDictionary<NSString *, id> *error = nil;
+        NSAppleEventDescriptor *descriptor = [script executeAndReturnError:&error];
+        
+        if (descriptor) {
+            result = [descriptor stringValue];
+        } else {
+            NSLog(@"run error: %@", error);
+        }
+        
+        dispatch_semaphore_signal(semaphore);
+    });
+
+    // Wait for the script execution to complete
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    return result;
+}
++ (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb {
+    NSTask *task = [[NSTask alloc] init];
+    scriptTxt = [NSString stringWithFormat: @"'%@'", [scriptTxt stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"]]; // escape '
+    [task setLaunchPath: @"/bin/bash"];
+    scriptTxt = [NSString stringWithFormat: @"/usr/bin/osascript -e %@", scriptTxt];
+    [task setArguments: [NSArray arrayWithObjects:@"-c", scriptTxt, nil]];
+    NSPipe *standardOutput = [[NSPipe alloc] init];
+    [task setStandardOutput:standardOutput];
+    [[NSNotificationCenter defaultCenter] addObserverForName: NSFileHandleReadCompletionNotification object: [standardOutput fileHandleForReading] queue: nil usingBlock: ^(NSNotification * _Nonnull notification) {
+        NSData *data = [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem];
+        NSFileHandle *handle = [notification object];
+        if ([data length]) {
+            NSString* str = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+            cb([str substringToIndex:[str length]-1]); // remove end of line \n
+        } else {
+            [[NSNotificationCenter defaultCenter] removeObserver: self name: NSFileHandleReadCompletionNotification object: [notification object]];
+            cb(nil);
+        }
+    }];
+    [task launch];
+    [[standardOutput fileHandleForReading] readInBackgroundAndNotify];
+}
 /* https://stackoverflow.com/questions/15305845/how-can-a-mac-gui-app-relaunch-itself-without-using-sparkle */
 + (void) restartApp {
     // Get the path to the current running app executable
