@@ -6,8 +6,9 @@
 //
 
 #import "app.h"
-#import "helperLib.h"
 #import "globals.h"
+#import "helperLib.h"
+#import "DockAltTab.h"
 
 @implementation App
 + (instancetype) init: (NSWindow*) window : (NSMenu*) iconMenu : (AXUIElementRef) systemWideAccessibilityElement {
@@ -29,6 +30,7 @@
     [app->prefsController loadWindow];
     
     [app startListening];
+    [DockAltTab init];
     
     return app;
 }
@@ -52,31 +54,16 @@
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         CGPoint cursorPos = CGEventGetLocation(event);
-        NSLog(@"d");
-        
         AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
-        NSDictionary* elDict = [helperLib elementDict: el : @{
-            @"title": (id)kAXTitleAttribute,
-            @"role": (id)kAXRoleAttribute,
-            @"subrole": (id)kAXSubroleAttribute,
-            @"pos": (id)kAXPositionAttribute,
-            @"size": (id)kAXSizeAttribute,
-            @"running": (id)kAXIsApplicationRunningAttribute,
-            @"PID": (id)kAXPIDAttribute
-        }];
-        
-        if ([elDict[@"PID"] intValue] == 486) {
-            //dock click
-//            return NO;
-        }
-        
-        NSLog(@"%@", elDict);
-        
+        NSMutableDictionary* elDict = [DockAltTab elDict: el];
+        if (![DockAltTab mousedown: proxy : type : event : refcon : el : elDict]) return NO;
         return YES;
     }];
     [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         CGPoint cursorPos = CGEventGetLocation(event);
-        NSLog(@"u");
+        AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
+        NSMutableDictionary* elDict = [DockAltTab elDict: el];
+        if (![DockAltTab mouseup: proxy : type : event : refcon : el : elDict]) return NO;
         return YES;
     }];
 }

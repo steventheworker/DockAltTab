@@ -68,7 +68,14 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
         } else if (attribute == (id)kAXCancelButtonAttribute) {
             // Handle kAXCancelButtonAttribute
         } else if (attribute == (id)kAXChildrenAttribute) {
-            // Handle kAXChildrenAttribute
+            NSArray* children;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXChildrenAttribute, (void*) &children);
+            if (result == kAXErrorSuccess) {
+                NSMutableArray* pointerArray = [NSMutableArray array];
+                for (int i = 0; i < children.count; i++)
+                    [pointerArray addObject: [NSValue valueWithPointer: (AXUIElementRef) children[i]]];
+                dict[attributeName] = pointerArray;
+            } else dict[attributeName] = @[];
         } else if (attribute == (id)kAXCloseButtonAttribute) {
             // Handle kAXCloseButtonAttribute
         } else if (attribute == (id)kAXColumnsAttribute) {
@@ -104,7 +111,11 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
         } else if (attribute == (id)kAXFilenameAttribute) {
             // Handle kAXFilenameAttribute
         } else if (attribute == (id)kAXFocusedApplicationAttribute) {
-            // Handle kAXFocusedApplicationAttribute
+            AXUIElementRef app;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXFocusedApplicationAttribute, (CFTypeRef*) &app);
+            if (result == kAXErrorSuccess) {
+                dict[attributeName] = [NSValue valueWithPointer: app];
+            } else dict[attributeName] = @0;
         } else if (attribute == (id)kAXFocusedAttribute) {
             // Handle kAXFocusedAttribute
         } else if (attribute == (id)kAXFocusedUIElementAttribute) {
@@ -154,7 +165,11 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
         } else if (attribute == (id)kAXMaxValueAttribute) {
             // Handle kAXMaxValueAttribute
         } else if (attribute == (id)kAXMenuBarAttribute) {
-            // Handle kAXMenuBarAttribute
+            AXUIElementRef menuBar;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXMenuBarAttribute, (CFTypeRef*) &menuBar);
+            if (result == kAXErrorSuccess) {
+                dict[attributeName] = [NSValue valueWithPointer: menuBar];
+            } else dict[attributeName] = @0;
         } else if (attribute == (id)kAXMenuItemCmdCharAttribute) {
             // Handle kAXMenuItemCmdCharAttribute
         } else if (attribute == (id)kAXMenuItemCmdGlyphAttribute) {

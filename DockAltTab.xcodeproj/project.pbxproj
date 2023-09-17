@@ -18,6 +18,7 @@
 		BF10DAFD2AA5B5BE0067458E /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAFC2AA5B5BE0067458E /* Podfile */; };
 		BF15089429038B8B00DF343F /* globals.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15089329038B8B00DF343F /* globals.m */; };
 		BFB7B20F2AB6CDC900D707FA /* MenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB7B20E2AB6CDC900D707FA /* MenuDelegate.m */; };
+		BFB7B2122AB6E50D00D707FA /* DockAltTab.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB7B2112AB6E50D00D707FA /* DockAltTab.m */; };
 		BFE19DEC2825BFA600D72F99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DEB2825BFA600D72F99 /* AppDelegate.m */; };
 		BFE19DF32825BFA800D72F99 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DF22825BFA800D72F99 /* main.m */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,8 @@
 		BF15089329038B8B00DF343F /* globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = globals.m; sourceTree = "<group>"; };
 		BFB7B20D2AB6CDC900D707FA /* MenuDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuDelegate.h; sourceTree = "<group>"; };
 		BFB7B20E2AB6CDC900D707FA /* MenuDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenuDelegate.m; sourceTree = "<group>"; };
+		BFB7B2102AB6E50D00D707FA /* DockAltTab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DockAltTab.h; sourceTree = "<group>"; };
+		BFB7B2112AB6E50D00D707FA /* DockAltTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DockAltTab.m; sourceTree = "<group>"; };
 		BFE19DE72825BFA600D72F99 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFE19DEA2825BFA600D72F99 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BFE19DEB2825BFA600D72F99 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -75,6 +78,8 @@
 			children = (
 				BF0E91FF28291F0700D21AD5 /* app.h */,
 				BF0E920028291F0700D21AD5 /* app.m */,
+				BFB7B2102AB6E50D00D707FA /* DockAltTab.h */,
+				BFB7B2112AB6E50D00D707FA /* DockAltTab.m */,
 				BF15088B2903782B00DF343F /* globals.h */,
 				BF15089329038B8B00DF343F /* globals.m */,
 				BF0E91F92829191D00D21AD5 /* helperLib.h */,
@@ -248,6 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFB7B2122AB6E50D00D707FA /* DockAltTab.m in Sources */,
 				BFE19DF32825BFA800D72F99 /* main.m in Sources */,
 				BFB7B20F2AB6CDC900D707FA /* MenuDelegate.m in Sources */,
 				BF15089429038B8B00DF343F /* globals.m in Sources */,
