@@ -8,6 +8,7 @@
 #import "app.h"
 #import "globals.h"
 #import "helperLib.h"
+#import "prefsWindowController.h"
 #import "DockAltTab.h"
 
 @implementation App
@@ -26,7 +27,7 @@
     [app addMenuIcon: iconMenu]; // adds menu icon / references
     
     //load nib/xib prefsWindow
-    app->prefsController = [[NSWindowController alloc] initWithWindowNibName:@"prefs"];
+    app->prefsController = [[prefsWindowController alloc] initWithWindowNibName: @"prefs"];
     [app->prefsController loadWindow];
     
     [app startListening];

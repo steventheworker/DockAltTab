@@ -9,6 +9,7 @@
 #import "globals.h"
 #import "helperLib.h"
 
+int DATMode = 3; // 1 = macos, 2 = ubuntu, 3 = windows
 NSString* DATShowStringFormat = @"showApp appBID \"%@\" x %d y %d dockPos \"%@\""; // [NSString stringWithFormat: DATShowStringFormatappBID, x, y, dockPos];
 pid_t dockPID;
 NSString* dockPos = @"bottom";
@@ -24,6 +25,10 @@ NSMutableDictionary* mousedownDict;
     [self loadDockPos];
     [self loadDockAutohide];
     mousedownDict = [NSMutableDictionary dictionary];
+}
++ (void) setMode: (int) mode {
+    mousedownDict[@"DATMode"] = @(DATMode);
+    DATMode = mode;
 }
 + (BOOL) loadDockAutohide {dockAutohide = [helperLib dockAutohide];return dockAutohide;}
 + (NSString*) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}
@@ -85,7 +90,25 @@ NSMutableDictionary* mousedownDict;
 }
 
 /* events */
++ (BOOL) mousedownWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
+    NSLog(@"win dowwnnnn");
+    return YES;
+}
++ (BOOL) mouseupWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
+    return YES;
+}
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
+    return DATMode == 2 ? [self mousedownUbuntu: proxy : type : event : refcon : el : elDict : cursorPos] :
+                        [self mousedownWindows: proxy : type : event : refcon : el : elDict : cursorPos];
+}
++ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
+    int mode = DATMode;
+    if ([mousedownDict[@"DATMode"] intValue]) mode = [mousedownDict[@"DATMode"] intValue];
+    return mode == 2 ? [self mouseupUbuntu: proxy : type : event : refcon : el : elDict : cursorPos] :
+                        [self mouseupWindows: proxy : type : event : refcon : el : elDict : cursorPos];
+}
++ (BOOL) mousedownUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
+    NSLog(@"ubuntu dowwnnnn");
     if ([helperLib modifierKeys].count) return YES;
      
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
@@ -114,7 +137,7 @@ NSMutableDictionary* mousedownDict;
     }
     return YES;
 }
-+ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
++ (BOOL) mouseupUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
     
@@ -141,7 +164,7 @@ NSMutableDictionary* mousedownDict;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
                 if (tarApp.hidden) {
                     [tarApp unhide];
-                    setTimeout(^{[self activateApp: tarApp];}, 70); //activating too quickly after unhiding is what switches spaces!
+                    setTimeout(^{[self activateApp: tarApp];}, 30); //activating too quickly after unhiding is what switches spaces!
                 } else [tarApp hide];
                 return NO;
             }
