@@ -15,7 +15,7 @@ NSString* dockPos = @"bottom";
 BOOL dockAutohide = NO;
 CGRect dockRect;
 
-NSDictionary* mousedownDict = @{};
+NSMutableDictionary* mousedownDict;
 
 @implementation DockAltTab
 + (void) init {
@@ -23,6 +23,7 @@ NSDictionary* mousedownDict = @{};
     [self loadDockRect];
     [self loadDockPos];
     [self loadDockAutohide];
+    mousedownDict = [NSMutableDictionary dictionary];
 }
 + (BOOL) loadDockAutohide {dockAutohide = [helperLib dockAutohide];return dockAutohide;}
 + (NSString*) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}
@@ -97,10 +98,14 @@ NSDictionary* mousedownDict = @{};
         NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
         int previewWindowsCount =  [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
         NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
-        mousedownDict = @{
+        mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
             @"tarAppActive": @(tarApp.active),
             @"el": (__bridge id _Nonnull)(el)
-        };
+        }];
+        if (type == kCGEventOtherMouseDown && [self isPreviewWindowShowing]) {
+            mousedownDict[@"previewWasOpenOnMiddleBtnFlag"] = @1;
+            [self hidePreviewWindow];
+        }
         if (!previewWindowsCount) {
             if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
             return YES; //pass click through
@@ -120,7 +125,8 @@ NSDictionary* mousedownDict = @{};
         NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
         if ([mousedownDict[@"tarAppBID"] isNotEqualTo: tarApp.bundleIdentifier]) return NO; //don't do anything, mouse changed icons
         if ([mousedownDict[@"tarAppActive"] intValue] != (int) tarApp.active) return NO; //don't do anything, active app changed between mousedown/up
-                    
+        if ([mousedownDict[@"previewWasOpenOnMiddleBtnFlag"] intValue] && type == kCGEventOtherMouseUp) return NO;
+        
         int previewWindowsCount = [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
         BOOL enoughPreviewWindows = type == kCGEventOtherMouseUp ? previewWindowsCount >= 1 : previewWindowsCount >= 2;
         if (!previewWindowsCount) {
@@ -131,6 +137,7 @@ NSDictionary* mousedownDict = @{};
         if (enoughPreviewWindows) {
             [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]]];
         } else {
+            if (type == kCGEventOtherMouseUp) return YES;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
                 if (tarApp.hidden) {
                     [tarApp unhide];
@@ -140,7 +147,6 @@ NSDictionary* mousedownDict = @{};
             }
             if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
         }
-
         return NO;
     }
     return YES;
