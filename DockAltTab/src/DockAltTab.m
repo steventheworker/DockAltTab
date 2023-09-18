@@ -75,8 +75,8 @@ NSDictionary* mousedownDict = @{};
 
 /* events */
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
+    if (type == kCGEventRightMouseDown) return YES;
     if ([helperLib modifierKeys].count) return YES;
-    if (type == kCGEventRightMouseDown || type == kCGEventOtherMouseDown) return YES;
      
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
         NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
