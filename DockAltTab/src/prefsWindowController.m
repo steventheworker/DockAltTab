@@ -30,7 +30,7 @@ void radioClicked(id sender, NSString* selfLabelValue) {
 
 @implementation prefsWindowController
 - (void) awakeFromNib {
-    [self showWindow: [self window]]; //activate on launch
+//    [self showWindow: [self window]]; //activate on launch
     //render
     NSArray* radioBtnContainerChildren = [[[self.window contentView] subviews][1] accessibilityChildren];
     for (NSButtonCell* cell in radioBtnContainerChildren) {
