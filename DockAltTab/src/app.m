@@ -56,14 +56,14 @@
         CGPoint cursorPos = CGEventGetLocation(event);
         AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
         NSMutableDictionary* elDict = [DockAltTab elDict: el];
-        if (![DockAltTab mousedown: proxy : type : event : refcon : el : elDict]) return NO;
+        if (![DockAltTab mousedown: proxy : type : event : refcon : el : elDict : cursorPos]) return NO;
         return YES;
     }];
     [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         CGPoint cursorPos = CGEventGetLocation(event);
         AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
         NSMutableDictionary* elDict = [DockAltTab elDict: el];
-        if (![DockAltTab mouseup: proxy : type : event : refcon : el : elDict]) return NO;
+        if (![DockAltTab mouseup: proxy : type : event : refcon : el : elDict : cursorPos]) return NO;
         return YES;
     }];
 }

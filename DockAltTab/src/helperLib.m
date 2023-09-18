@@ -5,9 +5,13 @@
 //  Created by Steven G on 5/9/22.
 //
 
+#import "globals.h"
 #import "helperLib.h"
 
+const int DOCK_BOTTOM_PADDING = 6; //eg: if screen 1080px, dock pos.y is actually <= 1074px (for bottom dock, but same for left/right)
+
 AXUIElementRef systemWideElement;
+AXUIElementRef dockAppRef;
 
 /* events */
 NSMutableArray* eventTapRefs; // CFMachPortRef's (for restarting events / stopping)
@@ -31,6 +35,11 @@ BOOL processEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event, voi
  */
 static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon) {
     return processEvent(proxy, type, event, refcon) ? event : nil;
+}
+//screens - listening to monitors attach / detach
+void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* userInfo) {
+    if (flags && kCGDisplayAddFlag && kCGDisplayRemoveFlag) {} else return;
+    [helperLib proc: display : flags : userInfo];
 }
 
 
@@ -72,8 +81,10 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
             AXError result = AXUIElementCopyAttributeValue(el, kAXChildrenAttribute, (void*) &children);
             if (result == kAXErrorSuccess) {
                 NSMutableArray* pointerArray = [NSMutableArray array];
-                for (int i = 0; i < children.count; i++)
-                    [pointerArray addObject: [NSValue valueWithPointer: (AXUIElementRef) children[i]]];
+                for (int i = 0; i < children.count; i++) {
+                    AXUIElementRef el = (__bridge AXUIElementRef _Nonnull) children[i];
+                    [pointerArray addObject: (__bridge id _Nonnull)(el)];
+                }
                 dict[attributeName] = pointerArray;
             } else dict[attributeName] = @[];
         } else if (attribute == (id)kAXCloseButtonAttribute) {
@@ -203,7 +214,10 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
         } else if (attribute == (id)kAXOverflowButtonAttribute) {
             // Handle kAXOverflowButtonAttribute
         } else if (attribute == (id)kAXParentAttribute) {
-            // Handle kAXParentAttribute
+            AXUIElementRef* parent;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXParentAttribute, (void*) &parent);
+            if (result == kAXErrorSuccess) dict[attributeName] = [NSValue valueWithPointer: parent];
+            else dict[attributeName] = @0;
         } else if (attribute == (id)kAXPositionAttribute) {
             CFTypeRef positionRef;
             AXError result = AXUIElementCopyAttributeValue(el, kAXPositionAttribute, (void*) &positionRef);
@@ -220,7 +234,7 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
             CFTypeRef subroleValue;
             AXError result = AXUIElementCopyAttributeValue(el, kAXRoleAttribute, &subroleValue);
             if (result == kAXErrorSuccess && CFGetTypeID(subroleValue) == CFStringGetTypeID()) {
-                NSString *subrole = (__bridge NSString *)subroleValue;
+                NSString* subrole = (__bridge NSString*) subroleValue;
                 dict[attributeName] = subrole;
             } else dict[attributeName] = @"";
         } else if (attribute == (id)kAXRoleDescriptionAttribute) {
@@ -257,8 +271,8 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
             if (result == kAXErrorSuccess) {
                 CGSize curSize;
                 AXValueGetValue(sizeRef, kAXValueCGSizeType, &curSize);
-                dict[attributeName] = @{@"w": @(curSize.width), @"h": @(curSize.height)};
-            } else dict[attributeName] = @{@"w": @0, @"h": @0};
+                dict[attributeName] = @{@"width": @(curSize.width), @"height": @(curSize.height)};
+            } else dict[attributeName] = @{@"width": @0, @"height": @0};
         } else if (attribute == (id)kAXSortDirectionAttribute) {
             // Handle kAXSortDirectionAttribute
         } else if (attribute == (id)kAXSplittersAttribute) {
@@ -267,13 +281,13 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
             CFTypeRef subroleValue;
             AXError result = AXUIElementCopyAttributeValue(el, kAXSubroleAttribute, &subroleValue);
             if (result == kAXErrorSuccess && CFGetTypeID(subroleValue) == CFStringGetTypeID()) {
-                NSString *subrole = (__bridge NSString *)subroleValue;
+                NSString* subrole = (__bridge NSString*) subroleValue;
                 dict[attributeName] = subrole;
             } else dict[attributeName] = @"";
         } else if (attribute == (id)kAXTabsAttribute) {
             // Handle kAXTabsAttribute
         } else if (attribute == (id)kAXTitleAttribute) {
-            NSString *axTitle = nil;
+            NSString* axTitle = nil;
             AXError result = AXUIElementCopyAttributeValue(el, kAXTitleAttribute, (void *)&axTitle);
             if (result == kAXErrorSuccess) {
                 dict[attributeName] = axTitle;
@@ -285,7 +299,11 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
         } else if (attribute == (id)kAXTopLevelUIElementAttribute) {
             // Handle kAXTopLevelUIElementAttribute
         } else if (attribute == (id)kAXURLAttribute) {
-            // Handle kAXURLAttribute
+            NSString* url = nil;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXURLAttribute, (void *)&url);
+            if (result == kAXErrorSuccess) {
+                dict[attributeName] = url;
+            } else dict[attributeName] = @"";
         } else if (attribute == (id)kAXValueAttribute) {
             // Handle kAXValueAttribute
         } else if (attribute == (id)kAXValueDescriptionAttribute) {
@@ -307,7 +325,14 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
         } else if (attribute == (id)kAXWindowAttribute) {
             // Handle kAXWindowAttribute
         } else if (attribute == (id)kAXWindowsAttribute) {
-            // Handle kAXWindowsAttribute
+            NSArray* wins;
+            AXError result = AXUIElementCopyAttributeValue(el, kAXWindowsAttribute, (void*) &wins);
+            if (result == kAXErrorSuccess) {
+                NSMutableArray* pointerArray = [NSMutableArray array];
+                for (int i = 0; i < wins.count; i++)
+                    [pointerArray addObject: [NSValue valueWithPointer: (void*) wins[i]]];
+                dict[attributeName] = pointerArray;
+            } else dict[attributeName] = @[];
         } else if (attribute == (id)kAXYearFieldAttribute) {
             // Handle kAXYearFieldAttribute
         } else if (attribute == (id)kAXZoomButtonAttribute) {
@@ -410,10 +435,96 @@ static CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEv
     }
 }
 
+/* screens*/
++ (void) listenScreens {CGDisplayRegisterReconfigurationCallback((CGDisplayReconfigurationCallBack) proc, (void*) nil);}
++ (void) proc: (CGDirectDisplayID) display : (CGDisplayChangeSummaryFlags) flags : (void*) userInfo {
+    NSLog(@"%u %u", display, flags); //display = screen index?, flags=attach/detach?
+    [self processScreens];
+}
++ (void) processScreens {
+    NSLog(@"processing attach/detach of display");
+}
++ (NSScreen*) primaryScreen {return [self screenAtPt: NSZeroPoint];}
++ (NSScreen*) screenAtPt: (NSPoint) pt {
+    NSArray* screens = [NSScreen screens];
+    for (NSScreen* screen in screens) if (NSPointInRect(pt, [screen frame])) return screen;
+    return screens[0];
+}
+
 /* misc. */
++ (BOOL) dockAutohide {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"autohide"] intValue] > 0;
+}
++ (NSString*) dockPos {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString* pos = [[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"orientation"];
+    return pos ? pos : @"bottom";
+}
++ (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild {
+    NSDictionary* recursiveDict = @{
+        @"role": (id)kAXRoleAttribute,
+        @"parent": (id)kAXParentAttribute,
+        @"PID": (id)kAXPIDAttribute
+    };
+    NSDictionary* dict = [self elementDict: dockChild : recursiveDict];
+    NSValue* parentValue = dict[@"parent"];
+    AXUIElementRef parent;
+    [parentValue getValue: &parent];
+    NSDictionary* parentDict = [self elementDict: parent : recursiveDict];
+    if ([parentDict[@"role"] isEqual: @"AXApplication"]) return parent;
+    return [self dockAppElementFromDockChild: parent];
+}
++ (void) toggleDock {
+    [self applescript: [NSString stringWithFormat:@"tell application \"System Events\"\n\
+        key down 63\n\
+        key code 0\n\
+        key up 63\n\
+    end tell"]];
+}
++ (CGRect) dockRect {
+    if (!dockAppRef) {
+        [self toggleDock];
+        usleep(100 * 1000); // 100ms
+        NSScreen* focusedScreen = [NSScreen mainScreen];
+        CGPoint testPoint;
+        if ([[self dockPos] isEqual: @"bottom"]) testPoint = CGPointMake(focusedScreen.frame.size.width / 2, focusedScreen.frame.size.height - DOCK_BOTTOM_PADDING);
+        else {
+            float x = ([[self dockPos] isEqual: @"left"]) ? DOCK_BOTTOM_PADDING : focusedScreen.frame.size.width - DOCK_BOTTOM_PADDING;
+            testPoint = CGPointMake(x, focusedScreen.frame.size.height / 2);
+        }
+        dockAppRef = [self dockAppElementFromDockChild: [helperLib elementAtPoint: testPoint]];
+        [self toggleDock];
+    }
+    NSArray* children = [helperLib elementDict: dockAppRef : @{@"children": (id)kAXChildrenAttribute}][@"children"];
+    AXUIElementRef dockListElement = NULL;
+    for (id elID in children) {
+        AXUIElementRef el = (__bridge AXUIElementRef) elID;
+        if ([[self elementDict: el : @{@"role": (id)kAXRoleAttribute}][@"role"] isEqual: @"AXList"]) dockListElement = el;
+    }
+    NSDictionary* listDict = [helperLib elementDict: dockListElement : @{
+        @"pos": (id)kAXPositionAttribute,
+        @"size": (id)kAXSizeAttribute
+    }];
+    return CGRectMake([listDict[@"pos"][@"x"] floatValue], [listDict[@"pos"][@"y"] floatValue], [listDict[@"size"][@"width"] floatValue], [listDict[@"size"][@"height"] floatValue]);
+}
++ (NSRunningApplication*) appWithBID: (NSString*) tarBID {
+    for (NSRunningApplication* app in [[NSWorkspace sharedWorkspace] runningApplications]) if ([[app bundleIdentifier] isEqual: tarBID]) return app;
+    return nil;
+}
 + (void) activateWindow: (NSWindow*) window {
     [NSApp activateIgnoringOtherApps: YES];
     [window makeKeyAndOrderFront: nil];
+}
++ (NSDictionary*) modifierKeys {
+    NSUInteger _flags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
+    NSMutableDictionary<NSString *, NSNumber *> *modifierStates = [NSMutableDictionary dictionary];
+    if ((_flags & NSEventModifierFlagControl) != 0) modifierStates[@"ctrl"] = @1;
+    if ((_flags & NSEventModifierFlagOption) != 0) modifierStates[@"opt"] = @1;
+    if ((_flags & NSEventModifierFlagCommand) != 0)modifierStates[@"cmd"] = @1;
+    if ((_flags & NSEventModifierFlagShift) != 0) modifierStates[@"shift"] = @1;
+    NSDictionary<NSString *, NSNumber *> *immutableDictionary = [modifierStates copy];
+    return immutableDictionary;
 }
 + (NSString*) applescript: (NSString*) scriptTxt {
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);

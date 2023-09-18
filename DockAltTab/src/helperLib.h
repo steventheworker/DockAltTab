@@ -21,8 +21,21 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) on: (NSString*) eventKey : (BOOL (^)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon)) callback;
 + (void) stopListening;
 + (NSString*) eventKeyWithEventType: (CGEventType) type;
+/* screens*/
++ (void) listenScreens;
++ (void) proc: (CGDirectDisplayID) display : (CGDisplayChangeSummaryFlags) flags : (void*) userInfo;
++ (void) processScreens;
++ (NSScreen*) screenAtPt: (NSPoint) pt;
++ (NSScreen*) primaryScreen;
 /* misc. */
++ (BOOL) dockAutohide;
++ (NSString*) dockPos;
++ (CGRect) dockRect;
++ (void) toggleDock;
++ (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild;
++ (NSRunningApplication*) appWithBID: (NSString*) tarBID;
 + (void) activateWindow: (NSWindow*) window;
++ (NSDictionary*) modifierKeys;
 + (NSString*) applescript: (NSString*) scriptTxt;
 + (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb;
 + (void) restartApp;

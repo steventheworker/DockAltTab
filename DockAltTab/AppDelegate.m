@@ -45,8 +45,10 @@ AXUIElementRef systemWideEl = nil;
 */
 - (void) awakeFromNib {/* runs before applicationDidFinishLaunching */}
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    app = [App init: _window : iconMenu : (systemWideEl = AXUIElementCreateSystemWide())];
-    [helperLib setSystemWideEl: systemWideEl];
+    [helperLib setSystemWideEl: (systemWideEl = AXUIElementCreateSystemWide())];
+    [helperLib listenScreens];
+    [helperLib processScreens];
+    app = [App init: _window : iconMenu : systemWideEl];
 }
 - (void)dealloc {//    [super dealloc]; //todo: why doesn't this work
 //    [timer invalidate];

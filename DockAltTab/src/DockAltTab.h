@@ -6,16 +6,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Carbon/Carbon.h>
+#import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DockAltTab : NSObject
 + (void) init;
-+ (void) loadDockPid;
++ (pid_t) loadDockPID;
++ (BOOL) loadDockAutohide;
++ (NSString*) loadDockPos;
++ (CGRect) loadDockRect;
 + (NSMutableDictionary*) elDict: (AXUIElementRef) el;
-+ (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
-+ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
++ (void) activateApp: (NSRunningApplication*) app;
++ (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt;
++ (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos;
++ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos;
 @end
 
 NS_ASSUME_NONNULL_END
