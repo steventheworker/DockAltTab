@@ -72,13 +72,26 @@ NSDictionary* mousedownDict = @{};
     }
     return [NSString stringWithFormat: DATShowStringFormat, appBID, x, y, dockPos];
 }
++ (void) hidePreviewWindow {[helperLib applescript: @"tell application \"AltTab\" to hide"];}
++ (BOOL) isPreviewWindowShowing {
+    CFArrayRef wins = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    long int winCount = CFArrayGetCount(wins);
+    for (int i = 0; i < winCount; i++) {
+        NSDictionary* win = CFArrayGetValueAtIndex(wins, i);
+        if ([win[(id)kCGWindowOwnerName] isEqual: @"AltTab"] && [win[(id)kCGWindowLayer] intValue] != 0) return YES;
+    }
+    return NO;
+}
 
 /* events */
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
-    if (type == kCGEventRightMouseDown) return YES;
     if ([helperLib modifierKeys].count) return YES;
      
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
+        if (type == kCGEventRightMouseDown) {
+            if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
+            return YES;
+        }
         NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
         if (children.count) return YES; //children on an icon === icon menu is showing
         NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];

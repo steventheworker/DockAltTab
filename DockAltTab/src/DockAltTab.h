@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSMutableDictionary*) elDict: (AXUIElementRef) el;
 + (void) activateApp: (NSRunningApplication*) app;
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt;
++ (void) hidePreviewWindow;
++ (BOOL) isPreviewWindowShowing;
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos;
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos;
 @end
