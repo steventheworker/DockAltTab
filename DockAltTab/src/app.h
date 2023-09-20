@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
     AXUIElementRef systemWideEl;
     NSMenu* iconMenu;
     MenuDelegate* iconMenuDelegate;
+    CGPoint cursorPos;
 }
 + (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideAccessibilityElement;
 - (void) addMenuIcon: (NSMenu*) menu;

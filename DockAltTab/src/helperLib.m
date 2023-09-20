@@ -9,6 +9,7 @@
 #import "helperLib.h"
 
 const int DOCK_BOTTOM_PADDING = 6; //eg: if screen 1080px, dock pos.y is actually <= 1074px (for bottom dock, but same for left/right)
+NSDictionary* listenOnlyEvents = @{@"mousemove": @1}; //events that you probably shouldn't modify:    mousemove causes xcode to crash when selecting lines w/ kcgtapoptionDefault)
 
 AXUIElementRef systemWideElement;
 AXUIElementRef dockAppRef;
@@ -49,10 +50,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 + (AXUIElementRef) elementAtPoint: (CGPoint) pt {
     AXUIElementRef element = NULL;
     AXError result = AXUIElementCopyElementAtPosition(systemWideElement, pt.x, pt.y, &element);
-    if (result != kAXErrorSuccess) NSLog(@"elementAtPoint failed");
+    if (result != kAXErrorSuccess) NSLog(@"%f, %f elementAtPoint failed", pt.x, pt.y);
     return element;
 }
 + (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict {
+    if (!el) return @{};
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     for (NSString* attributeName in attributeDict) {
         id attribute = attributeDict[attributeName];
@@ -358,8 +360,9 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     if (!eventMap[eventKey]) eventMap[eventKey] = [NSMutableArray array];
     if (![eventMap[eventKey] count]) { //only create an eventTap if event type has no callbacks yet
         if (eventTapRefs.count == 0) eventTapRefs = [NSMutableArray array]; //must initialize mutableDict in a fn (compile time constants error), may as well do it here
-        CFMachPortRef machPort = [self listenMask: [self maskWithEventKey: eventKey] : (CGEventTapCallBack) eventTapCallback];
-//        CFRetain(machPort);
+        CFMachPortRef machPort;
+        if ([listenOnlyEvents[eventKey] intValue]) machPort = [self listenOnlyMask: [self maskWithEventKey: eventKey] : (CGEventTapCallBack) eventTapCallback];
+        else machPort = [self listenMask: [self maskWithEventKey: eventKey] : (CGEventTapCallBack) eventTapCallback];
         [eventTapRefs addObject: (__bridge id) machPort];
         [eventTapRefs addObject: [NSValue valueWithPointer: machPort]];
     }
@@ -373,33 +376,35 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     }
     eventTapRefs = [NSMutableArray array];
     eventMap = [NSMutableDictionary dictionary];
+    
+//    CFRunLoopRemoveSource(CFRunLoopGetMain(), eventTapRLSrc, kCFRunLoopCommonModes);
 }
 //+ (CGEventTapCallBack)eventTapCallback {return &eventTapCallback;} // expose it
-+ (CFMachPortRef) listenMask : (CGEventMask) emask : (CGEventTapCallBack) handler {
++ (CFMachPortRef) listenMask : (CGEventMask) emask : (CGEventTapCallBack) handler {return [self _listenMask: emask : handler : YES];}
++ (CFMachPortRef) listenOnlyMask : (CGEventMask) emask : (CGEventTapCallBack) handler {return [self _listenMask: emask : handler : NO];}
++ (CFMachPortRef) _listenMask : (CGEventMask) emask : (CGEventTapCallBack) handler : (BOOL) listenDefault {
     CFMachPortRef myEventTap;
     CFRunLoopSourceRef eventTapRLSrc;
-    myEventTap = CGEventTapCreate (
-      //kCGHIDEventTap, // Catch all events (Before system processes it)
+    myEventTap = CGEventTapCreate(
+      kCGHIDEventTap, // Catch all events (Before system processes it)
 //        kCGSessionEventTap, // Catch all events for current user session (After system processes it)
-       kCGAnnotatedSessionEventTap, //Specifies that an event tap is placed at the point where session events have been annotated to flow to an application.
-      //kCGHeadInsertEventTap, // Append to beginning of EventTap list
-        kCGTailAppendEventTap, // Append to end of EventTap list
-        kCGEventTapOptionDefault, // handler returns nil to preventDefault
-      //kCGEventTapOptionListenOnly, // handler returns nil to preventDefault
+//       kCGAnnotatedSessionEventTap, //Specifies that an event tap is placed at the point where session events have been annotated to flow to an application.
+                                   
+      kCGHeadInsertEventTap, // Append to beginning of EventTap list
+//        kCGTailAppendEventTap, // Append to end of EventTap list
+                                   
+        listenDefault ? kCGEventTapOptionDefault : kCGEventTapOptionListenOnly,
         emask,
         (CGEventTapCallBack) eventTapCallback,
-//        handler,
         nil // We need no extra data in the callback
     );
-    eventTapRLSrc = CFMachPortCreateRunLoopSource( //runloop source
-        kCFAllocatorDefault,
-        myEventTap,
-        0
-    );
+    eventTapRLSrc = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, myEventTap, 0); //runloop source
     CFRunLoopAddSource(// Add the source to the current RunLoop
-        CFRunLoopGetCurrent(),
+        CFRunLoopGetMain(),
+//        CFRunLoopGetCurrent(),
         eventTapRLSrc,
-        kCFRunLoopDefaultMode
+        kCFRunLoopCommonModes
+//        kCFRunLoopDefaultMode
     );
     CFRelease(eventTapRLSrc);
     return myEventTap;
@@ -455,6 +460,22 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 }
 
 /* misc. */
++ (NSView*) $0: (NSView*) container : (NSString*) tar { //getElementById stops after it find 1 match
+    for (NSView* childV in[container subviews]) {
+        if ([childV.identifier isEqual: tar]) return childV;
+        NSView* subAnswer = [self $0: childV: tar];
+        if (subAnswer) return subAnswer;
+    }
+    return NULL;
+}
++ (NSArray*) $: (NSView*) container : (NSString*) tar { //getElement(s)ById (within container view)
+    NSMutableArray* answer = [NSMutableArray array];
+    for (NSView* childV in [container subviews]) {
+        if ([childV.identifier isEqual: tar]) [answer addObject: childV];
+        [answer addObjectsFromArray: [self $: childV : tar]]; //recursive check each child's children for matches
+    }
+    return answer;
+}
 + (BOOL) dockAutohide {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"autohide"] intValue] > 0;
@@ -572,6 +593,9 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     }];
     [task launch];
     [[standardOutput fileHandleForReading] readInBackgroundAndNotify];
+}
++ (NSString*) dictionaryStringOneLine : (NSDictionary*) dict : (BOOL) flattest {
+    return [[[[[[[[[[[dict description] stringByReplacingOccurrencesOfString: @"\n" withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"     " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"     " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"    " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"   " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @";" withString: @","] stringByReplacingOccurrencesOfString: @" = " withString: @": "] stringByReplacingOccurrencesOfString: @", }" withString: @"}"] stringByReplacingOccurrencesOfString: @"{ " withString: @"{"] stringByReplacingOccurrencesOfString: @" =" withString: @":"];
 }
 /* https://stackoverflow.com/questions/15305845/how-can-a-mac-gui-app-relaunch-itself-without-using-sparkle */
 + (void) restartApp {

@@ -14,10 +14,10 @@
 //this releases the old listeners, and adds new ones when the menu closes
 @implementation MenuDelegate
 - (void)menuWillOpen:(NSMenu *)menu {
-    [helperLib stopListening];
+//    [helperLib stopListening];
 }
 - (void)menuDidClose:(NSMenu *)menu {
-    AppDelegate* del = (AppDelegate *) [[NSApplication sharedApplication] delegate];
-    [del->app startListening];
+//    AppDelegate* del = (AppDelegate *) [[NSApplication sharedApplication] delegate];
+//    [del->app startListening];
 }
 @end

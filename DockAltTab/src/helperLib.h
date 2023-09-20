@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict;
 /* events*/
 + (CFMachPortRef) listenMask: (CGEventMask) emask : (CGEventTapCallBack) handler;
++ (CFMachPortRef) listenOnlyMask : (CGEventMask) emask : (CGEventTapCallBack) handler;
++ (CFMachPortRef) _listenMask : (CGEventMask) emask : (CGEventTapCallBack) handler : (BOOL) listenDefault;
 + (void) on: (NSString*) eventKey : (BOOL (^)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon)) callback;
 + (void) stopListening;
 + (NSString*) eventKeyWithEventType: (CGEventType) type;
@@ -28,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSScreen*) screenAtPt: (NSPoint) pt;
 + (NSScreen*) primaryScreen;
 /* misc. */
++ (NSArray*) $: (NSView*) container : (NSString*) identifier;
++ (NSView*) $0: (NSView*) container : (NSString*) identifier;
 + (BOOL) dockAutohide;
 + (NSString*) dockPos;
 + (CGRect) dockRect;
@@ -38,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDictionary*) modifierKeys;
 + (NSString*) applescript: (NSString*) scriptTxt;
 + (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb;
++ (NSString*) dictionaryStringOneLine : (NSDictionary*) dict : (BOOL) flattest;
 + (void) restartApp;
 @end
 NS_ASSUME_NONNULL_END

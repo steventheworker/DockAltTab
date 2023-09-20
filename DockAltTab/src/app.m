@@ -54,17 +54,22 @@
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
-        CGPoint cursorPos = CGEventGetLocation(event);
-        AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
+        AXUIElementRef el = [helperLib elementAtPoint: self->cursorPos];
         NSMutableDictionary* elDict = [DockAltTab elDict: el];
-        if (![DockAltTab mousedown: proxy : type : event : refcon : el : elDict : cursorPos]) return NO;
+        if (![DockAltTab mousedown: proxy : type : event : refcon : el : elDict]) return NO;
         return YES;
     }];
     [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
-        CGPoint cursorPos = CGEventGetLocation(event);
-        AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
+        AXUIElementRef el = [helperLib elementAtPoint: self->cursorPos];
         NSMutableDictionary* elDict = [DockAltTab elDict: el];
-        if (![DockAltTab mouseup: proxy : type : event : refcon : el : elDict : cursorPos]) return NO;
+        if (![DockAltTab mouseup: proxy : type : event : refcon : el : elDict]) return NO;
+        return YES;
+    }];
+    [helperLib on: @"mousemove" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
+        self->cursorPos = CGEventGetLocation(event);
+        AXUIElementRef el = [helperLib elementAtPoint: self->cursorPos];
+        NSMutableDictionary* elDict = [DockAltTab elDict: el];
+        if (![DockAltTab mousemove: proxy : type : event : refcon : el : elDict : self->cursorPos]) return NO;
         return YES;
     }];
 }

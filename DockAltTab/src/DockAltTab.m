@@ -9,14 +9,17 @@
 #import "globals.h"
 #import "helperLib.h"
 
-int DATMode = 3; // 1 = macos, 2 = ubuntu, 3 = windows
+const float PREVIEW_INTERVAL_TICK_DELAY =  0.333; // 0.16666665; // 0.33333 / 2   seconds
 NSString* DATShowStringFormat = @"showApp appBID \"%@\" x %d y %d dockPos \"%@\""; // [NSString stringWithFormat: DATShowStringFormatappBID, x, y, dockPos];
 pid_t dockPID;
 NSString* dockPos = @"bottom";
 BOOL dockAutohide = NO;
 CGRect dockRect;
 
+int DATMode; // 1 = macos, 2 = ubuntu, 3 = windows (default value set in prefsWindowController)
 NSMutableDictionary* mousedownDict;
+NSTimer* previewIntervalTimer;
+CGPoint cursorPos;
 
 @implementation DockAltTab
 + (void) init {
@@ -27,8 +30,15 @@ NSMutableDictionary* mousedownDict;
     mousedownDict = [NSMutableDictionary dictionary];
 }
 + (void) setMode: (int) mode {
-    mousedownDict[@"DATMode"] = @(DATMode);
     DATMode = mode;
+    [self stopPreviewInterval];
+    switch(mode) {
+        case 1:break;
+        case 2:break;
+        case 3:
+            [self startPreviewInterval];
+            break;
+    }
 }
 + (BOOL) loadDockAutohide {dockAutohide = [helperLib dockAutohide];return dockAutohide;}
 + (NSString*) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}
@@ -88,27 +98,38 @@ NSMutableDictionary* mousedownDict;
     }
     return NO;
 }
++ (void) startPreviewInterval {previewIntervalTimer = [NSTimer scheduledTimerWithTimeInterval: PREVIEW_INTERVAL_TICK_DELAY target: self selector: NSSelectorFromString(@"timerTick:") userInfo: nil repeats: YES];}
++ (void) stopPreviewInterval {[previewIntervalTimer invalidate];}
++ (void)timerTick: (NSTimer*) arg {
+    AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
+    NSMutableDictionary* elDict = [self elDict: el];
+    NSLog(@"%@", [helperLib dictionaryStringOneLine: elDict : YES]);
+}
 
 /* events */
-+ (BOOL) mousedownWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
-    NSLog(@"win dowwnnnn");
++ (BOOL) mousemoveWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
+    if ([helperLib modifierKeys].count) return YES;
     return YES;
 }
-+ (BOOL) mouseupWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
++ (BOOL) mousedownWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
+    if ([helperLib modifierKeys].count) return YES;
+    
+    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
+        return NO;
+    }
     return YES;
 }
-+ (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
-    return DATMode == 2 ? [self mousedownUbuntu: proxy : type : event : refcon : el : elDict : cursorPos] :
-                        [self mousedownWindows: proxy : type : event : refcon : el : elDict : cursorPos];
++ (BOOL) mouseupWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
+    if ([helperLib modifierKeys].count) return YES;
+    
+    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
+        return NO;
+    }
+    return YES;
 }
-+ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
-    int mode = DATMode;
-    if ([mousedownDict[@"DATMode"] intValue]) mode = [mousedownDict[@"DATMode"] intValue];
-    return mode == 2 ? [self mouseupUbuntu: proxy : type : event : refcon : el : elDict : cursorPos] :
-                        [self mouseupWindows: proxy : type : event : refcon : el : elDict : cursorPos];
-}
-+ (BOOL) mousedownUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
-    NSLog(@"ubuntu dowwnnnn");
++ (BOOL) mousedownUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
+    NSLog(@"ubuntudown");
+//    return YES;
     if ([helperLib modifierKeys].count) return YES;
      
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
@@ -137,7 +158,10 @@ NSMutableDictionary* mousedownDict;
     }
     return YES;
 }
-+ (BOOL) mouseupUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) cursorPos {
++ (BOOL) mouseupUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
+    NSLog(@"ubuntuup");
+//    return YES;
+
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
     
@@ -173,5 +197,20 @@ NSMutableDictionary* mousedownDict;
         return NO;
     }
     return YES;
+}
++ (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) pos {
+    cursorPos = pos;
+    NSLog(@"%f %f - mode: %@", cursorPos.x, cursorPos.y, (@{@"1": @"MacOS", @"2": @"Ubuntu", @"3": @"Windows"})[[NSString stringWithFormat: @"%d", DATMode]]);
+    return DATMode == 2 ? [self mousemoveUbuntu: proxy : type : event : refcon : el : elDict] :
+                        [self mousemoveWindows: proxy : type : event : refcon : el : elDict];
+}
++ (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {return YES;}
++ (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
+    return DATMode == 2 ? [self mousedownUbuntu: proxy : type : event : refcon : el : elDict] :
+                        [self mousedownWindows: proxy : type : event : refcon : el : elDict];
+}
++ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
+    return DATMode == 2 ? [self mouseupUbuntu: proxy : type : event : refcon : el : elDict] :
+                        [self mouseupWindows: proxy : type : event : refcon : el : elDict];
 }
 @end
