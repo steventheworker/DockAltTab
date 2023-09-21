@@ -38,9 +38,6 @@
 
 - (void) addMenuIcon: (NSMenu*) menu {
     iconMenu = menu;
-    iconMenuDelegate = [[MenuDelegate alloc] init];
-    [iconMenu setDelegate: (id) iconMenuDelegate];
-    
     statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength: NSSquareStatusItemLength];
     [[statusItem button] setImage: [NSImage imageNamed: @"MenuIcon"]];
     [statusItem setMenu: iconMenu];

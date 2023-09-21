@@ -17,7 +17,6 @@
 		BF10DAFB2AA597D70067458E /* prefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAFA2AA597D70067458E /* prefs.xib */; };
 		BF10DAFD2AA5B5BE0067458E /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = BF10DAFC2AA5B5BE0067458E /* Podfile */; };
 		BF15089429038B8B00DF343F /* globals.m in Sources */ = {isa = PBXBuildFile; fileRef = BF15089329038B8B00DF343F /* globals.m */; };
-		BFB7B20F2AB6CDC900D707FA /* MenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB7B20E2AB6CDC900D707FA /* MenuDelegate.m */; };
 		BFB7B2122AB6E50D00D707FA /* DockAltTab.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB7B2112AB6E50D00D707FA /* DockAltTab.m */; };
 		BFB7B2152AB8580700D707FA /* prefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB7B2142AB8580700D707FA /* prefsWindowController.m */; };
 		BFE19DEC2825BFA600D72F99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DEB2825BFA600D72F99 /* AppDelegate.m */; };
@@ -41,8 +40,6 @@
 		BF10DAFE2AA5B72D0067458E /* DockAltTabDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DockAltTabDebug.entitlements; sourceTree = "<group>"; };
 		BF15088B2903782B00DF343F /* globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		BF15089329038B8B00DF343F /* globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = globals.m; sourceTree = "<group>"; };
-		BFB7B20D2AB6CDC900D707FA /* MenuDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuDelegate.h; sourceTree = "<group>"; };
-		BFB7B20E2AB6CDC900D707FA /* MenuDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenuDelegate.m; sourceTree = "<group>"; };
 		BFB7B2102AB6E50D00D707FA /* DockAltTab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DockAltTab.h; sourceTree = "<group>"; };
 		BFB7B2112AB6E50D00D707FA /* DockAltTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DockAltTab.m; sourceTree = "<group>"; };
 		BFB7B2132AB8580700D707FA /* prefsWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prefsWindowController.h; sourceTree = "<group>"; };
@@ -87,8 +84,6 @@
 				BF15089329038B8B00DF343F /* globals.m */,
 				BF0E91F92829191D00D21AD5 /* helperLib.h */,
 				BF0E91FA2829191D00D21AD5 /* helperLib.m */,
-				BFB7B20D2AB6CDC900D707FA /* MenuDelegate.h */,
-				BFB7B20E2AB6CDC900D707FA /* MenuDelegate.m */,
 				BFB7B2132AB8580700D707FA /* prefsWindowController.h */,
 				BFB7B2142AB8580700D707FA /* prefsWindowController.m */,
 			);
@@ -260,7 +255,6 @@
 			files = (
 				BFB7B2122AB6E50D00D707FA /* DockAltTab.m in Sources */,
 				BFE19DF32825BFA800D72F99 /* main.m in Sources */,
-				BFB7B20F2AB6CDC900D707FA /* MenuDelegate.m in Sources */,
 				BF15089429038B8B00DF343F /* globals.m in Sources */,
 				BF0E920128291F0700D21AD5 /* app.m in Sources */,
 				BF0E91FB2829191D00D21AD5 /* helperLib.m in Sources */,

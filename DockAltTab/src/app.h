@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
-#import "MenuDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface App : NSObject {
@@ -17,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
     NSWindowController* prefsController;
     AXUIElementRef systemWideEl;
     NSMenu* iconMenu;
-    MenuDelegate* iconMenuDelegate;
     CGPoint cursorPos;
 }
 + (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideAccessibilityElement;
