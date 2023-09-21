@@ -207,4 +207,7 @@ CGPoint cursorPos;
     return DATMode == 2 ? [self mouseupUbuntu: proxy : type : event : refcon : el : elDict] :
                         [self mouseupWindows: proxy : type : event : refcon : el : elDict];
 }
++ (void) spaceChanged: (NSNotification*) note {
+    lastSpeedPatrolled = @"";
+}
 @end
