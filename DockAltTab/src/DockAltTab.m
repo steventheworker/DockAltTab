@@ -101,9 +101,9 @@ CGPoint cursorPos;
 + (void) startPreviewInterval {previewIntervalTimer = [NSTimer scheduledTimerWithTimeInterval: PREVIEW_INTERVAL_TICK_DELAY target: self selector: NSSelectorFromString(@"timerTick:") userInfo: nil repeats: YES];}
 + (void) stopPreviewInterval {[previewIntervalTimer invalidate];}
 + (void)timerTick: (NSTimer*) arg {
-    AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
-    NSMutableDictionary* elDict = [self elDict: el];
-    NSLog(@"%@", [helperLib dictionaryStringOneLine: elDict : YES]);
+//    AXUIElementRef el = [helperLib elementAtPoint: cursorPos];
+//    NSMutableDictionary* elDict = [self elDict: el];
+//    NSLog(@"%@", [helperLib dictionaryStringOneLine: elDict : YES]);
 }
 
 /* events */
@@ -128,8 +128,6 @@ CGPoint cursorPos;
     return YES;
 }
 + (BOOL) mousedownUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
-    NSLog(@"ubuntudown");
-//    return YES;
     if ([helperLib modifierKeys].count) return YES;
      
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
@@ -159,9 +157,6 @@ CGPoint cursorPos;
     return YES;
 }
 + (BOOL) mouseupUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
-    NSLog(@"ubuntuup");
-//    return YES;
-
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
     
@@ -200,7 +195,6 @@ CGPoint cursorPos;
 }
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) pos {
     cursorPos = pos;
-    NSLog(@"%f %f - mode: %@", cursorPos.x, cursorPos.y, (@{@"1": @"MacOS", @"2": @"Ubuntu", @"3": @"Windows"})[[NSString stringWithFormat: @"%d", DATMode]]);
     return DATMode == 2 ? [self mousemoveUbuntu: proxy : type : event : refcon : el : elDict] :
                         [self mousemoveWindows: proxy : type : event : refcon : el : elDict];
 }
