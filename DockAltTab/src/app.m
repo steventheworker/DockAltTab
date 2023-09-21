@@ -44,11 +44,17 @@
     [statusItem setVisible: YES]; //without this, could stay hidden away
 }
 
-
 /* event listening */
 - (void) startListening {
+    /* observers */
     // on app became active (open prefs window)
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
+    //on space change
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName: NSWorkspaceActiveSpaceDidChangeNotification object: [NSWorkspace sharedWorkspace] queue: nil usingBlock:^(NSNotification * _Nonnull note) {
+        [DockAltTab spaceChanged: note];
+    }];
+    
+    /* cgeventtap's */
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         AXUIElementRef el = [helperLib elementAtPoint: self->cursorPos];
