@@ -386,12 +386,12 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     CFMachPortRef myEventTap;
     CFRunLoopSourceRef eventTapRLSrc;
     myEventTap = CGEventTapCreate(
-      kCGHIDEventTap, // Catch all events (Before system processes it)
-//        kCGSessionEventTap, // Catch all events for current user session (After system processes it)
+//      kCGHIDEventTap, // Catch all events (Before system processes it)
+        kCGSessionEventTap, // Catch all events for current user session (After system processes it)
 //       kCGAnnotatedSessionEventTap, //Specifies that an event tap is placed at the point where session events have been annotated to flow to an application.
                                    
-      kCGHeadInsertEventTap, // Append to beginning of EventTap list
-//        kCGTailAppendEventTap, // Append to end of EventTap list
+//      kCGHeadInsertEventTap, // Append to beginning of EventTap list
+        kCGTailAppendEventTap, // Append to end of EventTap list
                                    
         listenDefault ? kCGEventTapOptionDefault : kCGEventTapOptionListenOnly,
         emask,
@@ -412,7 +412,9 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 + (CGEventMask) maskWithEventKey: (NSString*) eventKey {
     if ([eventKey isEqual: @"mousedown"]) return CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventRightMouseDown) | CGEventMaskBit(kCGEventOtherMouseDown);
     if ([eventKey isEqual: @"mouseup"]) return CGEventMaskBit(kCGEventLeftMouseUp) | CGEventMaskBit(kCGEventRightMouseUp) | CGEventMaskBit(kCGEventOtherMouseUp);
-    if ([eventKey isEqual: @"mousemove"]) return CGEventMaskBit(kCGEventMouseMoved) | CGEventMaskBit(kCGEventLeftMouseDragged) | CGEventMaskBit(kCGEventRightMouseDragged) | CGEventMaskBit(kCGEventOtherMouseDragged);
+    if ([eventKey isEqual: @"mousemove"]) return CGEventMaskBit(kCGEventMouseMoved) /*| CGEventMaskBit(kCGEventLeftMouseDragged)*/ | CGEventMaskBit(kCGEventRightMouseDragged) | CGEventMaskBit(kCGEventOtherMouseDragged);
+    //kCGEventLeftMouseDragged is not listened to because window snapping with rectangle causes a crash
+    //if you want to listen/modify leftDragged, you should use a (background(command line tool) app within a regular app for preferences)
     return kCGEventMaskForAllEvents;
 }
 + (NSString*) eventKeyWithEventType: (CGEventType) type {
