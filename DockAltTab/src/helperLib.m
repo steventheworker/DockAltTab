@@ -542,6 +542,18 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     [NSApp activateIgnoringOtherApps: YES];
     [window makeKeyAndOrderFront: nil];
 }
++ (void) activateApp: (NSURL*) tarAppURL : (void(^)(NSRunningApplication* app, NSError* error)) cb { /* activate without unminimizing windows or switching spaces! "default" behavior (as opposed to using activateIgnoringOtherApps) */
+    NSWorkspaceOpenConfiguration* openConfig = [NSWorkspaceOpenConfiguration configuration];
+    [[NSWorkspace sharedWorkspace] openApplicationAtURL: tarAppURL configuration: openConfig completionHandler: ^(NSRunningApplication* app, NSError* error) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            cb(app, error); // DONT RUN ANYTHING TIME CONSUMING, even with async dispatch it messes with unminimize behavior
+        });
+    }];
+    /* other ways to do the same thing */
+//    NSString* tarAppBID = [[NSBundle bundleWithURL: tarAppURL] bundleIdentifier];
+//    /* deprecated */[[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier: tarAppBID options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifier:nil];
+//    /* a little slow */ [helperLib applescriptAsync: [NSString stringWithFormat: @"tell application id \"%@\" to activate", tarAppBID] : ^(NSString* cb) {}]; //activating too quickly after unhiding is what switches spaces!
+}
 + (NSDictionary*) modifierKeys {
     NSUInteger _flags = [NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask;
     NSMutableDictionary<NSString *, NSNumber *> *modifierStates = [NSMutableDictionary dictionary];

@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild;
 + (NSRunningApplication*) appWithBID: (NSString*) tarBID;
 + (void) activateWindow: (NSWindow*) window;
++ (void) activateApp: (NSURL*) tarAppURL : (void(^)(NSRunningApplication* app, NSError* error)) cb;
 + (NSDictionary*) modifierKeys;
 + (NSString*) applescript: (NSString*) scriptTxt;
 + (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb;
