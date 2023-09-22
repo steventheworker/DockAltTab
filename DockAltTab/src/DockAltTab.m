@@ -10,6 +10,7 @@
 #import "helperLib.h"
 
 const float PREVIEW_INTERVAL_TICK_DELAY =  0.333; // 0.16666665; // 0.33333 / 2   seconds
+const int ACTIVATION_MILLISECONDS = 30; //how long to wait to activate after [app unhide]
 NSString* DATShowStringFormat = @"showApp appBID \"%@\" x %d y %d dockPos \"%@\""; // [NSString stringWithFormat: DATShowStringFormatappBID, x, y, dockPos];
 pid_t dockPID;
 NSString* dockPos = @"bottom";
@@ -20,6 +21,7 @@ int DATMode; // 1 = macos, 2 = ubuntu, 3 = windows (default value set in prefsWi
 NSMutableDictionary* mousedownDict;
 NSTimer* previewIntervalTimer;
 CGPoint cursorPos;
+int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 
 @implementation DockAltTab
 + (void) init {
@@ -56,9 +58,17 @@ CGPoint cursorPos;
     }]];
 }
 + (void) activateApp: (NSRunningApplication*) app {
+//    [helperLib activateApp: app.bundleURL : ^(NSRunningApplication* app, NSError* error) {
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            //        applescript is slow, DO NOT RUN HERE, figure out how to perform the axraise in objective-c
+//            if ([[app localizedName] isEqual:@"Firefox"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
+//            if ([[app localizedName] isEqual:@"Firefox Developer Edition"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox Developer Edition\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
+//        });
+//    }];
     [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
-    if ([[app localizedName] isEqual:@"Firefox"]) [helperLib applescript: @"tell application \"System Events\" to tell process \"Firefox\" to perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))"];
-    if ([[app localizedName] isEqual:@"Firefox Developer Edition"]) [helperLib applescript: @"tell application \"System Events\" to tell process \"Firefox Developer Edition\" to perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))"];
+    //        applescript is slow, DO NOT RUN HERE, figure out how to perform the axraise in objective-c
+//            if ([[app localizedName] isEqual:@"Firefox"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
+//            if ([[app localizedName] isEqual:@"Firefox Developer Edition"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox Developer Edition\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
 }
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt {
     int x = 0;
@@ -183,7 +193,11 @@ CGPoint cursorPos;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
                 if (tarApp.hidden) {
                     [tarApp unhide];
-                    setTimeout(^{[self activateApp: tarApp];}, 30); //activating too quickly after unhiding is what switches spaces!
+                    setTimeout(^{
+                        [self activateApp: tarApp];
+                        activationT = ACTIVATION_MILLISECONDS;
+                    }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
+                    NSLog(@"%d", activationT);
                 } else [tarApp hide];
                 return NO;
             }
@@ -208,6 +222,6 @@ CGPoint cursorPos;
                         [self mouseupWindows: proxy : type : event : refcon : el : elDict];
 }
 + (void) spaceChanged: (NSNotification*) note {
-    lastSpeedPatrolled = @"";
+    activationT = 100;
 }
 @end
