@@ -17,11 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
     AXUIElementRef systemWideEl;
     NSMenu* iconMenu;
     CGPoint cursorPos;
+    BOOL mousemoveLess;
 }
 + (instancetype) init: (NSWindow*) window : (NSMenu*) menu : (AXUIElementRef) systemWideAccessibilityElement;
 - (void) addMenuIcon: (NSMenu*) menu;
 - (void) startListening;
 - (void) openPrefs;
 - (void) renderAndShowPermissionWindow;
+- (void) mousemoveLess: (BOOL) yesno;
 @end
 NS_ASSUME_NONNULL_END

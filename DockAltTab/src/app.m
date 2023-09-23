@@ -45,6 +45,7 @@
 }
 
 /* event listening */
+- (void) mousemoveLess: (BOOL) yesno {mousemoveLess = yesno;}
 - (void) startListening {
     /* observers */
     // on app became active (open prefs window)
@@ -57,18 +58,23 @@
     /* cgeventtap's */
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
+        if (self->mousemoveLess) self->cursorPos = CGEventGetLocation(event);
         AXUIElementRef el = [helperLib elementAtPoint: self->cursorPos];
         NSMutableDictionary* elDict = [DockAltTab elDict: el];
+        if (self->mousemoveLess) [DockAltTab mousemove: proxy : type : event : refcon : el : elDict : self->cursorPos]; //update DockAltTab.m cursorPos
         if (![DockAltTab mousedown: proxy : type : event : refcon : el : elDict]) return NO;
         return YES;
     }];
     [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
+        if (self->mousemoveLess) self->cursorPos = CGEventGetLocation(event);
         AXUIElementRef el = [helperLib elementAtPoint: self->cursorPos];
         NSMutableDictionary* elDict = [DockAltTab elDict: el];
+        if (self->mousemoveLess) [DockAltTab mousemove: proxy : type : event : refcon : el : elDict : self->cursorPos]; //update DockAltTab.m cursorPos
         if (![DockAltTab mouseup: proxy : type : event : refcon : el : elDict]) return NO;
         return YES;
     }];
     [helperLib on: @"mousemove" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
+        if (self->mousemoveLess) return YES; //Ubuntu mode doesn't use mousemove, and getting coordinates causes issues with PowerPoint (notes section)
         self->cursorPos = CGEventGetLocation(event);
         AXUIElementRef el = [helperLib elementAtPoint: self->cursorPos];
         NSMutableDictionary* elDict = [DockAltTab elDict: el];

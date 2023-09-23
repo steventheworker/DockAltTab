@@ -30,5 +30,8 @@
     NSArray* children = [[self radioContainer] accessibilityChildren];
     for (NSButtonCell* cell in children) [cell setState: [cell.title isEqual: [sender title]] ? NSControlStateValueOn : NSControlStateValueOff];
     [DockAltTab setMode: [modeDict[[sender title]] intValue]];
+    setTimeout(^{ //ubuntu mode doesn't need mousemove (workaround for powerpoint notes bug where using ANY method to read the mouse coordinates causes the notes section to lose focus)
+        [((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: [[sender title] isEqual: @"Ubuntu"] ? YES : NO];
+    }, 0); //wait to do it, since awakeFromNib calls .modeBtn immediately (AppDelegate->app is nil)
 }
 @end
