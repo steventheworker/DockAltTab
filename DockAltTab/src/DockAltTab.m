@@ -161,6 +161,11 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
         if (!previewWindowsCount) {
             if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
             return YES; //pass click through
+        } else {
+            // check if the only window is a minimized window in the current space
+            if (previewWindowsCount == 1 && 1 == [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countMinimizedWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue]) {
+                return YES; //pass click / unminimize
+            }
         }
         return NO;
     }
@@ -199,6 +204,11 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
                     }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
                 } else [tarApp hide];
                 return NO;
+            } else {
+                // check if the only window is a minimized window in the current space
+                if (previewWindowsCount == 1 && 1 == [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countMinimizedWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue]) {
+                    return YES; //pass click / unminimize
+                }
             }
             if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
         }
