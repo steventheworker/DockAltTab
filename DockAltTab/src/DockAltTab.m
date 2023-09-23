@@ -154,8 +154,8 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
             @"tarAppActive": @(tarApp.active),
             @"el": (__bridge id _Nonnull)(el)
         }];
-        if (type == kCGEventOtherMouseDown && [self isPreviewWindowShowing]) {
-            mousedownDict[@"previewWasOpenOnMiddleBtnFlag"] = @1;
+        if (/* type == kCGEventOtherMouseDown && */ [self isPreviewWindowShowing]) {
+            mousedownDict[@"previewWasOpenOnDownFlag"] = @1;
             [self hidePreviewWindow];
         }
         if (!previewWindowsCount) {
@@ -177,7 +177,7 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
         NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
         if ([mousedownDict[@"tarAppBID"] isNotEqualTo: tarApp.bundleIdentifier]) return NO; //don't do anything, mouse changed icons
         if ([mousedownDict[@"tarAppActive"] intValue] != (int) tarApp.active) return NO; //don't do anything, active app changed between mousedown/up
-        if ([mousedownDict[@"previewWasOpenOnMiddleBtnFlag"] intValue] && type == kCGEventOtherMouseUp) return NO;
+        if ([mousedownDict[@"previewWasOpenOnDownFlag"] intValue] /* && type == kCGEventOtherMouseUp */) return NO;
         
         int previewWindowsCount = [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
         BOOL enoughPreviewWindows = type == kCGEventOtherMouseUp ? previewWindowsCount >= 1 : previewWindowsCount >= 2;
@@ -197,7 +197,6 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
                         [self activateApp: tarApp];
                         activationT = ACTIVATION_MILLISECONDS;
                     }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
-                    NSLog(@"%d", activationT);
                 } else [tarApp hide];
                 return NO;
             }
