@@ -413,6 +413,9 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     if ([eventKey isEqual: @"mousedown"]) return CGEventMaskBit(kCGEventLeftMouseDown) | CGEventMaskBit(kCGEventRightMouseDown) | CGEventMaskBit(kCGEventOtherMouseDown);
     if ([eventKey isEqual: @"mouseup"]) return CGEventMaskBit(kCGEventLeftMouseUp) | CGEventMaskBit(kCGEventRightMouseUp) | CGEventMaskBit(kCGEventOtherMouseUp);
     if ([eventKey isEqual: @"mousemove"]) return CGEventMaskBit(kCGEventMouseMoved) /*| CGEventMaskBit(kCGEventLeftMouseDragged)*/ | CGEventMaskBit(kCGEventRightMouseDragged) | CGEventMaskBit(kCGEventOtherMouseDragged);
+    if ([eventKey isEqual: @"keydown"]) return CGEventMaskBit(kCGEventKeyDown);
+    if ([eventKey isEqual: @"keyup"]) return CGEventMaskBit(kCGEventKeyUp);
+    if ([eventKey isEqual: @"mods"]) return CGEventMaskBit(kCGEventFlagsChanged);
     //kCGEventLeftMouseDragged is not listened to because window snapping with rectangle causes a crash
     //if you want to listen/modify leftDragged, you should use a (background(command line tool) app within a regular app for preferences)
     return kCGEventMaskForAllEvents;
@@ -432,10 +435,13 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         case kCGEventRightMouseDragged:
         case kCGEventOtherMouseDragged:
             return @"mousemove";break;
-        case kCGEventNull:
         case kCGEventKeyDown:
+            return @"keydown";break;
         case kCGEventKeyUp:
+            return @"keyup";break;
+        case kCGEventNull:
         case kCGEventFlagsChanged:
+            return @"mods";break;
         case kCGEventScrollWheel:
         case kCGEventTabletPointer:
         case kCGEventTabletProximity:
