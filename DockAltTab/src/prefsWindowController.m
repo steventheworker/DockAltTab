@@ -19,7 +19,7 @@ NSDictionary* modeDict = @{@"MacOS": @1, @"Ubuntu": @2, @"Windows": @3};
 - (void) awakeFromNib {
     [helperLib activateWindow: [self window]]; //activate on launch
 //    //render
-    [self modeBtn: [[self radioContainer] accessibilityChildren][1 /* index of child titled Windows */]];
+    [self modeBtn: [[self radioContainer] accessibilityChildren][2 /* index of child titled MacOS */]];
     for (NSButtonCell* cell in [[self radioContainer] accessibilityChildren]) [cell setFocusRingType: NSFocusRingTypeNone]; // Remove NSFocusRing (focus border/outline)
 }
 - (NSView*) radioContainer {
