@@ -11,7 +11,7 @@
 
 const float PREVIEW_INTERVAL_TICK_DELAY =  0.333; // 0.16666665; // 0.33333 / 2   seconds
 const int ACTIVATION_MILLISECONDS = 30; //how long to wait to activate after [app unhide]
-NSString* DATShowStringFormat = @"showApp appBID \"%@\" x %d y %d dockPos \"%@\""; // [NSString stringWithFormat: DATShowStringFormatappBID, x, y, dockPos];
+NSString* DATShowStringFormat = @"showApp appBID \"%@\" x %f y %f dockPos \"%@\""; // [NSString stringWithFormat: DATShowStringFormatappBID, x, y, dockPos];
 pid_t dockPID;
 pid_t AltTabPID;
 NSString* dockPos = @"bottom";
@@ -74,14 +74,14 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 //            if ([[app localizedName] isEqual:@"Firefox"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
 //            if ([[app localizedName] isEqual:@"Firefox Developer Edition"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox Developer Edition\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
 }
-+ (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt {
++ (NSPoint) previewLocation: (CGPoint) cursorPos : (AXUIElementRef) iconEl {
     int x = 0;
     int y = 0;
     NSScreen* primaryScreen = [helperLib primaryScreen];
-    NSScreen* extScreen = [helperLib screenAtPt: pt];
+    NSScreen* extScreen = [helperLib screenAtPt: cursorPos];
     BOOL isOnExt = primaryScreen != extScreen;
     
-    NSDictionary* elDict = [helperLib elementDict: (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]) : @{
+    NSDictionary* elDict = [helperLib elementDict: iconEl : @{
         @"pos": (id)kAXPositionAttribute,
         @"size": (id)kAXSizeAttribute
     }];
@@ -90,7 +90,7 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
         y = [elDict[@"size"][@"width"] floatValue] - 1;
         if (isOnExt) y = y + extScreen.frame.origin.y;
     } else {
-        int mouseScreenHeight = (pt.x <= primaryScreen.frame.size.width) ? primaryScreen.frame.size.height : extScreen.frame.size.height;
+        int mouseScreenHeight = (cursorPos.x <= primaryScreen.frame.size.width) ? primaryScreen.frame.size.height : extScreen.frame.size.height;
         y = mouseScreenHeight - [elDict[@"pos"][@"y"] floatValue]; // left & right have the same y
         if ([dockPos isEqual: @"left"]) {
             x = [elDict[@"size"][@"width"] floatValue] - 1;
@@ -100,7 +100,12 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
             x += 1;
         }
     }
-    return [NSString stringWithFormat: DATShowStringFormat, appBID, x, y, dockPos];
+    return NSMakePoint(x, y);
+}
++ (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt {
+    AXUIElementRef el = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
+    NSPoint loc = [self previewLocation: pt : el];
+    return [NSString stringWithFormat: DATShowStringFormat, appBID, loc.x, loc.y, dockPos];
 }
 + (void) hidePreviewWindow {[helperLib applescript: @"tell application \"AltTab\" to hide"];}
 + (BOOL) isPreviewWindowShowing { /* is preview window (opened by DockAltTab) open? */

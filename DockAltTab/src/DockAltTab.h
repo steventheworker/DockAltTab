@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGRect) loadDockRect;
 + (NSMutableDictionary*) elDict: (AXUIElementRef) el;
 + (void) activateApp: (NSRunningApplication*) app;
++ (NSPoint) previewLocation: (CGPoint) cursorPos : (AXUIElementRef) iconEl;
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt;
 + (void) hidePreviewWindow;
 + (BOOL) isPreviewWindowShowing;
