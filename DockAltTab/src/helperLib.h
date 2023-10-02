@@ -28,10 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) proc: (CGDirectDisplayID) display : (CGDisplayChangeSummaryFlags) flags : (void*) userInfo;
 + (void) processScreens;
 + (NSScreen*) screenAtPt: (NSPoint) pt;
++ (CGPoint) CGPointFromNSPoint: (NSPoint) pt;
 + (NSScreen*) primaryScreen;
 /* misc. */
 + (NSArray*) $: (NSView*) container : (NSString*) identifier;
 + (NSView*) $0: (NSView*) container : (NSString*) identifier;
++ (CGRect) rectWithDict: (NSDictionary*) dict;
 + (BOOL) dockAutohide;
 + (NSString*) dockPos;
 + (CGRect) dockRect;

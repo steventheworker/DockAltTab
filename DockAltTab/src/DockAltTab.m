@@ -23,6 +23,7 @@ NSMutableDictionary* mousedownDict;
 NSMutableDictionary* mousemoveDict;
 NSTimer* previewIntervalTimer;
 CGPoint cursorPos;
+CGRect lastPreviewWinBounds;
 int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 
 @implementation DockAltTab
@@ -103,8 +104,8 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
     return NSMakePoint(x, y);
 }
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt {
-    AXUIElementRef el = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
-    NSPoint loc = [self previewLocation: pt : el];
+    AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
+    NSPoint loc = [self previewLocation: pt : iconEl];
     return [NSString stringWithFormat: DATShowStringFormat, appBID, loc.x, loc.y, dockPos];
 }
 + (void) hidePreviewWindow {[helperLib applescript: @"tell application \"AltTab\" to hide"];}
@@ -113,11 +114,18 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
     long int winCount = CFArrayGetCount(wins);
     for (int i = 0; i < winCount; i++) {
         NSDictionary* win = CFArrayGetValueAtIndex(wins, i);
-        if ([win[(id)kCGWindowOwnerName] isEqual: @"AltTab"] && [win[(id)kCGWindowLayer] intValue] != 0) {
-            //AltTab is open, but was it opened by DockAltTab?
-            
-            //compare preview window position to where DockAltTab would open previews (based on dockPos)
-            
+        if ([win[(id)kCGWindowOwnerName] isEqual: @"AltTab"] && [win[(id)kCGWindowLayer] intValue] != 0) {//AltTab is open, but was it opened by DockAltTab? --//stop closing regular AltTab preview window on mousemove (since this is called every movement)
+            AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
+            CGRect winBounds = [helperLib rectWithDict: win[(id)kCGWindowBounds]];
+            if (iconEl) lastPreviewWinBounds = winBounds; // cache this DAT preview window rect
+            else {
+                int equalCount = 0;
+                if (winBounds.size.width == lastPreviewWinBounds.size.width) equalCount++;
+                if (winBounds.size.height == lastPreviewWinBounds.size.height) equalCount++;
+                if (winBounds.origin.x == lastPreviewWinBounds.origin.x) equalCount++;
+                if (winBounds.origin.y == lastPreviewWinBounds.origin.y) equalCount++;
+                if (equalCount >= 1) return YES; else return NO; // if none of these are the same, it's likely a regular AltTab window (todo: handle edgecase where AltTab has enough previews to trigger false positive)
+            }
             return YES;
         }
     }

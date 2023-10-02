@@ -461,6 +461,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSLog(@"processing attach/detach of display");
 }
 + (NSScreen*) primaryScreen {return [self screenAtPt: NSZeroPoint];}
++ (CGPoint) CGPointFromNSPoint: (NSPoint) pt {
+    NSScreen* screen = [self screenAtPt: pt];
+    float menuScreenHeight = NSMaxY([screen frame]);
+    return CGPointMake(pt.x,  menuScreenHeight - pt.y);
+}
 + (NSScreen*) screenAtPt: (NSPoint) pt {
     NSArray* screens = [NSScreen screens];
     for (NSScreen* screen in screens) if (NSPointInRect(pt, [screen frame])) return screen;
@@ -483,6 +488,23 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         [answer addObjectsFromArray: [self $: childV : tar]]; //recursive check each child's children for matches
     }
     return answer;
+}
++ (CGRect) rectWithDict: (NSDictionary*) dict {
+    //accepts x, y, X, Y, top, left
+    CGFloat x = [dict[@"X"] floatValue];
+    CGFloat y = [dict[@"Y"] floatValue];
+    if (isnan(x)) x = [dict[@"x"] floatValue];
+    if (isnan(y)) y = [dict[@"y"] floatValue];
+    if (isnan(x)) x = [dict[@"left"] floatValue];
+    if (isnan(y)) y = [dict[@"top"] floatValue];
+    //accepts w, h, Width, Height, width, height
+    CGFloat w = [dict[@"Width"] floatValue];
+    CGFloat h = [dict[@"Height"] floatValue];
+    if (isnan(w)) w = [dict[@"w"] floatValue];
+    if (isnan(h)) h = [dict[@"h"] floatValue];
+    if (isnan(w)) w = [dict[@"width"] floatValue];
+    if (isnan(h)) h = [dict[@"height"] floatValue];
+    return CGRectMake(x, y, w, h);
 }
 + (BOOL) dockAutohide {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -522,7 +544,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         CGPoint testPoint;
         if ([[self dockPos] isEqual: @"bottom"]) testPoint = CGPointMake(focusedScreen.frame.size.width / 2, focusedScreen.frame.size.height - DOCK_BOTTOM_PADDING);
         else {
-            float x = ([[self dockPos] isEqual: @"left"]) ? DOCK_BOTTOM_PADDING : focusedScreen.frame.size.width - DOCK_BOTTOM_PADDING;
+            float x = ([[self dockPos] isEqual: @"left"]) ? DOCK_BOTTOM_PADDING : focusedScreen.frame.size.width - DOCK_BOTTOM_PADDING - 5; //right dock for some reason has 5 more pixels padding...
             testPoint = CGPointMake(x, focusedScreen.frame.size.height / 2);
         }
         dockAppRef = [self dockAppElementFromDockChild: [helperLib elementAtPoint: testPoint]];
