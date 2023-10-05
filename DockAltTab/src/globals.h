@@ -10,6 +10,6 @@
 
 #include <stdio.h>
 #include <Cocoa/Cocoa.h>
-void setTimeout(void(^cb)(void), int delay);
-void clearTimeout(dispatch_block_t blockRef);
+int setTimeout(void(^cb)(void), int delay);
+void clearTimeout(int i);
 #endif /* globals_h */

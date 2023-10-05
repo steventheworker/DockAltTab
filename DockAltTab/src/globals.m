@@ -8,9 +8,22 @@
 #include "globals.h"
 #import <Foundation/Foundation.h>
 
-void setTimeout(void(^cb)(void), int delay) {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * (delay)), dispatch_get_main_queue(), cb);
+int timeoutIndex = 0;
+NSMutableDictionary* timeouts;
+
+int setTimeout(void(^cb)(void), int delay) {
+    if (!timeoutIndex) timeouts = [NSMutableDictionary dictionary];
+    NSString* timeoutIndexStr = [NSString stringWithFormat: @"%d", timeoutIndex];
+    timeouts[timeoutIndexStr] = @1;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * (delay)), dispatch_get_main_queue(), ^{
+        if ([timeouts[timeoutIndexStr] intValue]) {
+            cb();
+            clearTimeout(timeoutIndex);
+        }
+    });
+    return timeoutIndex++;
 }
-void clearTimeout(dispatch_block_t blockRef) {
-    dispatch_block_cancel(blockRef);
+void clearTimeout(int i) {
+    NSString* timeoutIndexStr = [NSString stringWithFormat: @"%d", i];
+    if ([timeouts[timeoutIndexStr] intValue]) [timeouts removeObjectForKey: timeoutIndexStr];
 }
