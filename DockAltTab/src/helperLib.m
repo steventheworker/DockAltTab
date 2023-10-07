@@ -536,6 +536,13 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         key up 63\n\
     end tell"]];
 }
++ (void) killDock { //(Execute shell command) "killall dock"
+    NSString* killCommand = [@"/usr/bin/killall " stringByAppendingString:@"Dock"];
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/bin/bash"];
+    [task setArguments:@[ @"-c", killCommand]];
+    [task launch];
+}
 + (CGRect) dockRect {
     if (!dockAppRef) {
         [self toggleDock];

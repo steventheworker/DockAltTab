@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString*) dockPos;
 + (CGRect) dockRect;
 + (void) toggleDock;
++ (void) killDock;
 + (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild;
 + (NSRunningApplication*) appWithBID: (NSString*) tarBID;
 + (void) activateWindow: (NSWindow*) window;

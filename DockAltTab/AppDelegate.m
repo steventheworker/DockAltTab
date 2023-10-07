@@ -22,7 +22,7 @@ AXUIElementRef systemWideEl = nil;
 - (IBAction)openPrefs:(id)sender {[app openPrefs];}
 - (IBAction)quit:(id)sender {[NSApp terminate:nil];}
 - (IBAction)restartAltTab:(id)sender {}
-- (IBAction)killDock:(id)sender {}
+- (IBAction)killDock:(id)sender {[helperLib killDock];}
 
 /* permissions window actions */
 - (IBAction)restartApp:(id)sender {[helperLib restartApp];}
