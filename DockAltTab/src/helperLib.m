@@ -7,6 +7,7 @@
 
 #import "globals.h"
 #import "helperLib.h"
+#import <UserNotifications/UserNotifications.h>
 
 const int DOCK_BOTTOM_PADDING = 6; //eg: if screen 1080px, dock pos.y is actually <= 1074px (for bottom dock, but same for left/right)
 NSDictionary* listenOnlyEvents = @{@"mousemove": @1}; //events that you probably shouldn't modify:    mousemove causes xcode to crash when selecting lines w/ kcgtapoptionDefault)
@@ -17,11 +18,20 @@ AXUIElementRef dockAppRef;
 /* events */
 NSMutableArray* eventTapRefs; // CFMachPortRef's (for restarting events / stopping)
 NSMutableDictionary* eventMap; /* array of (BOOL) callbacks (NO = preventDefault) */
+void reenableTaps(void) { //macos disables them for a lot of undocumented reasons, but we can immediately reenable because they macos sends tapdisabled event type afterwards
+    for (int i = 0; i < eventTapRefs.count / 2; i++) {
+//        id machPortID = [eventTapRefs objectAtIndex: i*2];
+        NSValue* machPortVal = [eventTapRefs objectAtIndex: i*2 + 1];
+        CFMachPortRef machPort = machPortVal.pointerValue;
+        if (!CGEventTapIsEnabled(machPort)) CGEventTapEnable(machPort, YES);
+    }
+}
 BOOL processEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon) {
     BOOL callbackResult = YES; // yes, send the event (unless a callback returns NO (and nonnull))
     NSArray* callbacks = eventMap[[helperLib eventKeyWithEventType: type]];
     for (BOOL (^callback)(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* refcon)
          in callbacks) if (callback(proxy, type, event, refcon) == NO) callbackResult = NO;
+    if (!callbacks.count) reenableTaps(); //eventKey is probably tapdisabled, since it's unregistered under callbacks
     return callbackResult;
 }
 /*
@@ -439,15 +449,24 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
             return @"keydown";break;
         case kCGEventKeyUp:
             return @"keyup";break;
-        case kCGEventNull:
         case kCGEventFlagsChanged:
             return @"mods";break;
+        case kCGEventNull:
+            return @"null";break;
         case kCGEventScrollWheel:
+            return @"scrollwheel";break;
         case kCGEventTabletPointer:
+            return @"tabletpointer";break;
         case kCGEventTabletProximity:
+            return @"tabletproximity";break;
         case kCGEventTapDisabledByTimeout:
         case kCGEventTapDisabledByUserInput:
-            return @"default";break;
+            return @"tapdisabled";break;
+        case kCGScrollWheelEventInstantMouser:
+            return @"scrollWheelEventInstantMouser";break;
+        case kCGTabletProximityEventTabletID:
+            return @"tabletProximityEventTabletID";break;
+        default:return @"default";break;
     }
 }
 
@@ -543,6 +562,26 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     [task setArguments:@[ @"-c", killCommand]];
     [task launch];
 }
++ (void) requestNotificationPermission:  (void(^)(BOOL granted)) cb {
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        cb(granted);
+    }];
+}
++ (void) sendNotificationWithID: (NSString*) notificationID : (NSString*) title : (NSString*) message { //if use same notificationID, notification replaced/updated
+    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+    content.title = title;
+    content.body = message;
+    /* attach image to bottom right of notification */
+//    NSString* iconPath = [[NSBundle mainBundle] pathForResource: @"MenuIcon.png" ofType:nil];
+//    UNNotificationAttachment* iconAttachment = [UNNotificationAttachment attachmentWithIdentifier: @"notificationIcon" URL: [NSURL fileURLWithPath: iconPath] options: nil error: nil];
+//    content.attachments = @[iconAttachment];
+    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval: 1 repeats: NO];
+    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier: notificationID content: content trigger: trigger];
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    [center addNotificationRequest: request withCompletionHandler: nil];
+}
++ (void) sendNotification: (NSString*) title : (NSString*) message {[self sendNotificationWithID: title : title : message];}
 + (CGRect) dockRect {
     if (!dockAppRef) {
         [self toggleDock];

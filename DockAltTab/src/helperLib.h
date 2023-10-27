@@ -39,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGRect) dockRect;
 + (void) toggleDock;
 + (void) killDock;
++ (void) requestNotificationPermission:  (void(^)(BOOL granted)) cb;
++ (void) sendNotificationWithID: (NSString*) notificationID : (NSString*) title : (NSString*) message;
++ (void) sendNotification: (NSString*) title : (NSString*) message;
 + (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild;
 + (NSRunningApplication*) appWithBID: (NSString*) tarBID;
 + (void) activateWindow: (NSWindow*) window;
