@@ -21,6 +21,7 @@
 		BFB7B2152AB8580700D707FA /* prefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB7B2142AB8580700D707FA /* prefsWindowController.m */; };
 		BFE19DEC2825BFA600D72F99 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DEB2825BFA600D72F99 /* AppDelegate.m */; };
 		BFE19DF32825BFA800D72F99 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE19DF22825BFA800D72F99 /* main.m */; };
+		BFEA09D92AED110B009450BF /* prefs.m in Sources */ = {isa = PBXBuildFile; fileRef = BFEA09D82AED110B009450BF /* prefs.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,8 @@
 		BFE19DF22825BFA800D72F99 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BFE19DF42825BFA800D72F99 /* DockAltTab.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DockAltTab.entitlements; sourceTree = "<group>"; };
 		BFE19DFA2825C63600D72F99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		BFEA09D72AED110B009450BF /* prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefs.h; sourceTree = "<group>"; };
+		BFEA09D82AED110B009450BF /* prefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prefs.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +87,8 @@
 				BF15089329038B8B00DF343F /* globals.m */,
 				BF0E91F92829191D00D21AD5 /* helperLib.h */,
 				BF0E91FA2829191D00D21AD5 /* helperLib.m */,
+				BFEA09D72AED110B009450BF /* prefs.h */,
+				BFEA09D82AED110B009450BF /* prefs.m */,
 				BFB7B2132AB8580700D707FA /* prefsWindowController.h */,
 				BFB7B2142AB8580700D707FA /* prefsWindowController.m */,
 			);
@@ -255,6 +260,7 @@
 			files = (
 				BFB7B2122AB6E50D00D707FA /* DockAltTab.m in Sources */,
 				BFE19DF32825BFA800D72F99 /* main.m in Sources */,
+				BFEA09D92AED110B009450BF /* prefs.m in Sources */,
 				BF15089429038B8B00DF343F /* globals.m in Sources */,
 				BF0E920128291F0700D21AD5 /* app.m in Sources */,
 				BF0E91FB2829191D00D21AD5 /* helperLib.m in Sources */,

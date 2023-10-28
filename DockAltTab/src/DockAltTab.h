@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DockAltTab : NSObject
 + (void) init;
 + (void) setMode: (int) mode;
++ (void) setDelay: (int) milliseconds;
 + (void) startPreviewInterval;
 + (void) stopPreviewInterval;
 + (void) timerTick: (NSTimer*) arg;
@@ -21,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL) loadDockAutohide;
 + (NSString*) loadDockPos;
 + (CGRect) loadDockRect;
++ (void) reconnectDock;
 + (NSMutableDictionary*) elDict: (AXUIElementRef) el;
 + (void) activateApp: (NSRunningApplication*) app;
 + (NSPoint) previewLocation: (CGPoint) cursorPos : (AXUIElementRef) iconEl;

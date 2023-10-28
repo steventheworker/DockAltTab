@@ -562,6 +562,13 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     [task setArguments:@[ @"-c", killCommand]];
     [task launch];
 }
++ (void) sendKey: (int) keyCode {
+    CGEventSourceRef src = CGEventSourceCreate(kCGEventSourceStateHIDSystemState);
+    CGEventRef down = CGEventCreateKeyboardEvent(src, keyCode, true);
+    CGEventRef up = CGEventCreateKeyboardEvent(src, keyCode, false);
+    CGEventPost(kCGHIDEventTap, down);
+    CGEventPost(kCGHIDEventTap, up);
+}
 + (void) requestNotificationPermission:  (void(^)(BOOL granted)) cb {
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
@@ -612,6 +619,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     for (NSRunningApplication* app in [[NSWorkspace sharedWorkspace] runningApplications]) if ([[app bundleIdentifier] isEqual: tarBID]) return app;
     return nil;
 }
++ (NSRunningApplication*) appWithPID: (pid_t) tarPID {return [NSRunningApplication runningApplicationWithProcessIdentifier: tarPID];}
 + (void) activateWindow: (NSWindow*) window {
     [NSApp activateIgnoringOtherApps: YES];
     [window makeKeyAndOrderFront: nil];
@@ -682,6 +690,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     [task launch];
     [[standardOutput fileHandleForReading] readInBackgroundAndNotify];
 }
++ (BOOL) isSparkleUpdaterOpen {
+    for (NSWindow* window in [NSApp windows]) if ([(id)window.identifier isEqual: @"SUStatus"] || [(id)window.identifier isEqual: @"SUUpdateAlert"]) return YES;
+    return NO;
+}
++ (NSString*) appVersion {return [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];}
 + (NSString*) dictionaryStringOneLine : (NSDictionary*) dict : (BOOL) flattest {
     return [[[[[[[[[[[dict description] stringByReplacingOccurrencesOfString: @"\n" withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"     " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"     " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"    " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @"   " withString: (flattest ? @"" : @" ")] stringByReplacingOccurrencesOfString: @";" withString: @","] stringByReplacingOccurrencesOfString: @" = " withString: @": "] stringByReplacingOccurrencesOfString: @", }" withString: @"}"] stringByReplacingOccurrencesOfString: @"{ " withString: @"{"] stringByReplacingOccurrencesOfString: @" =" withString: @":"];
 }

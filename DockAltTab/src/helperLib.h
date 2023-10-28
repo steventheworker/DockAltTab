@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSScreen*) screenAtPt: (NSPoint) pt;
 + (CGPoint) CGPointFromNSPoint: (NSPoint) pt;
 + (NSScreen*) primaryScreen;
+/* trigger/simulate events */
++ (void) toggleDock;
++ (void) killDock;
++ (void) sendKey: (int) keyCode;
 /* misc. */
 + (NSArray*) $: (NSView*) container : (NSString*) identifier;
 + (NSView*) $0: (NSView*) container : (NSString*) identifier;
@@ -37,18 +41,16 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL) dockAutohide;
 + (NSString*) dockPos;
 + (CGRect) dockRect;
-+ (void) toggleDock;
-+ (void) killDock;
-+ (void) requestNotificationPermission:  (void(^)(BOOL granted)) cb;
-+ (void) sendNotificationWithID: (NSString*) notificationID : (NSString*) title : (NSString*) message;
-+ (void) sendNotification: (NSString*) title : (NSString*) message;
 + (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild;
 + (NSRunningApplication*) appWithBID: (NSString*) tarBID;
++ (NSRunningApplication*) appWithPID: (pid_t) tarPID;
 + (void) activateWindow: (NSWindow*) window;
 + (void) activateApp: (NSURL*) tarAppURL : (void(^)(NSRunningApplication* app, NSError* error)) cb;
 + (NSDictionary*) modifierKeys;
 + (NSString*) applescript: (NSString*) scriptTxt;
 + (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb;
++ (BOOL) isSparkleUpdaterOpen;
++ (NSString*) appVersion;
 + (NSString*) dictionaryStringOneLine : (NSDictionary*) dict : (BOOL) flattest;
 + (void) restartApp;
 @end

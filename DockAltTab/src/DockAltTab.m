@@ -19,6 +19,7 @@ BOOL dockAutohide = NO;
 CGRect dockRect;
 
 int DATMode; // 1 = macos, 2 = ubuntu, 3 = windows (default value set in prefsWindowController)
+int previewDelay = 0;
 NSMutableDictionary* mousedownDict;
 NSMutableDictionary* mousemoveDict;
 NSTimer* previewIntervalTimer;
@@ -45,6 +46,13 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
             [self startPreviewInterval];
             break;
     }
+}
++ (void) setDelay: (int) milliseconds {previewDelay = milliseconds;}
++ (void) reconnectDock {
+    [self loadDockPID];
+    [self loadDockAutohide];
+    [self loadDockPos];
+    setTimeout(^{[self loadDockPID];}, 1000);
 }
 + (BOOL) loadDockAutohide {dockAutohide = [helperLib dockAutohide];return dockAutohide;}
 + (NSString*) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22155" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22155"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,62 +16,307 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="DockAltTab" subtitle="Preferences ⚙️" separatorStyle="none" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+            <rect key="contentRect" x="196" y="240" width="572" height="319"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="572" height="319"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0el-eF-dtd">
-                        <rect key="frame" x="20" y="211" width="32" height="45"/>
+                    <box toolTip="kill/restart the dock to apply these settings to the current session" fixedFrame="YES" title="Dock Settings" translatesAutoresizingMaskIntoConstraints="NO" id="fMs-YD-wmD">
+                        <rect key="frame" x="57" y="24" width="466" height="103"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" toolTip="kill/restart the dock to apply these settings to the current session" wantsLayer="YES" id="LJs-TC-cp0">
+                            <rect key="frame" x="4" y="5" width="458" height="80"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField toolTip="dock autohide dock reveal delay" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8fM-cH-Bxd">
+                                    <rect key="frame" x="13" y="21" width="77" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Dock Delay:" id="YpX-GP-XEP">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField toolTip="dock autohide dock reveal delay" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y8g-XF-Y9P">
+                                    <rect key="frame" x="94" y="20" width="0.0" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="-1" drawsBackground="YES" id="aHK-hc-MNc">
+                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="ZcP-8f-zzk"/>
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField toolTip="kill/restart the dock to apply these settings to the current session" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JVP-mR-tK8">
+                                    <rect key="frame" x="165" y="22" width="65" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="EcV-Tf-Veo">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button identifier="differentiateHiddenAppsBtn" toolTip="make app icons opaque for hidden apps" verticalHuggingPriority="750" id="sdQ-SV-bWH">
+                                    <rect key="frame" x="13" y="50" width="184" height="22"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Differentiate hidden apps" bezelStyle="regularSquare" imagePosition="left" inset="2" id="GrZ-5V-lke">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="toggleDifferentiateHidden:" target="-2" id="Vas-Hn-fch"/>
+                                    </connections>
+                                </button>
+                                <textField identifier="dockDelayInput" toolTip="dock autohide dock reveal delay" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="16f-vb-XqW">
+                                    <rect key="frame" x="95" y="18" width="64" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" title="-1" drawsBackground="YES" id="rLD-1F-0C3">
+                                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="CoR-aW-HEU">
+                                            <integer key="minimum" value="-1"/>
+                                        </numberFormatter>
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <action selector="setDockDelay:" target="-2" id="1LB-D7-q5x"/>
+                                    </connections>
+                                </textField>
+                                <button identifier="lockDockSizeBtn" toolTip="disable dragging the white strip to resize" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lp2-41-Knt">
+                                    <rect key="frame" x="298" y="35" width="116" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Lock dock size" bezelStyle="regularSquare" imagePosition="left" inset="2" id="7Zf-c7-b6r">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="lockDockSize:" target="-2" id="f62-Mg-s5k"/>
+                                    </connections>
+                                </button>
+                                <button identifier="lockDockContentsBtn" toolTip="prevent changing favorites (app icons) by drag and drop" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D1L-SO-If1">
+                                    <rect key="frame" x="298" y="14" width="145" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Lock dock contents" bezelStyle="regularSquare" imagePosition="left" inset="2" id="HR3-8U-j8r">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="lockDockContents:" target="-2" id="pCW-C0-iCZ"/>
+                                    </connections>
+                                </button>
+                                <button identifier="lockDockPosBtn" toolTip="disable &quot;position on screen&quot; submenu from white strip right click menu" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oYc-Xh-xaA">
+                                    <rect key="frame" x="298" y="57" width="140" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Lock dock position" bezelStyle="regularSquare" imagePosition="left" inset="2" id="5ix-zV-Ndu">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="lockDockPosition:" target="-2" id="30k-Ek-cpm"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <font key="titleFont" metaFont="systemBold" size="14"/>
+                    </box>
+                    <box title="Preview Settings" id="OnG-qX-U7t">
+                        <rect key="frame" x="310" y="136" width="249" height="162"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="aZr-ov-PH4">
+                            <rect key="frame" x="4" y="5" width="241" height="139"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField toolTip="Only applies when &quot;Hover to preview&quot; is selected" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aQn-Cq-kRN">
+                                    <rect key="frame" x="5" y="25" width="37" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="delay" id="uAW-d9-1nM">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField identifier="delayLabel" toolTip="Only applies when &quot;Hover to preview&quot; is selected" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lm7-mr-a7N">
+                                    <rect key="frame" x="133" y="24" width="36" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.00" id="0Dk-9q-bsV">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField toolTip="Only applies when &quot;Hover to preview&quot; is selected" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZZ-HR-Bye">
+                                    <rect key="frame" x="167" y="24" width="65" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="o0V-Ms-eEk">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <slider identifier="delaySlider" toolTip="Only applies when &quot;Hover to preview&quot; is selected" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0bW-TO-5zk">
+                                    <rect key="frame" x="42" y="15" width="89" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" continuous="YES" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="ZhI-gb-By5"/>
+                                    <connections>
+                                        <action selector="delayChanged:" target="-2" id="i0w-qF-PB8"/>
+                                    </connections>
+                                </slider>
+                                <view identifier="modeBtns" wantsLayer="YES" id="qml-Xu-iGY">
+                                    <rect key="frame" x="0.0" y="68" width="100" height="66"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button toolTip="Left/Middle click shows previews w/ no space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKL-oI-DsK">
+                                            <rect key="frame" x="9" y="16" width="71" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="radio" title="Ubuntu" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="eab-3g-YjP">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="modeBtn:" target="-2" id="GQe-M0-Uur"/>
+                                            </connections>
+                                        </button>
+                                        <button toolTip="Windows™ Style - previews on hover w/ no space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IHI-Gh-R9a">
+                                            <rect key="frame" x="9" y="-8" width="81" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="radio" title="Windows" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="J6C-A6-bF2">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="modeBtn:" target="-2" id="Y81-aV-AF5"/>
+                                            </connections>
+                                        </button>
+                                        <button toolTip="Previews on hover w/ space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ds4-uK-002">
+                                            <rect key="frame" x="9" y="41" width="70" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="radio" title="MacOS" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="3ip-ye-lcT">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="modeBtn:" target="-2" id="CqY-iy-VPZ"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                            </subviews>
+                        </view>
+                        <font key="titleFont" metaFont="systemBold" size="14"/>
+                    </box>
+                    <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xeq-u4-KcW">
+                        <rect key="frame" x="16" y="252" width="32" height="45"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSAdvanced" id="ZQ2-aV-lWe"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="NSAdvanced" id="Ob6-fm-CV2"/>
                     </imageView>
-                    <view identifier="modeBtns" wantsLayer="YES" id="qml-Xu-iGY">
-                        <rect key="frame" x="50" y="156" width="100" height="100"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <button toolTip="Left/Middle click shows previews w/ no space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKL-oI-DsK">
-                                <rect key="frame" x="9" y="55" width="71" height="18"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="radio" title="Ubuntu" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="eab-3g-YjP">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="modeBtn:" target="-2" id="GQe-M0-Uur"/>
-                                </connections>
-                            </button>
-                            <button toolTip="Windows™ Style - previews on hover w/ no space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IHI-Gh-R9a">
-                                <rect key="frame" x="9" y="35" width="81" height="18"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="radio" title="Windows" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="J6C-A6-bF2">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="modeBtn:" target="-2" id="Y81-aV-AF5"/>
-                                </connections>
-                            </button>
-                            <button toolTip="Previews on hover w/ space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ds4-uK-002">
-                                <rect key="frame" x="9" y="75" width="70" height="18"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="radio" title="MacOS" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="3ip-ye-lcT">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="modeBtn:" target="-2" id="CqY-iy-VPZ"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                    </view>
+                    <button toolTip="kill/restart the dock to apply these settings to the current session" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ff7-BO-jvx">
+                        <rect key="frame" x="229" y="10" width="127" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="↺ Restart Dock" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ovF-nf-qWs">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <color key="bezelColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <action selector="killDock:" target="-2" id="lne-16-gRU"/>
+                        </connections>
+                    </button>
+                    <box fixedFrame="YES" title="DockAltTab Settings" translatesAutoresizingMaskIntoConstraints="NO" id="afc-an-OVc">
+                        <rect key="frame" x="33" y="163" width="262" height="135"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="75Y-sI-Obl">
+                            <rect key="frame" x="4" y="5" width="254" height="112"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField identifier="appVersionStr" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r1z-VS-taS">
+                                    <rect key="frame" x="15" y="89" width="52" height="19"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="v0.00.0" id="aZw-jS-rpf">
+                                        <font key="font" metaFont="systemUltraLight" size="15"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <button identifier="menuIconCheckbox" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vBA-WW-6Vt">
+                                    <rect key="frame" x="107" y="89" width="147" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="check" title="Add icon to menu bar" bezelStyle="regularSquare" imagePosition="left" state="on" focusRingType="none" inset="2" id="1wa-GF-vnG">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="cellTitle"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="checkUncheckMenuIcon:" target="-2" id="ETh-pI-4ci"/>
+                                    </connections>
+                                </button>
+                                <button identifier="updateAutoBtn" toolTip="Check for updates every 7 days." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2I-MF-cup">
+                                    <rect key="frame" x="10" y="36" width="221" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="radio" title="Automatically check for updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" baseWritingDirection="leftToRight" inset="2" id="mcC-zC-BbE">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="updateChoice:" target="-2" id="uuW-t0-EUl"/>
+                                    </connections>
+                                </button>
+                                <button identifier="updateAutoInstallBtn" toolTip="&quot;Automatically Check for updates&quot; + Automatic Install" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wzd-XU-LgI">
+                                    <rect key="frame" x="10" y="12" width="200" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="radio" title="Automatically install updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="XgQ-mI-V7e">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="updateChoice:" target="-2" id="jV2-WD-aZl"/>
+                                    </connections>
+                                </button>
+                                <button identifier="updateManualBtn" toolTip="Dock Exposé won't check for updates." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QnA-5o-yK7">
+                                    <rect key="frame" x="10" y="61" width="193" height="18"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="radio" title="Manually check for updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="dq5-AJ-Toq">
+                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="updateChoice:" target="-2" id="bDM-n4-WLc"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                        <font key="titleFont" metaFont="systemBold" size="14"/>
+                    </box>
+                    <button focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JHw-UI-RE8">
+                        <rect key="frame" x="142" y="133" width="157" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Check for updates..." bezelStyle="rounded" alignment="center" borderStyle="border" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="pVf-jB-LSr">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <color key="bezelColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <action selector="checkForUpdates:" target="-2" id="zug-gP-Tne"/>
+                        </connections>
+                    </button>
+                    <button toolTip="Quit Dock Exposé" focusRingType="none" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N9T-ro-xyj">
+                        <rect key="frame" x="506" y="305" width="40" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="recessed" bezelStyle="recessed" imagePosition="overlaps" alignment="left" state="on" focusRingType="none" imageScaling="proportionallyUpOrDown" inset="2" id="Amu-0f-tWV">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <imageReference key="image" image="power.circle.fill" catalog="system" symbolScale="large" renderingMode="original"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="quit:" target="-2" id="3No-lO-zFC"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="140" y="106"/>
+            <point key="canvasLocation" x="140" y="105.5"/>
         </window>
     </objects>
     <resources>
         <image name="NSAdvanced" width="32" height="32"/>
+        <image name="power.circle.fill" catalog="system" width="19" height="19"/>
     </resources>
 </document>

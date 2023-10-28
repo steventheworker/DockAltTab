@@ -119,6 +119,7 @@
 }
 - (void) openPrefs {
     [[prefsController window] setIsVisible: YES];
+    [prefsController render];
     //    [prefsController showWindow: [prefsController window]];
     [helperLib activateWindow: [prefsController window]];
 }

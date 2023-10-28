@@ -6,6 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Sparkle/Sparkle.h>
 #import "src/app.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
@@ -14,5 +15,7 @@
     IBOutlet NSMenu *iconMenu;
     __weak IBOutlet NSButton *hasScreenRecordingBtnInfoBtn;
 }
-
+@property SPUStandardUpdaterController* updaterController;
+- (IBAction)killDock:(id)sender;
+- (IBAction)quit:(id)sender;
 @end

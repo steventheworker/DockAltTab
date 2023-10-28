@@ -7,13 +7,14 @@
 
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
+#import "prefsWindowController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface App : NSObject {
     @public
     NSStatusItem* statusItem;
     NSWindow* permissionWindow;
-    NSWindowController* prefsController;
+    prefsWindowController* prefsController;
     AXUIElementRef systemWideEl;
     NSMenu* iconMenu;
     CGPoint cursorPos;
