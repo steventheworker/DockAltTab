@@ -690,6 +690,17 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     [task launch];
     [[standardOutput fileHandleForReading] readInBackgroundAndNotify];
 }
++ (void) newFinderWindow {
+    [helperLib applescript: @"\n\
+        tell application \"System Events\" to set uname to name of current user\n\
+        tell application \"Finder\"\n\
+        make new Finder window to folder \"Desktop\" of folder uname of folder \"Users\" of startup disk\n\
+        activate\n\
+        -- make new Finder window\n\
+        -- set target of window 1 to folder \"Desktop\" of folder \"super\" of folder \"Users\" of startup disk\n\
+        end tell\n\
+    "];
+}
 + (BOOL) isSparkleUpdaterOpen {
     for (NSWindow* window in [NSApp windows]) if ([(id)window.identifier isEqual: @"SUStatus"] || [(id)window.identifier isEqual: @"SUUpdateAlert"]) return YES;
     return NO;

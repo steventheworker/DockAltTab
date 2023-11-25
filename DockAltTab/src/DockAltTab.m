@@ -174,6 +174,10 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
         }];
         if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
         if (!previewWindowsCount) {
+            if ([tarApp.localizedName isEqual: @"Finder"]) {
+                [helperLib newFinderWindow];
+                return NO;
+            }
             if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
             return YES; //pass click through
         }
@@ -292,6 +296,10 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 
         if (type == kCGEventOtherMouseUp) return YES;
         if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
+            if ([tarApp.localizedName isEqual: @"Finder"]) {
+                [helperLib newFinderWindow];
+                return NO;
+            }
             if (tarApp.hidden) {
                 [tarApp unhide];
                 setTimeout(^{
@@ -366,6 +374,10 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
         } else {
             if (type == kCGEventOtherMouseUp) return YES;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
+                if ([tarApp.localizedName isEqual: @"Finder"]) {
+                    [helperLib newFinderWindow];
+                    return NO;
+                }
                 if (tarApp.hidden) {
                     [tarApp unhide];
                     setTimeout(^{

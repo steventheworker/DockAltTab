@@ -49,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDictionary*) modifierKeys;
 + (NSString*) applescript: (NSString*) scriptTxt;
 + (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb;
++ (void) newFinderWindow;
 + (BOOL) isSparkleUpdaterOpen;
 + (NSString*) appVersion;
 + (NSString*) dictionaryStringOneLine : (NSDictionary*) dict : (BOOL) flattest;
