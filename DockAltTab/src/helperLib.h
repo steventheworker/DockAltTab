@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface helperLib : NSObject {}
 /* AXUIElement */
 + (void) setSystemWideEl: (AXUIElementRef) el;
-+ (AXUIElementRef) elementAtPoint: (CGPoint) pt;
++ (id) elementAtPoint: (CGPoint) pt;
 + (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict;
 /* events*/
 + (CFMachPortRef) listenMask: (CGEventMask) emask : (CGEventTapCallBack) handler;

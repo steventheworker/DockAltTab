@@ -400,7 +400,7 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (CGPoint) pos {
 //    NSLog(@"mm");
     cursorPos = pos;
-    AXUIElementRef el =  [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+    AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mousemoveMacOS: proxy : type : event : refcon : el : elDict];
@@ -411,7 +411,7 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 + (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {return YES;}
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
     NSLog(@"md");
-    AXUIElementRef el =  [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+    AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mousedownMacOS: proxy : type : event : refcon : el : elDict];
@@ -421,7 +421,7 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 }
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
     NSLog(@"mu");
-    AXUIElementRef el =  [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+    AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mouseupMacOS: proxy : type : event : refcon : el : elDict];

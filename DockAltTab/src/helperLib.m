@@ -57,11 +57,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 @implementation helperLib
 /* AXUIElement  */
 + (void) setSystemWideEl: (AXUIElementRef) el {systemWideElement = el;} //used in elementAtPoint, etc.
-+ (AXUIElementRef) elementAtPoint: (CGPoint) pt {
++ (id) elementAtPoint: (CGPoint) pt {
     AXUIElementRef element = NULL;
     AXError result = AXUIElementCopyElementAtPosition(systemWideElement, pt.x, pt.y, &element);
     if (result != kAXErrorSuccess) NSLog(@"%f, %f elementAtPoint failed", pt.x, pt.y);
-    return element;
+    return (__bridge_transfer id)element; // ARC takes ownership, otherwise need to call CFRelease somewhere down the line
 }
 + (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict {
     if (!el) return @{};
@@ -673,7 +673,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
             float x = ([self dockPos] == DockLeft) ? DOCK_BOTTOM_PADDING : focusedScreen.frame.size.width - DOCK_BOTTOM_PADDING - 5; //right dock for some reason has 5 more pixels padding...
             testPoint = CGPointMake(x, focusedScreen.frame.size.height / 2);
         }
-        dockAppRef = [self dockAppElementFromDockChild: [helperLib elementAtPoint: testPoint]];
+        dockAppRef = [self dockAppElementFromDockChild: (__bridge AXUIElementRef _Nonnull)([helperLib elementAtPoint: testPoint])];
         [self toggleDock];
     }
     NSArray* children = [helperLib elementDict: dockAppRef : @{@"children": (id)kAXChildrenAttribute}][@"children"];
