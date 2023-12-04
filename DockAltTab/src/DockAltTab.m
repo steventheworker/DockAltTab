@@ -118,10 +118,8 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 }
 + (void) hidePreviewWindow {[helperLib applescript: @"tell application \"AltTab\" to hide"];}
 + (BOOL) isPreviewWindowShowing { /* is preview window (opened by DockAltTab) open? */
-    CFArrayRef wins = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
-    long int winCount = CFArrayGetCount(wins);
-    for (int i = 0; i < winCount; i++) {
-        NSDictionary* win = CFArrayGetValueAtIndex(wins, i);
+    NSArray* wins = CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID));
+    for (NSDictionary* win in wins) {
         if ([win[(id)kCGWindowOwnerName] isEqual: @"AltTab"] && [win[(id)kCGWindowLayer] intValue] != 0) {//AltTab is open, but was it opened by DockAltTab? --//stop closing regular AltTab preview window on mousemove (since this is called every movement)
             AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
             CGRect winBounds = [helperLib rectWithDict: win[(id)kCGWindowBounds]];
