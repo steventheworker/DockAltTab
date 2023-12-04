@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
+enum dockPositions {DockLeft, DockBottom, DockRight};
+
 //missing attributes
 #define kAXPIDAttribute CFSTR("AXPID") //dunno why AXUIElementGetPid is so special (no way to get pid with AXUIElementCopyAttributeValue)
 #define kAXFullscreenAttribute CFSTR("kAXFullscreenAttribute")
@@ -30,7 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) listenScreens;
 + (void) proc: (CGDirectDisplayID) display : (CGDisplayChangeSummaryFlags) flags : (void*) userInfo;
 + (void) processScreens;
-+ (NSScreen*) screenAtPt: (NSPoint) pt;
++ (NSScreen*) screenAtCGPoint: (CGPoint) pt;
++ (NSScreen*) screenAtNSPoint: (NSPoint) pt;
++ (NSScreen*) screenWithMouse;
++ (NSPoint) NSPointFromCGPoint: (CGPoint) pt;
 + (CGPoint) CGPointFromNSPoint: (NSPoint) pt;
 + (NSScreen*) primaryScreen;
 /* trigger/simulate events */
@@ -42,9 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSView*) $0: (NSView*) container : (NSString*) identifier;
 + (CGRect) rectWithDict: (NSDictionary*) dict;
 + (BOOL) dockAutohide;
-+ (NSString*) dockPos;
++ (int) dockPos;
 + (CGRect) dockRect;
 + (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild;
++ (CGPoint) normalizePointForDockGap: (CGPoint) pt : (int) dockPos;
 + (NSRunningApplication*) appWithBID: (NSString*) tarBID;
 + (NSRunningApplication*) appWithPID: (pid_t) tarPID;
 + (void) activateWindow: (NSWindow*) window;

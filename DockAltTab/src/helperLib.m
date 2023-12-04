@@ -503,17 +503,46 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 + (void) processScreens {
     NSLog(@"processing attach/detach of display");
 }
-+ (NSScreen*) primaryScreen {return [self screenAtPt: NSZeroPoint];}
-+ (CGPoint) CGPointFromNSPoint: (NSPoint) pt {
-    NSScreen* screen = [self screenAtPt: pt];
-    float menuScreenHeight = NSMaxY([screen frame]);
-    return CGPointMake(pt.x,  menuScreenHeight - pt.y);
+/* cg/ns points: nspoint, cgpoint both share the same x. key difference: nspoint y of 0 == bottom of the screen */
++ (NSScreen*) primaryScreen {return [self screenAtNSPoint: NSZeroPoint];}
++ (NSPoint) NSPointFromCGPoint: (CGPoint) pt { // NSPointFromCGPoint(pt); only changes output type...
+    NSScreen* screen = [self screenAtCGPoint: pt];
+    NSScreen* primary = [self primaryScreen];
+    float screentopoffset = screen.frame.origin.y;
+    float screenbottomoffset = primary.frame.size.height - (screen.frame.size.height + screentopoffset);
+    if (screen == primary) {screenbottomoffset = 0;screentopoffset = 0;}
+    float y = screen.frame.size.height + screenbottomoffset - (pt.y - screentopoffset);
+    return NSMakePoint(pt.x, y);
 }
-+ (NSScreen*) screenAtPt: (NSPoint) pt {
++ (CGPoint) CGPointFromNSPoint: (NSPoint) pt { // NSPointToCGPoint(pt); only changes output type...
+    NSScreen* screen = [self screenAtNSPoint: pt];
+    NSScreen* primaryScreen = [self primaryScreen];
+    float offsetTop = primaryScreen.frame.size.height - (screen.frame.origin.y + screen.frame.size.height);
+    if (primaryScreen == screen) offsetTop = 0;
+    float menuScreenHeight = NSMaxY([screen frame]);
+    return CGPointMake(pt.x, menuScreenHeight - pt.y + offsetTop);
+}
++ (NSScreen*) screenAtNSPoint: (NSPoint) pt {
     NSArray* screens = [NSScreen screens];
     for (NSScreen* screen in screens) if (NSPointInRect(pt, [screen frame])) return screen;
     return screens[0];
 }
++ (NSScreen*) screenAtCGPoint: (CGPoint) pt {
+    NSArray* screens = [NSScreen screens];
+    NSScreen* primaryScreen = [self primaryScreen];
+    for (NSScreen* screen in screens) {
+        float offsetLeft, offsetTop, offsetBottom;
+        offsetLeft = screen.frame.origin.x;
+        offsetTop = primaryScreen.frame.size.height - (screen.frame.origin.y + screen.frame.size.height);
+        offsetBottom = screen.frame.origin.y; //unused since cgpoint starts at the top
+        if (screen == primaryScreen) {offsetTop = 0;offsetBottom = 0;offsetLeft = 0;}
+        if (pt.x >= offsetLeft && pt.x <= offsetLeft + screen.frame.size.width &&
+            pt.y >= offsetTop && pt.y <= offsetTop + screen.frame.size.height) return screen;
+    }
+    return screens[0];
+}
++ (NSScreen*) screenWithMouse {return [self screenAtNSPoint: [NSEvent mouseLocation]];}
+
 
 /* misc. */
 + (NSView*) $0: (NSView*) container : (NSString*) tar { //getElementById stops after it find 1 match
@@ -553,10 +582,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"autohide"] intValue] > 0;
 }
-+ (NSString*) dockPos {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
++ (int) dockPos {
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     NSString* pos = [[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"orientation"];
-    return pos ? pos : @"bottom";
+    NSArray* dockPosStrings = @[@"left", @"bottom", @"right"];
+    return (int)[dockPosStrings indexOfObject: pos ? pos : @"bottom"];
 }
 + (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild {
     NSDictionary* recursiveDict = @{
@@ -569,6 +599,27 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSDictionary* parentDict = [self elementDict: parent : recursiveDict];
     if ([parentDict[@"role"] isEqual: @"AXApplication"]) return parent;
     return [self dockAppElementFromDockChild: parent];
+}
++ (CGPoint) normalizePointForDockGap: (CGPoint) pt : (int) dockPos { //clicking the bottom 5px gap of the screen gives no PID, even though the dock icons are clickable... we pretend we clicked 5px higher
+    NSScreen* screen = [self screenAtCGPoint: pt];
+    NSScreen* primaryScreen = [self primaryScreen];
+    
+    float offsetLeft, offsetTop, offsetBottom;
+    offsetLeft = screen.frame.origin.x;
+    offsetTop = primaryScreen.frame.size.height - (screen.frame.origin.y + screen.frame.size.height);
+    offsetBottom = screen.frame.origin.y; //unused since cgpoint starts at the top
+    if (screen == primaryScreen) {offsetTop = 0;offsetBottom = 0;offsetLeft = 0;}
+
+    if (dockPos == DockBottom) {
+        float cutoff = offsetTop + screen.frame.size.height - 5.1;
+        return CGPointMake(pt.x, pt.y >= cutoff ? cutoff : pt.y);
+    } else if (dockPos == DockLeft) {
+        float cutoff = offsetLeft + 14.1;
+        return CGPointMake(pt.x <= cutoff ? cutoff : pt.x, pt.y);
+    } else if (dockPos == DockRight) {
+        float cutoff = offsetLeft + screen.frame.size.width - 14.1;
+        return CGPointMake(pt.x >= cutoff ? cutoff : pt.x, pt.y);
+    } else return pt;
 }
 + (void) toggleDock {
     [self applescript: [NSString stringWithFormat:@"tell application \"System Events\"\n\
@@ -617,9 +668,9 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         usleep(100 * 1000); // 100ms
         NSScreen* focusedScreen = [NSScreen mainScreen];
         CGPoint testPoint;
-        if ([[self dockPos] isEqual: @"bottom"]) testPoint = CGPointMake(focusedScreen.frame.size.width / 2, focusedScreen.frame.size.height - DOCK_BOTTOM_PADDING);
+        if ([self dockPos] == DockBottom) testPoint = CGPointMake(focusedScreen.frame.size.width / 2, focusedScreen.frame.size.height - DOCK_BOTTOM_PADDING);
         else {
-            float x = ([[self dockPos] isEqual: @"left"]) ? DOCK_BOTTOM_PADDING : focusedScreen.frame.size.width - DOCK_BOTTOM_PADDING - 5; //right dock for some reason has 5 more pixels padding...
+            float x = ([self dockPos] == DockLeft) ? DOCK_BOTTOM_PADDING : focusedScreen.frame.size.width - DOCK_BOTTOM_PADDING - 5; //right dock for some reason has 5 more pixels padding...
             testPoint = CGPointMake(x, focusedScreen.frame.size.height / 2);
         }
         dockAppRef = [self dockAppElementFromDockChild: [helperLib elementAtPoint: testPoint]];

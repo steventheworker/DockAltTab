@@ -14,7 +14,7 @@ const int ACTIVATION_MILLISECONDS = 30; //how long to wait to activate after [ap
 NSString* DATShowStringFormat = @"showApp appBID \"%@\" x %f y %f dockPos \"%@\""; // [NSString stringWithFormat: DATShowStringFormatappBID, x, y, dockPos];
 pid_t dockPID;
 pid_t AltTabPID;
-NSString* dockPos = @"bottom";
+int dockPos = DockBottom;
 BOOL dockAutohide = NO;
 CGRect dockRect;
 
@@ -55,7 +55,7 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
     setTimeout(^{[self loadDockPID];}, 1000);
 }
 + (BOOL) loadDockAutohide {dockAutohide = [helperLib dockAutohide];return dockAutohide;}
-+ (NSString*) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}
++ (int) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}
 + (pid_t) loadDockPID {dockPID = [helperLib appWithBID: @"com.apple.dock"].processIdentifier;return dockPID;}
 + (pid_t) loadAltTabPID {AltTabPID = [helperLib appWithBID: @"com.steventheworker.alt-tab-macos"].processIdentifier;return AltTabPID;}
 + (CGRect) loadDockRect {dockRect = [helperLib dockRect];return dockRect;}
@@ -87,24 +87,24 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
     int x = 0;
     int y = 0;
     NSScreen* primaryScreen = [helperLib primaryScreen];
-    NSScreen* extScreen = [helperLib screenAtPt: cursorPos];
+    NSScreen* extScreen = [helperLib screenAtCGPoint: cursorPos];
     BOOL isOnExt = primaryScreen != extScreen;
     
     NSDictionary* elDict = [helperLib elementDict: iconEl : @{
         @"pos": (id)kAXPositionAttribute,
         @"size": (id)kAXSizeAttribute
     }];
-    if ([dockPos isEqual: @"bottom"]) {
+    if (dockPos == DockBottom) {
         x = [elDict[@"pos"][@"x"] floatValue] + [elDict[@"size"][@"width"] floatValue] / 2;
         y = [elDict[@"size"][@"width"] floatValue] - 1;
         if (isOnExt) y = y + extScreen.frame.origin.y;
     } else {
         int mouseScreenHeight = (cursorPos.x <= primaryScreen.frame.size.width) ? primaryScreen.frame.size.height : extScreen.frame.size.height;
         y = mouseScreenHeight - [elDict[@"pos"][@"y"] floatValue]; // left & right have the same y
-        if ([dockPos isEqual: @"left"]) {
+        if (dockPos == DockLeft) {
             x = [elDict[@"size"][@"width"] floatValue] - 1;
             if (isOnExt) x = x - extScreen.frame.size.width;
-        } else if ([dockPos isEqual: @"right"]) {
+        } else if (dockPos == DockRight) {
             x = (([elDict[@"pos"][@"x"] floatValue] <= primaryScreen.frame.size.width) ? primaryScreen.frame.size.width : primaryScreen.frame.size.width + extScreen.frame.size.width) - [elDict[@"size"][@"width"] floatValue] + 7;
             x += 1;
         }
@@ -114,7 +114,7 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt {
     AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
     NSPoint loc = [self previewLocation: pt : iconEl];
-    return [NSString stringWithFormat: DATShowStringFormat, appBID, loc.x, loc.y, dockPos];
+    return [NSString stringWithFormat: DATShowStringFormat, appBID, loc.x, loc.y, dockPos == DockBottom ? @"bottom" : (dockPos == DockLeft ? @"left" : @"right")];
 }
 + (void) hidePreviewWindow {[helperLib applescript: @"tell application \"AltTab\" to hide"];}
 + (BOOL) isPreviewWindowShowing { /* is preview window (opened by DockAltTab) open? */
@@ -397,9 +397,11 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
         return YES;
 }
 //general events
-+ (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict : (CGPoint) pos {
++ (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (CGPoint) pos {
 //    NSLog(@"mm");
     cursorPos = pos;
+    AXUIElementRef el =  [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+    NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mousemoveMacOS: proxy : type : event : refcon : el : elDict];
     if (DATMode == 2) ret = [self mousemoveUbuntu: proxy : type : event : refcon : el : elDict];
@@ -407,16 +409,20 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
     return ret;
 }
 + (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {return YES;}
-+ (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
     NSLog(@"md");
+    AXUIElementRef el =  [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+    NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mousedownMacOS: proxy : type : event : refcon : el : elDict];
     if (DATMode == 2) ret = [self mousedownUbuntu: proxy : type : event : refcon : el : elDict];
     if (DATMode == 3) ret = [self mousedownWindows: proxy : type : event : refcon : el : elDict];
     return ret;
 }
-+ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
     NSLog(@"mu");
+    AXUIElementRef el =  [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+    NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mouseupMacOS: proxy : type : event : refcon : el : elDict];
     if (DATMode == 2) ret = [self mouseupUbuntu: proxy : type : event : refcon : el : elDict];
