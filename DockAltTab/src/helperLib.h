@@ -8,7 +8,10 @@
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
-#define kAXPIDAttribute                CFSTR("AXPID") //dunno why AXUIElementGetPid is so special (no way to get pid with AXUIElementCopyAttributeValue)
+//missing attributes
+#define kAXPIDAttribute CFSTR("AXPID") //dunno why AXUIElementGetPid is so special (no way to get pid with AXUIElementCopyAttributeValue)
+#define kAXFullscreenAttribute CFSTR("kAXFullscreenAttribute")
+#define kAXStatusLabelAttribute CFSTR("kAXStatusLabelAttribute")
 
 NS_ASSUME_NONNULL_BEGIN
 @interface helperLib : NSObject {}
