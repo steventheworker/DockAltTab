@@ -17,6 +17,8 @@ pid_t AltTabPID;
 int dockPos = DockBottom;
 BOOL dockAutohide = NO;
 CGRect dockRect;
+id dockContextMenuClickee; //the dock separator element that was right clicked
+
 
 int DATMode; // 1 = macos, 2 = ubuntu, 3 = windows (default value set in prefsWindowController)
 int previewDelay = 0;
@@ -26,6 +28,33 @@ NSTimer* previewIntervalTimer;
 CGPoint cursorPos;
 CGRect lastPreviewWinBounds;
 int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
+
+void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDict) {
+    //live onchange of dock settings (dockPos, dockautohide)
+    if ([elDict[@"PID"] intValue] == dockPID) {
+        if ([elDict[@"subrole"] isEqual: @"AXSeparatorDockItem"] &&
+            (type == kCGEventRightMouseDown || (type == kCGEventOtherMouseUp && [mousedownDict[@"subrole"] isEqual: @"AXSeparatorDockItem"]))
+        ) { //cache the element so if a context menu item is selected we'll compare & know when a dock setting changes
+            dockContextMenuClickee = (__bridge id)el;
+        }
+    }
+    if ([elDict[@"role"] isEqual: @"AXMenuItem"]) { //context menu item is being selected/triggered
+        if (dockContextMenuClickee && type == kCGEventLeftMouseUp) {
+            __block NSArray* children = [helperLib elementDict: (__bridge AXUIElementRef)dockContextMenuClickee : @{@"children": (id)kAXChildrenAttribute}][@"children"];
+            if (children.count) { //there is a menu!
+                children = [helperLib elementDict: (__bridge AXUIElementRef)(children[0]) : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //menu items
+                if (CFEqual((__bridge AXUIElementRef)children[0], el)) dockAutohide = !dockAutohide; //the first menu item is "Turn Hiding On/Off"
+                else {
+                    children = [helperLib elementDict: (__bridge AXUIElementRef)(children[2]) : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //Position on screen items menu
+                    children = [helperLib elementDict: (__bridge AXUIElementRef)(children[0]) : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //Position on screen items menu children
+                    if (CFEqual((__bridge AXUIElementRef)children[0], el)) dockPos = DockLeft;
+                    if (CFEqual((__bridge AXUIElementRef)children[1], el)) dockPos = DockBottom;
+                    if (CFEqual((__bridge AXUIElementRef)children[2], el)) dockPos = DockRight;
+                }
+            }
+        }
+    }
+}
 
 @implementation DockAltTab
 + (void) init {
@@ -413,6 +442,9 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
     NSLog(@"md");
     AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
+    
+    checkForDockChange(type, el, elDict);
+    
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mousedownMacOS: proxy : type : event : refcon : el : elDict];
     if (DATMode == 2) ret = [self mousedownUbuntu: proxy : type : event : refcon : el : elDict];
@@ -423,6 +455,9 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
     NSLog(@"mu");
     AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
+    
+    checkForDockChange(type, el, elDict);
+    
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mouseupMacOS: proxy : type : event : refcon : el : elDict];
     if (DATMode == 2) ret = [self mouseupUbuntu: proxy : type : event : refcon : el : elDict];
