@@ -12,4 +12,5 @@
 #include <Cocoa/Cocoa.h>
 int setTimeout(void(^cb)(void), int delay);
 void clearTimeout(int i);
+void throw(NSString* message, ...);
 #endif /* globals_h */

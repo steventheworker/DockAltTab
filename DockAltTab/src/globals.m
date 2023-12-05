@@ -27,3 +27,18 @@ void clearTimeout(int i) {
     NSString* timeoutIndexStr = [NSString stringWithFormat: @"%d", i];
     if ([timeouts[timeoutIndexStr] intValue]) [timeouts removeObjectForKey: timeoutIndexStr];
 }
+
+void throw(NSString* message, ...) {
+    va_list args;
+    va_start(args, message);
+    NSString* formattedString = [[NSString alloc] initWithFormat: message arguments: args];
+    va_end(args);
+
+    NSLog(@"_________");
+    NSLog(@"||throw|| %@", formattedString);
+    NSLog(@"---------");
+    [NSApp terminate: nil];
+//    setTimeout(^{[NSApp terminate: nil];}, 1);
+//    NSCAssert(NO, message);
+//    @throw [NSException exceptionWithName: @"CustomException" reason: message userInfo: nil];
+}

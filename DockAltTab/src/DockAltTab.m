@@ -8,6 +8,7 @@
 #import "DockAltTab.h"
 #import "globals.h"
 #import "helperLib.h"
+#import "SupportedAltTabAttacher.h"
 
 const float PREVIEW_INTERVAL_TICK_DELAY =  0.333; // 0.16666665; // 0.33333 / 2   seconds
 const int ACTIVATION_MILLISECONDS = 30; //how long to wait to activate after [app unhide]
@@ -59,6 +60,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
 @implementation DockAltTab
 + (void) init {
     [self loadAltTabPID];
+    if (!AltTabPID) [SupportedAltTabAttacher init: ^{[self loadAltTabPID];}];
     [self loadDockPID];
     [self loadDockRect];
     [self loadDockPos];
