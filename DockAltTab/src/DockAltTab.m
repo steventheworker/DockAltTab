@@ -125,11 +125,11 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     float y = iconPt.y;
     if (dockPos == DockBottom) {
         x = x + iconSize.width / 2;
-        y -= 6;
+        y -= 12;
     } else {
         if (dockPos == DockLeft) {
             x = iconPt.x + iconSize.width;
-            x -= 6;
+            x -= 10;
         } else if (dockPos == DockRight) x += 12;
         y = y - iconSize.height / 2;
     }
