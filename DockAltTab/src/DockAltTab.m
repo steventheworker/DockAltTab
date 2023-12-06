@@ -115,37 +115,64 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
 //            if ([[app localizedName] isEqual:@"Firefox Developer Edition"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox Developer Edition\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
 }
 + (NSPoint) previewLocation: (CGPoint) cursorPos : (AXUIElementRef) iconEl {
-    int x = 0;
-    int y = 0;
-    NSScreen* primaryScreen = [helperLib primaryScreen];
-    NSScreen* extScreen = [helperLib screenAtCGPoint: cursorPos];
-    BOOL isOnExt = primaryScreen != extScreen;
-    
     NSDictionary* elDict = [helperLib elementDict: iconEl : @{
         @"pos": (id)kAXPositionAttribute,
         @"size": (id)kAXSizeAttribute
     }];
+    NSPoint iconPt = [helperLib NSPointFromCGPoint: CGPointMake([elDict[@"pos"][@"x"] floatValue], [elDict[@"pos"][@"y"] floatValue])];
+    NSSize iconSize = NSMakeSize([elDict[@"size"][@"width"] floatValue], [elDict[@"size"][@"height"] floatValue]);
+    float x = iconPt.x;
+    float y = iconPt.y;
     if (dockPos == DockBottom) {
-        x = [elDict[@"pos"][@"x"] floatValue] + [elDict[@"size"][@"width"] floatValue] / 2;
-        y = [elDict[@"size"][@"width"] floatValue] - 1;
-        if (isOnExt) y = y + extScreen.frame.origin.y;
+        x = x + iconSize.width / 2;
+        y -= 6;
     } else {
-        int mouseScreenHeight = (cursorPos.x <= primaryScreen.frame.size.width) ? primaryScreen.frame.size.height : extScreen.frame.size.height;
-        y = mouseScreenHeight - [elDict[@"pos"][@"y"] floatValue]; // left & right have the same y
         if (dockPos == DockLeft) {
-            x = [elDict[@"size"][@"width"] floatValue] - 1;
-            if (isOnExt) x = x - extScreen.frame.size.width;
-        } else if (dockPos == DockRight) {
-            x = (([elDict[@"pos"][@"x"] floatValue] <= primaryScreen.frame.size.width) ? primaryScreen.frame.size.width : primaryScreen.frame.size.width + extScreen.frame.size.width) - [elDict[@"size"][@"width"] floatValue] + 7;
-            x += 1;
-        }
+            x = iconPt.x + iconSize.width;
+            x -= 6;
+        } else if (dockPos == DockRight) x += 12;
+        y = y - iconSize.height / 2;
     }
     return NSMakePoint(x, y);
 }
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt {
     AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
     NSPoint loc = [self previewLocation: pt : iconEl];
-    return [NSString stringWithFormat: DATShowStringFormat, appBID, loc.x, loc.y, dockPos == DockBottom ? @"bottom" : (dockPos == DockLeft ? @"left" : @"right")];
+    float x = loc.x;float y = loc.y;
+//    if (DockRight && endofscreenx - iconSize.width) {
+//        
+//    }
+//    if (DockBottom && y < 30) {
+//        
+//    }
+    return [NSString stringWithFormat: DATShowStringFormat, appBID, x, y, dockPos == DockBottom ? @"bottom" : (dockPos == DockLeft ? @"left" : @"right")];
+}
++ (void) showPreview: (NSString*) tarBID {
+    AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
+    NSDictionary* elDict = [helperLib elementDict: iconEl : @{
+        @"pos": (id)kAXPositionAttribute,
+        @"size": (id)kAXSizeAttribute
+    }];
+    NSPoint iconPt = [helperLib NSPointFromCGPoint: CGPointMake([elDict[@"pos"][@"x"] floatValue], [elDict[@"pos"][@"y"] floatValue])];
+    NSSize iconSize = NSMakeSize([elDict[@"size"][@"width"] floatValue], [elDict[@"size"][@"height"] floatValue]);
+        
+    id iconElID = (__bridge id)(iconEl);
+    CGPoint cachedCursorPos = cursorPos;
+    setTimeout(^{
+        AXUIElementRef iconEl2 = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
+        if ((__bridge id)iconEl2 != iconElID) return;
+        NSDictionary* elDict2 = [helperLib elementDict: (__bridge AXUIElementRef) iconElID : @{
+            @"pos": (id)kAXPositionAttribute,
+            @"size": (id)kAXSizeAttribute
+        }];
+        NSPoint iconPt2 = [helperLib NSPointFromCGPoint: CGPointMake([elDict2[@"pos"][@"x"] floatValue], [elDict2[@"pos"][@"y"] floatValue])];
+        NSSize iconSize2 = NSMakeSize([elDict2[@"size"][@"width"] floatValue], [elDict2[@"size"][@"height"] floatValue]);
+        float totDiff = fabs(iconPt.x - iconPt2.x) + fabs(iconPt.y - iconPt2.y) + fabs(iconSize.width - iconSize2.width) + fabs(iconSize.height - iconSize2.height);
+        if (totDiff > 2 || (fabs(cursorPos.x - cachedCursorPos.x) + fabs(cursorPos.y - cachedCursorPos.y)) > 2) {
+            return [self showPreview: tarBID];
+        }
+        [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]]];
+    }, 10);
 }
 + (void) hidePreviewWindow {[helperLib applescript: @"tell application \"AltTab\" to hide"];}
 + (BOOL) isPreviewWindowShowing { /* is preview window (opened by DockAltTab) open? */
@@ -265,7 +292,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
                 @"tarBID": tarBID
             }];
             if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-            [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]]];
+            [self showPreview: tarBID];
         } else {
             mousemoveDict = [NSMutableDictionary dictionary];
             if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
@@ -399,7 +426,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
         }
 
         if (enoughPreviewWindows) {
-            [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]]];
+            [self showPreview: tarBID];
         } else {
             if (type == kCGEventOtherMouseUp) return YES;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
