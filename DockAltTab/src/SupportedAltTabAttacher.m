@@ -39,7 +39,7 @@ void renderUnsupportedWindow(void) {
     [txt setString: @"The Official AltTab is currently unspported."];
     [container addSubview: txt];
     [container addSubview: linkBtn(@"More Info", @"https://github.com/lwouis/alt-tab-macos/pull/1590#issuecomment-1131809994", NSMakeRect(80, 30, 99, 30))];
-    [container addSubview: linkBtn(@"Download supported AltTab", @"https://github.com/steventheworker/alt-tab-macos/releases/download/1.9/DockAltTab.AltTab.v6.61.0.zip", NSMakeRect(20, 0, 240, 30))];
+    [container addSubview: linkBtn(@"Download supported AltTab", @"https://github.com/steventheworker/alt-tab-macos/releases/download/1.91.0/DockAltTab.AltTab.v6.61.0.zip", NSMakeRect(20, 0, 240, 30))];
     [unsupportedWindow.contentView addSubview: container];
 }
 
