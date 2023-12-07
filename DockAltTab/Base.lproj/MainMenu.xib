@@ -724,9 +724,9 @@
                         </connections>
                     </button>
                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3jd-lN-h4E">
-                        <rect key="frame" x="52" y="21" width="211" height="16"/>
+                        <rect key="frame" x="52" y="21" width="240" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Restart after adding permission(s)" id="zKx-Ws-AYP">
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Restart DAT after adding permission(s)" id="zKx-Ws-AYP">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -755,7 +755,7 @@
                             <action selector="hasScreenRecordingBtnTooltip:" target="O8a-yd-nmn" id="ixM-i2-hWh"/>
                         </connections>
                     </button>
-                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jys-Nt-Qg0">
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" alphaValue="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Jys-Nt-Qg0">
                         <rect key="frame" x="181" y="105" width="101" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="----------------" id="qSl-Xk-Wif">

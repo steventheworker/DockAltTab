@@ -100,7 +100,9 @@ float getDockFloatPref(NSString* key) {
 /* bindings */
 - (IBAction)quit:(id)sender {setTimeout(^{[((AppDelegate*) NSApplication.sharedApplication.delegate) quit: nil];}, 200);}
 - (IBAction)checkForUpdates:(id)sender {
-    NSMenu* iconMenu = ((AppDelegate*) NSApplication.sharedApplication.delegate)->iconMenu;
+    AppDelegate* del = ((AppDelegate*) NSApplication.sharedApplication.delegate);
+    NSMenu* iconMenu = del->iconMenu;
+    del->app->isSparkleUpdaterOpen = YES;
     for (NSMenuItem* i in iconMenu.accessibilityChildren)
         if ([i.identifier isEqual: @"checkForUpdatesMenuItem"]) [i accessibilityPerformPress];
 }

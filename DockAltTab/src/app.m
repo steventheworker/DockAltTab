@@ -33,6 +33,7 @@
     [app startListening];
     [DockAltTab init];
     
+    setTimeout(^{app->isSparkleUpdaterOpen = [helperLib isSparkleUpdaterOpen];}, 1000);
     return app;
 }
 
@@ -50,6 +51,8 @@
     /* observers */
     // on app became active (open prefs window)
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
+    // on app window closed
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(windowWillClose:) name: NSWindowWillCloseNotification object: nil];
     //on space change
     [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName: NSWorkspaceActiveSpaceDidChangeNotification object: [NSWorkspace sharedWorkspace] queue: nil usingBlock:^(NSNotification * _Nonnull note) {
         [DockAltTab spaceChanged: note];
@@ -59,22 +62,30 @@
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         if (self->mousemoveLess) self->cursorPos = CGEventGetLocation(event);
+        if (self->isSparkleUpdaterOpen) return YES; // elementAtPoint crashes app when put on the release notes webview
         if (self->mousemoveLess) [DockAltTab mousemove: proxy : type : event : refcon : self->cursorPos]; //update DockAltTab.m cursorPos
         if (![DockAltTab mousedown: proxy : type : event : refcon]) return NO;
         return YES;
     }];
     [helperLib on: @"mouseup" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         if (self->mousemoveLess) self->cursorPos = CGEventGetLocation(event);
+        if (self->isSparkleUpdaterOpen) return YES; // elementAtPoint crashes app when put on the release notes webview
         if (self->mousemoveLess) [DockAltTab mousemove: proxy : type : event : refcon : self->cursorPos]; //update DockAltTab.m cursorPos
         if (![DockAltTab mouseup: proxy : type : event : refcon]) return NO;
         return YES;
     }];
     [helperLib on: @"mousemove" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
         if (self->mousemoveLess) return YES; //Ubuntu mode doesn't use mousemove, and getting coordinates causes issues with PowerPoint (notes section)
+        if (self->isSparkleUpdaterOpen) return YES; // elementAtPoint crashes app when put on the release notes webview
         self->cursorPos = CGEventGetLocation(event);
         if (![DockAltTab mousemove: proxy : type : event : refcon : self->cursorPos]) return NO;
         return YES;
     }];
+}
+- (void) windowWillClose: (NSNotification*) notification { // notify when one of our app windows closes
+    setTimeout(^{
+        self->isSparkleUpdaterOpen = [helperLib isSparkleUpdaterOpen];NSLog(@"%d", self->isSparkleUpdaterOpen);
+    }, 0);
 }
 - (void) appBecameActive: (NSNotification*) notification {
     // don't raise prefs if sparkle updater visible (may open on launch (and triggers appBecameActive unintentionally))
