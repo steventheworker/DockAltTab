@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22155" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22155"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -733,7 +733,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yr5-PD-D4R">
-                        <rect key="frame" x="20" y="15" width="31" height="31"/>
+                        <rect key="frame" x="20" y="15" width="31" height="31.5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRefreshFreestandingTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="ho3-wf-CDP">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -744,7 +744,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lSn-oY-5Eh">
-                        <rect key="frame" x="298" y="73" width="17" height="24"/>
+                        <rect key="frame" x="298" y="73.5" width="17.5" height="23.5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <string key="toolTip">to better ignore Picture-In-Picture windows, DockAltTab must also be granted "Screen Recording" permissions [(used to verify window title isn't "Picture-In-Picture")](https://developer.apple.com/forums/thread/126860#398314022); also helps filter out AltTab windows by title (otherwise click behavior glitches while AltTab preferences is open) </string>
                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="info.square.fill" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="TCx-ZB-9Nr">
@@ -776,7 +776,7 @@
                         <action selector="openPrefs:" target="O8a-yd-nmn" id="mZt-e5-g4d"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Check for updates..." id="x2n-Jj-48N">
+                <menuItem title="Check for updates..." identifier="checkForUpdatesMenuItem" id="x2n-Jj-48N">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <binding destination="pIL-RE-lkR" name="target" keyPath="self" id="hNT-i5-Tyo">
@@ -811,8 +811,8 @@
         <userDefaultsController representsSharedInstance="YES" id="AiQ-vB-MjM"/>
     </objects>
     <resources>
-        <image name="NSRefreshFreestandingTemplate" width="19" height="19"/>
-        <image name="info.square.fill" catalog="system" width="16" height="14"/>
+        <image name="NSRefreshFreestandingTemplate" width="20" height="20"/>
+        <image name="info.square.fill" catalog="system" width="15" height="14"/>
         <namedColor name="AccentColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
