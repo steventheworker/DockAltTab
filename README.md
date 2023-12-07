@@ -2,7 +2,7 @@
 
 ### The One and Only companion app for AltTab
 
-### v2.91.0 download link https://github.com/steventheworker/DockAltTab/releases/download/v2.91.0/DockAltTab-v2.91.0.zip
+### v3.00.1 download link https://github.com/steventheworker/DockAltTab/releases/download/v3.00.1/DockAltTab-v3.00.1.zip
 
 ##### OR ALTERNATIVELY,
 
