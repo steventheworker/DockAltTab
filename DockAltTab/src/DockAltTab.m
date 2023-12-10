@@ -129,8 +129,8 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     } else {
         if (dockPos == DockLeft) {
             x = iconPt.x + iconSize.width;
-            x -= 10;
-        } else if (dockPos == DockRight) x += 12;
+            x -= 13;
+        } else if (dockPos == DockRight) x += 21.4;
         y = y - iconSize.height / 2;
     }
     return NSMakePoint(x, y);
