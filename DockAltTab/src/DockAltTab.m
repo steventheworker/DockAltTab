@@ -109,10 +109,28 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
 //            if ([[app localizedName] isEqual:@"Firefox Developer Edition"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox Developer Edition\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
 //        });
 //    }];
-    [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
+        [app activateWithOptions: NSApplicationActivateIgnoringOtherApps];
     //        applescript is slow, DO NOT RUN HERE, figure out how to perform the axraise in objective-c
 //            if ([[app localizedName] isEqual:@"Firefox"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
 //            if ([[app localizedName] isEqual:@"Firefox Developer Edition"]) [helperLib applescriptAsync: @"tell application \"System Events\" to tell process \"Firefox Developer Edition\" to if (count of windows > 0) then perform action \"AXRaise\" of item 1 of (windows whose not(title is \"Picture-in-Picture\"))" : ^(NSString* response) {}];
+    if ([app.localizedName hasPrefix: @"Firefox"]) [self firefoxActivated: app];
+}
++ (void) unhideApp: (NSRunningApplication*) app {
+    [app unhide];
+    if ([app.localizedName hasPrefix: @"Firefox"]) [self firefoxActivated: app];
+}
++ (void) firefoxActivated: (NSRunningApplication*) app {
+    BOOL hasPIP = NO;
+    id windowToFocusEl = nil;
+    id appEl = (__bridge id)(AXUIElementCreateApplication(app.processIdentifier));
+    NSArray* wins = [helperLib elementDict: (__bridge AXUIElementRef)(appEl) : @{@"wins": (id)kAXWindowsAttribute}][@"wins"];
+    for (id win in wins) {
+        NSString* title = [helperLib elementDict: (__bridge AXUIElementRef)(win) : @{@"title": (id)kAXTitleAttribute}][@"title"];
+        if ([@"Picture-in-Picture" isEqual: title]) hasPIP = YES;
+        else if (!windowToFocusEl) windowToFocusEl = appEl;
+        if (hasPIP && windowToFocusEl) break;
+    }
+    if (hasPIP && windowToFocusEl) AXUIElementPerformAction((AXUIElementRef)windowToFocusEl, kAXRaiseAction);
 }
 + (NSPoint) previewLocation: (CGPoint) cursorPos : (AXUIElementRef) iconEl {
     NSDictionary* elDict = [helperLib elementDict: iconEl : @{
@@ -262,7 +280,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
         if (type == kCGEventOtherMouseUp) return YES;
         if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
             if (tarApp.hidden) {
-                [tarApp unhide];
+                [self unhideApp: tarApp];
                 setTimeout(^{
                     [self activateApp: tarApp];
                     activationT = ACTIVATION_MILLISECONDS;
@@ -357,7 +375,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
                 return NO;
             }
             if (tarApp.hidden) {
-                [tarApp unhide];
+                [self unhideApp: tarApp];
                 setTimeout(^{
                     [self activateApp: tarApp];
                     activationT = ACTIVATION_MILLISECONDS;
@@ -435,7 +453,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
                     return NO;
                 }
                 if (tarApp.hidden) {
-                    [tarApp unhide];
+                    [self unhideApp: tarApp];
                     setTimeout(^{
                         [self activateApp: tarApp];
                         activationT = ACTIVATION_MILLISECONDS;
