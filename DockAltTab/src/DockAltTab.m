@@ -127,7 +127,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     for (id win in wins) {
         NSString* title = [helperLib elementDict: (__bridge AXUIElementRef)(win) : @{@"title": (id)kAXTitleAttribute}][@"title"];
         if ([@"Picture-in-Picture" isEqual: title]) hasPIP = YES;
-        else if (!windowToFocusEl) windowToFocusEl = appEl;
+        else if (!windowToFocusEl) windowToFocusEl = win;
         if (hasPIP && windowToFocusEl) break;
     }
     if (hasPIP && windowToFocusEl) AXUIElementPerformAction((AXUIElementRef)windowToFocusEl, kAXRaiseAction);
