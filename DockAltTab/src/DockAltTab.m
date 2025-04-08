@@ -8,6 +8,7 @@
 #import "DockAltTab.h"
 #import "globals.h"
 #import "helperLib.h"
+#import "prefs.h"
 #import "SupportedAltTabAttacher.h"
 
 const float PREVIEW_INTERVAL_TICK_DELAY =  0.333; // 0.16666665; // 0.33333 / 2   seconds
@@ -22,7 +23,8 @@ id dockContextMenuClickee; //the dock separator element that was right clicked
 
 
 int DATMode; // 1 = macos, 2 = ubuntu, 3 = windows (default value set in prefsWindowController)
-int previewDelay = 0;
+int previewDelay = 0;int previewHideDelay = 0;
+float previewGutter = 0;
 NSMutableDictionary* mousedownDict;
 NSMutableDictionary* mousemoveDict;
 NSTimer* previewIntervalTimer;
@@ -30,27 +32,38 @@ CGPoint cursorPos;
 CGRect lastPreviewWinBounds;
 int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 
-void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDict) {
+int onScreenFinderWindows(void) { //returns 0 if app hidden (but then grabbing windows from appElement w/ AXUI should be accurate! but can we tell if they belong to the current space?)
+    NSArray* wins = CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID));
+    int count = 0;for (NSDictionary* win in wins) {
+        if (![win[(id)kCGWindowOwnerName] isEqual: @"Finder"]) continue; //not finder
+        if (![win[(id)kCGWindowIsOnscreen] boolValue]) continue; //not onscreen
+        if ([win[(id)kCGWindowLayer] intValue] != 0) continue; // not regular window layer, could be desktop window, etc.
+        count += 1;
+    }
+    return count;
+}
+
+void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     //live onchange of dock settings (dockPos, dockautohide)
     if ([elDict[@"PID"] intValue] == dockPID) {
         if ([elDict[@"subrole"] isEqual: @"AXSeparatorDockItem"] &&
             (type == kCGEventRightMouseDown || (type == kCGEventOtherMouseUp && [mousedownDict[@"subrole"] isEqual: @"AXSeparatorDockItem"]))
         ) { //cache the element so if a context menu item is selected we'll compare & know when a dock setting changes
-            dockContextMenuClickee = (__bridge id)el;
+            dockContextMenuClickee = el;
         }
     }
     if ([elDict[@"role"] isEqual: @"AXMenuItem"]) { //context menu item is being selected/triggered
         if (dockContextMenuClickee && type == kCGEventLeftMouseUp) {
-            __block NSArray* children = [helperLib elementDict: (__bridge AXUIElementRef)dockContextMenuClickee : @{@"children": (id)kAXChildrenAttribute}][@"children"];
+            __block NSArray* children = [helperLib elementDict: dockContextMenuClickee : @{@"children": (id)kAXChildrenAttribute}][@"children"];
             if (children.count) { //there is a menu!
-                children = [helperLib elementDict: (__bridge AXUIElementRef)(children[0]) : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //menu items
-                if (CFEqual((__bridge AXUIElementRef)children[0], el)) dockAutohide = !dockAutohide; //the first menu item is "Turn Hiding On/Off"
+                children = [helperLib elementDict: children[0] : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //menu items
+                if (CFEqual((__bridge AXUIElementRef)children[0], (__bridge AXUIElementRef)el)) dockAutohide = !dockAutohide; //the first menu item is "Turn Hiding On/Off"
                 else {
-                    children = [helperLib elementDict: (__bridge AXUIElementRef)(children[2]) : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //Position on screen items menu
-                    children = [helperLib elementDict: (__bridge AXUIElementRef)(children[0]) : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //Position on screen items menu children
-                    if (CFEqual((__bridge AXUIElementRef)children[0], el)) dockPos = DockLeft;
-                    if (CFEqual((__bridge AXUIElementRef)children[1], el)) dockPos = DockBottom;
-                    if (CFEqual((__bridge AXUIElementRef)children[2], el)) dockPos = DockRight;
+                    children = [helperLib elementDict: children[2] : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //Position on screen items menu
+                    children = [helperLib elementDict: children[0] : @{@"children": (id)kAXChildrenAttribute}][@"children"]; //Position on screen items menu children
+                    if (CFEqual((__bridge AXUIElementRef)children[0], (__bridge AXUIElementRef)el)) dockPos = DockLeft;
+                    if (CFEqual((__bridge AXUIElementRef)children[1], (__bridge AXUIElementRef)el)) dockPos = DockBottom;
+                    if (CFEqual((__bridge AXUIElementRef)children[2], (__bridge AXUIElementRef)el)) dockPos = DockRight;
                 }
             }
         }
@@ -65,6 +78,10 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     [self loadDockRect];
     [self loadDockPos];
     [self loadDockAutohide];
+    [self setMode: [prefs getIntPref: @"previewMode"]];
+    [self setDelay: [prefs getIntPref: @"previewDelay"] * 10 * 2];
+    [self setHideDelay: [prefs getIntPref: @"previewHideDelay"] * 10 * 2];
+    [self setGutter: [prefs getIntPref: @"previewGutter"]];
     mousedownDict = [NSMutableDictionary dictionary];
 }
 + (void) setMode: (int) mode {
@@ -79,6 +96,8 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     }
 }
 + (void) setDelay: (int) milliseconds {previewDelay = milliseconds;}
++ (void) setHideDelay: (int) milliseconds {previewHideDelay = milliseconds;}
++ (void) setGutter: (int) gutter {previewGutter = gutter;}
 + (void) reconnectDock {
     [self loadDockPID];
     [self loadDockAutohide];
@@ -90,7 +109,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
 + (pid_t) loadDockPID {dockPID = [helperLib appWithBID: @"com.apple.dock"].processIdentifier;return dockPID;}
 + (pid_t) loadAltTabPID {AltTabPID = [helperLib appWithBID: @"com.steventheworker.alt-tab-macos"].processIdentifier;return AltTabPID;}
 + (CGRect) loadDockRect {dockRect = [helperLib dockRect];return dockRect;}
-+ (NSMutableDictionary*) elDict: (AXUIElementRef) el { //easy access to most referenced attributes
++ (NSMutableDictionary*) elDict: (id) el { //easy access to most referenced attributes
     return [NSMutableDictionary dictionaryWithDictionary: [helperLib elementDict: el : @{
         @"title": (id)kAXTitleAttribute,
         @"role": (id)kAXRoleAttribute,
@@ -123,16 +142,16 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     BOOL hasPIP = NO;
     id windowToFocusEl = nil;
     id appEl = (__bridge id)(AXUIElementCreateApplication(app.processIdentifier));
-    NSArray* wins = [helperLib elementDict: (__bridge AXUIElementRef)(appEl) : @{@"wins": (id)kAXWindowsAttribute}][@"wins"];
+    NSArray* wins = [helperLib elementDict: appEl : @{@"wins": (id)kAXWindowsAttribute}][@"wins"];
     for (id win in wins) {
-        NSString* title = [helperLib elementDict: (__bridge AXUIElementRef)(win) : @{@"title": (id)kAXTitleAttribute}][@"title"];
+        NSString* title = [helperLib elementDict: win : @{@"title": (id)kAXTitleAttribute}][@"title"];
         if ([@"Picture-in-Picture" isEqual: title]) hasPIP = YES;
         else if (!windowToFocusEl) windowToFocusEl = win;
         if (hasPIP && windowToFocusEl) break;
     }
     if (hasPIP && windowToFocusEl) AXUIElementPerformAction((AXUIElementRef)windowToFocusEl, kAXRaiseAction);
 }
-+ (NSPoint) previewLocation: (CGPoint) cursorPos : (AXUIElementRef) iconEl {
++ (NSPoint) previewLocation: (CGPoint) cursorPos : (id) iconEl {
     NSDictionary* elDict = [helperLib elementDict: iconEl : @{
         @"pos": (id)kAXPositionAttribute,
         @"size": (id)kAXSizeAttribute
@@ -154,7 +173,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     return NSMakePoint(x, y);
 }
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt {
-    AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
+    id iconEl = (DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"];
     NSPoint loc = [self previewLocation: pt : iconEl];
     float x = loc.x;float y = loc.y;
 //    if (DockRight && endofscreenx - iconSize.width) {
@@ -163,10 +182,12 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
 //    if (DockBottom && y < 30) {
 //        
 //    }
+    if (dockPos == DockBottom) y += previewGutter;
+    else x += dockPos == DockLeft ? previewGutter : -previewGutter;
     return [NSString stringWithFormat: DATShowStringFormat, appBID, x, y, dockPos == DockBottom ? @"bottom" : (dockPos == DockLeft ? @"left" : @"right")];
 }
 + (void) showPreview: (NSString*) tarBID {
-    AXUIElementRef iconEl = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
+    id iconEl = (DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"];
     NSDictionary* elDict = [helperLib elementDict: iconEl : @{
         @"pos": (id)kAXPositionAttribute,
         @"size": (id)kAXSizeAttribute
@@ -174,12 +195,11 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     NSPoint iconPt = [helperLib NSPointFromCGPoint: CGPointMake([elDict[@"pos"][@"x"] floatValue], [elDict[@"pos"][@"y"] floatValue])];
     NSSize iconSize = NSMakeSize([elDict[@"size"][@"width"] floatValue], [elDict[@"size"][@"height"] floatValue]);
         
-    id iconElID = (__bridge id)(iconEl);
     CGPoint cachedCursorPos = cursorPos;
     setTimeout(^{
-        AXUIElementRef iconEl2 = (__bridge AXUIElementRef) ((DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"]);
-        if ((__bridge id)iconEl2 != iconElID) return;
-        NSDictionary* elDict2 = [helperLib elementDict: (__bridge AXUIElementRef) iconElID : @{
+        id iconEl2 = (DATMode == 2) ? mousedownDict[@"el"] : mousemoveDict[@"el"];
+        if (iconEl2 != iconEl) return;
+        NSDictionary* elDict2 = [helperLib elementDict: iconEl : @{
             @"pos": (id)kAXPositionAttribute,
             @"size": (id)kAXSizeAttribute
         }];
@@ -225,11 +245,11 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
  events for each DATMode:  1:MacOS 2:Ubuntu 3:Windows
 */
 /* DATMode:1      MacOS */
-+ (BOOL) mousemoveMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mousemoveMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     [self mousemoveWindows: proxy : type : event : refcon : el : elDict];
     return YES;
 }
-+ (BOOL) mousedownMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mousedownMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
@@ -244,10 +264,11 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
         NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
         mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
             @"tarAppActive": @(tarApp.active),
-            @"el": (__bridge id _Nonnull)(el)
+            @"el": el,
         }];
         if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-        if (!previewWindowsCount) {
+        NSLog(@"%d", previewWindowsCount);
+        if (previewWindowsCount == 0 || ([tarApp.localizedName isEqual: @"Finder"] && !tarApp.isHidden && !onScreenFinderWindows())) {
             if ([tarApp.localizedName isEqual: @"Finder"]) {
                 [helperLib newFinderWindow];
                 return NO;
@@ -259,7 +280,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     }
     return YES;
 }
-+ (BOOL) mouseupMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mouseupMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
     
@@ -299,14 +320,14 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     return YES;
 }
 /* DATMode:3      Windows */
-+ (BOOL) mousemoveWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mousemoveWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([elDict[@"PID"] intValue] == dockPID) {
         if ([elDict[@"running"] intValue]) { //check if should show?
             NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
             if ([mousemoveDict[@"tarBID"] isEqual: tarBID]) return YES;
             mousemoveDict = [NSMutableDictionary dictionaryWithDictionary: @{
                 //            @"tarAppActive": @(tarApp.active),
-                @"el": (__bridge id _Nonnull)(el),
+                @"el": el,
                 @"tarBID": tarBID
             }];
             if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
@@ -324,7 +345,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     }
     return YES;
 }
-+ (BOOL) mousedownWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mousedownWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
@@ -339,7 +360,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
         NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
         mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
             @"tarAppActive": @(tarApp.active),
-            @"el": (__bridge id _Nonnull)(el)
+            @"el": el
         }];
         if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
         if (!previewWindowsCount) {
@@ -350,7 +371,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     }
     return YES;
 }
-+ (BOOL) mouseupWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mouseupWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
 
@@ -394,7 +415,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     return YES;
 }
 /* DATMode:2      Ubuntu */
-+ (BOOL) mousedownUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mousedownUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
      
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
@@ -409,7 +430,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
         NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
         mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
             @"tarAppActive": @(tarApp.active),
-            @"el": (__bridge id _Nonnull)(el)
+            @"el": el
         }];
         if (/* type == kCGEventOtherMouseDown && */ [self isPreviewWindowShowing]) {
             mousedownDict[@"previewWasOpenOnDownFlag"] = @1;
@@ -423,7 +444,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     }
     return YES;
 }
-+ (BOOL) mouseupUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {
++ (BOOL) mouseupUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
     
@@ -476,7 +497,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (CGPoint) pos {
 //    NSLog(@"mm");
     cursorPos = pos;
-    AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
+    id el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mousemoveMacOS: proxy : type : event : refcon : el : elDict];
@@ -484,10 +505,10 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
     if (DATMode == 3) ret = [self mousemoveWindows: proxy : type : event : refcon : el : elDict];
     return ret;
 }
-+ (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict {return YES;}
++ (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {return YES;}
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
     NSLog(@"md");
-    AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
+    id el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     
     checkForDockChange(type, el, elDict);
@@ -500,7 +521,7 @@ void checkForDockChange(CGEventType type, AXUIElementRef el, NSDictionary* elDic
 }
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
     NSLog(@"mu");
-    AXUIElementRef el =  (__bridge AXUIElementRef)([helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]]);
+    id el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     
     checkForDockChange(type, el, elDict);

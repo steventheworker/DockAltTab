@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -127,47 +127,23 @@
                             <rect key="frame" x="4" y="5" width="241" height="139"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField toolTip="Only applies when &quot;Hover to preview&quot; is selected" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aQn-Cq-kRN">
-                                    <rect key="frame" x="5" y="25" width="37" height="16"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="delay" id="uAW-d9-1nM">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField identifier="delayLabel" toolTip="Only applies when &quot;Hover to preview&quot; is selected" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lm7-mr-a7N">
-                                    <rect key="frame" x="133" y="24" width="36" height="16"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.00" id="0Dk-9q-bsV">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField toolTip="Only applies when &quot;Hover to preview&quot; is selected" focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZZ-HR-Bye">
-                                    <rect key="frame" x="167" y="24" width="65" height="16"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="o0V-Ms-eEk">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <slider identifier="delaySlider" toolTip="Only applies when &quot;Hover to preview&quot; is selected" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0bW-TO-5zk">
-                                    <rect key="frame" x="42" y="15" width="89" height="28"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <sliderCell key="cell" continuous="YES" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="ZhI-gb-By5"/>
-                                    <connections>
-                                        <action selector="delayChanged:" target="-2" id="i0w-qF-PB8"/>
-                                    </connections>
-                                </slider>
                                 <view identifier="modeBtns" wantsLayer="YES" id="qml-Xu-iGY">
-                                    <rect key="frame" x="0.0" y="68" width="100" height="66"/>
+                                    <rect key="frame" x="0.0" y="66" width="241" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <button toolTip="Previews on hover w/ space switching. (Equivalent to 'Windows' mode (for now))" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ds4-uK-002">
+                                            <rect key="frame" x="5" y="52" width="70" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="radio" title="MacOS" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="3ip-ye-lcT">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="modeBtn:" target="-2" id="CqY-iy-VPZ"/>
+                                            </connections>
+                                        </button>
                                         <button toolTip="Left/Middle click shows previews w/ no space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EKL-oI-DsK">
-                                            <rect key="frame" x="9" y="16" width="71" height="18"/>
+                                            <rect key="frame" x="79" y="52" width="71" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="radio" title="Ubuntu" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="eab-3g-YjP">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -178,7 +154,7 @@
                                             </connections>
                                         </button>
                                         <button toolTip="Windows™ Style - previews on hover w/ no space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IHI-Gh-R9a">
-                                            <rect key="frame" x="9" y="-8" width="81" height="18"/>
+                                            <rect key="frame" x="153" y="52" width="81" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="radio" title="Windows" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="J6C-A6-bF2">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -188,19 +164,132 @@
                                                 <action selector="modeBtn:" target="-2" id="Y81-aV-AF5"/>
                                             </connections>
                                         </button>
-                                        <button toolTip="Previews on hover w/ space switching." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ds4-uK-002">
-                                            <rect key="frame" x="9" y="41" width="70" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="radio" title="MacOS" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="3ip-ye-lcT">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="modeBtn:" target="-2" id="CqY-iy-VPZ"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                 </view>
+                                <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="nIZ-mI-oEB">
+                                    <rect key="frame" x="0.0" y="109" width="239" height="5"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                </box>
+                                <textField toolTip="The delay before showing a preview. Does not apply to Ubuntu mode." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aQn-Cq-kRN">
+                                    <rect key="frame" x="2" y="79" width="35" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" id="uAW-d9-1nM">
+                                        <font key="font" metaFont="smallSystem"/>
+                                        <string key="title">show
+delay</string>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <slider identifier="delaySlider" toolTip="The delay before showing a preview. Does not apply to Ubuntu mode." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0bW-TO-5zk">
+                                    <rect key="frame" x="52" y="76" width="89" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="ZhI-gb-By5"/>
+                                    <connections>
+                                        <action selector="delayChanged:" target="-2" id="i0w-qF-PB8"/>
+                                    </connections>
+                                </slider>
+                                <textField identifier="delayLabel" toolTip="The delay before showing a preview. Does not apply to Ubuntu mode." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lm7-mr-a7N">
+                                    <rect key="frame" x="141" y="85" width="36" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.00" id="0Dk-9q-bsV">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField toolTip="The delay before showing a preview. Does not apply to Ubuntu mode." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZZ-HR-Bye">
+                                    <rect key="frame" x="174" y="86" width="53" height="13"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="o0V-Ms-eEk">
+                                        <font key="font" metaFont="system" size="10"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Zjn-0n-4md">
+                                    <rect key="frame" x="0.0" y="71" width="239" height="5"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                </box>
+                                <textField toolTip="The delay before hiding previews. Does not apply to Ubuntu mode." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kKK-5A-0oL">
+                                    <rect key="frame" x="2" y="42" width="35" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" id="lXl-Tn-xmW">
+                                        <font key="font" metaFont="smallSystem"/>
+                                        <string key="title">hide
+delay</string>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <slider identifier="hideDelaySlider" toolTip="The delay before hiding previews. Does not apply to Ubuntu mode." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uXc-EW-exX">
+                                    <rect key="frame" x="52" y="39" width="89" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" tickMarkPosition="above" sliderType="linear" id="JMm-nD-KRw"/>
+                                    <connections>
+                                        <action selector="hideDelayChanged:" target="-2" id="EFz-QW-46E"/>
+                                    </connections>
+                                </slider>
+                                <textField identifier="hideDelayLabel" toolTip="The delay before hiding previews. Does not apply to Ubuntu mode." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RCL-aD-gMT">
+                                    <rect key="frame" x="141" y="48" width="36" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="0.00" id="ZaA-Zz-drO">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField toolTip="The delay before hiding previews. Does not apply to Ubuntu mode." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nGk-k6-oqu">
+                                    <rect key="frame" x="174" y="49" width="53" height="13"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="second(s)" id="pPy-1Y-WiU">
+                                        <font key="font" metaFont="system" size="10"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="lKp-bM-uGK">
+                                    <rect key="frame" x="0.0" y="36" width="239" height="5"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                </box>
+                                <textField toolTip="Adjust the distance between previews and the dock." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CLS-Jp-9N3">
+                                    <rect key="frame" x="1" y="7" width="49" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" id="BPI-7z-k6h">
+                                        <font key="font" metaFont="smallSystem"/>
+                                        <string key="title">preview
+distance</string>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <slider identifier="delaySlider" toolTip="Adjust the distance between previews and the dock." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="laj-a6-cqf">
+                                    <rect key="frame" x="57" y="4" width="124" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-200" maxValue="200" tickMarkPosition="above" numberOfTickMarks="3" sliderType="linear" id="MB9-Am-d68">
+                                        <connections>
+                                            <action selector="gutterChanged:" target="-2" id="Snl-iw-ZBR"/>
+                                        </connections>
+                                    </sliderCell>
+                                </slider>
+                                <textField identifier="gutterLabel" toolTip="Adjust the distance between previews and the dock." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bbC-Ua-BhQ">
+                                    <rect key="frame" x="177" y="13" width="49" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="-200.0" id="Nxn-Ak-fl7">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField toolTip="Adjust the distance between previews and the dock." focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y3G-ME-da9">
+                                    <rect key="frame" x="220" y="15" width="16" height="13"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="px" id="gVo-of-aMV">
+                                        <font key="font" metaFont="system" size="10"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
                             </subviews>
                         </view>
                         <font key="titleFont" metaFont="systemBold" size="14"/>
@@ -271,7 +360,7 @@
                                         <action selector="updateChoice:" target="-2" id="jV2-WD-aZl"/>
                                     </connections>
                                 </button>
-                                <button identifier="updateManualBtn" toolTip="Dock Exposé won't check for updates." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QnA-5o-yK7">
+                                <button identifier="updateManualBtn" toolTip="DockAltTab won't check for updates." verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QnA-5o-yK7">
                                     <rect key="frame" x="10" y="61" width="193" height="18"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="radio" title="Manually check for updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="dq5-AJ-Toq">

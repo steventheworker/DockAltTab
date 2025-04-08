@@ -13,7 +13,7 @@ const int DOCK_BOTTOM_PADDING = 6; //eg: if screen 1080px, dock pos.y is actuall
 NSDictionary* listenOnlyEvents = @{@"mousemove": @1}; //events that you probably shouldn't modify:    mousemove causes xcode to crash when selecting lines w/ kcgtapoptionDefault)
 
 AXUIElementRef systemWideElement;
-AXUIElementRef dockAppRef;
+id dockAppRef;
 
 /* events */
 NSMutableArray* eventTapRefs; // CFMachPortRef's (for restarting events / stopping)
@@ -63,7 +63,8 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     if (result != kAXErrorSuccess) NSLog(@"%f, %f elementAtPoint failed", pt.x, pt.y);
     return (__bridge_transfer id)element; // ARC takes ownership, otherwise need to call CFRelease somewhere down the line
 }
-+ (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict {
++ (NSDictionary*) elementDict: (id) elID : (NSDictionary*) attributeDict {
+    AXUIElementRef el = (__bridge AXUIElementRef)(elID);
     if (!el) return @{};
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     for (NSString* attributeName in attributeDict) {
@@ -588,17 +589,16 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSArray* dockPosStrings = @[@"left", @"bottom", @"right"];
     return (int)[dockPosStrings indexOfObject: pos ? pos : @"bottom"];
 }
-+ (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild {
++ (id) dockAppElementFromDockChild: (id) dockChild {
     NSDictionary* recursiveDict = @{
         @"role": (id)kAXRoleAttribute,
         @"parent": (id)kAXParentAttribute,
         @"PID": (id)kAXPIDAttribute
     };
     NSDictionary* dict = [self elementDict: dockChild : recursiveDict];
-    AXUIElementRef parent = (__bridge AXUIElementRef)(dict[@"parent"]);
-    NSDictionary* parentDict = [self elementDict: parent : recursiveDict];
-    if ([parentDict[@"role"] isEqual: @"AXApplication"]) return parent;
-    return [self dockAppElementFromDockChild: parent];
+    NSDictionary* parentDict = [self elementDict: dict[@"parent"] : recursiveDict];
+    if ([parentDict[@"role"] isEqual: @"AXApplication"]) return dict[@"parent"];
+    return [self dockAppElementFromDockChild: dict[@"parent"]];
 }
 + (CGPoint) normalizePointForDockGap: (CGPoint) pt : (int) dockPos { //clicking the bottom 5px gap of the screen gives no PID, even though the dock icons are clickable... we pretend we clicked 5px higher
     NSScreen* screen = [self screenAtCGPoint: pt];
@@ -673,13 +673,12 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
             float x = ([self dockPos] == DockLeft) ? DOCK_BOTTOM_PADDING : focusedScreen.frame.size.width - DOCK_BOTTOM_PADDING - 5; //right dock for some reason has 5 more pixels padding...
             testPoint = CGPointMake(x, focusedScreen.frame.size.height / 2);
         }
-        dockAppRef = [self dockAppElementFromDockChild: (__bridge AXUIElementRef _Nonnull)([helperLib elementAtPoint: testPoint])];
+        dockAppRef = [self dockAppElementFromDockChild: [helperLib elementAtPoint: testPoint]];
         [self toggleDock];
     }
     NSArray* children = [helperLib elementDict: dockAppRef : @{@"children": (id)kAXChildrenAttribute}][@"children"];
-    AXUIElementRef dockListElement = NULL;
-    for (id elID in children) {
-        AXUIElementRef el = (__bridge AXUIElementRef) elID;
+    id dockListElement = NULL;
+    for (id el in children) {
         if ([[self elementDict: el : @{@"role": (id)kAXRoleAttribute}][@"role"] isEqual: @"AXList"]) dockListElement = el;
     }
     NSDictionary* listDict = [helperLib elementDict: dockListElement : @{

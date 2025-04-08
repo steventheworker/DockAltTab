@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) init;
 + (void) setMode: (int) mode;
 + (void) setDelay: (int) milliseconds;
++ (void) setHideDelay: (int) milliseconds;
++ (void) setGutter: (int) gutter;
 + (void) startPreviewInterval;
 + (void) stopPreviewInterval;
 + (void) timerTick: (NSTimer*) arg;
@@ -23,21 +25,21 @@ NS_ASSUME_NONNULL_BEGIN
 + (int) loadDockPos;
 + (CGRect) loadDockRect;
 + (void) reconnectDock;
-+ (NSMutableDictionary*) elDict: (AXUIElementRef) el;
++ (NSMutableDictionary*) elDict: (id) el;
 + (void) activateApp: (NSRunningApplication*) app;
-+ (NSPoint) previewLocation: (CGPoint) cursorPos : (AXUIElementRef) iconEl;
++ (NSPoint) previewLocation: (CGPoint) cursorPos : (id) iconEl;
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt;
 + (void) hidePreviewWindow;
 + (BOOL) isPreviewWindowShowing;
 + (BOOL) mousemove:         (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (CGPoint) pos;
-+ (BOOL) mousemoveUbuntu:   (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
-+ (BOOL) mousemoveWindows:  (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
++ (BOOL) mousemoveUbuntu:   (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
++ (BOOL) mousemoveWindows:  (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
 + (BOOL) mousedown:         (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon;
-+ (BOOL) mousedownUbuntu:   (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
-+ (BOOL) mousedownWindows:  (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
++ (BOOL) mousedownUbuntu:   (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
++ (BOOL) mousedownWindows:  (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
 + (BOOL) mouseup:          (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon;
-+ (BOOL) mouseupUbuntu:     (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
-+ (BOOL) mouseupWindows:    (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (AXUIElementRef) el : (NSMutableDictionary*) elDict;
++ (BOOL) mouseupUbuntu:     (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
++ (BOOL) mouseupWindows:    (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
 + (void) spaceChanged: (NSNotification*) note;
 @end
 

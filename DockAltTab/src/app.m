@@ -8,9 +8,12 @@
 #import "app.h"
 #import "globals.h"
 #import "helperLib.h"
+#import "prefs.h"
 #import "prefsWindowController.h"
 #import "DockAltTab.h"
+#import "SupportedAltTabAttacher.h"
 
+NSSet<NSRunningApplication*>* previousValueOfRunningApps;
 @implementation App
 + (instancetype) init: (NSWindow*) window : (NSMenu*) iconMenu : (AXUIElementRef) systemWideAccessibilityElement {
     App* app = [[self alloc] init];
@@ -27,13 +30,14 @@
     [app addMenuIcon: iconMenu]; // adds menu icon / references
     
     //load nib/xib prefsWindow
-    app->prefsController = [[prefsWindowController alloc] initWithWindowNibName: @"prefs"];
+    app->prefsController = [prefsWindowController.alloc initWithWindowNibName: @"prefs"];
     [app->prefsController loadWindow];
     
+    [app mousemoveLess: [prefs getIntPref: @"previewMode"] == 2]; // ubuntu is mousemoveless
     [app startListening];
     [DockAltTab init];
     
-    setTimeout(^{app->isSparkleUpdaterOpen = [helperLib isSparkleUpdaterOpen];}, 1000);
+    setTimeout(^{app->isSparkleUpdaterOpen = helperLib.isSparkleUpdaterOpen;}, 1000);
     return app;
 }
 
@@ -50,14 +54,18 @@
 - (void) startListening {
     /* observers */
     // on app became active (open prefs window)
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
+    [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(appBecameActive:) name: NSApplicationDidBecomeActiveNotification object: nil];
     // on app window closed
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(windowWillClose:) name: NSWindowWillCloseNotification object: nil];
+    [NSNotificationCenter.defaultCenter addObserver: self selector: @selector(windowWillClose:) name: NSWindowWillCloseNotification object: nil];
     //on space change
-    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName: NSWorkspaceActiveSpaceDidChangeNotification object: [NSWorkspace sharedWorkspace] queue: nil usingBlock:^(NSNotification * _Nonnull note) {
+    [NSWorkspace.sharedWorkspace.notificationCenter addObserverForName: NSWorkspaceActiveSpaceDidChangeNotification object: NSWorkspace.sharedWorkspace queue: nil usingBlock:^(NSNotification * _Nonnull note) {
         [DockAltTab spaceChanged: note];
     }];
     
+    //on app launched/terminated
+    previousValueOfRunningApps = [NSSet setWithArray: NSWorkspace.sharedWorkspace.runningApplications];
+    [NSWorkspace.sharedWorkspace addObserver: self forKeyPath: @"runningApplications" options: /*NSKeyValueObservingOptionOld | */ NSKeyValueObservingOptionNew context: NULL];
+
     /* cgeventtap's */
     //mouse events
     [helperLib on: @"mousedown" : ^BOOL(CGEventTapProxy _Nonnull proxy, CGEventType type, CGEventRef  _Nonnull event, void * _Nonnull refcon) {
@@ -95,6 +103,31 @@
 
     // raise main window
     [self openPrefs];
+}
+- (void)appLaunched: (NSRunningApplication*) app {
+//    NSLog(@"App launched: %@ — '%@' — %d", app.bundleIdentifier, app.localizedName, app.processIdentifier);
+    if ([app.bundleIdentifier isEqual: @"com.steventheworker.alt-tab-macos"] || [app.bundleIdentifier isEqual: @"com.lwouis.alt-tab-macos"])
+        setTimeout(^{[SupportedAltTabAttacher init: ^{[DockAltTab loadAltTabPID];}];}, 1000); //AltTab takes a sec to finish launch
+    if ([app.bundleIdentifier isEqual: @"com.apple.dock"]) [DockAltTab loadDockPID];
+}
+
+- (void)appTerminated :(NSRunningApplication*) app {
+//    NSLog(@"App terminated: %@ — '%@' — %d", app.bundleIdentifier, app.localizedName, app.processIdentifier);
+    if ([app.bundleIdentifier isEqual: @"com.steventheworker.alt-tab-macos"] || [app.bundleIdentifier isEqual: @"com.lwouis.alt-tab-macos"])
+        setTimeout(^{[SupportedAltTabAttacher init: ^{[DockAltTab loadAltTabPID];}];}, 333);
+}
+
+//observe any nsrunningapps list change (ie: forKeyPath: @"runningApplications)
+NSSet* runningApps;
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey, id> *)change context:(void *)context {
+    NSSet<NSRunningApplication*>* workspaceApps = [NSSet setWithArray: NSWorkspace.sharedWorkspace.runningApplications];
+    NSMutableSet<NSRunningApplication*>* diff = [workspaceApps mutableCopy];
+    [diff minusSet: previousValueOfRunningApps];
+    for (NSRunningApplication* app in diff) [self appLaunched: app];
+    NSMutableSet<NSRunningApplication*>* terminatedApps = [previousValueOfRunningApps mutableCopy];
+    [terminatedApps minusSet: workspaceApps];
+    for (NSRunningApplication* app in terminatedApps) [self appTerminated: app];
+    previousValueOfRunningApps = workspaceApps;
 }
 
 

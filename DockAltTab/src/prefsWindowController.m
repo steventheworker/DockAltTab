@@ -12,7 +12,7 @@
 #import "DockAltTab.h"
 #import "../AppDelegate.h"
 
-NSDictionary* modeDict = @{@"MacOS": @1, @"Ubuntu": @2, @"Windows": @3};
+NSDictionary<NSString*, NSNumber*>* modeDict = @{@"MacOS": @1, @"Ubuntu": @2, @"Windows": @3};
 void dockSettingFloat(CFStringRef pref, float val) { //accepts int or Boolean (as int) settings only
     CFPreferencesSetAppValue(pref, (__bridge CFPropertyListRef _Nullable)([NSNumber numberWithFloat:val]), CFSTR("com.apple.dock"));
     CFPreferencesAppSynchronize(CFSTR("com.apple.dock"));
@@ -41,6 +41,8 @@ float getDockFloatPref(NSString* key) {
         @"previewMode": @1, //hoverPreviews
         @"spaceSwitchingDisabled": @YES,
         @"previewDelay": @0,
+        @"previewHideDelay": @0,
+        @"previewGutter": @0,
         @"updatePolicy": @"autocheck" /* manual / autocheck / autoinstall */
     }]);
 //    [helperLib activateWindow: [self window]]; //activate on launch
@@ -48,7 +50,7 @@ float getDockFloatPref(NSString* key) {
     if ([prefs getIntPref: @"previewMode"] == 2) setTimeout(^{[((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: YES];}, 0); //wait for del->app to be defined before clickMode==mousemoveless
 
 //    //render
-    [self modeBtn: [[self radioContainer] accessibilityChildren][2 /* index of child titled MacOS */]];
+//    [self modeBtn: [[self radioContainer] accessibilityChildren][2 /* index of child titled MacOS */]];
     for (NSButtonCell* cell in [[self radioContainer] accessibilityChildren]) [cell setFocusRingType: NSFocusRingTypeNone]; // Remove NSFocusRing (focus border/outline)
 }
 - (void) setUpdatePolicy {
@@ -75,12 +77,24 @@ float getDockFloatPref(NSString* key) {
 
     //select mode radio btn
     int previewMode = [prefs getIntPref: @"previewMode"];
-    ((NSButton*) [helperLib $0: self.window.contentView : (previewMode == 1) ? @"hoverModeBtn" : @"clickModeBtn"]).cell.state = YES;
+    NSString* mode;for (mode in modeDict) if (modeDict[mode].intValue == previewMode) break;
+    for (NSButtonCell* cell in self.radioContainer.accessibilityChildren) if ([cell.title isEqual: mode]) cell.state = YES;
 
     //delay slider & label
     ((NSSlider*) [helperLib $0: self.window.contentView : @"delaySlider"]).floatValue = [prefs getFloatPref: @"previewDelay"];
     NSString* twoSigFigs = [NSString stringWithFormat: @"%.02f", [prefs getFloatPref: @"previewDelay"] / 100 * 2];
     ((NSTextField*) [helperLib $0: self.window.contentView : @"delayLabel"]).cell.title = twoSigFigs;
+
+    //delay slider & label
+    ((NSSlider*) [helperLib $0: self.window.contentView : @"hideDelaySlider"]).floatValue = [prefs getFloatPref: @"previewHideDelay"];
+    twoSigFigs = [NSString stringWithFormat: @"%.02f", [prefs getFloatPref: @"previewHideDelay"] / 100 * 2];
+    ((NSTextField*) [helperLib $0: self.window.contentView : @"hideDelayLabel"]).cell.title = twoSigFigs;
+
+    //gutter slider & label
+    ((NSSlider*) [helperLib $0: self.window.contentView : @"gutterSlider"]).floatValue = [prefs getFloatPref: @"previewGutter"];
+    int val =  [prefs getFloatPref: @"previewGutter"];
+    twoSigFigs = (float)((int)val) == val ? [NSString stringWithFormat: @"%d", (int)val] : [NSString stringWithFormat: @"%.1d", val];
+    ((NSTextField*) [helperLib $0: self.window.contentView : @"gutterLabel"]).cell.title = twoSigFigs;
     
     //check/uncheck spaceSwitching
 //    ((NSButton*) [helperLib $0: self.window.contentView : @"spaceSwitchingDisabledBtn"]).cell.state = [prefs getBoolPref: @"spaceSwitchingDisabled"];
@@ -131,7 +145,7 @@ float getDockFloatPref(NSString* key) {
     NSArray* children = [[self radioContainer] accessibilityChildren];
     for (NSButtonCell* cell in children) [cell setState: [cell.title isEqual: [sender title]] ? NSControlStateValueOn : NSControlStateValueOff];
     [DockAltTab setMode: [modeDict[[sender title]] intValue]];
-    //    [prefs setIntPref: @"previewMode" : mode];
+    [prefs setIntPref: @"previewMode" : [modeDict[[sender title]] intValue]];
     setTimeout(^{ //ubuntu mode doesn't need mousemove (workaround for powerpoint notes bug where using ANY method to read the mouse coordinates causes the notes section to lose focus)
         [((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: [[sender title] isEqual: @"Ubuntu"] ? YES : NO];
     }, 0); //wait to do it, since awakeFromNib calls .modeBtn immediately (AppDelegate->app is nil)
@@ -146,6 +160,20 @@ float getDockFloatPref(NSString* key) {
     ((NSTextField*) [helperLib $0: self.window.contentView : @"delayLabel"]).cell.title = twoSigFigs;
     [prefs setFloatPref: @"previewDelay" : ((NSSlider*) sender).floatValue];
     [DockAltTab setDelay: ((NSSlider*) sender).floatValue * 10 * 2 /* milliseconds */];
+}
+- (IBAction)hideDelayChanged:(id)sender {
+    float val = ((NSSlider*) sender).floatValue / 100 * 2;
+    NSString* twoSigFigs = [NSString stringWithFormat: @"%.02f", val];
+    ((NSTextField*) [helperLib $0: self.window.contentView : @"hideDelayLabel"]).cell.title = twoSigFigs;
+    [prefs setFloatPref: @"previewHideDelay" : ((NSSlider*) sender).floatValue];
+    [DockAltTab setHideDelay: ((NSSlider*) sender).floatValue * 10 * 2 /* milliseconds */];
+}
+- (IBAction)gutterChanged:(id)sender {
+    float val = ((NSSlider*) sender).floatValue;
+    NSString* twoSigFigs = (float)((int)val) == val ? [NSString stringWithFormat: @"%d", (int)val] : [NSString stringWithFormat: @"%.1f", val];
+    ((NSTextField*) [helperLib $0: self.window.contentView : @"gutterLabel"]).cell.title = twoSigFigs;
+    [prefs setFloatPref: @"previewGutter" : ((NSSlider*) sender).floatValue];
+    [DockAltTab setGutter: ((NSSlider*) sender).floatValue];
 }
 /* dock pref bindings */
 - (IBAction)lockDockPosition:(id)sender {dockSettingBOOL(CFSTR("position-immutable"), ((NSButton*) sender).state);}

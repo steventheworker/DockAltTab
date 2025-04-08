@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /* AXUIElement */
 + (void) setSystemWideEl: (AXUIElementRef) el;
 + (id) elementAtPoint: (CGPoint) pt;
-+ (NSDictionary*) elementDict: (AXUIElementRef) el : (NSDictionary*) attributeDict;
++ (NSDictionary*) elementDict: (id) elID : (NSDictionary*) attributeDict;
 /* events*/
 + (CFMachPortRef) listenMask: (CGEventMask) emask : (CGEventTapCallBack) handler;
 + (CFMachPortRef) listenOnlyMask : (CGEventMask) emask : (CGEventTapCallBack) handler;
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL) dockAutohide;
 + (int) dockPos;
 + (CGRect) dockRect;
-+ (AXUIElementRef) dockAppElementFromDockChild: (AXUIElementRef) dockChild;
++ (id) dockAppElementFromDockChild: (id) dockChild;
 + (CGPoint) normalizePointForDockGap: (CGPoint) pt : (int) dockPos;
 + (NSRunningApplication*) appWithBID: (NSString*) tarBID;
 + (NSRunningApplication*) appWithPID: (pid_t) tarPID;
