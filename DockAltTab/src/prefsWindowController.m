@@ -48,7 +48,7 @@ float getDockFloatPref(NSString* key) {
         @"updatePolicy": @"autocheck" /* manual / autocheck / autoinstall */
     }]);
     [self setUpdatePolicy];
-    if ([prefs getIntPref: @"previewMode"] == 2) setTimeout(^{[((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: YES];}, 0); //wait for del->app to be defined before clickMode==mousemoveless
+    if ([prefs getIntPref: @"previewMode"] == 2 && ![prefs getBoolPref: @"thumbnailPreviewsEnabled"]) setTimeout(^{[((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: YES];}, 0); //wait for del->app to be defined before clickMode==mousemoveless
 }
 - (void) setUpdatePolicy {
     NSString* updatePolicy = [prefs getStringPref: @"updatePolicy"];
@@ -149,7 +149,7 @@ float getDockFloatPref(NSString* key) {
     [DockAltTab setMode: [modeDict[[sender title]] intValue]];
     [prefs setIntPref: @"previewMode" : [modeDict[[sender title]] intValue]];
     setTimeout(^{ //ubuntu mode doesn't need mousemove (workaround for powerpoint notes bug where using ANY method to read the mouse coordinates causes the notes section to lose focus)
-        [((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: [[sender title] isEqual: @"Ubuntu"] ? YES : NO];
+        [((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: [[sender title] isEqual: @"Ubuntu"] && ![prefs getBoolPref: @"thumbnailPreviewsEnabled"] ? YES : NO];
     }, 0); //wait to do it, since awakeFromNib calls .modeBtn immediately (AppDelegate->app is nil)
 }
 //- (IBAction)spaceSwitchingChoice:(id)sender {
@@ -180,6 +180,8 @@ float getDockFloatPref(NSString* key) {
 - (IBAction)toggleThumbnailPreviews:(id)sender {
     [prefs setBoolPref: @"thumbnailPreviewsEnabled" : ((NSButton*)sender).state];
     [DockAltTab setThumbnailPreviewsEnabled: ((NSButton*)sender).state];
+    //ubuntu mode doesn't need mousemove (workaround for powerpoint notes bug where using ANY method to read the mouse coordinates causes the notes section to lose focus)
+    [((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: [prefs getIntPref: @"previewMode"] == 2 && ![prefs getBoolPref: @"thumbnailPreviewsEnabled"] ? YES : NO];
 }
 - (IBAction)gutterChanged:(id)sender {
     float val = ((NSSlider*) sender).floatValue;

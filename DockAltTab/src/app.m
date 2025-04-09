@@ -33,7 +33,7 @@ NSSet<NSRunningApplication*>* previousValueOfRunningApps;
     app->prefsController = [prefsWindowController.alloc initWithWindowNibName: @"prefs"];
     [app->prefsController loadWindow];
     
-    [app mousemoveLess: [prefs getIntPref: @"previewMode"] == 2]; // ubuntu is mousemoveless
+    [app mousemoveLess: [prefs getIntPref: @"previewMode"] == 2 && ![prefs getBoolPref: @"thumbnailPreviewsEnabled"]]; // ubuntu is mousemoveless
     [app startListening];
     [DockAltTab init];
     

@@ -378,7 +378,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
                 //thumbnail-peek
                 if ([elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"]) {
                     mousemoveDict = NSMutableDictionary.dictionary;
-                    if (self.isPreviewWindowShowing) [self hidePreviewWindow];
+                    [self hidePreviewWindow];
                 }
             }
         } else {
@@ -537,11 +537,67 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         }
         return YES;
 }
-//general events
++ (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
+    if ([elDict[@"dockPID"] intValue] == dockPID) {
+        if ([elDict[@"running"] intValue]) { //check if should show?
+            NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
+            if ([mousemoveDict[@"tarBID"] isEqual: tarBID]) return YES;
+            mousemoveDict = [NSMutableDictionary dictionaryWithDictionary: @{
+                //            @"tarAppActive": @(tarApp.active),
+                @"el": el,
+                @"tarBID": tarBID
+            }];
+        } else {
+            mousemoveDict = [NSMutableDictionary dictionary];
+        }
+    } else { //check if should hide
+        if ([elDict[@"PID"] intValue] == AltTabPID) {
+            if (self.isPreviewWindowShowing) {
+                //thumbnail image
+                if ([elDict[@"role"] isEqual: @"AXUnknown"] && (!previewTarget || !CFEqual((__bridge CFTypeRef)(previewTarget), (__bridge CFTypeRef)(el)))) {
+                    if (thumbnailPreviewsEnabled) {
+                        if (!thumbnailPreviewDelay || previewTarget) {
+                            [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
+                            previewTarget = el;
+                        } else {
+                            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
+                            thumbnailPreviewTimeoutRef = setTimeout(^{
+                                [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
+                                previewTarget = el;
+                            }, thumbnailPreviewDelay);
+                        }
+                    }
+                }
+                //thumbnail-peek
+                if ([elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"]) {
+                    mousemoveDict = NSMutableDictionary.dictionary;
+                    [self hidePreviewWindow];
+                }
+            }
+        } else {
+            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
+            mousemoveDict = NSMutableDictionary.dictionary;
+        }
+    }
+    return YES;
+}
+
+/* events */
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (CGPoint) pos {
 //    NSLog(@"mm");
     cursorPos = pos;
-    id el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+    id el;
+    if (DATMode == 2) {
+        if (thumbnailPreviewsEnabled) { //for Ubuntu mode — only define el if thumbnailPreviewsEnabled
+            AXUIElementRef focusedApp = AXUIElementCreateSystemWide();
+            AXUIElementRef frontmostApp;
+            AXUIElementCopyAttributeValue(focusedApp, kAXFocusedApplicationAttribute, (CFTypeRef*)&frontmostApp);
+            NSString* appName = nil;
+            if (frontmostApp) AXUIElementCopyAttributeValue(frontmostApp, kAXTitleAttribute, (void*)&appName);
+            if ([appName isEqual: @"AltTab"]) el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
+        }
+        //else don't define el (powerpoint bug) ...the bug only happens if you read elementAtPoint while powerpoint is active! so if dock/AltTab/other has keyboard focus it's fine!
+    } else el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
     if (DATMode == 1) ret = [self mousemoveMacOS: proxy : type : event : refcon : el : elDict];
@@ -549,7 +605,6 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     if (DATMode == 3) ret = [self mousemoveWindows: proxy : type : event : refcon : el : elDict];
     return ret;
 }
-+ (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {return YES;}
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
     NSLog(@"md");
     id el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
