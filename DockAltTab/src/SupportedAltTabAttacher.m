@@ -39,7 +39,7 @@ void renderUnsupportedWindow(void) {
     NSTextView* txt = [NSTextView.alloc initWithFrame: NSMakeRect(2, 63, 175, 14)];
     [txt setString: [helperLib appWithBID: @"com.lwouis.alt-tab-macos"] ? @"Incompatible AltTab Detected." : @"AltTab is not running."];
     [container addSubview: txt];
-    [container addSubview: linkBtn(@"Download scriptable AltTab", @"https://github.com/steventheworker/alt-tab-macos/releases/download/1.93.0/AltTab-scriptable-1.93.0.zip", NSMakeRect(-7, 35, 190, 20))];
+    [container addSubview: linkBtn(@"Download scriptable AltTab", @"https://github.com/steventheworker/alt-tab-macos/releases/download/1.94.0/AltTab-scriptable-1.94.0.zip", NSMakeRect(-7, 35, 190, 20))];
     [container addSubview: applescriptBtn(@"tell application id \"com.steventheworker.alt-tab-macos\" to activate", NSMakeRect(0, 0, 300, 30))];
     [unsupportedWindow.contentView addSubview: container];
 }
