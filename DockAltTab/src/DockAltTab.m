@@ -24,6 +24,8 @@ id dockContextMenuClickee; //the dock separator element that was right clicked
 
 int DATMode; // 1 = macos, 2 = ubuntu, 3 = windows (default value set in prefsWindowController)
 int previewDelay = 0;int previewHideDelay = 0;
+int thumbnailPreviewDelay = 0;BOOL thumbnailPreviewsEnabled = YES;int thumbnailPreviewTimeoutRef;id previewTarget;
+NSMutableDictionary<NSString*, NSAppleScript*>* scripts;
 float previewGutter = 0;
 NSMutableDictionary* mousedownDict;
 NSMutableDictionary* mousemoveDict;
@@ -79,10 +81,24 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     [self loadDockPos];
     [self loadDockAutohide];
     [self setMode: [prefs getIntPref: @"previewMode"]];
-    [self setDelay: [prefs getIntPref: @"previewDelay"] * 10 * 2];
-    [self setHideDelay: [prefs getIntPref: @"previewHideDelay"] * 10 * 2];
-    [self setGutter: [prefs getIntPref: @"previewGutter"]];
+    [self setDelay: [prefs getFloatPref: @"previewDelay"] * 10 * 2];
+    [self setHideDelay: [prefs getFloatPref: @"previewHideDelay"] * 10 * 2];
+    [self setGutter: [prefs getFloatPref: @"previewGutter"]];
+    [self setThumbnailPreviewDelay: [prefs getFloatPref: @"thumbnailPreviewDelay"] * 10 * 2];
+    [self setThumbnailPreviewsEnabled: [prefs getBoolPref: @"thumbnailPreviewsEnabled"]];
     mousedownDict = [NSMutableDictionary dictionary];
+    scripts = NSMutableDictionary.dictionary;
+    scripts[@"thumbnailPreview"] = [NSAppleScript.alloc initWithSource: @"tell application \"AltTab\" to thumbnailPreview"];
+    scripts[@"hide"] = [NSAppleScript.alloc initWithSource: @"tell application \"AltTab\" to hide"];
+    scripts[@"newFinder"] = [NSAppleScript.alloc initWithSource: @"\n\
+        tell application \"System Events\" to set uname to name of current user\n\
+        tell application \"Finder\"\n\
+        make new Finder window to folder \"Desktop\" of folder uname of folder \"Users\" of startup disk\n\
+        activate\n\
+        -- make new Finder window\n\
+        -- set target of window 1 to folder \"Desktop\" of folder \"super\" of folder \"Users\" of startup disk\n\
+        end tell\n\
+    "];
 }
 + (void) setMode: (int) mode {
     DATMode = mode;
@@ -95,9 +111,11 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
             break;
     }
 }
-+ (void) setDelay: (int) milliseconds {previewDelay = milliseconds;}
-+ (void) setHideDelay: (int) milliseconds {previewHideDelay = milliseconds;}
-+ (void) setGutter: (int) gutter {previewGutter = gutter;}
++ (void) setDelay: (float) milliseconds {previewDelay = milliseconds;}
++ (void) setHideDelay: (float) milliseconds {previewHideDelay = milliseconds;}
++ (void) setThumbnailPreviewDelay: (float) milliseconds {thumbnailPreviewDelay = milliseconds;}
++ (void) setThumbnailPreviewsEnabled: (BOOL) tf {thumbnailPreviewsEnabled = tf;}
++ (void) setGutter: (float) gutter {previewGutter = gutter;}
 + (void) reconnectDock {
     [self loadDockPID];
     [self loadDockAutohide];
@@ -212,7 +230,10 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]]];
     }, 10);
 }
-+ (void) hidePreviewWindow {[helperLib applescript: @"tell application \"AltTab\" to hide"];}
++ (void) hidePreviewWindow {
+    [scripts[@"hide"] executeAndReturnError: nil];
+    previewTarget = nil;
+}
 + (BOOL) isPreviewWindowShowing { /* is preview window (opened by DockAltTab) open? */
     NSArray* wins = CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID));
     for (NSDictionary* win in wins) {
@@ -270,7 +291,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         NSLog(@"%d", previewWindowsCount);
         if (previewWindowsCount == 0 || ([tarApp.localizedName isEqual: @"Finder"] && !tarApp.isHidden && !onScreenFinderWindows())) {
             if ([tarApp.localizedName isEqual: @"Finder"]) {
-                [helperLib newFinderWindow];
+                [scripts[@"newFinder"] executeAndReturnError: nil];
                 return NO;
             }
             if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
@@ -337,10 +358,33 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
             if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
         }
     } else { //check if should hide
-        if ([elDict[@"PID"] intValue] == AltTabPID) {}
-        else {
-            mousemoveDict = [NSMutableDictionary dictionary];
-            if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
+        if ([elDict[@"PID"] intValue] == AltTabPID) {
+            if (self.isPreviewWindowShowing) {
+                //thumbnail image
+                if ([elDict[@"role"] isEqual: @"AXUnknown"] && (!previewTarget || !CFEqual((__bridge CFTypeRef)(previewTarget), (__bridge CFTypeRef)(el)))) {
+                    if (thumbnailPreviewsEnabled) {
+                        if (!thumbnailPreviewDelay || previewTarget) {
+                            [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
+                            previewTarget = el;
+                        } else {
+                            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
+                            thumbnailPreviewTimeoutRef = setTimeout(^{
+                                [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
+                                previewTarget = el;
+                            }, thumbnailPreviewDelay);
+                        }
+                    }
+                }
+                //thumbnail-peek
+                if ([elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"]) {
+                    mousemoveDict = NSMutableDictionary.dictionary;
+                    if (self.isPreviewWindowShowing) [self hidePreviewWindow];
+                }
+            }
+        } else {
+            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
+            mousemoveDict = NSMutableDictionary.dictionary;
+            if (self.isPreviewWindowShowing) [self hidePreviewWindow];
         }
     }
     return YES;
@@ -392,7 +436,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         if (type == kCGEventOtherMouseUp) return YES;
         if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
             if ([tarApp.localizedName isEqual: @"Finder"]) {
-                [helperLib newFinderWindow];
+                [scripts[@"newFinder"] executeAndReturnError: nil];
                 return NO;
             }
             if (tarApp.hidden) {
@@ -470,7 +514,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
             if (type == kCGEventOtherMouseUp) return YES;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
                 if ([tarApp.localizedName isEqual: @"Finder"]) {
-                    [helperLib newFinderWindow];
+                    [scripts[@"newFinder"] executeAndReturnError: nil];
                     return NO;
                 }
                 if (tarApp.hidden) {

@@ -42,16 +42,13 @@ float getDockFloatPref(NSString* key) {
         @"spaceSwitchingDisabled": @YES,
         @"previewDelay": @0,
         @"previewHideDelay": @0,
+        @"thumbnailPreviewDelay": @25, // 0.5seconds (100 = 2 seconds)
+        @"thumbnailPreviewsEnabled": @YES,
         @"previewGutter": @0,
         @"updatePolicy": @"autocheck" /* manual / autocheck / autoinstall */
     }]);
-//    [helperLib activateWindow: [self window]]; //activate on launch
     [self setUpdatePolicy];
     if ([prefs getIntPref: @"previewMode"] == 2) setTimeout(^{[((AppDelegate*) NSApplication.sharedApplication.delegate)->app mousemoveLess: YES];}, 0); //wait for del->app to be defined before clickMode==mousemoveless
-
-//    //render
-//    [self modeBtn: [[self radioContainer] accessibilityChildren][2 /* index of child titled MacOS */]];
-    for (NSButtonCell* cell in [[self radioContainer] accessibilityChildren]) [cell setFocusRingType: NSFocusRingTypeNone]; // Remove NSFocusRing (focus border/outline)
 }
 - (void) setUpdatePolicy {
     NSString* updatePolicy = [prefs getStringPref: @"updatePolicy"];
@@ -85,20 +82,25 @@ float getDockFloatPref(NSString* key) {
     NSString* twoSigFigs = [NSString stringWithFormat: @"%.02f", [prefs getFloatPref: @"previewDelay"] / 100 * 2];
     ((NSTextField*) [helperLib $0: self.window.contentView : @"delayLabel"]).cell.title = twoSigFigs;
 
-    //delay slider & label
+    //hideDelay slider & label
     ((NSSlider*) [helperLib $0: self.window.contentView : @"hideDelaySlider"]).floatValue = [prefs getFloatPref: @"previewHideDelay"];
     twoSigFigs = [NSString stringWithFormat: @"%.02f", [prefs getFloatPref: @"previewHideDelay"] / 100 * 2];
     ((NSTextField*) [helperLib $0: self.window.contentView : @"hideDelayLabel"]).cell.title = twoSigFigs;
+
+    //thumbnailPreviewDelay slider & label
+    ((NSSlider*) [helperLib $0: self.window.contentView : @"thumbnailPreviewDelaySlider"]).floatValue = [prefs getFloatPref: @"thumbnailPreviewDelay"];
+    twoSigFigs = [NSString stringWithFormat: @"%.02f", [prefs getFloatPref: @"thumbnailPreviewDelay"] / 100 * 2];
+    ((NSTextField*) [helperLib $0: self.window.contentView : @"thumbnailPreviewDelayLabel"]).cell.title = twoSigFigs;
+    
+    //thumbnailPreviewsEnabledCheckbox
+    ((NSButton*) [helperLib $0: self.window.contentView : @"thumbnailPreviewsEnabledCheckbox"]).cell.state = [prefs getBoolPref: @"thumbnailPreviewsEnabled"];
 
     //gutter slider & label
     ((NSSlider*) [helperLib $0: self.window.contentView : @"gutterSlider"]).floatValue = [prefs getFloatPref: @"previewGutter"];
     int val =  [prefs getFloatPref: @"previewGutter"];
     twoSigFigs = (float)((int)val) == val ? [NSString stringWithFormat: @"%d", (int)val] : [NSString stringWithFormat: @"%.1d", val];
     ((NSTextField*) [helperLib $0: self.window.contentView : @"gutterLabel"]).cell.title = twoSigFigs;
-    
-    //check/uncheck spaceSwitching
-//    ((NSButton*) [helperLib $0: self.window.contentView : @"spaceSwitchingDisabledBtn"]).cell.state = [prefs getBoolPref: @"spaceSwitchingDisabled"];
-    
+        
     /* Dock Settings */
     // differentiate hidden apps - CFSTR("showhidden")
     ((NSButton*) [helperLib $0: self.window.contentView : @"differentiateHiddenAppsBtn"]).cell.state = getDockBOOLPref(@"showhidden");
@@ -167,6 +169,17 @@ float getDockFloatPref(NSString* key) {
     ((NSTextField*) [helperLib $0: self.window.contentView : @"hideDelayLabel"]).cell.title = twoSigFigs;
     [prefs setFloatPref: @"previewHideDelay" : ((NSSlider*) sender).floatValue];
     [DockAltTab setHideDelay: ((NSSlider*) sender).floatValue * 10 * 2 /* milliseconds */];
+}
+- (IBAction)thumbnailPreviewDelayChanged:(id)sender {
+    float val = ((NSSlider*) sender).floatValue / 100 * 2;
+    NSString* twoSigFigs = [NSString stringWithFormat: @"%.02f", val];
+    ((NSTextField*) [helperLib $0: self.window.contentView : @"thumbnailPreviewDelayLabel"]).cell.title = twoSigFigs;
+    [prefs setFloatPref: @"thumbnailPreviewDelay" : ((NSSlider*) sender).floatValue];
+    [DockAltTab setThumbnailPreviewDelay: ((NSSlider*) sender).floatValue * 10 * 2 /* milliseconds */];
+}
+- (IBAction)toggleThumbnailPreviews:(id)sender {
+    [prefs setBoolPref: @"thumbnailPreviewsEnabled" : ((NSButton*)sender).state];
+    [DockAltTab setThumbnailPreviewsEnabled: ((NSButton*)sender).state];
 }
 - (IBAction)gutterChanged:(id)sender {
     float val = ((NSSlider*) sender).floatValue;

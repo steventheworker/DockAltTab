@@ -13,9 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DockAltTab : NSObject
 + (void) init;
 + (void) setMode: (int) mode;
-+ (void) setDelay: (int) milliseconds;
-+ (void) setHideDelay: (int) milliseconds;
-+ (void) setGutter: (int) gutter;
++ (void) setDelay: (float) milliseconds;
++ (void) setHideDelay: (float) milliseconds;
++ (void) setThumbnailPreviewDelay: (float) milliseconds;
++ (void) setThumbnailPreviewsEnabled: (BOOL) tf;
++ (void) setGutter: (float) gutter;
 + (void) startPreviewInterval;
 + (void) stopPreviewInterval;
 + (void) timerTick: (NSTimer*) arg;

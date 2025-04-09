@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <Cocoa/Cocoa.h>
 int setTimeout(void(^cb)(void), int delay);
-void clearTimeout(int i);
+int clearTimeout(int i);
 void throw(NSString* message, ...);
+void hideRunningApp(NSRunningApplication* app, void(^cb)(void));
+void unhideRunningApp(NSRunningApplication* app, void(^cb)(void));
+void activateRunningApp(NSRunningApplication* app, void(^cb)(void));
 #endif /* globals_h */
