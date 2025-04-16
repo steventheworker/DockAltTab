@@ -338,6 +338,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
         return NO;
     }
+    if (dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
     return YES;
 }
 /* DATMode:3      Windows */
@@ -349,7 +350,8 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
             mousemoveDict = [NSMutableDictionary dictionaryWithDictionary: @{
                 //            @"tarAppActive": @(tarApp.active),
                 @"el": el,
-                @"tarBID": tarBID
+                @"tarBID": tarBID,
+                @"elDict": elDict
             }];
             if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
             [self showPreview: tarBID];
@@ -380,8 +382,10 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
                     mousemoveDict = NSMutableDictionary.dictionary;
                     [self hidePreviewWindow];
                 }
+                if (dockAutohide && CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(NO);
             }
         } else {
+            if (dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
             if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
             mousemoveDict = NSMutableDictionary.dictionary;
             if (self.isPreviewWindowShowing) [self hidePreviewWindow];
@@ -456,6 +460,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
         return NO;
     }
+    if (dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
     return YES;
 }
 /* DATMode:2      Ubuntu */
@@ -535,6 +540,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
             }
             return NO;
         }
+        if (dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
         return YES;
 }
 + (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
@@ -545,7 +551,8 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
             mousemoveDict = [NSMutableDictionary dictionaryWithDictionary: @{
                 //            @"tarAppActive": @(tarApp.active),
                 @"el": el,
-                @"tarBID": tarBID
+                @"tarBID": tarBID,
+                @"elDict": elDict
             }];
         } else {
             mousemoveDict = [NSMutableDictionary dictionary];
@@ -568,10 +575,14 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
                         }
                     }
                 }
+                
+                if (dockAutohide && CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(NO);
+                
                 //thumbnail-peek
                 if ([elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"]) {
                     mousemoveDict = NSMutableDictionary.dictionary;
                     [self hidePreviewWindow];
+                    if (dockAutohide && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);
                 }
             }
         } else {

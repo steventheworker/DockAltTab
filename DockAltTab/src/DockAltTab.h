@@ -8,6 +8,10 @@
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
+
+extern Boolean CoreDockGetAutoHideEnabled(void);
+extern void CoreDockSetAutoHideEnabled(Boolean flag);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DockAltTab : NSObject
