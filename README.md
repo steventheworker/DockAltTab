@@ -1,4 +1,4 @@
-# DockAltTab ![alt text](https://github.com/steventheworker/DockAltTab/blob/main/DockAltTab/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png?raw=true)
+# DockAltTab ![alt text](https://github.com/steventheworker/DockAltTab/blob/main/DockAltTab/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png?raw=true)
 
 ### Companion App For — (Scriptable) AltTab
 
