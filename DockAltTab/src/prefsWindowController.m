@@ -103,7 +103,7 @@ float getDockFloatPref(NSString* key) {
     ((NSTextField*) [helperLib $0: self.window.contentView : @"gutterLabel"]).cell.title = twoSigFigs;
     
     //keepDockShowingCheckbox
-    ((NSButton*) [helperLib $0: self.window.contentView : @"keepDockShowing"]).cell.state = [prefs getBoolPref: @"keepDockShowing"];
+    ((NSButton*) [helperLib $0: self.window.contentView : @"keepDockShowingCheckbox"]).cell.state = [prefs getBoolPref: @"keepDockShowing"];
     
     /* Dock Settings */
     // differentiate hidden apps - CFSTR("showhidden")
