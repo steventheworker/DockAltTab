@@ -45,6 +45,7 @@ float getDockFloatPref(NSString* key) {
         @"thumbnailPreviewDelay": @25, // 0.5seconds (100 = 2 seconds)
         @"thumbnailPreviewsEnabled": @YES,
         @"previewGutter": @0,
+        @"keepDockShowing": @YES,
         @"updatePolicy": @"autocheck" /* manual / autocheck / autoinstall */
     }]);
     [self setUpdatePolicy];
@@ -100,7 +101,10 @@ float getDockFloatPref(NSString* key) {
     int val =  [prefs getFloatPref: @"previewGutter"];
     twoSigFigs = (float)((int)val) == val ? [NSString stringWithFormat: @"%d", (int)val] : [NSString stringWithFormat: @"%.1d", val];
     ((NSTextField*) [helperLib $0: self.window.contentView : @"gutterLabel"]).cell.title = twoSigFigs;
-        
+    
+    //keepDockShowingCheckbox
+    ((NSButton*) [helperLib $0: self.window.contentView : @"keepDockShowing"]).cell.state = [prefs getBoolPref: @"keepDockShowing"];
+    
     /* Dock Settings */
     // differentiate hidden apps - CFSTR("showhidden")
     ((NSButton*) [helperLib $0: self.window.contentView : @"differentiateHiddenAppsBtn"]).cell.state = getDockBOOLPref(@"showhidden");
@@ -189,6 +193,10 @@ float getDockFloatPref(NSString* key) {
     ((NSTextField*) [helperLib $0: self.window.contentView : @"gutterLabel"]).cell.title = twoSigFigs;
     [prefs setFloatPref: @"previewGutter" : ((NSSlider*) sender).floatValue];
     [DockAltTab setGutter: ((NSSlider*) sender).floatValue];
+}
+- (IBAction)toggleKeepDockShowing:(id)sender {
+    [prefs setBoolPref: @"keepDockShowing" : ((NSButton*)sender).state];
+    [DockAltTab setkeepDockShowing: ((NSButton*)sender).state];
 }
 /* dock pref bindings */
 - (IBAction)lockDockPosition:(id)sender {dockSettingBOOL(CFSTR("position-immutable"), ((NSButton*) sender).state);}

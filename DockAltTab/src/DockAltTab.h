@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) setThumbnailPreviewDelay: (float) milliseconds;
 + (void) setThumbnailPreviewsEnabled: (BOOL) tf;
 + (void) setGutter: (float) gutter;
++ (void) setkeepDockShowing: (BOOL) tf;
 + (void) startPreviewInterval;
 + (void) stopPreviewInterval;
 + (void) timerTick: (NSTimer*) arg;
