@@ -170,10 +170,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         } else if (attribute == (id)kAXInsertionPointLineNumberAttribute) {
             // Handle kAXInsertionPointLineNumberAttribute
         } else if (attribute == (id)kAXIsApplicationRunningAttribute) {
-            NSNumber* isApplicationRunning;
-            AXError result = AXUIElementCopyAttributeValue(el, kAXIsApplicationRunningAttribute, (void*)&isApplicationRunning);
-            if (result == kAXErrorSuccess) dict[attributeName] = @([isApplicationRunning intValue]);
-            else dict[attributeName] = @NO;
+            CFBooleanRef running;
+            AXUIElementCopyAttributeValue(el, kAXIsApplicationRunningAttribute, (CFTypeRef*)&running);
+            BOOL result = (running != NULL && CFBooleanGetValue(running));
+            if (running) CFRelease(running);
+            dict[attributeName] = @(result);
         } else if (attribute == (id)kAXLabelUIElementsAttribute) {
             // Handle kAXLabelUIElementsAttribute
         } else if (attribute == (id)kAXLabelValueAttribute) {
@@ -210,11 +211,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         } else if (attribute == (id)kAXMinimizeButtonAttribute) {
             // Handle kAXMinimizeButtonAttribute
         } else if (attribute == (id)kAXMinimizedAttribute) {
-            BOOL val;
-            AXError result = AXUIElementCopyAttributeValue(el, kAXMinimizedAttribute, (void*)&val);
-            if (result == kAXErrorSuccess) {
-                dict[attributeName] = @(val);
-            } else dict[attributeName] = @NO;
+            CFBooleanRef minimized;
+            AXUIElementCopyAttributeValue(el, kAXMinimizedAttribute, (CFTypeRef*)&minimized);
+            BOOL result = (minimized != NULL && CFBooleanGetValue(minimized));
+            if (minimized) CFRelease(minimized);
+            dict[attributeName] = @(result);
         } else if (attribute == (id)kAXMinuteFieldAttribute) {
             // Handle kAXMinuteFieldAttribute
         } else if (attribute == (id)kAXMinValueAttribute) {
@@ -367,11 +368,11 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
                 continue;
             }
             if (attribute == (id)kAXFullscreenAttribute) {
-                BOOL val;
-                AXError result = AXUIElementCopyAttributeValue(el, kAXFullscreenAttribute, (void*)&val);
-                if (result == kAXErrorSuccess) {
-                    dict[attributeName] = @(val);
-                } else dict[attributeName] = @NO;
+                CFBooleanRef fullscreen;
+                AXUIElementCopyAttributeValue(el, kAXFullscreenAttribute, (CFTypeRef*)&fullscreen);
+                BOOL result = (fullscreen != NULL && CFBooleanGetValue(fullscreen));
+                if (fullscreen) CFRelease(fullscreen);
+                dict[attributeName] = @(result);
                 continue;
             }
             if (attribute == (id)kAXStatusLabelAttribute) { //"badge" value / # of notifications

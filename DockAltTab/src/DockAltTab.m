@@ -129,7 +129,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
 + (int) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}
 + (pid_t) loadDockPID {dockPID = [helperLib appWithBID: @"com.apple.dock"].processIdentifier;return dockPID;}
 + (pid_t) loadAltTabPID {AltTabPID = [helperLib appWithBID: @"com.steventheworker.alt-tab-macos"].processIdentifier;return AltTabPID;}
-+ (CGRect) loadDockRect {dockRect = [helperLib dockRect];return dockRect;}
++ (CGRect) loadDockRect {/* dockRect = [helperLib dockRect]; */return dockRect;}
 + (NSMutableDictionary*) elDict: (id) el { //easy access to most referenced attributes
     return [NSMutableDictionary dictionaryWithDictionary: [helperLib elementDict: el : @{
         @"title": (id)kAXTitleAttribute,

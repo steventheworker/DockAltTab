@@ -11,15 +11,13 @@
 
 AXUIElementRef systemWideEl = nil;
 
-/*
-    AppDelate
-*/
 @interface AppDelegate ()
 @property (strong) IBOutlet NSWindow *window;
 @end
 @implementation AppDelegate
 /* menu icon "window" actions */
 - (IBAction)openPrefs:(id)sender {[app openPrefs];}
+- (IBAction)openAltTabPrefs:(id)sender {[helperLib activateApp: [NSRunningApplication runningApplicationsWithBundleIdentifier: @"com.steventheworker.alt-tab-macos"].firstObject.bundleURL :^(NSRunningApplication * _Nonnull app, NSError * _Nonnull error) {}];}
 - (IBAction)quit:(id)sender {[NSApp terminate:nil];}
 - (IBAction)restartAltTab:(id)sender {}
 - (IBAction)killDock:(id)sender {[helperLib killDock];}
