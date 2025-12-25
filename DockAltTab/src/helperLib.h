@@ -57,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) activateApp: (NSURL*) tarAppURL : (void(^)(NSRunningApplication* app, NSError* error)) cb;
 + (NSDictionary*) modifierKeys;
 + (NSString*) applescript: (NSString*) scriptTxt;
++ (NSString*) applescriptWithScript: (NSAppleScript*) script;
 + (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb;
 + (void) newFinderWindow;
 + (BOOL) isSparkleUpdaterOpen;

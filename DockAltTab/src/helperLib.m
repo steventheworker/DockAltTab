@@ -719,27 +719,23 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSDictionary<NSString *, NSNumber *> *immutableDictionary = [modifierStates copy];
     return immutableDictionary;
 }
-+ (NSString*) applescript: (NSString*) scriptTxt {
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    __block NSString *result = @"";
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSAppleScript *script = [[NSAppleScript alloc] initWithSource:scriptTxt];
-        NSDictionary<NSString *, id> *error = nil;
-        NSAppleEventDescriptor *descriptor = [script executeAndReturnError:&error];
-        
-        if (descriptor) {
-            result = [descriptor stringValue];
-        } else {
-            NSLog(@"run error: %@", error);
-        }
-        
-        dispatch_semaphore_signal(semaphore);
++ (NSString*) applescriptWithScript: (NSAppleScript*) script {
+    __block NSString* result = nil;
+    __block BOOL finished = NO;
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        NSDictionary* error = nil;
+        NSAppleEventDescriptor* desc = [script executeAndReturnError: &error];
+        result = desc.stringValue ?: @"";
+        finished = YES;
     });
-
-    // Wait for the script execution to complete
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    // spin the runloop instead of blocking it
+    while (!finished) {
+        [NSRunLoop.currentRunLoop runMode: NSDefaultRunLoopMode beforeDate: [NSDate dateWithTimeIntervalSinceNow: 0.1]];
+    }
     return result;
+}
++ (NSString*) applescript: (NSString*) scriptTxt {
+    return [self applescriptWithScript: [NSAppleScript.alloc initWithSource: scriptTxt]];
 }
 + (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb {
     NSTask *task = [[NSTask alloc] init];
@@ -750,8 +746,8 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSPipe *standardOutput = [[NSPipe alloc] init];
     [task setStandardOutput:standardOutput];
     [[NSNotificationCenter defaultCenter] addObserverForName: NSFileHandleReadCompletionNotification object: [standardOutput fileHandleForReading] queue: nil usingBlock: ^(NSNotification * _Nonnull notification) {
-        NSData *data = [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem];
-        NSFileHandle *handle = [notification object];
+        NSData* data = [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem];
+        NSFileHandle* handle = [notification object];
         if ([data length]) {
             NSString* str = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
             cb([str substringToIndex:[str length]-1]); // remove end of line \n

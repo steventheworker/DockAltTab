@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -58,6 +58,10 @@
 		BFEA09D82AED110B009450BF /* prefs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = prefs.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		BF1B81102EFBDB2300A175CE /* DockAltTab */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DockAltTab; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		BFE19DE42825BFA600D72F99 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -82,6 +86,7 @@
 		BF15089229038AFD00DF343F /* src */ = {
 			isa = PBXGroup;
 			children = (
+				BF1B81102EFBDB2300A175CE /* DockAltTab */,
 				BF0E91FF28291F0700D21AD5 /* app.h */,
 				BF0E920028291F0700D21AD5 /* app.m */,
 				BFB7B2102AB6E50D00D707FA /* DockAltTab.h */,
@@ -162,6 +167,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BF1B81102EFBDB2300A175CE /* DockAltTab */,
 			);
 			name = DockAltTab;
 			productName = DockAltTab;

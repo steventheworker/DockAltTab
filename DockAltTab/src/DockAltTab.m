@@ -6,10 +6,6 @@
 //
 
 #import "DockAltTab.h"
-#import "globals.h"
-#import "helperLib.h"
-#import "prefs.h"
-#import "SupportedAltTabAttacher.h"
 
 const float PREVIEW_INTERVAL_TICK_DELAY =  0.333; // 0.16666665; // 0.33333 / 2   seconds
 const int ACTIVATION_MILLISECONDS = 30; //how long to wait to activate after [app unhide]
@@ -230,11 +226,11 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         if (totDiff > 2 || (fabs(cursorPos.x - cachedCursorPos.x) + fabs(cursorPos.y - cachedCursorPos.y)) > 2) {
             return [self showPreview: tarBID];
         }
-        [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]]];
+        [helperLib applescriptAsync: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]] : ^(NSString* response) {}];
     }, 10);
 }
 + (void) hidePreviewWindow {
-    [scripts[@"hide"] executeAndReturnError: nil];
+    [helperLib applescriptWithScript: scripts[@"hide"]];
     previewTarget = nil;
 }
 + (BOOL) isPreviewWindowShowing { /* is preview window (opened by DockAltTab) open? */
@@ -269,332 +265,8 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
  events for each DATMode:  1:MacOS 2:Ubuntu 3:Windows
 */
 /* DATMode:1      MacOS */
-+ (BOOL) mousemoveMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    [self mousemoveWindows: proxy : type : event : refcon : el : elDict];
-    return YES;
-}
-+ (BOOL) mousedownMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([helperLib modifierKeys].count) return YES;
-    
-    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
-        if (type == kCGEventRightMouseDown) {
-            if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-            return YES;
-        }
-        NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
-        if (children.count) return YES; //children on an icon === icon menu is showing
-        NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-        int previewWindowsCount =  [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
-        NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
-        mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
-            @"tarAppActive": @(tarApp.active),
-            @"el": el,
-        }];
-        if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-        NSLog(@"%d", previewWindowsCount);
-        if (previewWindowsCount == 0 || ([tarApp.localizedName isEqual: @"Finder"] && !tarApp.isHidden && !onScreenFinderWindows())) {
-            if ([tarApp.localizedName isEqual: @"Finder"]) {
-                [scripts[@"newFinder"] executeAndReturnError: nil];
-                return NO;
-            }
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-            return YES; //pass click through
-        }
-        return NO;
-    }
-    return YES;
-}
-+ (BOOL) mouseupMacOS : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([helperLib modifierKeys].count) return YES;
-    if (type == kCGEventRightMouseUp) return YES;
-    
-    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
-        NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
-        if (children.count) return YES; //children on an icon === icon menu is showing
-        NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-        NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
-        if ([mousedownDict[@"tarAppBID"] isNotEqualTo: tarApp.bundleIdentifier]) return NO; //don't do anything, mouse changed icons
-        if ([mousedownDict[@"tarAppActive"] intValue] != (int) tarApp.active) return NO; //don't do anything, active app changed between mousedown/up
-        
-        int previewWindowsCount = [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
-        if (!previewWindowsCount) {
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-                return YES; //pass click through
-        }
-        
-        if (type == kCGEventOtherMouseUp) return YES;
-        if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
-            if (tarApp.hidden) {
-                [self unhideApp: tarApp];
-                setTimeout(^{
-                    [self activateApp: tarApp];
-                    activationT = ACTIVATION_MILLISECONDS;
-                }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
-            } else [tarApp hide];
-            return NO;
-        } else {
-            // check if the only window is a minimized window in the current space
-            if (previewWindowsCount == 1 && 1 == [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countMinimizedWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue]) {
-                [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", tarBID]];
-            }
-        }
-        if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
-        return NO;
-    }
-    if (keepDockShowing && dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
-    return YES;
-}
 /* DATMode:3      Windows */
-+ (BOOL) mousemoveWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([elDict[@"PID"] intValue] == dockPID) {
-        if ([elDict[@"running"] intValue]) { //check if should show?
-            NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-            if ([mousemoveDict[@"tarBID"] isEqual: tarBID]) return YES;
-            mousemoveDict = [NSMutableDictionary dictionaryWithDictionary: @{
-                //            @"tarAppActive": @(tarApp.active),
-                @"el": el,
-                @"tarBID": tarBID,
-                @"elDict": elDict
-            }];
-            if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-            [self showPreview: tarBID];
-        } else {
-            mousemoveDict = [NSMutableDictionary dictionary];
-            if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-        }
-    } else { //check if should hide
-        if ([elDict[@"PID"] intValue] == AltTabPID) {
-            if (self.isPreviewWindowShowing) {
-                //thumbnail image
-                if ([elDict[@"role"] isEqual: @"AXUnknown"] && (!previewTarget || !CFEqual((__bridge CFTypeRef)(previewTarget), (__bridge CFTypeRef)(el)))) {
-                    if (thumbnailPreviewsEnabled) {
-                        if (!thumbnailPreviewDelay || previewTarget) {
-                            [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
-                            previewTarget = el;
-                        } else {
-                            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
-                            thumbnailPreviewTimeoutRef = setTimeout(^{
-                                [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
-                                previewTarget = el;
-                            }, thumbnailPreviewDelay);
-                        }
-                    }
-                }
-                //thumbnail-peek
-                if ([elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"]) {
-                    mousemoveDict = NSMutableDictionary.dictionary;
-                    [self hidePreviewWindow];
-                }
-                if (keepDockShowing && dockAutohide && CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(NO);
-            }
-        } else {
-            if (keepDockShowing && dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
-            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
-            mousemoveDict = NSMutableDictionary.dictionary;
-            if (self.isPreviewWindowShowing) [self hidePreviewWindow];
-        }
-    }
-    return YES;
-}
-+ (BOOL) mousedownWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([helperLib modifierKeys].count) return YES;
-    
-    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
-        if (type == kCGEventRightMouseDown) {
-            if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-            return YES;
-        }
-        NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
-        if (children.count) return YES; //children on an icon === icon menu is showing
-        NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-        int previewWindowsCount =  [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
-        NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
-        mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
-            @"tarAppActive": @(tarApp.active),
-            @"el": el
-        }];
-        if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-        if (!previewWindowsCount) {
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-            return YES; //pass click through
-        }
-        return NO;
-    }
-    return YES;
-}
-+ (BOOL) mouseupWindows: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([helperLib modifierKeys].count) return YES;
-    if (type == kCGEventRightMouseUp) return YES;
-
-    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
-        NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
-        if (children.count) return YES; //children on an icon === icon menu is showing
-        NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-        NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
-        if ([mousedownDict[@"tarAppBID"] isNotEqualTo: tarApp.bundleIdentifier]) return NO; //don't do anything, mouse changed icons
-        if ([mousedownDict[@"tarAppActive"] intValue] != (int) tarApp.active) return NO; //don't do anything, active app changed between mousedown/up
-        
-        int previewWindowsCount = [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
-        if (!previewWindowsCount) {
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-            return YES; //pass click through
-        }
-
-        if (type == kCGEventOtherMouseUp) return YES;
-        if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
-            if ([tarApp.localizedName isEqual: @"Finder"]) {
-                [scripts[@"newFinder"] executeAndReturnError: nil];
-                return NO;
-            }
-            if (tarApp.hidden) {
-                [self unhideApp: tarApp];
-                setTimeout(^{
-                    [self activateApp: tarApp];
-                    activationT = ACTIVATION_MILLISECONDS;
-                }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
-            } else [tarApp hide];
-            return NO;
-        } else {
-            // check if the only window is a minimized window in the current space
-            if (previewWindowsCount == 1 && 1 == [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countMinimizedWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue]) {
-                [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", tarBID]];
-            }
-        }
-        if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
-        return NO;
-    }
-    if (keepDockShowing && dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
-    return YES;
-}
 /* DATMode:2      Ubuntu */
-+ (BOOL) mousedownUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([helperLib modifierKeys].count) return YES;
-     
-    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
-        if (type == kCGEventRightMouseDown) {
-            if ([self isPreviewWindowShowing]) [self hidePreviewWindow];
-            return YES;
-        }
-        NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
-        if (children.count) return YES; //children on an icon === icon menu is showing
-        NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-        int previewWindowsCount =  [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
-        NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
-        mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
-            @"tarAppActive": @(tarApp.active),
-            @"el": el
-        }];
-        if (/* type == kCGEventOtherMouseDown && */ [self isPreviewWindowShowing]) {
-            mousedownDict[@"previewWasOpenOnDownFlag"] = @1;
-            [self hidePreviewWindow];
-        }
-        if (!previewWindowsCount) {
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-            return YES; //pass click through
-        }
-        return NO;
-    }
-    return YES;
-}
-+ (BOOL) mouseupUbuntu: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([helperLib modifierKeys].count) return YES;
-    if (type == kCGEventRightMouseUp) return YES;
-    
-    if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
-        NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
-        if (children.count) return YES; //children on an icon === icon menu is showing
-        NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-        NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
-        if ([mousedownDict[@"tarAppBID"] isNotEqualTo: tarApp.bundleIdentifier]) return NO; //don't do anything, mouse changed icons
-        if ([mousedownDict[@"tarAppActive"] intValue] != (int) tarApp.active) return NO; //don't do anything, active app changed between mousedown/up
-        if ([mousedownDict[@"previewWasOpenOnDownFlag"] intValue] /* && type == kCGEventOtherMouseUp */) return NO;
-        
-        int previewWindowsCount = [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
-        BOOL enoughPreviewWindows = type == kCGEventOtherMouseUp ? previewWindowsCount >= 1 : previewWindowsCount >= 2;
-        if (!previewWindowsCount) {
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-            return YES; //pass click through
-        }
-
-        if (enoughPreviewWindows) {
-            [self showPreview: tarBID];
-        } else {
-            if (type == kCGEventOtherMouseUp) return YES;
-            if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
-                if ([tarApp.localizedName isEqual: @"Finder"]) {
-                    [scripts[@"newFinder"] executeAndReturnError: nil];
-                    return NO;
-                }
-                if (tarApp.hidden) {
-                    [self unhideApp: tarApp];
-                    setTimeout(^{
-                        [self activateApp: tarApp];
-                        activationT = ACTIVATION_MILLISECONDS;
-                    }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
-                } else [tarApp hide];
-                return NO;
-            } else {
-                // check if the only window is a minimized window in the current space
-                    if (previewWindowsCount == 1 && 1 == [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countMinimizedWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue]) {
-                        [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", tarBID]];
-                    }
-                }
-                if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
-            }
-            return NO;
-        }
-        if (keepDockShowing && dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
-        return YES;
-}
-+ (BOOL) mousemoveUbuntu : (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
-    if ([elDict[@"dockPID"] intValue] == dockPID) {
-        if ([elDict[@"running"] intValue]) { //check if should show?
-            NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-            if ([mousemoveDict[@"tarBID"] isEqual: tarBID]) return YES;
-            mousemoveDict = [NSMutableDictionary dictionaryWithDictionary: @{
-                //            @"tarAppActive": @(tarApp.active),
-                @"el": el,
-                @"tarBID": tarBID,
-                @"elDict": elDict
-            }];
-        } else {
-            mousemoveDict = [NSMutableDictionary dictionary];
-        }
-    } else { //check if should hide
-        if ([elDict[@"PID"] intValue] == AltTabPID) {
-            if (self.isPreviewWindowShowing) {
-                //thumbnail image
-                if ([elDict[@"role"] isEqual: @"AXUnknown"] && (!previewTarget || !CFEqual((__bridge CFTypeRef)(previewTarget), (__bridge CFTypeRef)(el)))) {
-                    if (thumbnailPreviewsEnabled) {
-                        if (!thumbnailPreviewDelay || previewTarget) {
-                            [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
-                            previewTarget = el;
-                        } else {
-                            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
-                            thumbnailPreviewTimeoutRef = setTimeout(^{
-                                [scripts[@"thumbnailPreview"] executeAndReturnError: nil];
-                                previewTarget = el;
-                            }, thumbnailPreviewDelay);
-                        }
-                    }
-                }
-                
-                if (keepDockShowing && dockAutohide && CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(NO);
-                
-                //thumbnail-peek
-                if ([elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"]) {
-                    mousemoveDict = NSMutableDictionary.dictionary;
-                    [self hidePreviewWindow];
-                    if (keepDockShowing && dockAutohide && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);
-                }
-            }
-        } else {
-            if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
-            mousemoveDict = NSMutableDictionary.dictionary;
-        }
-    }
-    return YES;
-}
 
 /* events */
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (CGPoint) pos {
@@ -614,9 +286,9 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     } else el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
     BOOL ret = YES;
-    if (DATMode == 1) ret = [self mousemoveMacOS: proxy : type : event : refcon : el : elDict];
-    if (DATMode == 2) ret = [self mousemoveUbuntu: proxy : type : event : refcon : el : elDict];
-    if (DATMode == 3) ret = [self mousemoveWindows: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 1) ret = [MacOSMode mousemove: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 2) ret = [UbuntuMode mousemove: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 3) ret = [WindowsMode mousemove: proxy : type : event : refcon : el : elDict];
     return ret;
 }
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
@@ -627,9 +299,9 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     checkForDockChange(type, el, elDict);
     
     BOOL ret = YES;
-    if (DATMode == 1) ret = [self mousedownMacOS: proxy : type : event : refcon : el : elDict];
-    if (DATMode == 2) ret = [self mousedownUbuntu: proxy : type : event : refcon : el : elDict];
-    if (DATMode == 3) ret = [self mousedownWindows: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 1) ret = [MacOSMode mousedown: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 2) ret = [UbuntuMode mousedown: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 3) ret = [WindowsMode mousedown: proxy : type : event : refcon : el : elDict];
     return ret;
 }
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon {
@@ -640,9 +312,9 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     checkForDockChange(type, el, elDict);
     
     BOOL ret = YES;
-    if (DATMode == 1) ret = [self mouseupMacOS: proxy : type : event : refcon : el : elDict];
-    if (DATMode == 2) ret = [self mouseupUbuntu: proxy : type : event : refcon : el : elDict];
-    if (DATMode == 3) ret = [self mouseupWindows: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 1) ret = [MacOSMode mouseup: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 2) ret = [UbuntuMode mouseup: proxy : type : event : refcon : el : elDict];
+    if (DATMode == 3) ret = [WindowsMode mouseup: proxy : type : event : refcon : el : elDict];
     return ret;
 }
 + (void) spaceChanged: (NSNotification*) note {
