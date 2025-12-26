@@ -36,6 +36,8 @@ extern NSMutableDictionary* _Nullable mousemoveDict;
 extern int activationT;
 extern NSMutableDictionary<NSNumber*, NSDictionary<NSString*, NSNumber*>*>* _Nonnull appWindowCounts;
 extern BOOL isDockActive;
+
+extern int getCount(NSNumber* pid, NSString* key);
 extern int onScreenFinderWindows(void);
 
 
@@ -56,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) startPreviewInterval;
 + (void) stopPreviewInterval;
 + (void) timerTick: (NSTimer*) arg;
++ (void) onDockBecameInactive;
 + (pid_t) loadDockPID;
 + (pid_t) loadAltTabPID;
 + (BOOL) loadDockAutohide;

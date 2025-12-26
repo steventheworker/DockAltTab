@@ -33,6 +33,8 @@ int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
 NSMutableDictionary<NSNumber*, NSDictionary<NSString*, NSNumber*>*>* appWindowCounts;
 BOOL isDockActive = NO;
 
+int getCount(NSNumber* pid, NSString* key) { return (appWindowCounts[pid] ?: (NSDictionary<NSString*, NSNumber*>*)@{})[key].intValue; }
+
 int onScreenFinderWindows(void) { //returns 0 if app hidden (but then grabbing windows from appElement w/ AXUI should be accurate! but can we tell if they belong to the current space?)
     NSArray* wins = CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID));
     int count = 0;for (NSDictionary* win in wins) {
@@ -101,6 +103,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     "];
     scripts[@"countAllWindowStats"] = [NSAppleScript.alloc initWithSource: @"tell application \"AltTab\" to countAllWindowStats"];
     appWindowCounts = NSMutableDictionary.dictionary;
+    [self syncCounts: ^{}];
 }
 + (void) setMode: (int) mode {
     DATMode = mode;
@@ -266,14 +269,23 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
 }
 + (void) onDockBecameActive {
     NSLog(@"dock active");
+    [self syncCountsWhileDockActive];
+}
++ (void) syncCounts : (void(^)(void)) cb {
     [helperLib applescriptWithScript: scripts[@"countAllWindowStats"] : ^(id res) {
+        NSLog(@"sync");
         appWindowCounts = NSMutableDictionary.dictionary;
         for (NSDictionary* record in res) appWindowCounts[record[@"pPID"]] = @{
                 @"countWindows": record[@"cWin"] ?: @0,
                 @"countWindowsCurrentSpace": record[@"cCur"] ?: @0,
                 @"countMinimizedWindowsCurrentSpace": record[@"cMin"] ?: @0
             };
+        cb();
     }];
+}
++ (void) syncCountsWhileDockActive {
+    if (!isDockActive) return;
+    [self syncCounts: ^{ if (isDockActive) setTimeout(^{ if (isDockActive) [self syncCountsWhileDockActive]; }, 1000); }];
 }
 + (void) onDockBecameInactive {
     NSLog(@"dock inactive");
@@ -299,7 +311,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
             NSString* appName = nil;
             if (frontmostApp) AXUIElementCopyAttributeValue(frontmostApp, kAXTitleAttribute, (void*)&appName);
             if ([appName isEqual: @"AltTab"]) el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
-        }
+        } else { el = [mousedownDict[@"expired"] boolValue] ? nil : mousedownDict[@"el"]; mousedownDict[@"expired"] = @YES; }
         //else don't define el (powerpoint bug) ...the bug only happens if you read elementAtPoint while powerpoint is active! so if dock/AltTab/other has keyboard focus it's fine!
     } else el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
