@@ -13,6 +13,7 @@
     [WindowsMode mousemove: proxy : type : event : refcon : el : elDict];
     return YES;
 }
+
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     
@@ -24,7 +25,7 @@
         NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
         if (children.count) return YES; //children on an icon === icon menu is showing
         NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
-        int previewWindowsCount =  [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
+        int previewWindowsCount = appWindowCounts[elDict[@"PID"]][@"countWindowsCurrentSpace"].intValue;
         NSRunningApplication* tarApp = [helperLib appWithBID: tarBID];
         mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
             @"tarAppActive": @(tarApp.active),
@@ -34,16 +35,16 @@
         NSLog(@"%d", previewWindowsCount);
         if (previewWindowsCount == 0 || ([tarApp.localizedName isEqual: @"Finder"] && !tarApp.isHidden && !onScreenFinderWindows())) {
             if ([tarApp.localizedName isEqual: @"Finder"]) {
-                [helperLib applescriptWithScript: scripts[@"newFinder"]];
+                [helperLib applescriptWithScript: scripts[@"newFinder"] : ^(NSString* res) {}];
                 return NO;
             }
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-            return YES; //pass click through
+            if (!appWindowCounts[@(tarApp.processIdentifier)]) return YES; //pass click through
         }
         return NO;
     }
     return YES;
 }
+
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
@@ -56,11 +57,9 @@
         if ([mousedownDict[@"tarAppBID"] isNotEqualTo: tarApp.bundleIdentifier]) return NO; //don't do anything, mouse changed icons
         if ([mousedownDict[@"tarAppActive"] intValue] != (int) tarApp.active) return NO; //don't do anything, active app changed between mousedown/up
         
-        int previewWindowsCount = [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue];
-        if (!previewWindowsCount) {
-            if (![[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countWindows appBID \"%@\"", tarBID]] intValue])
-                return YES; //pass click through
-        }
+        int previewWindowsCount = appWindowCounts[@(tarApp.processIdentifier)][@"countWindowsCurrentSpace"].intValue;
+        if (!previewWindowsCount)
+            if (!appWindowCounts[@(tarApp.processIdentifier)][@"countWindows"].intValue) return YES; //pass click through
         
         if (type == kCGEventOtherMouseUp) return YES;
         if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
@@ -74,9 +73,8 @@
             return NO;
         } else {
             // check if the only window is a minimized window in the current space
-            if (previewWindowsCount == 1 && 1 == [[helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to countMinimizedWindowsCurrentSpace appBID \"%@\"", tarBID]] intValue]) {
-                [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", tarBID]];
-            }
+            if (previewWindowsCount == 1 && 1 == appWindowCounts[@(tarApp.processIdentifier)][@"countMinimizedWindowsCurrentSpace"].intValue)
+                [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", tarBID] : ^(NSString* res) {}];
         }
         if (tarApp.active) [tarApp hide]; else [DockAltTab activateApp: tarApp];
         return NO;

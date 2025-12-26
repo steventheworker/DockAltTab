@@ -34,7 +34,8 @@ extern NSMutableDictionary* _Nullable mousemoveDict;
 //CGPoint cursorPos;
 //CGRect lastPreviewWinBounds;
 extern int activationT;
-
+extern NSMutableDictionary<NSNumber*, NSDictionary<NSString*, NSNumber*>*>* _Nonnull appWindowCounts;
+extern BOOL isDockActive;
 extern int onScreenFinderWindows(void);
 
 

@@ -96,7 +96,7 @@ void renderUnsupportedWindow(void) {
     }, 1000);
 }
 + (void) quit: (id)sender {[NSApp terminate: nil];}
-+ (void) runApplescript: (id)sender {[helperLib applescriptAsync: ((NSButton*)sender).identifier : ^(NSString* response) {}];}
++ (void) runApplescript: (id)sender {[helperLib applescript: ((NSButton*)sender).identifier : ^(NSString* res) {}];}
 + (void) openURL: (id)sender {
     NSButton* button = (NSButton*)sender;
     [NSWorkspace.sharedWorkspace openURL: [NSURL URLWithString: button.identifier]];

@@ -30,6 +30,8 @@ NSTimer* previewIntervalTimer;
 CGPoint cursorPos;
 CGRect lastPreviewWinBounds;
 int activationT = ACTIVATION_MILLISECONDS; //on spaceswitch: wait longer
+NSMutableDictionary<NSNumber*, NSDictionary<NSString*, NSNumber*>*>* appWindowCounts;
+BOOL isDockActive = NO;
 
 int onScreenFinderWindows(void) { //returns 0 if app hidden (but then grabbing windows from appElement w/ AXUI should be accurate! but can we tell if they belong to the current space?)
     NSArray* wins = CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID));
@@ -97,6 +99,8 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         -- set target of window 1 to folder \"Desktop\" of folder \"super\" of folder \"Users\" of startup disk\n\
         end tell\n\
     "];
+    scripts[@"countAllWindowStats"] = [NSAppleScript.alloc initWithSource: @"tell application \"AltTab\" to countAllWindowStats"];
+    appWindowCounts = NSMutableDictionary.dictionary;
 }
 + (void) setMode: (int) mode {
     DATMode = mode;
@@ -226,11 +230,11 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         if (totDiff > 2 || (fabs(cursorPos.x - cachedCursorPos.x) + fabs(cursorPos.y - cachedCursorPos.y)) > 2) {
             return [self showPreview: tarBID];
         }
-        [helperLib applescriptAsync: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]] : ^(NSString* response) {}];
+        [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to %@", [self getShowString: tarBID : cursorPos]] : ^(NSString* res) {}];
     }, 10);
 }
 + (void) hidePreviewWindow {
-    [helperLib applescriptWithScript: scripts[@"hide"]];
+    [helperLib applescriptWithScript: scripts[@"hide"] : ^(NSString* res) {}];
     previewTarget = nil;
 }
 + (BOOL) isPreviewWindowShowing { /* is preview window (opened by DockAltTab) open? */
@@ -260,6 +264,20 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
 //    NSMutableDictionary* elDict = [self elDict: el];
 //    NSLog(@"%@", [helperLib dictionaryStringOneLine: elDict : YES]);
 }
++ (void) onDockBecameActive {
+    NSLog(@"dock active");
+    [helperLib applescriptWithScript: scripts[@"countAllWindowStats"] : ^(id res) {
+        appWindowCounts = NSMutableDictionary.dictionary;
+        for (NSDictionary* record in res) appWindowCounts[record[@"pPID"]] = @{
+                @"countWindows": record[@"cWin"] ?: @0,
+                @"countWindowsCurrentSpace": record[@"cCur"] ?: @0,
+                @"countMinimizedWindowsCurrentSpace": record[@"cMin"] ?: @0
+            };
+    }];
+}
++ (void) onDockBecameInactive {
+    NSLog(@"dock inactive");
+}
 
 /*
  events for each DATMode:  1:MacOS 2:Ubuntu 3:Windows
@@ -285,6 +303,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
         //else don't define el (powerpoint bug) ...the bug only happens if you read elementAtPoint while powerpoint is active! so if dock/AltTab/other has keyboard focus it's fine!
     } else el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
     NSMutableDictionary* elDict = [DockAltTab elDict: el];
+    if ([elDict[@"PID"] intValue] == dockPID) {if (!isDockActive) {isDockActive = YES;[self onDockBecameActive];}} else {if (isDockActive) {isDockActive = NO;[self onDockBecameInactive];}}
     BOOL ret = YES;
     if (DATMode == 1) ret = [MacOSMode mousemove: proxy : type : event : refcon : el : elDict];
     if (DATMode == 2) ret = [UbuntuMode mousemove: proxy : type : event : refcon : el : elDict];

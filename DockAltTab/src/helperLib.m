@@ -627,7 +627,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         key down 63\n\
         key code 0\n\
         key up 63\n\
-    end tell"]];
+    end tell"] : ^(NSString* res) {}];
 }
 + (void) killDock { //(Execute shell command) "killall dock"
     NSString* killCommand = [@"/usr/bin/killall " stringByAppendingString:@"Dock"];
@@ -719,46 +719,101 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     NSDictionary<NSString *, NSNumber *> *immutableDictionary = [modifierStates copy];
     return immutableDictionary;
 }
-+ (NSString*) applescriptWithScript: (NSAppleScript*) script {
-    __block NSString* result = nil;
-    __block BOOL finished = NO;
++ (void) applescript: (NSString*) scriptTxt : (void(^)(id)) cb { [self applescriptWithScript: [NSAppleScript.alloc initWithSource: scriptTxt] :^(id res) { cb(res); }]; }
++ (void) applescriptWithScript: (NSAppleScript*) script : (void(^)(id)) cb {
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        NSDictionary* error = nil;
-        NSAppleEventDescriptor* desc = [script executeAndReturnError: &error];
-        result = desc.stringValue ?: @"";
-        finished = YES;
-    });
-    // spin the runloop instead of blocking it
-    while (!finished) {
-        [NSRunLoop.currentRunLoop runMode: NSDefaultRunLoopMode beforeDate: [NSDate dateWithTimeIntervalSinceNow: 0.1]];
-    }
-    return result;
-}
-+ (NSString*) applescript: (NSString*) scriptTxt {
-    return [self applescriptWithScript: [NSAppleScript.alloc initWithSource: scriptTxt]];
-}
-+ (void) applescriptAsync: (NSString*) scriptTxt : (void(^)(NSString*)) cb {
-    NSTask *task = [[NSTask alloc] init];
-    scriptTxt = [NSString stringWithFormat: @"'%@'", [scriptTxt stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"]]; // escape '
-    [task setLaunchPath: @"/bin/bash"];
-    scriptTxt = [NSString stringWithFormat: @"/usr/bin/osascript -e %@", scriptTxt];
-    [task setArguments: [NSArray arrayWithObjects:@"-c", scriptTxt, nil]];
-    NSPipe *standardOutput = [[NSPipe alloc] init];
-    [task setStandardOutput:standardOutput];
-    [[NSNotificationCenter defaultCenter] addObserverForName: NSFileHandleReadCompletionNotification object: [standardOutput fileHandleForReading] queue: nil usingBlock: ^(NSNotification * _Nonnull notification) {
-        NSData* data = [[notification userInfo] objectForKey: NSFileHandleNotificationDataItem];
-        NSFileHandle* handle = [notification object];
-        if ([data length]) {
-            NSString* str = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-            cb([str substringToIndex:[str length]-1]); // remove end of line \n
-        } else {
-            [[NSNotificationCenter defaultCenter] removeObserver: self name: NSFileHandleReadCompletionNotification object: [notification object]];
-            cb(nil);
+        NSDictionary* err = nil;
+        NSAppleEventDescriptor* desc = [script executeAndReturnError: &err];
+        if (!desc) {
+            dispatch_async(dispatch_get_main_queue(), ^{ cb(nil); NSLog(@"%@", [NSError errorWithDomain: @"AppleScript" code: 1 userInfo: err]); });
+            return;
         }
-    }];
-    [task launch];
-    [[standardOutput fileHandleForReading] readInBackgroundAndNotify];
+        id obj = [self objectFromAEDescriptor: desc];
+        dispatch_async(dispatch_get_main_queue(), ^{ cb(obj); });
+    });
 }
++ (id) objectFromAEDescriptor: (NSAppleEventDescriptor*) desc {
+    if (!desc) return nil;
+
+    DescType type = desc.descriptorType;
+
+    switch (type) {
+
+        case typeAEList:
+            return [self arrayFromAEList:desc];
+
+        case typeAERecord:
+            return [self dictionaryFromAERecord:desc];
+
+        case typeSInt32:
+        case typeUInt32:
+        case typeSInt16:
+        case typeUInt16:
+            return @(desc.int32Value);
+
+        case typeSInt64:
+            return @(desc.doubleValue);
+
+        case typeBoolean:
+            return @(desc.booleanValue);
+
+        case typeUTF8Text:
+        case typeUnicodeText:
+        case typeChar:
+            return desc.stringValue ?: @"";
+
+        default:
+            // Fallback – Script Editor style
+            return desc.stringValue ?: @"";
+    }
+}
++ (NSArray *)arrayFromAEList:(NSAppleEventDescriptor *)listDesc {
+    NSMutableArray *array = [NSMutableArray array];
+
+    NSInteger count = listDesc.numberOfItems;
+    for (NSInteger i = 1; i <= count; i++) {
+        NSAppleEventDescriptor *item = [listDesc descriptorAtIndex:i];
+        if (!item) continue;
+
+        id obj = [self objectFromAEDescriptor:item];
+        if (obj) [array addObject:obj];
+    }
+
+    return array;
+}
++ (NSDictionary *)dictionaryFromAERecord:(NSAppleEventDescriptor *)recordDesc {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+
+    NSInteger count = recordDesc.numberOfItems;
+    for (NSInteger i = 1; i <= count; i++) {
+
+        AEKeyword key = [recordDesc keywordForDescriptorAtIndex:i];
+        NSAppleEventDescriptor *valueDesc =
+            [recordDesc descriptorForKeyword:key];
+        if (!valueDesc) continue;
+
+        // Convert FourCharCode → NSString
+        char chars[5] = {
+            (key >> 24) & 0xFF,
+            (key >> 16) & 0xFF,
+            (key >> 8)  & 0xFF,
+            key & 0xFF,
+            0
+        };
+
+        NSString *keyString =
+            [[NSString alloc] initWithBytes:chars
+                                     length:4
+                                   encoding:NSMacOSRomanStringEncoding];
+        if (!keyString) continue;
+
+        id value = [self objectFromAEDescriptor:valueDesc];
+        if (value) dict[keyString] = value;
+    }
+
+    return dict;
+}
+    
 + (void) newFinderWindow {
     [helperLib applescript: @"\n\
         tell application \"System Events\" to set uname to name of current user\n\
@@ -768,7 +823,7 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
         -- make new Finder window\n\
         -- set target of window 1 to folder \"Desktop\" of folder \"super\" of folder \"Users\" of startup disk\n\
         end tell\n\
-    "];
+    " : ^(NSString* response) {}];
 }
 + (BOOL) isSparkleUpdaterOpen {
     for (NSWindow* window in [NSApp windows]) if ([(id)window.identifier isEqual: @"SUStatus"] || [(id)window.identifier isEqual: @"SUUpdateAlert"]) return YES;
