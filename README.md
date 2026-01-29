@@ -2,7 +2,7 @@
 
 ### Companion App For — (Scriptable) AltTab
 
-##### v3.00.2 download link: https://github.com/steventheworker/DockAltTab/releases/download/v3.00.2/DockAltTab-v3.00.2.zip
+##### v3.00.5 download link: https://github.com/steventheworker/DockAltTab/releases/download/v3.00.5/DockAltTab-v3.00.5.zip
 
 you can also compile this repository on Xcode.
 
