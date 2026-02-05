@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 
+extern AXUIElementRef _Nonnull systemWideEl;
 enum dockPositions {DockLeft, DockBottom, DockRight};
 
 //missing attributes

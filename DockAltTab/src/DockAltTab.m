@@ -305,9 +305,8 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
     id el;
     if (DATMode == 2) {
         if (thumbnailPreviewsEnabled) { //for Ubuntu mode — only define el if thumbnailPreviewsEnabled
-            AXUIElementRef focusedApp = AXUIElementCreateSystemWide();
             AXUIElementRef frontmostApp;
-            AXUIElementCopyAttributeValue(focusedApp, kAXFocusedApplicationAttribute, (CFTypeRef*)&frontmostApp);
+            AXUIElementCopyAttributeValue(systemWideEl, kAXFocusedApplicationAttribute, (CFTypeRef*)&frontmostApp);
             NSString* appName = nil;
             if (frontmostApp) AXUIElementCopyAttributeValue(frontmostApp, kAXTitleAttribute, (void*)&appName);
             if ([appName isEqual: @"AltTab"]) el = [helperLib elementAtPoint: [helperLib normalizePointForDockGap: cursorPos : dockPos]];
