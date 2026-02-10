@@ -32,17 +32,9 @@
             @"el": el,
         }];
         if (DockAltTab.isPreviewWindowShowing) [DockAltTab hidePreviewWindow];
-        NSLog(@"%d", previewWindowsCount);
-        if (previewWindowsCount == 0 || ([tarApp.localizedName isEqual: @"Finder"] && !tarApp.isHidden && !onScreenFinderWindows())) {
-            if ([tarApp.localizedName isEqual: @"Finder"]) {
-                [helperLib applescriptWithScript: scripts[@"newFinder"] : ^(NSString* res) {}];
-                return NO;
-            }
-            if (!previewWindowsCount) if (!getCount(@(tarApp.processIdentifier), @"countWindows")) return YES; //pass click through
-        }
-        return NO;
+        if (previewWindowsCount || getCount(@(tarApp.processIdentifier), @"countWindows")) return NO;
     }
-    return YES;
+    return YES; //pass click through
 }
 
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
@@ -60,7 +52,7 @@
         int previewWindowsCount = getCount(@(tarApp.processIdentifier), @"countWindowsCurrentSpace");
         if (!previewWindowsCount) if (!getCount(@(tarApp.processIdentifier), @"countWindows")) return YES; //pass click through
         
-        if (type == kCGEventOtherMouseUp) return YES;
+        if (type == kCGEventOtherMouseUp) return YES; // pass click through
         if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
             if (tarApp.hidden) {
                 [DockAltTab unhideApp: tarApp];
@@ -68,7 +60,10 @@
                     [DockAltTab activateApp: tarApp];
                     activationT = ACTIVATION_MILLISECONDS;
                 }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
-            } else [tarApp hide];
+            } else {
+                if ([tarApp.localizedName isEqual: @"Finder"] && !onScreenFinderWindows()) [helperLib applescriptWithScript: scripts[@"newFinder"] : ^(NSString* res) {}];
+                else [tarApp hide];
+            }
             return NO;
         } else {
             // check if the only window is a minimized window in the current space
@@ -79,6 +74,6 @@
         return NO;
     }
     if (keepDockShowing && dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
-    return YES;
+    return YES; // pass click through
 }
 @end

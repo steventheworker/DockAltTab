@@ -58,17 +58,16 @@
         } else {
             if (type == kCGEventOtherMouseUp) return YES;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
-                if ([tarApp.localizedName isEqual: @"Finder"]) {
-                    [helperLib applescriptWithScript: scripts[@"newFinder"] : ^(NSString* res) {}];
-                    return NO;
-                }
                 if (tarApp.hidden) {
                     [DockAltTab unhideApp: tarApp];
                     setTimeout(^{
                         [DockAltTab activateApp: tarApp];
                         activationT = ACTIVATION_MILLISECONDS;
                     }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
-                } else [tarApp hide];
+                } else {
+                    if ([tarApp.localizedName isEqual: @"Finder"]) [helperLib applescriptWithScript: scripts[@"newFinder"] : ^(NSString* res) {}];
+                    else [tarApp hide];
+                }
                 return NO;
             } else {
                 // check if the only window is a minimized window in the current space

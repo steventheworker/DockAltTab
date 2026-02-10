@@ -67,7 +67,7 @@
     
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
         if (type == kCGEventRightMouseDown) {
-            if ([DockAltTab isPreviewWindowShowing]) [DockAltTab hidePreviewWindow];
+            if (DockAltTab.isPreviewWindowShowing) [DockAltTab hidePreviewWindow];
             return YES;
         }
         NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
@@ -77,19 +77,18 @@
         int previewWindowsCount = getCount(@(tarApp.processIdentifier), @"countWindowsCurrentSpace");
         mousedownDict = [NSMutableDictionary dictionaryWithDictionary: @{
             @"tarAppActive": @(tarApp.active),
-            @"el": el
+            @"el": el,
         }];
-        if ([DockAltTab isPreviewWindowShowing]) [DockAltTab hidePreviewWindow];
-        if (!previewWindowsCount) if (!getCount(@(tarApp.processIdentifier), @"countWindows")) return YES; //pass click through
-        return NO;
+        if (DockAltTab.isPreviewWindowShowing) [DockAltTab hidePreviewWindow];
+        if (previewWindowsCount || getCount(@(tarApp.processIdentifier), @"countWindows")) return NO;
     }
-    return YES;
+    return YES; //pass click through
 }
 
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;
-
+    
     if ([elDict[@"PID"] intValue] == dockPID && [elDict[@"running"] intValue]) {
         NSArray* children = [helperLib elementDict: el : @{@"children": (id)kAXChildrenAttribute}][@"children"];
         if (children.count) return YES; //children on an icon === icon menu is showing
@@ -100,20 +99,19 @@
         
         int previewWindowsCount = getCount(@(tarApp.processIdentifier), @"countWindowsCurrentSpace");
         if (!previewWindowsCount) if (!getCount(@(tarApp.processIdentifier), @"countWindows")) return YES; //pass click through
-
-        if (type == kCGEventOtherMouseUp) return YES;
+        
+        if (type == kCGEventOtherMouseUp) return YES; // pass click through
         if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
-            if ([tarApp.localizedName isEqual: @"Finder"]) {
-                [helperLib applescriptWithScript: scripts[@"newFinder"] : ^(NSString* res) {}];
-                return NO;
-            }
             if (tarApp.hidden) {
                 [DockAltTab unhideApp: tarApp];
                 setTimeout(^{
                     [DockAltTab activateApp: tarApp];
                     activationT = ACTIVATION_MILLISECONDS;
                 }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
-            } else [tarApp hide];
+            } else {
+                if ([tarApp.localizedName isEqual: @"Finder"] && !onScreenFinderWindows()) [helperLib applescriptWithScript: scripts[@"newFinder"] : ^(NSString* res) {}];
+                else [tarApp hide];
+            }
             return NO;
         } else {
             // check if the only window is a minimized window in the current space
@@ -124,6 +122,6 @@
         return NO;
     }
     if (keepDockShowing && dockAutohide && !CoreDockGetAutoHideEnabled()) setTimeout(^{if ([mousemoveDict[@"elDict"][@"PID"] intValue] != AltTabPID && !CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(YES);}, 333);
-    return YES;
+    return YES; // pass click through
 }
 @end
