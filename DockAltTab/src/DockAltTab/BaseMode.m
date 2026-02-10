@@ -15,13 +15,20 @@ AXUIElementRef $finder;
 id $finderWindowTarget;
 
 @implementation BaseMode
++ (void) init {
+    finder = [NSRunningApplication runningApplicationsWithBundleIdentifier: @"com.apple.finder"].firstObject;
+    $finder = AXUIElementCreateApplication(finder.processIdentifier);
+}
+
 + (void) activateApp: (NSRunningApplication*) app { // activateWithOptions (deprecated) fails (returning 0) after touch xcode ui (if debugger attached) ——fallback to applescript
+    if ([app.bundleIdentifier isEqual: @"com.apple.finder"]) [self assignFinderTargetWindow: NO];
+    
     BOOL success;
     if (@available(macOS 14.0, *)) { success = [app activateFromApplication: NSWorkspace.sharedWorkspace.frontmostApplication options: NSApplicationActivateIgnoringOtherApps]; }
     else { success = [app activateWithOptions: NSApplicationActivateIgnoringOtherApps]; }
     NSLog(@"activateApp success %d", success);
 //    if (!success) [helperLib applescript: [NSString stringWithFormat: @"tell application id \"%@\" to activate", app.bundleIdentifier] :^(id res) { [self onAppActivate: app]; }]; else
-    setTimeout(^{ [self onAppActivate: app]; }, 0);
+    [self onAppActivate: app];
 }
 
 + (void) onAppActivate: (NSRunningApplication*) app {
@@ -35,8 +42,9 @@ id $finderWindowTarget;
 }
 
 + (void) demin: (NSRunningApplication*) app {
+    if ([app.bundleIdentifier isEqual: @"com.apple.finder"]) [self assignFinderTargetWindow: YES];
+    
     [self activateApp: app];
-    if ([app.bundleIdentifier isEqual: @"com.apple.finder"]) [self onFinderActivate: app : YES];
     [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", app.bundleIdentifier] : ^(NSString* res) {}];
 }
 
@@ -44,8 +52,6 @@ id $finderWindowTarget;
     app handling
 */
 + (void) onFinderActivate: (NSRunningApplication*) app : (BOOL) assignTargetWindowFromMinimized {
-    if (!finder) finder = app; if (!$finder) $finder = AXUIElementCreateApplication(app.processIdentifier);
-    [self assignFinderTargetWindow: assignTargetWindowFromMinimized];
     setTimeout(^{ [self ensureFinderFocusesNonDesktopWindow]; }, 0);
 }
 
@@ -67,6 +73,7 @@ id $finderWindowTarget;
     ensureFinderFocusesNonDesktopWindow
 */
 + (void) assignFinderTargetWindow: (BOOL) fromMinimized {
+    $finderWindowTarget = nil;
     NSArray* wins = [helperLib elementDict: (__bridge id)$finder : @{@0: (id)kAXWindowsAttribute}][@0];
     for (int i = 0; i < wins.count; i++) {
         NSString* role; AXUIElementCopyAttributeValue((__bridge AXUIElementRef)wins[i], kAXRoleAttribute, (void*)&role);
