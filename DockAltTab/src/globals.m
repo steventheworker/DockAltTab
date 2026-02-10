@@ -52,7 +52,7 @@ BOOL within(int ms, NSDate* t0, NSDate* t1) {
 
 // hideRunningApp / unhideRunningApp
 const int HIDEUNHIDE_POLL_T_MS = 10; //milliseconds between poll(s)
-const int HIDEUNHIDE_MAX_TRIES = 24; //amount of times we poll before giving up on hiding this app
+const int HIDEUNHIDE_MAX_TRIES = 67*3; //amount of times we poll before giving up on hiding this app
 void hideRunningApp(NSRunningApplication* app, void(^cb)(void)) {
     if (app.isHidden) cb(); //already hidden
     if (app.activationPolicy != NSApplicationActivationPolicyRegular) { //apllication IS agent

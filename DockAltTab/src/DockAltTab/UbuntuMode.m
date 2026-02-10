@@ -7,6 +7,7 @@
 
 #import "UbuntuMode.h"
 #import "../DockAltTab.h"
+#import "../helperLib.h"
 
 @implementation UbuntuMode
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
@@ -59,9 +60,9 @@
             if (type == kCGEventOtherMouseUp) return YES;
             if (!previewWindowsCount) { //probably has windows on another space, prevent space switch but still activate app
                 if (tarApp.hidden) {
-                    [DockAltTab unhideApp: tarApp];
+                    [self unhideApp: tarApp];
                     setTimeout(^{
-                        [DockAltTab activateApp: tarApp];
+                        [self activateApp: tarApp];
                         activationT = ACTIVATION_MILLISECONDS;
                     }, activationT); //activating too quickly (w/ ignoringOtherApps) after unhiding is what switches spaces!
                 } else {
@@ -70,11 +71,12 @@
                 }
                 return NO;
             } else {
-                // check if the only window is a minimized window in the current space
-                if (previewWindowsCount == 1 && 1 == getCount(@(tarApp.processIdentifier), @"countMinimizedWindowsCurrentSpace"))
-                    [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", tarBID] : ^(NSString* res) {}];
+                if (previewWindowsCount == 1 && 1 == getCount(@(tarApp.processIdentifier), @"countMinimizedWindowsCurrentSpace")) { // check if the only window is a minimized window in the current space
+                    [self demin: tarApp];
+                    return NO;
+                }
             }
-            if (tarApp.active) [tarApp hide]; else [DockAltTab activateApp: tarApp];
+            if (tarApp.active) [tarApp hide]; else [self activateApp: tarApp];
         }
         return NO;
     }

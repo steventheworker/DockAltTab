@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict;
+
++ (void) activateApp: (NSRunningApplication*) app;
++ (void) unhideApp: (NSRunningApplication*) app;
++ (void) demin: (NSRunningApplication*) appbid;
 @end
 
 NS_ASSUME_NONNULL_END

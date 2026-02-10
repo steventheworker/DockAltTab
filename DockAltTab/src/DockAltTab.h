@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <Cocoa/Cocoa.h>
 #import "globals.h"
-#import "helperLib.h"
 #import "prefs.h"
 #import "SupportedAltTabAttacher.h"
 #import "DockAltTab/MacOSMode.h"
@@ -66,8 +65,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGRect) loadDockRect;
 + (void) reconnectDock;
 + (NSMutableDictionary*) elDict: (id) el;
-+ (void) activateApp: (NSRunningApplication*) app;
-+ (void) unhideApp: (NSRunningApplication*) app;
 + (NSPoint) previewLocation: (CGPoint) cursorPos : (id) iconEl;
 + (NSString*) getShowString: (NSString*) appBID : (CGPoint) pt;
 + (void) hidePreviewWindow;
