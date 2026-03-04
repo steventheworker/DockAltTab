@@ -582,7 +582,15 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
 }
 + (BOOL) dockAutohide {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"autohide"] intValue] > 0;
+    return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"autohide"] intValue];
+}
++ (BOOL) dockMagnification {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"magnification"] boolValue];
+}
++ (int) dockMagnificationSize {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [[[defaults persistentDomainForName:@"com.apple.dock"] valueForKey:@"largesize"] intValue];
 }
 + (int) dockPos {
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];

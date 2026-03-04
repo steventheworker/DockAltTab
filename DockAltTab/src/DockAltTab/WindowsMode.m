@@ -10,10 +10,15 @@
 #import "../helperLib.h"
 
 @implementation WindowsMode
+/*
+    mousemove
+*/
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([elDict[@"PID"] intValue] == dockPID) {
         if ([elDict[@"running"] intValue]) { //check if should show?
-            NSString* tarBID = [[NSBundle bundleWithURL: [helperLib elementDict: el : @{@"url": (id)kAXURLAttribute}][@"url"]] bundleIdentifier];
+            NSBundle* bundle = [NSBundle bundleWithURL: [helperLib elementDict: el : @{@0: (id)kAXURLAttribute}][@0]];
+            if (!bundle) return YES; // dock item bundle url is stale, user should re-add to dock
+            NSString* tarBID = bundle ? bundle.bundleIdentifier : @"";
             if ([mousemoveDict[@"tarBID"] isEqual: tarBID]) return YES;
             mousemoveDict = [NSMutableDictionary dictionaryWithDictionary: @{
                 //            @"tarAppActive": @(tarApp.active),
@@ -21,34 +26,42 @@
                 @"tarBID": tarBID,
                 @"elDict": elDict
             }];
-            if ([DockAltTab isPreviewWindowShowing]) [DockAltTab hidePreviewWindow];
             [DockAltTab showPreview: tarBID];
         } else {
             mousemoveDict = [NSMutableDictionary dictionary];
-            if ([DockAltTab isPreviewWindowShowing]) [DockAltTab hidePreviewWindow];
+            if (DockAltTab.isPreviewWindowShowing) [DockAltTab hidePreviewWindow];
         }
     } else { //check if should hide
         if ([elDict[@"PID"] intValue] == AltTabPID) {
+            //roles for DAT window elements: AXScrollArea, AXStaticText, AXButton, thumbnail (AXUnknown) subrole="" for all
             if (DockAltTab.isPreviewWindowShowing) {
-                //thumbnail image
-                if ([elDict[@"role"] isEqual: @"AXUnknown"] && (!previewTarget || !CFEqual((__bridge CFTypeRef)(previewTarget), (__bridge CFTypeRef)(el)))) {
-                    if (thumbnailPreviewsEnabled) {
+                BOOL isPreviewPanel = NO;
+                BOOL isPreviewWindow = [elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"];
+                if (isPreviewWindow) {
+                    isPreviewWindow = ((NSArray*)[helperLib elementDict: el : @{@0: (id)kAXChildrenAttribute}][@0]).count > 0; //check if it's actually the preview panel (preview window / thumbnail panel are both role=AXWindow, subrole=AXUnknown) but preview panel children=None
+                    isPreviewPanel = !isPreviewWindow;
+                }
+                if (thumbnailPreviewsEnabled) {
+                    BOOL somethingChanged = previewTarget && (/*DockAltTab.countAltTabWindows == 1 || */!CFEqual((__bridge CFTypeRef)(previewTarget), (__bridge CFTypeRef)(el))); // we should have 2 windows if previewTarget != nil
+                    if (([@[@"AXUnknown", @"AXScrollArea", @"AXStaticText", @"AXButton"] containsObject: elDict[@"role"]] || isPreviewWindow)
+                        && (!previewTarget || somethingChanged)) {
                         if (!thumbnailPreviewDelay || previewTarget) {
-                            [helperLib applescriptWithScript: scripts[@"thumbnailPreview"] : ^(NSString* res) {}];
                             previewTarget = el;
+                            [helperLib applescriptWithScript: scripts[@"thumbnailPreview"] : ^(NSString* res) { }];
                         } else {
                             if (thumbnailPreviewTimeoutRef) thumbnailPreviewTimeoutRef = clearTimeout(thumbnailPreviewTimeoutRef);
                             thumbnailPreviewTimeoutRef = setTimeout(^{
-                                [helperLib applescriptWithScript: scripts[@"thumbnailPreview"] : ^(NSString* res) {}];
+                                if (previewTarget && CFEqual((__bridge CFTypeRef)(previewTarget), (__bridge CFTypeRef)(el))) return;
                                 previewTarget = el;
+                                [helperLib applescriptWithScript: scripts[@"thumbnailPreview"] : ^(NSString* res) { }];
                             }, thumbnailPreviewDelay);
                         }
                     }
-                }
-                //thumbnail-peek
-                if ([elDict[@"role"] isEqual: @"AXWindow"] && [elDict[@"subrole"] isEqual: @"AXUnknown"]) {
-                    mousemoveDict = NSMutableDictionary.dictionary;
-                    [DockAltTab hidePreviewWindow];
+                    if (previewTarget && isPreviewPanel) {
+                        NSLog(@"hidePreviewWindow");
+                        mousemoveDict = NSMutableDictionary.dictionary;
+                        [DockAltTab hidePreviewWindow];
+                    }
                 }
                 if (keepDockShowing && dockAutohide && CoreDockGetAutoHideEnabled()) CoreDockSetAutoHideEnabled(NO);
             }
@@ -62,7 +75,9 @@
     return YES;
 }
 
-
+/*
+    mousedown
+*/
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     
@@ -86,6 +101,9 @@
     return YES; //pass click through
 }
 
+/*
+    mouseup
+*/
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;

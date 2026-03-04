@@ -10,11 +10,17 @@
 #import "../helperLib.h"
 
 @implementation MacOSMode
+/*
+    mousemove
+*/
 + (BOOL) mousemove: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     [WindowsMode mousemove: proxy : type : event : refcon : el : elDict];
     return YES;
 }
 
+/*
+    mousedown
+*/
 + (BOOL) mousedown: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     
@@ -38,6 +44,9 @@
     return YES; //pass click through
 }
 
+/*
+    mouseup
+*/
 + (BOOL) mouseup: (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (id) el : (NSMutableDictionary*) elDict {
     if ([helperLib modifierKeys].count) return YES;
     if (type == kCGEventRightMouseUp) return YES;

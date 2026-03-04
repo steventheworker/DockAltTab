@@ -48,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSView*) $0: (NSView*) container : (NSString*) identifier;
 + (CGRect) rectWithDict: (NSDictionary*) dict;
 + (BOOL) dockAutohide;
++ (BOOL) dockMagnification;
++ (int) dockMagnificationSize;
 + (int) dockPos;
 + (CGRect) dockRect;
 + (id) dockAppElementFromDockChild: (id) dockChild;

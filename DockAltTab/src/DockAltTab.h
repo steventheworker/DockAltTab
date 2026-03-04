@@ -35,14 +35,17 @@ extern NSMutableDictionary* _Nullable mousemoveDict;
 extern int activationT;
 extern NSMutableDictionary<NSNumber*, NSDictionary<NSString*, NSNumber*>*>* _Nonnull appWindowCounts;
 extern BOOL isDockActive;
+extern NSArray* _Nonnull CGWindowList;
+extern id _Nullable showIcon;
 
-extern int getCount(NSNumber* pid, NSString* key);
+extern int getCount(NSNumber* _Nonnull pid, NSString* _Nonnull key);
 extern int onScreenFinderWindows(void);
 
 
 extern Boolean CoreDockGetAutoHideEnabled(void);
 extern void CoreDockSetAutoHideEnabled(Boolean flag);
-
+//extern CGRect CoreDockGetContainerRect(CGRect r);
+extern CGRect CoreDockGetRect(CGRect* r);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DockAltTab : NSObject
@@ -61,6 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (pid_t) loadDockPID;
 + (pid_t) loadAltTabPID;
 + (BOOL) loadDockAutohide;
++ (BOOL) loadDockMagnification;
++ (int) loadDockMagnificationSize;
 + (int) loadDockPos;
 + (CGRect) loadDockRect;
 + (void) reconnectDock;
@@ -70,6 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) hidePreviewWindow;
 + (void) showPreview: (NSString*) tarBID;
 + (BOOL) isPreviewWindowShowing;
++ (int) countAltTabWindows;
 + (BOOL) mousemove:         (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon : (CGPoint) pos;
 + (BOOL) mousedown:         (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon;
 + (BOOL) mouseup:          (CGEventTapProxy) proxy : (CGEventType) type : (CGEventRef) event : (void*) refcon;
