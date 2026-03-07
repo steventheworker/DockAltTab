@@ -60,6 +60,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BF1B81102EFBDB2300A175CE /* DockAltTab */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DockAltTab; sourceTree = "<group>"; };
+		BF5E7BC92F5A6EB400EFC85F /* scripts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = scripts; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +109,7 @@
 		BFE19DDE2825BFA600D72F99 = {
 			isa = PBXGroup;
 			children = (
+				BF5E7BC92F5A6EB400EFC85F /* scripts */,
 				BF0A905E290F6D230088A4F8 /* README.md */,
 				BFE19DE92825BFA600D72F99 /* DockAltTab */,
 				BF10DAFC2AA5B5BE0067458E /* Podfile */,
@@ -170,6 +172,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				BF1B81102EFBDB2300A175CE /* DockAltTab */,
+				BF5E7BC92F5A6EB400EFC85F /* scripts */,
 			);
 			name = DockAltTab;
 			productName = DockAltTab;

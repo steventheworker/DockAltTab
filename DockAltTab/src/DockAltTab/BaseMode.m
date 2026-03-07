@@ -45,7 +45,9 @@ id $finderWindowTarget;
     if ([app.bundleIdentifier isEqual: @"com.apple.finder"]) [self assignFinderTargetWindow: YES];
     
     [self activateApp: app];
-    [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", app.bundleIdentifier] : ^(NSString* res) {}];
+    [helperLib applescript: [NSString stringWithFormat: @"tell application \"AltTab\" to deminimizeFirstMinimizedWindowFromCurrentSpace appBID \"%@\"", app.bundleIdentifier] : ^(NSString* res) {
+        appWindowCounts[@(app.processIdentifier)] = @{@"countWindows": @(getCount(@(app.processIdentifier), @"countWindows")), @"countWindowsCurrentSpace": @(getCount(@(app.processIdentifier), @"countWindowsCurrentSpace")), @"countMinimizedWindowsCurrentSpace": @0};
+    }];
 }
 
 /*

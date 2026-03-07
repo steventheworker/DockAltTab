@@ -315,7 +315,7 @@ NSDate* lastSyncT;
     setTimeout(^{
         if (isDockActive && [NSDate.date timeIntervalSinceDate: lastSyncT] >= 1)
             [self syncCounts: ^{
-//                if (isDockActive) setTimeout(^{ if (isDockActive) [self syncCountsWhileDockActive]; }, 1000);
+                if (isDockActive) setTimeout(^{ if (isDockActive) [self syncCountsWhileDockActive]; }, 2000);
             }];
     }, 1000);
 }
