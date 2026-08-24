@@ -61,6 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void) stopPreviewInterval;
 + (void) timerTick: (NSTimer*) arg;
 + (void) onDockBecameInactive;
++ (void) loadDock;
 + (pid_t) loadDockPID;
 + (pid_t) loadAltTabPID;
 + (BOOL) loadDockAutohide;

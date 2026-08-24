@@ -422,8 +422,8 @@ void proc(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void* us
     CFMachPortRef myEventTap;
     CFRunLoopSourceRef eventTapRLSrc;
     myEventTap = CGEventTapCreate(
-      kCGHIDEventTap, // Catch all events (Before system processes it)
-//        kCGSessionEventTap, // Catch all events for current user session (After system processes it)
+//      kCGHIDEventTap, // Catch all events (Before system processes it)
+        kCGSessionEventTap, // Catch all events for current user session (After system processes it) ——use this (kCGHIDEventTap doesn't register RealVNC Viewer events)
 //       kCGAnnotatedSessionEventTap, //Specifies that an event tap is placed at the point where session events have been annotated to flow to an application.
                                    
       kCGHeadInsertEventTap, // Append to beginning of EventTap list

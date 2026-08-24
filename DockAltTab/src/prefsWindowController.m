@@ -54,8 +54,8 @@ float getDockFloatPref(NSString* key) {
 - (void) setUpdatePolicy {
     NSString* updatePolicy = [prefs getStringPref: @"updatePolicy"];
     SPUStandardUpdaterController* sucontroller = ((AppDelegate*) NSApplication.sharedApplication.delegate).updaterController;
-    if (![updatePolicy isEqual: @"manual"]) [[sucontroller updater] setAutomaticallyChecksForUpdates: YES];
-    if ([updatePolicy isEqual: @"autoinstall"]) [[sucontroller updater] setAutomaticallyDownloadsUpdates: YES];
+    [sucontroller.updater setAutomaticallyChecksForUpdates: ![updatePolicy isEqual: @"manual"]];
+    [sucontroller.updater setAutomaticallyDownloadsUpdates: [updatePolicy isEqual: @"autoinstall"]];
 }
 - (void) render {
     //version

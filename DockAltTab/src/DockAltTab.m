@@ -85,10 +85,7 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
 + (void) init {
     [self loadAltTabPID];
     if (!AltTabPID) [SupportedAltTabAttacher init: ^{[self loadAltTabPID];}];
-    [self loadDockPID];
-    [self loadDockRect];
-    [self loadDockAutohide]; [self loadDockMagnification]; [self loadDockMagnificationSize];
-    [self loadDockPos]; baselineDockRect = self.currentDockRect;
+    [self loadDock];
     [self setMode: [prefs getIntPref: @"previewMode"]];
     [self setDelay: [prefs getFloatPref: @"previewDelay"] * 10 * 2];
     [self setHideDelay: [prefs getFloatPref: @"previewHideDelay"] * 10 * 2];
@@ -139,6 +136,12 @@ void checkForDockChange(CGEventType type, id el, NSDictionary* elDict) {
 + (BOOL) loadDockAutohide {dockAutohide = helperLib.dockAutohide;return dockAutohide;}
 + (BOOL) loadDockMagnification {dockMagnification = helperLib.dockMagnification;return dockMagnification;}
 + (int) loadDockMagnificationSize {dockMagnificationSize = helperLib.dockMagnificationSize;return dockMagnificationSize;}
++ (void) loadDock {
+    [self loadDockPID];
+    [self loadDockRect];
+    [self loadDockAutohide]; [self loadDockMagnification]; [self loadDockMagnificationSize];
+    [self loadDockPos]; baselineDockRect = self.currentDockRect;
+}
 + (int) loadDockPos {dockPos = [helperLib dockPos];return dockPos;}
 + (pid_t) loadDockPID {dockPID = [helperLib appWithBID: @"com.apple.dock"].processIdentifier;return dockPID;}
 + (pid_t) loadAltTabPID {AltTabPID = [helperLib appWithBID: @"com.steventheworker.alt-tab-macos"].processIdentifier;return AltTabPID;}

@@ -108,7 +108,7 @@ NSSet<NSRunningApplication*>* previousValueOfRunningApps;
 //    NSLog(@"App launched: %@ — '%@' — %d", app.bundleIdentifier, app.localizedName, app.processIdentifier);
     if ([app.bundleIdentifier isEqual: @"com.steventheworker.alt-tab-macos"] || [app.bundleIdentifier isEqual: @"com.lwouis.alt-tab-macos"])
         setTimeout(^{[SupportedAltTabAttacher init: ^{[DockAltTab loadAltTabPID];}];}, 1000); //AltTab takes a sec to finish launch
-    if ([app.bundleIdentifier isEqual: @"com.apple.dock"]) [DockAltTab loadDockPID];
+    if ([app.bundleIdentifier isEqual: @"com.apple.dock"]) [DockAltTab loadDock];
 }
 
 - (void)appTerminated :(NSRunningApplication*) app {
