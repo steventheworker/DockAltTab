@@ -159,14 +159,24 @@ class Windows {
     }
 
     private static func refreshIfWindowShouldBeShownToTheUser(_ window: Window) {
-        window.shouldShowTheUser =
-            !(window.application.bundleIdentifier.flatMap { id in
+        let appIsAllowed: Bool
+        if DockAltTabMode {
+            // DockAltTab shows exactly the app whose dock icon is hovered, and ignores the blacklist
+            appIsAllowed = window.application.pid == DockAltTabApp?.processIdentifier
+        } else {
+            let appsToShow = Preferences.appsToShow[App.shortcutIndex]
+            let isExcepted = window.application.bundleIdentifier.flatMap { id in
                 Preferences.exceptions.contains {
                     id.hasPrefix($0.bundleIdentifier) && shouldHideWindow(window, $0)
                 }
-            } ?? false) &&
-            !((Preferences.appsToShow[App.shortcutIndex] == .active || DockAltTabMode) && window.application.pid != (DockAltTabMode ? DockAltTabApp!.processIdentifier : Applications.frontmostPid)) &&
-            !(Preferences.appsToShow[App.shortcutIndex] == .nonActive && window.application.pid == Applications.frontmostPid) &&
+            } ?? false
+            let pid = window.application.pid
+            appIsAllowed = !isExcepted &&
+                !(appsToShow == .active && pid != Applications.frontmostPid) &&
+                !(appsToShow == .nonActive && pid == Applications.frontmostPid)
+        }
+        window.shouldShowTheUser =
+            appIsAllowed &&
             !(!(Preferences.showHiddenWindows[App.shortcutIndex] != .hide) && window.isHidden) &&
             ((Preferences.showWindowlessApps[App.shortcutIndex] != .hide && window.isWindowlessApp) ||
                 !window.isWindowlessApp &&

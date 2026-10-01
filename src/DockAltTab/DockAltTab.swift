@@ -164,9 +164,8 @@ class DockAltTab {
               let position = attrs.position, let size = attrs.size else { return }
         refreshDockState()
         let (x, y) = previewPosition(position, size)
-        DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
-        isPreviewShowing = true
-        ensureDockShowing()
+        isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
+        if isPreviewShowing { ensureDockShowing() } else { restoreDockAutohide() }
     }
 
     private static func hidePreview() {

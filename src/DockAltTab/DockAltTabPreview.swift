@@ -5,16 +5,20 @@ import Cocoa
 
 /// Show window previews (the AltTab panel) for a specific app.
 /// Passing x/y forces DockAltTab positioning mode (panel anchored to the hovered dock icon).
-func DockAltTabShowAppPreviews(tarBID: String, x: Int?, y: Int?, dockPos: String?) {
+/// Returns true if a preview ended up being shown.
+@discardableResult
+func DockAltTabShowAppPreviews(tarBID: String, x: Int?, y: Int?, dockPos: String?) -> Bool {
     DockAltTabResetCachedThumbnailPreviewSetting()
     if tarBID.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
         Logger.warning { "dockAltTab: empty app bundle identifier" }
-        return
+        DockAltTabHide()
+        return false
     }
     let appInstances = NSRunningApplication.runningApplications(withBundleIdentifier: tarBID)
     guard let tarApp = appInstances.first else {
         Logger.debug { "dockAltTab: '\(tarBID)' is not running" }
-        return
+        DockAltTabHide()
+        return false
     }
     if x != nil || y != nil {
         startDockAltTabMode(app: tarApp)
@@ -34,28 +38,13 @@ func DockAltTabShowAppPreviews(tarBID: String, x: Int?, y: Int?, dockPos: String
     App.shortcutIndex = 2 // Shortcut 3 = index 2 = DockAltTab
     guard Windows.updatesBeforeShowing() else {
         App.hideUi()
-        return
-    }
-    Windows.list.forEach { (window: Window) in
-        var inVisibleSpace = false
-        window.spaceIds.forEach { spaceId in
-            if Spaces.visibleSpaces.contains(spaceId) { inVisibleSpace = true }
-        }
-        window.shouldShowTheUser =
-            !(window.application.pid != tarApp.processIdentifier) &&
-            !(!(Preferences.showHiddenWindows[App.shortcutIndex] != .hide) && window.isHidden) &&
-            ((Preferences.showWindowlessApps[App.shortcutIndex] != .hide && window.isWindowlessApp) ||
-                !window.isWindowlessApp &&
-                !(!(Preferences.showFullscreenWindows[App.shortcutIndex] != .hide) && window.isFullscreen) &&
-                !(!(Preferences.showMinimizedWindows[App.shortcutIndex] != .hide) && window.isMinimized) &&
-                !(Preferences.spacesToShow[App.shortcutIndex] == .visible && !inVisibleSpace) &&
-                !(Preferences.screensToShow[App.shortcutIndex] == .showingAltTab && !window.isOnScreen(NSScreen.preferred)) &&
-                (Preferences.showTabsAsWindows || !window.isTabbed))
+        DockAltTabReset()
+        return false
     }
     guard Windows.list.contains(where: { $0.shouldShowTheUser }) else {
         App.hideUi()
         DockAltTabReset()
-        return
+        return false
     }
     Windows.setInitialSelectedAndHoveredWindowIndex()
     if Preferences.windowDisplayDelay == DispatchTimeInterval.milliseconds(0) {
@@ -69,6 +58,7 @@ func DockAltTabShowAppPreviews(tarBID: String, x: Int?, y: Int?, dockPos: String
             App.delayedDisplayScheduled -= 1
         }
     }
+    return true
 }
 
 /// Force the (large) preview of the currently selected window to show, fetching a HD thumbnail first.
