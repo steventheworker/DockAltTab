@@ -123,9 +123,11 @@ class DockAltTab {
         hoveredAppBid = bid
         hoveredIcon = icon
         cancelShow()
+        // once a preview is open, hovering another app should switch to it immediately
+        let delay = (TilesPanel.shared?.isVisible ?? false) ? 0 : DockAltTabPreferences.previewDelayMs
         let work = DispatchWorkItem { showPreviews(bid: bid, icon: icon) }
         showWork = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(DockAltTabPreferences.previewDelayMs), execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(delay), execute: work)
     }
 
     private static func handlePreviewHover(_ element: AXUIElement) {
