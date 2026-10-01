@@ -111,7 +111,14 @@ class DockAltTab {
         cancelThumbnail()
         guard let icon = dockIconElement(element),
               let url = (try? icon.attributes([kAXURLAttribute]))?.url,
-              let bid = Bundle(url: url)?.bundleIdentifier else { return }
+              let bid = Bundle(url: url)?.bundleIdentifier else {
+            // spacers, folders/stacks, Trash, etc. have no app bundle: dismiss any preview
+            cancelShow()
+            hoveredAppBid = nil
+            hoveredIcon = nil
+            hidePreview()
+            return
+        }
         guard bid != hoveredAppBid else { return }
         hoveredAppBid = bid
         hoveredIcon = icon
@@ -137,13 +144,11 @@ class DockAltTab {
         }
         guard ["AXUnknown", "AXScrollArea", "AXStaticText", "AXButton"].contains(role) else { return }
         if let target = previewTarget, CFEqual(target, element) { return }
-        let wasPreviewing = previewTarget != nil
         previewTarget = element
         cancelThumbnail()
-        let delay = wasPreviewing ? 0 : DockAltTabPreferences.thumbnailPreviewDelayMs
         let work = DispatchWorkItem { DockAltTabShowThumbnailPreview() }
         thumbnailWork = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(delay), execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(DockAltTabPreferences.thumbnailPreviewDelayMs), execute: work)
     }
 
     private static func pointerLeft() {
@@ -163,6 +168,8 @@ class DockAltTab {
         guard let attrs = try? icon.attributes([kAXPositionAttribute, kAXSizeAttribute]),
               let position = attrs.position, let size = attrs.size else { return }
         refreshDockState()
+        previewTarget = nil
+        cancelThumbnail()
         let (x, y) = previewPosition(position, size)
         isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
         if isPreviewShowing { ensureDockShowing() } else { restoreDockAutohide() }

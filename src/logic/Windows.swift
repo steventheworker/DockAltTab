@@ -336,7 +336,8 @@ class Windows {
     static func updateSelectedAndHoveredWindowIndex(_ newIndex: Int, _ fromMouse: Bool = false) {
         guard newIndex >= 0 && newIndex < list.count else { return }
         guard shouldDisplay(list[newIndex]) else { return }
-        if (DockAltTabWaitForWindow != 0 && DockAltTabWaitForWindow != list[newIndex].cgWindowId) { DockAltTabThumbnailPreviewRequestHD(window: list[newIndex]) }
+        // in DockAltTab mode, the hover preview request is delayed by DockAltTab itself, not fired here
+        if DockAltTabWaitForWindow != 0 && DockAltTabWaitForWindow != list[newIndex].cgWindowId && !(fromMouse && DockAltTabMode) { DockAltTabThumbnailPreviewRequestHD(window: list[newIndex]) }
         var index: Int?
         if fromMouse && (newIndex != hoveredWindowIndex || lastWindowActivityType == .focus) {
             let oldIndex = hoveredWindowIndex
@@ -356,7 +357,7 @@ class Windows {
             selectedWindowIndex = newIndex
             selectedWindowTarget = list[newIndex].id
             TilesView.highlight(oldIndex)
-            previewSelectedWindowIfNeeded()
+            if !(fromMouse && DockAltTabMode) { previewSelectedWindowIfNeeded() }
             index = selectedWindowIndex
             lastWindowActivityType = .focus
         }
