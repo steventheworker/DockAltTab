@@ -42,6 +42,7 @@ class DockAltTab {
                   app.bundleIdentifier == "com.apple.dock" else { return }
             refreshDockState()
         }
+        ensureShowHiddenDockPref()
         let eventMask = [CGEventType.mouseMoved].reduce(CGEventMask(0)) { $0 | (1 << $1.rawValue) }
         eventTap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
@@ -95,15 +96,30 @@ class DockAltTab {
     }
 
     private static func handleMouseMoved(_ location: CGPoint) {
-        guard let element = elementAtPoint(location) else { pointerLeft(); return }
-        let pid = try? element.pid()
+        guard let element = elementAtPoint(location), let pid = try? element.pid() else { pointerLeft(); return }
         if pid == dockPid {
             handleDockHover(element)
         } else if pid == ProcessInfo.processInfo.processIdentifier {
             handlePreviewHover(element)
+        } else if NSRunningApplication(processIdentifier: pid)?.bundleIdentifier == "com.apple.dock" {
+            // the Dock was restarted; pick up its new pid and keep going
+            refreshDockState()
+            handleDockHover(element)
         } else {
             pointerLeft()
         }
+    }
+
+    /// The original DockAltTab enabled the Dock's "showhidden" pref and restarted the Dock.
+    private static func ensureShowHiddenDockPref() {
+        guard (dockPref("showhidden") as? NSNumber)?.boolValue != true else { return }
+        CFPreferencesSetAppValue("showhidden" as CFString, kCFBooleanTrue, "com.apple.dock" as CFString)
+        CFPreferencesAppSynchronize("com.apple.dock" as CFString)
+        Logger.info { "dockAltTab: enabling Dock 'showhidden', restarting the Dock" }
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/usr/bin/killall")
+        task.arguments = ["Dock"]
+        try? task.run()
     }
 
     private static func handleDockHover(_ element: AXUIElement) {

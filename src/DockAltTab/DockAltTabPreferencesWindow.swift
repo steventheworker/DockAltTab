@@ -114,6 +114,7 @@ class DockAltTabPreferencesWindow: NSWindow {
             button.font = .systemFont(ofSize: 11)
             button.tag = tag
             button.toolTip = tooltip
+            button.focusRingType = .none
             button.onAction = { [weak self] sender in
                 DockAltTabPreferences.previewMode = (sender as! NSButton).tag
                 self?.render()
