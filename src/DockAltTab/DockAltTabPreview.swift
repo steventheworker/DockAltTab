@@ -52,6 +52,11 @@ func DockAltTabShowAppPreviews(tarBID: String, x: Int?, y: Int?, dockPos: String
                 !(Preferences.screensToShow[App.shortcutIndex] == .showingAltTab && !window.isOnScreen(NSScreen.preferred)) &&
                 (Preferences.showTabsAsWindows || !window.isTabbed))
     }
+    guard Windows.list.contains(where: { $0.shouldShowTheUser }) else {
+        App.hideUi()
+        DockAltTabReset()
+        return
+    }
     Windows.setInitialSelectedAndHoveredWindowIndex()
     if Preferences.windowDisplayDelay == DispatchTimeInterval.milliseconds(0) {
         App.buildUiAndShowPanel()

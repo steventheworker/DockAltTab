@@ -30,6 +30,8 @@ class DockAltTab {
     private static var showWork: DispatchWorkItem?
     private static var hideWork: DispatchWorkItem?
     private static var thumbnailWork: DispatchWorkItem?
+    private static var pendingMouseLocation: CGPoint?
+    private static var mouseSamplingTimer: Timer?
 
     static func initialize() {
         guard !isRunning else { return }
@@ -56,6 +58,10 @@ class DockAltTab {
         // all we do is read NSEvent/AX state, so main-thread is where this belongs
         CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, .commonModes)
         CGEvent.tapEnable(tap: eventTap, enable: true)
+        // AX lookups are expensive; sample the cursor on a timer rather than inside the tap callback,
+        // otherwise macOS disables the tap for being too slow
+        mouseSamplingTimer = Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { _ in processPendingMouse() }
+        mouseSamplingTimer?.tolerance = 0.01
         Logger.info { "Finished initializing DockAltTab" }
     }
 
@@ -71,8 +77,21 @@ class DockAltTab {
     static func dismissPreview() { hidePreview() }
 
     private static let handleEvent: CGEventTapCallBack = { _, type, event, _ in
-        if type == .mouseMoved { handleMouseMoved(event.location) }
+        switch type {
+            case .mouseMoved:
+                pendingMouseLocation = event.location
+            case .tapDisabledByTimeout, .tapDisabledByUserInput:
+                if let eventTap { CGEvent.tapEnable(tap: eventTap, enable: true) }
+            default:
+                break
+        }
         return Unmanaged.passUnretained(event)
+    }
+
+    private static func processPendingMouse() {
+        guard let location = pendingMouseLocation else { return }
+        pendingMouseLocation = nil
+        handleMouseMoved(location)
     }
 
     private static func handleMouseMoved(_ location: CGPoint) {
@@ -129,6 +148,8 @@ class DockAltTab {
 
     private static func pointerLeft() {
         cancelShow()
+        hoveredAppBid = nil
+        hoveredIcon = nil
         guard DockAltTabMode else { isPreviewShowing = false; return }
         cancelHide()
         let work = DispatchWorkItem { hidePreview() }
@@ -215,7 +236,7 @@ class DockAltTab {
             }
         } else if dockPos == "bottom" {
             x += width / 2
-            y = screenHeight - position.y + 12 + gutter
+            y = screenHeight - position.y + gutter
         } else {
             y = screenHeight - (position.y + height / 2)
             x = dockPos == "right" ? position.x - gutter : position.x + width + gutter

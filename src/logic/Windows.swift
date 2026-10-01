@@ -224,7 +224,13 @@ class Windows {
             TilesView.highlight(oldIndex)
         }
         if DockAltTabMode {
-            updateSelectedAndHoveredWindowIndex(DockAltTabDockPos == "right" ? list.lastIndex(where: { $0.shouldShowTheUser })! : list.firstIndex(where: { $0.shouldShowTheUser })!)
+            let index = DockAltTabDockPos == "right" ? list.lastIndex(where: { $0.shouldShowTheUser }) : list.firstIndex(where: { $0.shouldShowTheUser })
+            if let index {
+                updateSelectedAndHoveredWindowIndex(index)
+            } else {
+                App.hideUi()
+                DockAltTabReset()
+            }
             return
         }
         if Applications.frontmostPid != nil,
