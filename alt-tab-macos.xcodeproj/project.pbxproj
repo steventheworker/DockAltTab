@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA7000000000000000000220 /* DockAltTabModes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000120 /* DockAltTabModes.swift */; };
 		DA7000000000000000000201 /* DockAltTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000101 /* DockAltTab.swift */; };
 		DA7000000000000000000202 /* DockAltTabPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000102 /* DockAltTabPreferences.swift */; };
 		DA7000000000000000000203 /* DockAltTabPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000103 /* DockAltTabPreview.swift */; };
@@ -337,6 +338,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA7000000000000000000120 /* DockAltTabModes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTabModes.swift; sourceTree = "<group>"; };
 		DA7000000000000000000101 /* DockAltTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTab.swift; sourceTree = "<group>"; };
 		DA7000000000000000000102 /* DockAltTabPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTabPreferences.swift; sourceTree = "<group>"; };
 		DA7000000000000000000103 /* DockAltTabPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTabPreview.swift; sourceTree = "<group>"; };
@@ -834,6 +836,7 @@
 		DA7000000000000000000100 /* DockAltTab */ = {
 			isa = PBXGroup;
 			children = (
+				DA7000000000000000000120 /* DockAltTabModes.swift */,
 				DA7000000000000000000101 /* DockAltTab.swift */,
 				DA7000000000000000000102 /* DockAltTabPreferences.swift */,
 				DA7000000000000000000103 /* DockAltTabPreview.swift */,
@@ -2638,6 +2641,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7000000000000000000220 /* DockAltTabModes.swift in Sources */,
 				DA7000000000000000000201 /* DockAltTab.swift in Sources */,
 				DA7000000000000000000202 /* DockAltTabPreferences.swift in Sources */,
 				DA7000000000000000000203 /* DockAltTabPreview.swift in Sources */,

@@ -33,6 +33,14 @@ class DockAltTab {
     private static var pendingMouseLocation: CGPoint?
     private static var mouseSamplingTimer: Timer?
 
+    private struct PressedDockIcon {
+        let button: Int64
+        let bundleIdentifier: String
+        let pid: pid_t
+        let icon: AXUIElement
+    }
+    private static var pressedDockIcon: PressedDockIcon?
+
     static func initialize() {
         guard !isRunning else { return }
         isRunning = true
@@ -43,7 +51,7 @@ class DockAltTab {
             refreshDockState()
         }
         ensureShowHiddenDockPref()
-        let eventMask = [CGEventType.mouseMoved].reduce(CGEventMask(0)) { $0 | (1 << $1.rawValue) }
+        let eventMask = [CGEventType.mouseMoved, .leftMouseDown, .leftMouseUp, .otherMouseDown, .otherMouseUp].reduce(CGEventMask(0)) { $0 | (1 << $1.rawValue) }
         eventTap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
             place: .headInsertEventTap,
@@ -81,12 +89,113 @@ class DockAltTab {
         switch type {
             case .mouseMoved:
                 pendingMouseLocation = event.location
+                return Unmanaged.passUnretained(event)
             case .tapDisabledByTimeout, .tapDisabledByUserInput:
                 if let eventTap { CGEvent.tapEnable(tap: eventTap, enable: true) }
+                return Unmanaged.passUnretained(event)
+            case .leftMouseDown, .leftMouseUp, .otherMouseDown, .otherMouseUp:
+                return handleDockClick(type, event) ? nil : Unmanaged.passUnretained(event)
             default:
-                break
+                return Unmanaged.passUnretained(event)
         }
-        return Unmanaged.passUnretained(event)
+    }
+
+    /// Returns true when the click was handled by a DockAltTab mode and must be swallowed (to
+    /// avoid the native Dock action and, in particular, an unwanted Space switch).
+    private static func handleDockClick(_ type: CGEventType, _ event: CGEvent) -> Bool {
+        guard DockAltTabPreviewMode.current.interceptsDockClicks else { return false }
+        guard event.flags.intersection([.maskCommand, .maskAlternate, .maskControl, .maskShift]).isEmpty else { return false }
+        let button: Int64
+        let isDown: Bool
+        switch type {
+            case .leftMouseDown: button = 0; isDown = true
+            case .leftMouseUp: button = 0; isDown = false
+            case .otherMouseDown: button = 2; isDown = true
+            case .otherMouseUp: button = 2; isDown = false
+            default: return false
+        }
+        if isDown {
+            guard let element = elementAtPoint(event.location),
+                  let icon = dockIconElement(element),
+                  let url = (try? icon.attributes([kAXURLAttribute]))?.url,
+                  let bid = Bundle(url: url)?.bundleIdentifier,
+                  let app = NSRunningApplication.runningApplications(withBundleIdentifier: bid).first,
+                  app.activationPolicy == .regular,
+                  DockAltTabWindowStats(pid: app.processIdentifier).all > 0 else { return false }
+            pressedDockIcon = PressedDockIcon(button: button, bundleIdentifier: bid, pid: app.processIdentifier, icon: icon)
+            return true
+        }
+        guard let pressed = pressedDockIcon, pressed.button == button else { return false }
+        pressedDockIcon = nil
+        performDockClick(pressed, button: button)
+        return true
+    }
+
+    private static func performDockClick(_ pressed: PressedDockIcon, button: Int64) {
+        guard let app = NSRunningApplication(processIdentifier: pressed.pid) else { return }
+        let stats = DockAltTabWindowStats(pid: pressed.pid)
+        // a click on a non-frontmost icon just brings that app forward
+        if !app.isActive {
+            hidePreview()
+            activateWithoutSpaceSwitch(app)
+            return
+        }
+        if DockAltTabPreviewMode.current == .windows {
+            hidePreview()
+            app.hide()
+            return
+        }
+        // Ubuntu: left click with 2+ windows, or middle click with 1+, toggles the preview
+        if button == 2 {
+            if stats.all >= 1 { togglePreview(app, pressed.icon) }
+        } else if stats.all >= 2 {
+            togglePreview(app, pressed.icon)
+        } else {
+            hidePreview()
+            app.hide()
+        }
+    }
+
+    private static func togglePreview(_ app: NSRunningApplication, _ icon: AXUIElement) {
+        if isPreviewShowing, DockAltTabApp?.processIdentifier == app.processIdentifier {
+            hidePreview()
+            return
+        }
+        guard let bid = app.bundleIdentifier,
+              let attrs = try? icon.attributes([kAXPositionAttribute, kAXSizeAttribute]),
+              let position = attrs.position, let size = attrs.size else { return }
+        previewTarget = nil
+        cancelThumbnail()
+        refreshDockState()
+        let (x, y) = previewPosition(position, size)
+        isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
+        if isPreviewShowing { ensureDockShowing() } else { restoreDockAutohide() }
+    }
+
+    /// Activating a hidden app directly can trigger a Space switch. Unhiding first and only
+    /// activating once it is visible avoids the swoosh (same trick the original DockAltTab used).
+    private static func activateWithoutSpaceSwitch(_ app: NSRunningApplication) {
+        guard app.isHidden else { activateNow(app); return }
+        app.unhide()
+        waitUntilVisibleThenActivate(app, attempts: 0)
+    }
+
+    private static func waitUntilVisibleThenActivate(_ app: NSRunningApplication, attempts: Int) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(20)) {
+            if app.isHidden && attempts < 50 {
+                waitUntilVisibleThenActivate(app, attempts: attempts + 1)
+            } else {
+                activateNow(app)
+            }
+        }
+    }
+
+    private static func activateNow(_ app: NSRunningApplication) {
+        if #available(macOS 14.0, *) {
+            _ = app.activate(from: NSWorkspace.shared.frontmostApplication ?? NSRunningApplication.current, options: [.activateIgnoringOtherApps])
+        } else {
+            _ = app.activate(options: [.activateIgnoringOtherApps])
+        }
     }
 
     private static func processPendingMouse() {
@@ -139,6 +248,8 @@ class DockAltTab {
         hoveredAppBid = bid
         hoveredIcon = icon
         cancelShow()
+        // Ubuntu mode has no hover previews (previews are toggled by click instead)
+        guard DockAltTabPreviewMode.current.showsPreviewOnHover else { return }
         // once a preview is open, hovering another app should switch to it immediately
         let delay = (TilesPanel.shared?.isVisible ?? false) ? 0 : DockAltTabPreferences.previewDelayMs
         let work = DispatchWorkItem { showPreviews(bid: bid, icon: icon) }
