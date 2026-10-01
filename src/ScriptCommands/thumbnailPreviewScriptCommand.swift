@@ -13,11 +13,7 @@ func DockAltTabThumbnailPreviewRequestHD(window: Window) {
 }
 class thumbnailPreviewScriptCommand: NSScriptCommand {
     override func performDefaultImplementation() -> Any? {
-        let selectedWin = Windows.selectedWindow()
-        if (!App.appIsBeingUsed || selectedWin == nil) { return self }
-//        print("thumbnailPreviewScriptCommand: " + selectedWin!.title)
-        DockAltTabThumbnailPreviewRequestHD(window: selectedWin!)
-        Windows.previewSelectedWindowIfNeeded()
+        DockAltTabShowThumbnailPreview()
         return self
     }
 }

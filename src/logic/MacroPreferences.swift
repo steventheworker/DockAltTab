@@ -2,6 +2,7 @@ enum MenubarIconPreference: CaseIterable, MacroPreference {
     case outlined
     case filled
     case colored
+    case dockAltTab
 
     var localizedString: LocalizedString {
         switch self {
@@ -9,6 +10,7 @@ enum MenubarIconPreference: CaseIterable, MacroPreference {
             case .outlined: return " "
             case .filled: return " "
             case .colored: return " "
+            case .dockAltTab: return "DockAltTab"
         }
     }
 }

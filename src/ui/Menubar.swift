@@ -23,6 +23,7 @@ class Menubar {
         permissionCalloutMenuItem.view = PermissionCallout()
         let calloutSeparator = NSMenuItem.separator()
         permissionCalloutMenuItems = [permissionCalloutMenuItem, calloutSeparator]
+        addMenuItem(NSLocalizedString("DockAltTab", comment: "Menubar option"), #selector(App.showDockAltTabPreferences), "", "rectangle.on.rectangle", nil, App.self)
         addMenuItem(NSLocalizedString("Show", comment: "Menubar option"), #selector(App.showUiFromShortcut0), "", "eye", nil, App.self)
         menu.addItem(NSMenuItem.separator())
         addMenuItem(NSLocalizedString("Settings…", comment: "Menubar option"), #selector(App.showSettingsWindow), ",", "gear", nil, App.self)
@@ -89,7 +90,7 @@ class Menubar {
     static private func loadPreferredIcon() {
         let i = Preferences.menubarIcon.indexAsString
         let image = NSImage(named: "menubar-\(i)")!
-        image.isTemplate = i != "2"
+        image.isTemplate = i == "0" || i == "1"
         statusItem.button!.image = image
         statusItem.isVisible = true
         statusItem.button!.imageScaling = .scaleProportionallyUpOrDown

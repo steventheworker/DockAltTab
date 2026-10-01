@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA7000000000000000000201 /* DockAltTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000101 /* DockAltTab.swift */; };
+		DA7000000000000000000202 /* DockAltTabPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000102 /* DockAltTabPreferences.swift */; };
+		DA7000000000000000000203 /* DockAltTabPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000103 /* DockAltTabPreview.swift */; };
+		DA7000000000000000000204 /* DockAltTabPreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000104 /* DockAltTabPreferencesWindow.swift */; };
+		DA7000000000000000000210 /* menubar-3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7000000000000000000110 /* menubar-3@2x.png */; };
 		1C96101BC5817A7F85FA1F8D /* titles_show_running_applications_light@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1C961F57248D4E2377A9038E /* titles_show_running_applications_light@2x.jpg */; };
 		1C96108A0CB2565233FE100B /* TableGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C961FB3DCF4906FEEF4A23D /* TableGroupView.swift */; };
 		1C96109FD155140CBA709A16 /* app_icons_hide_tabs_as_windows_light@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1C961CABD14356E109102D56 /* app_icons_hide_tabs_as_windows_light@2x.jpg */; };
@@ -332,6 +337,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA7000000000000000000101 /* DockAltTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTab.swift; sourceTree = "<group>"; };
+		DA7000000000000000000102 /* DockAltTabPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTabPreferences.swift; sourceTree = "<group>"; };
+		DA7000000000000000000103 /* DockAltTabPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTabPreview.swift; sourceTree = "<group>"; };
+		DA7000000000000000000104 /* DockAltTabPreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DockAltTabPreferencesWindow.swift; sourceTree = "<group>"; };
+		DA7000000000000000000110 /* menubar-3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menubar-3@2x.png"; sourceTree = "<group>"; };
 		1C961003A0D16B9AE3932B3F /* thumbnails_show_colored_circles_light@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "thumbnails_show_colored_circles_light@2x.jpg"; sourceTree = "<group>"; };
 		1C9610071E9F3434C893DC95 /* thumbnails_align_thumbnails_center_light@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "thumbnails_align_thumbnails_center_light@2x.jpg"; sourceTree = "<group>"; };
 		1C961093FB75180759EC6972 /* app_icons_hide_app_badges_light@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "app_icons_hide_app_badges_light@2x.jpg"; sourceTree = "<group>"; };
@@ -821,6 +831,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA7000000000000000000100 /* DockAltTab */ = {
+			isa = PBXGroup;
+			children = (
+				DA7000000000000000000101 /* DockAltTab.swift */,
+				DA7000000000000000000102 /* DockAltTabPreferences.swift */,
+				DA7000000000000000000103 /* DockAltTabPreview.swift */,
+				DA7000000000000000000104 /* DockAltTabPreferencesWindow.swift */,
+			);
+			path = DockAltTab;
+			sourceTree = "<group>";
+		};
 		1C961658C754FEAB9B5F562B /* illustrations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1006,6 +1027,7 @@
 		BF0C80536B40523C5DB23BE2 /* menubar */ = {
 			isa = PBXGroup;
 			children = (
+				DA7000000000000000000110 /* menubar-3@2x.png */,
 				BF0C88BF67CF4D71002A60EB /* menubar-0@2x.png */,
 				BF0C8D3333653ACAEF730DD8 /* menubar-1@2x.png */,
 				BF0C828AF7BCC4F47E70B28F /* menubar-1.svg */,
@@ -1766,6 +1788,7 @@
 		D04BA6251F309645757C6000 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				DA7000000000000000000100 /* DockAltTab */,
 				BF42BC7B2835527800F5D5E7 /* ScriptCommands */,
 				D04BA5BB6FB4E7D8F7AD357C /* api-wrappers */,
 				D04BA70746DEEC3D30B43F81 /* main.swift */,
@@ -2295,6 +2318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7000000000000000000210 /* menubar-3@2x.png in Resources */,
 				48F3E16224EC0D8800A1C64B /* Localizable.strings in Resources */,
 				D04BA276B3241D440F65B149 /* InfoPlist.strings in Resources */,
 				D04BA084CD1236EC78D90A01 /* Localizable.strings in Resources */,
@@ -2614,6 +2638,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7000000000000000000201 /* DockAltTab.swift in Sources */,
+				DA7000000000000000000202 /* DockAltTabPreferences.swift in Sources */,
+				DA7000000000000000000203 /* DockAltTabPreview.swift in Sources */,
+				DA7000000000000000000204 /* DockAltTabPreferencesWindow.swift in Sources */,
 				D04BAFBC862BA5FE0294EA7A /* AXUIElement.swift in Sources */,
 				D04BA73E90EFEF8247A5105D /* CGWindow.swift in Sources */,
 				BF49DF3228355340004517BD /* countWindowsScriptCommand.swift in Sources */,

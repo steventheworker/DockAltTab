@@ -6,6 +6,7 @@ class CursorEvents {
     private static var shouldBeEnabled: Bool!
     private static var mouseDownTarget: AnyObject?
     private static var mouseDownInsideSearchField = false
+    private static var dockAltTabPassthroughActive = false
     static var deadZoneInitialPosition: CGPoint?
     static var isAllowedToMouseHover = true
 
@@ -68,6 +69,7 @@ class CursorEvents {
 
     private static func handleLeftMouseDown(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         if TilesView.hasMarkedText() || ContextMenuEvents.isMenuOpen { return Unmanaged.passUnretained(cgEvent) }
+        if dockAltTabShouldPassthrough() { dockAltTabPassthroughActive = true; return Unmanaged.passUnretained(cgEvent) }
         if isPointerInsideSearchField() {
             mouseDownInsideSearchField = true
             return Unmanaged.passUnretained(cgEvent)
@@ -80,6 +82,7 @@ class CursorEvents {
 
     private static func handleLeftMouseUp(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         if TilesView.hasMarkedText() || ContextMenuEvents.isMenuOpen { return Unmanaged.passUnretained(cgEvent) }
+        if dockAltTabPassthroughActive { dockAltTabPassthroughActive = false; DockAltTab.dismissPreview(); return Unmanaged.passUnretained(cgEvent) }
         if mouseDownInsideSearchField || isPointerInsideSearchField() {
             mouseDownInsideSearchField = false
             return Unmanaged.passUnretained(cgEvent)
@@ -104,21 +107,25 @@ class CursorEvents {
 
     private static func handleRightMouseDown(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         if ContextMenuEvents.isMenuOpen || isPointerInsideUi() { return Unmanaged.passUnretained(cgEvent) }
+        if dockAltTabShouldPassthrough() { dockAltTabPassthroughActive = true; return Unmanaged.passUnretained(cgEvent) }
         return nil
     }
 
     private static func handleRightMouseUp(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         if ContextMenuEvents.isMenuOpen || isPointerInsideUi() { return Unmanaged.passUnretained(cgEvent) }
+        if dockAltTabPassthroughActive { dockAltTabPassthroughActive = false; DockAltTab.dismissPreview(); return Unmanaged.passUnretained(cgEvent) }
         return nil
     }
 
     private static func handleOtherMouseDown(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         if ContextMenuEvents.isMenuOpen || isPointerInsideUi() { return Unmanaged.passUnretained(cgEvent) }
+        if dockAltTabShouldPassthrough() { dockAltTabPassthroughActive = true; return Unmanaged.passUnretained(cgEvent) }
         return nil
     }
 
     private static func handleOtherMouseUp(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         if ContextMenuEvents.isMenuOpen { return Unmanaged.passUnretained(cgEvent) }
+        if dockAltTabPassthroughActive { dockAltTabPassthroughActive = false; DockAltTab.dismissPreview(); return Unmanaged.passUnretained(cgEvent) }
         if isPointerInsideUi(),
            cgEvent.getIntegerValueField(.mouseEventButtonNumber) == 2,
            let target = findTileViewUnderPointer(),
@@ -151,6 +158,10 @@ class CursorEvents {
 
     private static func isPointerInsideUi() -> Bool {
         TilesPanel.shared.contentLayoutRect.contains(pointerLocationInWindow())
+    }
+
+    private static func dockAltTabShouldPassthrough() -> Bool {
+        DockAltTabMode && !isPointerInsideUi()
     }
 
     private static func isPointerInsideSearchField() -> Bool {

@@ -36,7 +36,7 @@ class Preferences {
             "fadeOutAnimation": "false",
             "previewFadeInAnimation": "true",
             "startAtLogin": "true",
-            "menubarIcon": MenubarIconPreference.outlined.indexAsString,
+            "menubarIcon": MenubarIconPreference.dockAltTab.indexAsString,
             "menubarIconShown": "true",
             "language": LanguagePreference.systemDefault.indexAsString,
             "exceptions": defaultExceptions(),
