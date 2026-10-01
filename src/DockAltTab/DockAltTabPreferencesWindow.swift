@@ -126,6 +126,8 @@ class DockAltTabPreferencesWindow: NSWindow {
         label.widthAnchor.constraint(equalToConstant: 110).isActive = true
         let s = NSSlider(value: 0, minValue: 0, maxValue: 100, target: nil, action: nil)
         s.isContinuous = true
+        s.numberOfTickMarks = 5
+        s.tickMarkPosition = .above
         s.widthAnchor.constraint(equalToConstant: 110).isActive = true
         s.onAction = { [weak self] sender in
             onChange(sender as! NSSlider)
@@ -153,6 +155,8 @@ class DockAltTabPreferencesWindow: NSWindow {
         label.widthAnchor.constraint(equalToConstant: 110).isActive = true
         let s = NSSlider(value: 0, minValue: -200, maxValue: 200, target: nil, action: nil)
         s.isContinuous = true
+        s.numberOfTickMarks = 3
+        s.tickMarkPosition = .above
         s.widthAnchor.constraint(equalToConstant: 110).isActive = true
         s.onAction = { [weak self] sender in
             DockAltTabPreferences.previewGutter = (sender as! NSSlider).doubleValue
