@@ -47,15 +47,15 @@ class DockAltTabPreferencesWindow: NSWindow {
 
         stack.addArrangedSubview(makeModeRow())
         stack.addArrangedSubview(makeSeparator())
-        stack.addArrangedSubview(makeDelayRow("Show Delay:", slider: &showDelaySlider, valueLabel: &showDelayLabel) { sender in
+        stack.addArrangedSubview(makeDelayRow("Show Delay:", tooltip: "The delay before showing a preview. Does not apply to Ubuntu mode.", slider: &showDelaySlider, valueLabel: &showDelayLabel) { sender in
             DockAltTabPreferences.previewDelay = sender.doubleValue
         })
         stack.addArrangedSubview(makeSeparator())
-        stack.addArrangedSubview(makeDelayRow("Hide Delay:", slider: &hideDelaySlider, valueLabel: &hideDelayLabel) { sender in
+        stack.addArrangedSubview(makeDelayRow("Hide Delay:", tooltip: "The delay before hiding previews. Does not apply to Ubuntu mode.", slider: &hideDelaySlider, valueLabel: &hideDelayLabel) { sender in
             DockAltTabPreferences.previewHideDelay = sender.doubleValue
         })
         stack.addArrangedSubview(makeSeparator())
-        stack.addArrangedSubview(makeDelayRow("Thumbnail Preview Delay:", slider: &thumbnailDelaySlider, valueLabel: &thumbnailDelayLabel) { sender in
+        stack.addArrangedSubview(makeDelayRow("Thumbnail Preview Delay:", tooltip: "The delay before showing a thumbnail's preview.", slider: &thumbnailDelaySlider, valueLabel: &thumbnailDelayLabel) { sender in
             DockAltTabPreferences.thumbnailPreviewDelay = sender.doubleValue
         })
 
@@ -72,6 +72,7 @@ class DockAltTabPreferencesWindow: NSWindow {
 
         keepDockCheckbox = NSButton(checkboxWithTitle: "Keep dock showing during previews", target: nil, action: nil)
         keepDockCheckbox.font = .systemFont(ofSize: 11)
+        keepDockCheckbox.toolTip = "Maintain dock visibility when hovering over previews. (with autohide turned on)"
         keepDockCheckbox.onAction = { sender in
             DockAltTabPreferences.keepDockShowing = (sender as! NSButton).state == .on
         }
@@ -105,10 +106,14 @@ class DockAltTabPreferencesWindow: NSWindow {
         row.spacing = 12
         row.alignment = .centerY
         row.addArrangedSubview(label)
-        for (tag, name) in [(1, "MacOS"), (2, "Ubuntu"), (3, "Windows")] {
+        for (tag, name, tooltip) in [
+            (1, "MacOS", "Previews on hover w/ space switching. (Equivalent to 'Windows' mode (for now))"),
+            (2, "Ubuntu", "Left/Middle click shows previews w/ no space switching."),
+            (3, "Windows", "Windows™ Style - previews on hover w/ no space switching.")] {
             let button = NSButton(radioButtonWithTitle: name, target: nil, action: nil)
             button.font = .systemFont(ofSize: 11)
             button.tag = tag
+            button.toolTip = tooltip
             button.onAction = { [weak self] sender in
                 DockAltTabPreferences.previewMode = (sender as! NSButton).tag
                 self?.render()
@@ -119,15 +124,17 @@ class DockAltTabPreferencesWindow: NSWindow {
         return row
     }
 
-    private func makeDelayRow(_ title: String, slider: inout NSSlider!, valueLabel: inout NSTextField!, onChange: @escaping (NSSlider) -> Void) -> NSView {
+    private func makeDelayRow(_ title: String, tooltip: String, slider: inout NSSlider!, valueLabel: inout NSTextField!, onChange: @escaping (NSSlider) -> Void) -> NSView {
         let label = NSTextField(labelWithString: title)
         label.font = .systemFont(ofSize: 11)
         label.alignment = .right
+        label.toolTip = tooltip
         label.widthAnchor.constraint(equalToConstant: 110).isActive = true
         let s = NSSlider(value: 0, minValue: 0, maxValue: 100, target: nil, action: nil)
         s.isContinuous = true
         s.numberOfTickMarks = 5
         s.tickMarkPosition = .above
+        s.toolTip = tooltip
         s.widthAnchor.constraint(equalToConstant: 110).isActive = true
         s.onAction = { [weak self] sender in
             onChange(sender as! NSSlider)
@@ -137,10 +144,12 @@ class DockAltTabPreferencesWindow: NSWindow {
         let value = NSTextField(labelWithString: "")
         value.font = .systemFont(ofSize: 11)
         value.alignment = .center
+        value.toolTip = tooltip
         value.widthAnchor.constraint(equalToConstant: 40).isActive = true
         valueLabel = value
         let unit = NSTextField(labelWithString: "second(s)")
         unit.font = .systemFont(ofSize: 10)
+        unit.toolTip = tooltip
         let row = NSStackView(views: [label, s, value, unit])
         row.orientation = .horizontal
         row.spacing = 6
@@ -149,14 +158,17 @@ class DockAltTabPreferencesWindow: NSWindow {
     }
 
     private func makeGutterRow() -> NSView {
+        let tooltip = "Adjust the distance between previews and the dock."
         let label = NSTextField(labelWithString: "Preview Distance:")
         label.font = .systemFont(ofSize: 11)
         label.alignment = .right
+        label.toolTip = tooltip
         label.widthAnchor.constraint(equalToConstant: 110).isActive = true
         let s = NSSlider(value: 0, minValue: -200, maxValue: 200, target: nil, action: nil)
         s.isContinuous = true
         s.numberOfTickMarks = 3
         s.tickMarkPosition = .above
+        s.toolTip = tooltip
         s.widthAnchor.constraint(equalToConstant: 110).isActive = true
         s.onAction = { [weak self] sender in
             DockAltTabPreferences.previewGutter = (sender as! NSSlider).doubleValue
@@ -166,10 +178,12 @@ class DockAltTabPreferencesWindow: NSWindow {
         let value = NSTextField(labelWithString: "")
         value.font = .systemFont(ofSize: 11)
         value.alignment = .center
+        value.toolTip = tooltip
         value.widthAnchor.constraint(equalToConstant: 40).isActive = true
         gutterLabel = value
         let unit = NSTextField(labelWithString: "px")
         unit.font = .systemFont(ofSize: 10)
+        unit.toolTip = tooltip
         let row = NSStackView(views: [label, s, value, unit])
         row.orientation = .horizontal
         row.spacing = 6

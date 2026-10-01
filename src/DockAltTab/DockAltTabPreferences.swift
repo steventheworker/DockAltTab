@@ -6,9 +6,9 @@ enum DockAltTabPreferences {
     private static let prefix = "dockAltTab."
     private static var store: UserDefaults { UserDefaults.standard }
 
-    // 1 = MacOS, 2 = Ubuntu, 3 = Windows (mirrors the original DockAltTab)
+    // 1 = MacOS, 2 = Ubuntu, 3 = Windows (mirrors the original DockAltTab); Windows is the default
     static var previewMode: Int {
-        get { int("previewMode", 1) } set { set("previewMode", newValue) }
+        get { int("previewMode", 3) } set { set("previewMode", newValue) }
     }
     static var previewDelay: Double {
         get { double("previewDelay", 0) } set { set("previewDelay", newValue) }
@@ -17,7 +17,7 @@ enum DockAltTabPreferences {
         get { double("previewHideDelay", 0) } set { set("previewHideDelay", newValue) }
     }
     static var thumbnailPreviewDelay: Double {
-        get { double("thumbnailPreviewDelay", 25) } set { set("thumbnailPreviewDelay", newValue) }
+        get { double("thumbnailPreviewDelay", 16.65) } set { set("thumbnailPreviewDelay", newValue) }
     }
     static var thumbnailPreviewsEnabled: Bool {
         get { bool("thumbnailPreviewsEnabled", true) } set { set("thumbnailPreviewsEnabled", newValue) }
