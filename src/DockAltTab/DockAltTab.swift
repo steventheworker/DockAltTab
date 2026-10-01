@@ -146,9 +146,11 @@ class DockAltTab {
         if let target = previewTarget, CFEqual(target, element) { return }
         previewTarget = element
         cancelThumbnail()
+        // once the preview panel is open, hovering another thumbnail should update it immediately
+        let delay = PreviewPanel.shared.isVisible ? 0 : DockAltTabPreferences.thumbnailPreviewDelayMs
         let work = DispatchWorkItem { DockAltTabShowThumbnailPreview() }
         thumbnailWork = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(DockAltTabPreferences.thumbnailPreviewDelayMs), execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(delay), execute: work)
     }
 
     private static func pointerLeft() {
