@@ -117,8 +117,7 @@ class DockAltTab {
         if isDown {
             guard let element = elementAtPoint(event.location),
                   let icon = dockIconElement(element),
-                  let url = (try? icon.attributes([kAXURLAttribute]))?.url,
-                  let bid = Bundle(url: url)?.bundleIdentifier,
+                  let bid = appBundleIdentifier(forDockIcon: icon),
                   let app = NSRunningApplication.runningApplications(withBundleIdentifier: bid).first,
                   app.activationPolicy == .regular,
                   DockAltTabWindowStats(pid: app.processIdentifier).all > 0 else { return false }
@@ -235,8 +234,7 @@ class DockAltTab {
         cancelHide()
         cancelThumbnail()
         guard let icon = dockIconElement(element),
-              let url = (try? icon.attributes([kAXURLAttribute]))?.url,
-              let bid = Bundle(url: url)?.bundleIdentifier else {
+              let bid = appBundleIdentifier(forDockIcon: icon) else {
             // spacers, folders/stacks, Trash, etc. have no app bundle: dismiss any preview
             cancelShow()
             hoveredAppBid = nil
@@ -348,6 +346,13 @@ class DockAltTab {
             depth += 1
         }
         return nil
+    }
+
+    /// `Bundle(url:)` raises for non-file URLs, so only use it on file URLs (some dock items
+    /// expose schemes like `x-apple-*` and would otherwise crash).
+    private static func appBundleIdentifier(forDockIcon icon: AXUIElement) -> String? {
+        guard let url = (try? icon.attributes([kAXURLAttribute]))?.url, url.isFileURL else { return nil }
+        return Bundle(url: url)?.bundleIdentifier
     }
 
     /// Compute where the preview panel should be anchored, relative to the hovered dock icon.
