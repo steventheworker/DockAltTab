@@ -32,6 +32,7 @@ class DockAltTab {
     private static var thumbnailWork: DispatchWorkItem?
     private static var pendingMouseLocation: CGPoint?
     private static var mouseSamplingTimer: Timer?
+    private static var repositionTimer: Timer?
 
     private struct PressedDockIcon {
         let button: Int64
@@ -171,7 +172,7 @@ class DockAltTab {
         refreshDockState()
         let (x, y) = previewPosition(position, size)
         isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
-        if isPreviewShowing { ensureDockShowing() } else { restoreDockAutohide() }
+        if isPreviewShowing { ensureDockShowing(); trackPreviewPosition(icon) } else { restoreDockAutohide() }
     }
 
     /// Activating a hidden app directly can trigger a Space switch. Unhiding first and only
@@ -307,11 +308,43 @@ class DockAltTab {
         cancelThumbnail()
         let (x, y) = previewPosition(position, size)
         isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
-        if isPreviewShowing { ensureDockShowing() } else { restoreDockAutohide() }
+        if isPreviewShowing { ensureDockShowing(); trackPreviewPosition(icon) } else { restoreDockAutohide() }
+    }
+
+    /// The Dock magnifies the hovered icon, and shrinks it back once the pointer moves off it. Follow
+    /// the icon's AX frame while the preview is up, but only reposition once it has settled; otherwise
+    /// the panel would jitter along with every frame of the magnification animation.
+    private static func trackPreviewPosition(_ icon: AXUIElement) {
+        guard DockAltTabPreferences.repositionPreviewAfterMagnification else { return }
+        repositionTimer?.invalidate()
+        var candidateX: Int?
+        var candidateY: Int?
+        var stableTicks = 0
+        repositionTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { timer in
+            guard isPreviewShowing else { timer.invalidate(); repositionTimer = nil; return }
+            guard let attrs = try? icon.attributes([kAXPositionAttribute, kAXSizeAttribute]),
+                  let position = attrs.position, let size = attrs.size else { return }
+            let (x, y) = previewPosition(position, size)
+            if candidateX == x, candidateY == y {
+                stableTicks += 1
+            } else {
+                candidateX = x
+                candidateY = y
+                stableTicks = 0
+                return
+            }
+            guard stableTicks >= 2, DockAltTabFORCEDX != x || DockAltTabFORCEDY != y else { return }
+            DockAltTabFORCEDX = x
+            DockAltTabFORCEDY = y
+            stableTicks = 0
+            if let panel = TilesPanel.shared, panel.isVisible, DockAltTabMode { panel.screen?.repositionPanel(panel) }
+        }
     }
 
     private static func hidePreview() {
         hideWork = nil
+        repositionTimer?.invalidate()
+        repositionTimer = nil
         cancelThumbnail()
         previewTarget = nil
         guard DockAltTabMode else { isPreviewShowing = false; return }
@@ -399,24 +432,24 @@ class DockAltTab {
 
     /// Compute where the preview panel should be anchored, relative to the hovered dock icon.
     /// AX reports positions from the top-left of the primary screen, while NSWindow frames use
-    /// Cocoa coordinates (origin bottom-left), so Y has to be flipped here.
+    /// Cocoa coordinates (origin bottom-left), so Y has to be flipped here. With dock magnification,
+    /// the icon grows away from the screen edge while its far edge stays anchored, so we add the
+    /// magnification size on top of the icon's anchored edge rather than relying on the AX frame.
     private static func previewPosition(_ position: CGPoint, _ size: CGSize) -> (Int, Int) {
         let screenHeight = NSScreen.screens.first?.frame.height ?? 0
         let gutter = CGFloat(DockAltTabPreferences.previewGutter)
+        let magnified = CGFloat(dockMagnificationSize)
         var x = position.x
         var y = position.y
         let width = size.width
-        var height = size.height
+        let height = size.height
         if dockMagnification {
             if dockPos == "bottom" {
-                height = CGFloat(dockMagnificationSize)
                 x += width / 2
-                let ratio = CGFloat(dockMagnificationSize) / 128
-                y = height + 2.7 / (ratio * ratio) + gutter
+                y = screenHeight - (position.y + height) + magnified + gutter
             } else {
-                height = CGFloat(dockMagnificationSize)
-                y = screenHeight - (position.y + size.height / 2)
-                x = dockPos == "right" ? position.x - gutter : position.x + size.width + gutter
+                y = screenHeight - (position.y + height / 2)
+                x = dockPos == "right" ? position.x + width - magnified - gutter : position.x + magnified + gutter
             }
         } else if dockPos == "bottom" {
             x += width / 2

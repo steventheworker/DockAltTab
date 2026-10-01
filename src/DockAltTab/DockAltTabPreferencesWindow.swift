@@ -18,9 +18,10 @@ class DockAltTabPreferencesWindow: NSWindow {
     private var gutterSlider: NSSlider!
     private var gutterLabel: NSTextField!
     private var keepDockCheckbox: NSButton!
+    private var repositionAfterMagnificationCheckbox: NSButton!
 
     convenience init() {
-        self.init(contentRect: NSRect(x: 0, y: 0, width: 420, height: 360), styleMask: [.titled, .closable], backing: .buffered, defer: false)
+        self.init(contentRect: NSRect(x: 0, y: 0, width: 420, height: 390), styleMask: [.titled, .closable], backing: .buffered, defer: false)
         title = "DockAltTab Preferences"
         hidesOnDeactivate = false
         isReleasedWhenClosed = false
@@ -65,6 +66,14 @@ class DockAltTabPreferencesWindow: NSWindow {
             DockAltTabPreferences.thumbnailPreviewsEnabled = (sender as! NSButton).state == .on
         }
         stack.addArrangedSubview(thumbnailEnabledCheckbox)
+
+        repositionAfterMagnificationCheckbox = NSButton(checkboxWithTitle: "Reposition preview after dock magnification", target: nil, action: nil)
+        repositionAfterMagnificationCheckbox.font = .systemFont(ofSize: 11)
+        repositionAfterMagnificationCheckbox.toolTip = "Move the preview panel once the Dock icon has finished magnifying."
+        repositionAfterMagnificationCheckbox.onAction = { sender in
+            DockAltTabPreferences.repositionPreviewAfterMagnification = (sender as! NSButton).state == .on
+        }
+        stack.addArrangedSubview(repositionAfterMagnificationCheckbox)
         stack.addArrangedSubview(makeSeparator())
 
         stack.addArrangedSubview(makeGutterRow())
@@ -209,6 +218,7 @@ class DockAltTabPreferencesWindow: NSWindow {
         thumbnailDelaySlider.doubleValue = DockAltTabPreferences.thumbnailPreviewDelay
         gutterSlider.doubleValue = DockAltTabPreferences.previewGutter
         thumbnailEnabledCheckbox.state = DockAltTabPreferences.thumbnailPreviewsEnabled ? .on : .off
+        repositionAfterMagnificationCheckbox.state = DockAltTabPreferences.repositionPreviewAfterMagnification ? .on : .off
         keepDockCheckbox.state = DockAltTabPreferences.keepDockShowing ? .on : .off
         renderDelayLabels()
     }

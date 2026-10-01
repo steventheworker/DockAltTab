@@ -28,6 +28,9 @@ enum DockAltTabPreferences {
     static var keepDockShowing: Bool {
         get { bool("keepDockShowing", true) } set { set("keepDockShowing", newValue) }
     }
+    static var repositionPreviewAfterMagnification: Bool {
+        get { bool("repositionPreviewAfterMagnification", false) } set { set("repositionPreviewAfterMagnification", newValue) }
+    }
 
     // the sliders use a 0-100 scale where 100 == 2 seconds, like the original DockAltTab
     static var previewDelayMs: Int { Int(previewDelay * 20) }
