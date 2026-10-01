@@ -115,9 +115,12 @@ class DockAltTab {
             default: return false
         }
         if isDown {
-            guard let element = elementAtPoint(event.location),
-                  let icon = dockIconElement(element),
-                  let bid = appBundleIdentifier(forDockIcon: icon),
+            guard let element = elementAtPoint(normalizePointForDockGap(event.location)), (try? element.pid()) == dockPid else { return false }
+            let iconElement = dockIconElement(element)
+            // the Dock's background/bottom gap has no icon: fall back to the icon we were hovering
+            let icon = iconElement ?? hoveredIcon
+            let bid = iconElement.flatMap { appBundleIdentifier(forDockIcon: $0) } ?? (dockItemSubrole(element) == nil ? hoveredAppBid : nil)
+            guard let icon, let bid,
                   let app = NSRunningApplication.runningApplications(withBundleIdentifier: bid).first,
                   app.activationPolicy == .regular,
                   DockAltTabWindowStats(pid: app.processIdentifier).all > 0 else { return false }
@@ -204,7 +207,7 @@ class DockAltTab {
     }
 
     private static func handleMouseMoved(_ location: CGPoint) {
-        guard let element = elementAtPoint(location), let pid = try? element.pid() else { pointerLeft(); return }
+        guard let element = elementAtPoint(normalizePointForDockGap(location)), let pid = try? element.pid() else { pointerLeft(); return }
         if pid == dockPid {
             handleDockHover(element)
         } else if pid == ProcessInfo.processInfo.processIdentifier {
@@ -235,11 +238,14 @@ class DockAltTab {
         cancelThumbnail()
         guard let icon = dockIconElement(element),
               let bid = appBundleIdentifier(forDockIcon: icon) else {
-            // spacers, folders/stacks, Trash, etc. have no app bundle: dismiss any preview
-            cancelShow()
-            hoveredAppBid = nil
-            hoveredIcon = nil
-            hidePreview()
+            // Real Dock items (spacers, folders/stacks, Trash) dismiss the preview. The Dock's
+            // background/bottom gap has no dock-item subrole, so keep the current preview there.
+            if dockItemSubrole(element) != nil {
+                cancelShow()
+                hoveredAppBid = nil
+                hoveredIcon = nil
+                hidePreview()
+            }
             return
         }
         guard bid != hoveredAppBid else { return }
@@ -353,6 +359,42 @@ class DockAltTab {
     private static func appBundleIdentifier(forDockIcon icon: AXUIElement) -> String? {
         guard let url = (try? icon.attributes([kAXURLAttribute]))?.url, url.isFileURL else { return nil }
         return Bundle(url: url)?.bundleIdentifier
+    }
+
+    /// The subrole of the Dock item at (or above) an element, e.g. `AXApplicationDockItem`.
+    /// The Dock's background/gap has no such subrole, which is how we tell it apart from spacers/folders.
+    private static func dockItemSubrole(_ element: AXUIElement) -> String? {
+        var current: AXUIElement? = element
+        var depth = 0
+        while let el = current, depth < 6 {
+            if let subrole = (try? el.attributes([kAXSubroleAttribute]))?.subrole, subrole.contains("DockItem") { return subrole }
+            current = (try? el.attributes([kAXParentAttribute]))?.parent
+            depth += 1
+        }
+        return nil
+    }
+
+    /// AX hit-testing returns nothing in the last few pixels at the screen edge, even though the
+    /// Dock icons remain clickable there. Nudge the point back inside the Dock (ported from the
+    /// original DockAltTab).
+    private static func normalizePointForDockGap(_ point: CGPoint) -> CGPoint {
+        guard let primary = NSScreen.screens.first else { return point }
+        let cocoaPoint = CGPoint(x: point.x, y: primary.frame.height - point.y)
+        guard let screen = NSScreen.screens.first(where: { $0.frame.contains(cocoaPoint) }) else { return point }
+        let topBasedTop = primary.frame.height - (screen.frame.origin.y + screen.frame.height)
+        switch dockPos {
+            case "bottom":
+                let cutoff = topBasedTop + screen.frame.height - 5.1
+                return CGPoint(x: point.x, y: point.y >= cutoff ? cutoff : point.y)
+            case "left":
+                let cutoff = screen.frame.origin.x + 14.1
+                return CGPoint(x: point.x <= cutoff ? cutoff : point.x, y: point.y)
+            case "right":
+                let cutoff = screen.frame.origin.x + screen.frame.width - 14.1
+                return CGPoint(x: point.x >= cutoff ? cutoff : point.x, y: point.y)
+            default:
+                return point
+        }
     }
 
     /// Compute where the preview panel should be anchored, relative to the hovered dock icon.
