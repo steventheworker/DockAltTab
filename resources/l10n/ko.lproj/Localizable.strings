@@ -26,11 +26,11 @@
 "Alphabetical" = "이름 순";
 "Alphabetical Order" = "이름 순";
 "Also select windows using:" = "또한 다음을 이용해 윈도우를 선택하기:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab의 충돌이 감지되었습니다. 충돌 보고서를 보내면 이 문제를 해결하는데 도움이 될 수 있습니다";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "현재 AltTab이 앱을 표시하도록 설정되어 있습니다. 이 설정은 AltTab이 윈도우를 표시하도록 설정한 경우에만 이용할 수 있습니다.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab이 화면 녹화 권한 없이 동작합니다. 썸네일이 표시되지 않습니다.";
-"AltTab needs some permissions" = "AltTab이 권한을 필요로 합니다";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab이 상태 아이콘으로 윈도우가 최소화 상태인지 전체 화면 상태인지 표시합니다.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab의 충돌이 감지되었습니다. 충돌 보고서를 보내면 이 문제를 해결하는데 도움이 될 수 있습니다";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "현재 DockAltTab이 앱을 표시하도록 설정되어 있습니다. 이 설정은 DockAltTab이 윈도우를 표시하도록 설정한 경우에만 이용할 수 있습니다.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab이 화면 녹화 권한 없이 동작합니다. 썸네일이 표시되지 않습니다.";
+"DockAltTab needs some permissions" = "DockAltTab이 권한을 필요로 합니다";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab이 상태 아이콘으로 윈도우가 최소화 상태인지 전체 화면 상태인지 표시합니다.";
 "Always" = "항상";
 "Always send crash reports" = "항상 보내기";
 "and press" = "누른 채로";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "메뉴 막대를 포함하는 화면";
 "Screen including mouse" = "마우스를 포함한 화면";
 "Screen Recording" = "화면 기록";
-"Screen showing AltTab" = "AltTab이 보여지는 화면";
+"Screen showing DockAltTab" = "DockAltTab이 보여지는 화면";
 "Search" = "검색";
 "Select next window" = "다음 윈도우를 선택";
 "Select previous window" = "이전 윈도우를 선택";
@@ -231,7 +231,7 @@
 "Size" = "크기";
 "Skipped" = "건너뜀";
 "Small" = "작음";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Finder 또는 Preview와 같은 일부 앱은 독립된 윈도우처럼 작동하는 표준 탭을 사용합니다. 일부 웹 브라우저와 같은 다른 앱은 고유한 방식으로 작동하는 커스텀 탭을 사용하며, 이는 실제 윈도우가 아닙니다. AltTab은 이러한 항목을 나열할 수 없습니다.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Finder 또는 Preview와 같은 일부 앱은 독립된 윈도우처럼 작동하는 표준 탭을 사용합니다. 일부 웹 브라우저와 같은 다른 앱은 고유한 방식으로 작동하는 커스텀 탭을 사용하며, 이는 실제 윈도우가 아닙니다. DockAltTab은 이러한 항목을 나열할 수 없습니다.";
 "Source code repository" = "소스 코드 저장소";
 "Space" = "Space";
 "Space Order" = "Space 순서";

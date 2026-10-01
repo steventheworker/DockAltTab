@@ -230,7 +230,7 @@
 		BF42BC85283552B400F5D5E7 /* TriggerScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF42BC81283552B400F5D5E7 /* TriggerScriptCommand.swift */; };
 		BF46C2802DA37C0200C65245 /* thumbnailPreviewScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF46C27F2DA37C0200C65245 /* thumbnailPreviewScriptCommand.swift */; };
 		BF49DF3228355340004517BD /* countWindowsScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF49DF3128355340004517BD /* countWindowsScriptCommand.swift */; };
-		BF49DF3428355372004517BD /* AltTab.sdef in Resources */ = {isa = PBXBuildFile; fileRef = BF49DF3328355372004517BD /* AltTab.sdef */; };
+		BF49DF3428355372004517BD /* DockAltTab.sdef in Resources */ = {isa = PBXBuildFile; fileRef = BF49DF3328355372004517BD /* DockAltTab.sdef */; };
 		BF73FE492A8EEFBC00AB9D0A /* countWindowsCurrentSpaceScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73FE482A8EEFBC00AB9D0A /* countWindowsCurrentSpaceScriptCommand.swift */; };
 		BF9E786E2F5516A900D66CBA /* repositionThumbnailsScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9E786D2F5516A900D66CBA /* repositionThumbnailsScriptCommand.swift */; };
 		BFB2A4DC28FDB5CB008170CC /* keyStateScriptCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB2A4DB28FDB5CB008170CC /* keyStateScriptCommand.swift */; };
@@ -629,7 +629,7 @@
 		BF42BC81283552B400F5D5E7 /* TriggerScriptCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerScriptCommand.swift; sourceTree = "<group>"; };
 		BF46C27F2DA37C0200C65245 /* thumbnailPreviewScriptCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thumbnailPreviewScriptCommand.swift; sourceTree = "<group>"; };
 		BF49DF3128355340004517BD /* countWindowsScriptCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = countWindowsScriptCommand.swift; sourceTree = "<group>"; };
-		BF49DF3328355372004517BD /* AltTab.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = AltTab.sdef; sourceTree = "<group>"; };
+		BF49DF3328355372004517BD /* DockAltTab.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DockAltTab.sdef; sourceTree = "<group>"; };
 		BF73FE482A8EEFBC00AB9D0A /* countWindowsCurrentSpaceScriptCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = countWindowsCurrentSpaceScriptCommand.swift; sourceTree = "<group>"; };
 		BF9E786D2F5516A900D66CBA /* repositionThumbnailsScriptCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repositionThumbnailsScriptCommand.swift; sourceTree = "<group>"; };
 		BFB2A4DB28FDB5CB008170CC /* keyStateScriptCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keyStateScriptCommand.swift; sourceTree = "<group>"; };
@@ -730,7 +730,7 @@
 		D04BA7F8F1F44D5D9844BFF5 /* ar */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ar; path = InfoPlist.strings; sourceTree = "<group>"; };
 		D04BA812B8DCB915B8F4B915 /* contributors.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = contributors.md; sourceTree = "<group>"; };
 		D04BA8209A337A2960716E3B /* zh-CN */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-CN"; path = Localizable.strings; sourceTree = "<group>"; };
-		D04BA82F792DF53958D92572 /* AltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D04BA82F792DF53958D92572 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04BA84F172AE89F210CA01D /* Pipfile.lock */ = {isa = PBXFileReference; lastKnownFileType = file.lock; path = Pipfile.lock; sourceTree = "<group>"; };
 		D04BA85F10205D5CDE8B34C4 /* _config.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = _config.yml; sourceTree = "<group>"; };
 		D04BA8AC77465E1B2BC947CF /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
@@ -1545,7 +1545,7 @@
 				D04BAAF760E3A8A22BDA84D6 /* appcast.xml */,
 				D04BA6251F309645757C6000 /* src */,
 				D04BAF1058D2599E6E8ABBA6 /* Info.plist */,
-				BF49DF3328355372004517BD /* AltTab.sdef */,
+				BF49DF3328355372004517BD /* DockAltTab.sdef */,
 				D04BAF6F617FCA44D1F75B60 /* alt_tab_macos.entitlements */,
 				D04BAA17F1B492591AAAA9A7 /* config */,
 				D04BA9CA03317B315B267E21 /* resources */,
@@ -1585,7 +1585,7 @@
 		D04BA1A461BBB5A9BE15E015 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D04BA82F792DF53958D92572 /* AltTab.app */,
+				D04BA82F792DF53958D92572 /* DockAltTab.app */,
 				BF0C832DEED422648209CCD2 /* unit-tests.xctest */,
 			);
 			name = Products;
@@ -2211,7 +2211,7 @@
 			);
 			name = "alt-tab-macos";
 			productName = "alt-tab-macos";
-			productReference = D04BA82F792DF53958D92572 /* AltTab.app */;
+			productReference = D04BA82F792DF53958D92572 /* DockAltTab.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -2386,7 +2386,7 @@
 				BF0C84D7DC2AC65BB1C111EB /* Localizable.strings in Resources */,
 				BF0C8DD7EBC3BA1E86BF4BDB /* InfoPlist.strings in Resources */,
 				BF0C83AB0186CC48FADF66A7 /* Localizable.strings in Resources */,
-				BF49DF3428355372004517BD /* AltTab.sdef in Resources */,
+				BF49DF3428355372004517BD /* DockAltTab.sdef in Resources */,
 				BF0C884D88B74F05B8BBF956 /* Localizable.strings in Resources */,
 				BF0C87732A6E660899D13BFD /* InfoPlist.strings in Resources */,
 				BF0C8C4381FB16A4DFBBB219 /* InfoPlist.strings in Resources */,

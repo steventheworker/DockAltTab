@@ -26,11 +26,11 @@
 "Alphabetical" = "За абеткою";
 "Alphabetical Order" = "За абеткою";
 "Also select windows using:" = "Також обрати вікна, що використовують:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab вийшов з ладу востаннє, коли ви ним користувалися. Надсилання звіту про аварійне завершення роботи допоможе вирішити проблему";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Наразі AltTab налаштований показувати програми. Цей параметр доступний лише тоді, коли AltTab налаштовано показувати вікна.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab запущено без дозволу на запис екрану. Мініатюри не буде показано.";
-"AltTab needs some permissions" = "AltTab потребує деяких дозволів";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab покаже, чи вікно мінімізоване, чи на увесь екран за допомогою значка статусу.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab вийшов з ладу востаннє, коли ви ним користувалися. Надсилання звіту про аварійне завершення роботи допоможе вирішити проблему";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Наразі DockAltTab налаштований показувати програми. Цей параметр доступний лише тоді, коли DockAltTab налаштовано показувати вікна.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab запущено без дозволу на запис екрану. Мініатюри не буде показано.";
+"DockAltTab needs some permissions" = "DockAltTab потребує деяких дозволів";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab покаже, чи вікно мінімізоване, чи на увесь екран за допомогою значка статусу.";
 "Always" = "Завжди";
 "Always send crash reports" = "Завжди надсилати звіти про збій";
 "and press" = "та натиснути";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Екран з панеллю меню";
 "Screen including mouse" = "Екран з курсором миші";
 "Screen Recording" = "Запис Екрану";
-"Screen showing AltTab" = "Екрану відображення AltTab";
+"Screen showing DockAltTab" = "Екрану відображення DockAltTab";
 "Search" = "Пошук";
 "Select next window" = "Вибрати наступне вікно";
 "Select previous window" = "Вибрати попереднє вікно";
@@ -231,7 +231,7 @@
 "Size" = "Розмір";
 "Skipped" = "Пропущено";
 "Small" = "Маленький";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Деякі програми, такі як Finder або Preview, використовують стандартні вкладки, які діють як незалежні вікна. Деякі інші програми, такі як веб -браузери, використовують власні вкладки, які діють унікальними способами і не є фактичними вікнами. AltTab не може перелічити їх окремо.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Деякі програми, такі як Finder або Preview, використовують стандартні вкладки, які діють як незалежні вікна. Деякі інші програми, такі як веб -браузери, використовують власні вкладки, які діють унікальними способами і не є фактичними вікнами. DockAltTab не може перелічити їх окремо.";
 "Source code repository" = "Репозиторій початкового коду";
 "Space" = "Простір";
 "Space Order" = "Порядок просторів";

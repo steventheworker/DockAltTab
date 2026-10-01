@@ -2,7 +2,7 @@
 "3-finger Vertical Swipe" = "3 prsty svisle";
 "4-finger Horizontal Swipe" = "4 prsty vodorovně";
 "4-finger Vertical Swipe" = "4 prsty svisle";
-"About" = "O AltTab";
+"About" = "O DockAltTab";
 "About %@" = "O %@u";
 "Accessibility" = "Zpřístupnění";
 "Acknowledgments" = "Poděkování";
@@ -26,11 +26,11 @@
 "Alphabetical" = "Abecedně";
 "Alphabetical Order" = "Abecední pořadí";
 "Also select windows using:" = "Také vybírat okna pomocí:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Při posledním použití aplikace AltTab došlo k pádu. Odesláním hlášení pomůžete problém vyřešit.";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab je aktuálně nastaveno na zobrazení aplikací. Toto nastavení je dostupné pouze tehdy, když je AltTab nastaveno na zobrazení oken.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab běží bez oprávnění pro záznam obrazovky. Náhledy se nebudou zobrazovat.";
-"AltTab needs some permissions" = "AltTab potřebuje určitá oprávnění";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab zobrazí stavovou ikonu, pokud je okno právě minimalizováno nebo zobrazeno na celé obrazovce.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Při posledním použití aplikace DockAltTab došlo k pádu. Odesláním hlášení pomůžete problém vyřešit.";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab je aktuálně nastaveno na zobrazení aplikací. Toto nastavení je dostupné pouze tehdy, když je DockAltTab nastaveno na zobrazení oken.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab běží bez oprávnění pro záznam obrazovky. Náhledy se nebudou zobrazovat.";
+"DockAltTab needs some permissions" = "DockAltTab potřebuje určitá oprávnění";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab zobrazí stavovou ikonu, pokud je okno právě minimalizováno nebo zobrazeno na celé obrazovce.";
 "Always" = "Vždy";
 "Always send crash reports" = "Vždy odesílat hlášení o pádu";
 "and press" = "a stiskněte";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Obrazovka včetně panelu nabídek";
 "Screen including mouse" = "Obrazovka včetně kurzoru myši";
 "Screen Recording" = "Nahrávání obrazovky";
-"Screen showing AltTab" = "Obrazovka zobrazující AltTab";
+"Screen showing DockAltTab" = "Obrazovka zobrazující DockAltTab";
 "Search" = "Hledat";
 "Select next window" = "Vybrat následující okno";
 "Select previous window" = "Vybrat předchozí okno";
@@ -231,7 +231,7 @@
 "Size" = "Velikost";
 "Skipped" = "Přeskočeno";
 "Small" = "Malá";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Některé aplikace jako Finder nebo Náhled používají standardní panely, které fungují jako samostatná okna. Jiné aplikace, jako například webové prohlížeče, používají vlastní panely, které se chovají specifickým způsobem a nejsou skutečnými okny. AltTab je nemůže zobrazit samostatně.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Některé aplikace jako Finder nebo Náhled používají standardní panely, které fungují jako samostatná okna. Jiné aplikace, jako například webové prohlížeče, používají vlastní panely, které se chovají specifickým způsobem a nejsou skutečnými okny. DockAltTab je nemůže zobrazit samostatně.";
 "Source code repository" = "Repozitář zdrojového kódu";
 "Space" = "Plocha";
 "Space Order" = "Pořadí plochy";

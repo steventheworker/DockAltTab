@@ -26,11 +26,11 @@
 "Alphabetical" = "Tähestikuline";
 "Alphabetical Order" = "Tähestikuline järjekord";
 "Also select windows using:" = "Vali aknaid ka järgmisega:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab crashed last time you used it. Sending a crash report will help get the issue fixed";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab on praegu seatud rakenduste kuvamiseks.See säte on saadaval ainult siis, kui Alttab on seatud Windowsi kuvamiseks.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab töötab ilma ekraani salvestamise lubadeta. Pisipildid ei kuvata.";
-"AltTab needs some permissions" = "Alttab vajab mingeid õigusi";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab näitab, kas aken on praegu minimeeritud või olekuikooniga täisekraanil.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab on praegu seatud rakenduste kuvamiseks.See säte on saadaval ainult siis, kui Alttab on seatud Windowsi kuvamiseks.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab töötab ilma ekraani salvestamise lubadeta. Pisipildid ei kuvata.";
+"DockAltTab needs some permissions" = "Alttab vajab mingeid õigusi";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab näitab, kas aken on praegu minimeeritud või olekuikooniga täisekraanil.";
 "Always" = "Alati";
 "Always send crash reports" = "Saada alati krahhi aruanded";
 "and press" = "ja vajutama";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Ekraan sisaldab menüüriba";
 "Screen including mouse" = "Ekraan koos hiirga";
 "Screen Recording" = "Ekraanisalvestus";
-"Screen showing AltTab" = "Ekraan, mis näitab altabi";
+"Screen showing DockAltTab" = "Ekraan, mis näitab altabi";
 "Search" = "Otsi";
 "Select next window" = "Valige järgmine aken";
 "Select previous window" = "Select previous window";
@@ -231,7 +231,7 @@
 "Size" = "Suurus";
 "Skipped" = "Vahele jäetud";
 "Small" = "Väike";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Mõned rakendused, näiteks Finder või eelvaade, kasutavad standardseid vahekaarte, mis toimivad nagu sõltumatud aknad.Mõned muud rakendused, näiteks veebibrauserid, kasutavad kohandatud vahekaarte, mis toimivad ainulaadsel viisil ja pole tegelikud aknad.Alttab ei saa neid eraldi loetleda.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Mõned rakendused, näiteks Finder või eelvaade, kasutavad standardseid vahekaarte, mis toimivad nagu sõltumatud aknad.Mõned muud rakendused, näiteks veebibrauserid, kasutavad kohandatud vahekaarte, mis toimivad ainulaadsel viisil ja pole tegelikud aknad.Alttab ei saa neid eraldi loetleda.";
 "Source code repository" = "Source code repository";
 "Space" = "Ruum";
 "Space Order" = "Kosmosekorraldus";

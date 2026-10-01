@@ -193,41 +193,32 @@ class DockAltTab {
     }
 
     /// Compute where the preview panel should be anchored, relative to the hovered dock icon.
+    /// AX reports positions from the top-left of the primary screen, while NSWindow frames use
+    /// Cocoa coordinates (origin bottom-left), so Y has to be flipped here.
     private static func previewPosition(_ position: CGPoint, _ size: CGSize) -> (Int, Int) {
+        let screenHeight = NSScreen.screens.first?.frame.height ?? 0
+        let gutter = CGFloat(DockAltTabPreferences.previewGutter)
         var x = position.x
         var y = position.y
-        var width = size.width
+        let width = size.width
         var height = size.height
         if dockMagnification {
             if dockPos == "bottom" {
                 height = CGFloat(dockMagnificationSize)
                 x += width / 2
                 let ratio = CGFloat(dockMagnificationSize) / 128
-                y = height + 2.7 / (ratio * ratio)
+                y = height + 2.7 / (ratio * ratio) + gutter
             } else {
-                width = CGFloat(dockMagnificationSize)
-                if dockPos == "right" {
-                    x += 35 * (CGFloat(dockMagnificationSize) / 128)
-                } else if dockPos == "left" {
-                    x = size.width - 17 * (CGFloat(dockMagnificationSize) / 128)
-                }
-                y -= height / 2
+                height = CGFloat(dockMagnificationSize)
+                y = screenHeight - (position.y + size.height / 2)
+                x = dockPos == "right" ? position.x - gutter : position.x + size.width + gutter
             }
         } else if dockPos == "bottom" {
             x += width / 2
-            y -= 12
-        } else if dockPos == "left" {
-            x += width - 5
-            y -= height / 2
-        } else if dockPos == "right" {
-            x += 12
-            y -= height / 2
-        }
-        let gutter = CGFloat(DockAltTabPreferences.previewGutter)
-        if dockPos == "bottom" {
-            y += gutter
+            y = screenHeight - position.y + 12 + gutter
         } else {
-            x += dockPos == "left" ? gutter : -gutter
+            y = screenHeight - (position.y + height / 2)
+            x = dockPos == "right" ? position.x - gutter : position.x + width + gutter
         }
         return (Int(x), Int(y))
     }

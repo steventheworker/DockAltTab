@@ -26,11 +26,11 @@
 "Alphabetical" = "Ordem Alfabética";
 "Alphabetical Order" = "Ordem Alfabética";
 "Also select windows using:" = "Também escolher janelas utilizando:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "A aplicação terminou inesperadamente na última vez que foi utilizada. Ao enviar um relatório de falha ajuda a corrigir o erro";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Actualmente, o AltTab está definido para exibir aplicações.Essa configuração está disponível apenas quando o AltTab está definido para exibir janelas.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab está a ser executado sem permissões de Gravação do Ecrã. As miniaturas não serão apresentadas.";
-"AltTab needs some permissions" = "AltTab necessita de algumas permissões";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab é exibido se a janela estiver minimizada ou em ecrã inteiro com um ícone de status.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "A aplicação terminou inesperadamente na última vez que foi utilizada. Ao enviar um relatório de falha ajuda a corrigir o erro";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Actualmente, o DockAltTab está definido para exibir aplicações.Essa configuração está disponível apenas quando o DockAltTab está definido para exibir janelas.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab está a ser executado sem permissões de Gravação do Ecrã. As miniaturas não serão apresentadas.";
+"DockAltTab needs some permissions" = "DockAltTab necessita de algumas permissões";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab é exibido se a janela estiver minimizada ou em ecrã inteiro com um ícone de status.";
 "Always" = "Sempre";
 "Always send crash reports" = "Enviar sempre";
 "and press" = "e pressionar";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Ecrã da barra";
 "Screen including mouse" = "Ecrã do rato";
 "Screen Recording" = "Gravação de Ecrã";
-"Screen showing AltTab" = "Ecrã onde o AltTab está activo";
+"Screen showing DockAltTab" = "Ecrã onde o DockAltTab está activo";
 "Search" = "Pesquisar";
 "Select next window" = "Seleccionar próxima janela";
 "Select previous window" = "Seleccionar janela anterior";
@@ -231,7 +231,7 @@
 "Size" = "Tamanho";
 "Skipped" = "Ignorado";
 "Small" = "Pequeno";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Algumas aplicações como o Finder ou Preview utilizam separadores padrão que actuam como janelas independentes. Outras, como navegadores da Web, utilizam separadores personalizados que actuam de forma única e, na verdade, não são janelas reais. AltTab não pode listá-las separadamente.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Algumas aplicações como o Finder ou Preview utilizam separadores padrão que actuam como janelas independentes. Outras, como navegadores da Web, utilizam separadores personalizados que actuam de forma única e, na verdade, não são janelas reais. DockAltTab não pode listá-las separadamente.";
 "Source code repository" = "Repositório do Código Fonte";
 "Space" = "Space";
 "Space Order" = "Ordem por Space";

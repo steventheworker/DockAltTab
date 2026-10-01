@@ -26,11 +26,11 @@
 "Alphabetical" = "Alphabétique";
 "Alphabetical Order" = "Ordre alphabétique";
 "Also select windows using:" = "Sélectionner aussi les fenêtres en utilisant :";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab a crashé la dernière fois que vous l’avez utilisé. L’envoi d’un rapport d’erreur aidera à résoudre le problème.";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab est actuellement défini pour afficher des applications. Ce paramètre n'est disponible que lorsque AlTTAB est défini pour afficher les fenêtres.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab est lancé sans les permissions d'enregistrement de l'écran. Les miniatures ne s'afficheront pas.";
-"AltTab needs some permissions" = "AltTab a besoin de permissions";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab affichera si la fenêtre est actuellement minimisée ou en plein écran avec une icône d'état.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab a crashé la dernière fois que vous l’avez utilisé. L’envoi d’un rapport d’erreur aidera à résoudre le problème.";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab est actuellement défini pour afficher des applications. Ce paramètre n'est disponible que lorsque AlTTAB est défini pour afficher les fenêtres.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab est lancé sans les permissions d'enregistrement de l'écran. Les miniatures ne s'afficheront pas.";
+"DockAltTab needs some permissions" = "DockAltTab a besoin de permissions";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab affichera si la fenêtre est actuellement minimisée ou en plein écran avec une icône d'état.";
 "Always" = "Toujours";
 "Always send crash reports" = "Toujours envoyer un rapport d’erreur";
 "and press" = "et presser";
@@ -115,7 +115,7 @@
 "Hold" = "Maintenir";
 "Horizontal Swipe with Four Fingers" = "Glisser horizontalement avec quatre doigts";
 "Horizontal Swipe with Three Fingers" = "Glisser horizontalement avec trois doigts";
-"I think the app could be improved with…" = "Je pense que AltTab pourrait être améliorée en…";
+"I think the app could be improved with…" = "Je pense que DockAltTab pourrait être améliorée en…";
 "Ignore shortcuts when active" = "Ignorer les raccourcis à l'activation";
 "Ignore shortcuts while a window from these apps is active" = "Ignorer les raccourcis si une fenêtre de ces Apps est active";
 "Import settings…" = "Importer les réglages…";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Écran contenant la barre de menu";
 "Screen including mouse" = "Écran contenant la souris";
 "Screen Recording" = "Enregistrement de l’écran";
-"Screen showing AltTab" = "Écran affichant AltTab";
+"Screen showing DockAltTab" = "Écran affichant DockAltTab";
 "Search" = "Rechercher";
 "Select next window" = "Sélectionner la fenêtre suivante";
 "Select previous window" = "Sélectionner la fenêtre précédente";
@@ -231,7 +231,7 @@
 "Size" = "Taille";
 "Skipped" = "Passé";
 "Small" = "Petite";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Certaines applications comme le Finder ou l’Aperçu utilisent des onglets standard qui agissent comme des fenêtres indépendantes. Certaines autres applications comme les navigateurs Web utilisent des onglets personnalisés qui agissent de manière unique et ne sont pas des fenêtres réelles. Alttab ne peut pas les afficher séparément.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Certaines applications comme le Finder ou l’Aperçu utilisent des onglets standard qui agissent comme des fenêtres indépendantes. Certaines autres applications comme les navigateurs Web utilisent des onglets personnalisés qui agissent de manière unique et ne sont pas des fenêtres réelles. Alttab ne peut pas les afficher séparément.";
 "Source code repository" = "Archive du code source";
 "Space" = "Bureaux";
 "Space Order" = "Ordre des bureaux";

@@ -26,11 +26,11 @@
 "Alphabetical" = "حروف تہجی کے لحاظ سے";
 "Alphabetical Order" = "حروف تہجی کی ترتیب";
 "Also select windows using:" = "ونڈوز کو ان کے ذریعے بھی منتخب کریں:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "پچھلی بار جب آپ نے AltTab استعمال کیا تو یہ کریش ہو گیا۔ کریش رپورٹ بھیجنے سے مسئلہ حل کرنے میں مدد ملے گی";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab فی الحال ایپلیکیشنز دکھانے کے لیے سیٹ ہے۔ یہ سیٹنگ صرف اس وقت دستیاب ہوتی ہے جب AltTab ونڈوز دکھانے کے لیے سیٹ ہو۔";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "آلٹ ٹیب اسکرین ریکارڈنگ کی اجازت کے بغیر چل رہا ہے۔ تھمب نیلز نظر نہیں آئیں گے۔";
-"AltTab needs some permissions" = "آل ٹیب کو کچھ اجازتیں درکار ہیں";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab دکھائے گا کہ آیا ونڈو اس وقت اسٹیٹس آئیکن کے ساتھ چھوٹی یا فل اسکرین ہے۔";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "پچھلی بار جب آپ نے DockAltTab استعمال کیا تو یہ کریش ہو گیا۔ کریش رپورٹ بھیجنے سے مسئلہ حل کرنے میں مدد ملے گی";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab فی الحال ایپلیکیشنز دکھانے کے لیے سیٹ ہے۔ یہ سیٹنگ صرف اس وقت دستیاب ہوتی ہے جب DockAltTab ونڈوز دکھانے کے لیے سیٹ ہو۔";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "آلٹ ٹیب اسکرین ریکارڈنگ کی اجازت کے بغیر چل رہا ہے۔ تھمب نیلز نظر نہیں آئیں گے۔";
+"DockAltTab needs some permissions" = "آل ٹیب کو کچھ اجازتیں درکار ہیں";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab دکھائے گا کہ آیا ونڈو اس وقت اسٹیٹس آئیکن کے ساتھ چھوٹی یا فل اسکرین ہے۔";
 "Always" = "ہمیشہ";
 "Always send crash reports" = "ہمیشہ کریش رپورٹس بھیجیں";
 "and press" = "اور دبائیں";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "مینو بار والی سکرین";
 "Screen including mouse" = "ماؤس والی سکرین";
 "Screen Recording" = "سکرین ریکارڈنگ";
-"Screen showing AltTab" = "آل ٹیب دکھانے والی سکرین";
+"Screen showing DockAltTab" = "آل ٹیب دکھانے والی سکرین";
 "Search" = "تلاش";
 "Select next window" = "اگلی ونڈو منتخب کریں";
 "Select previous window" = "پچھلی ونڈو منتخب کریں";
@@ -231,7 +231,7 @@
 "Size" = "سائز";
 "Skipped" = "چھوڑ دیا گیا";
 "Small" = "چھوٹا";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "کچھ ایپس جیسے فائنڈر یا پریویو معیاری ٹیبز استعمال کرتی ہیں جو آزاد ونڈوز کی طرح کام کرتی ہیں۔ کچھ دیگر ایپس جیسے ویب براؤزرز کسٹم ٹیبز استعمال کرتی ہیں جو منفرد طریقوں سے کام کرتی ہیں اور اصل ونڈوز نہیں ہیں۔ AltTab انہیں الگ الگ درج نہیں کر سکتا۔";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "کچھ ایپس جیسے فائنڈر یا پریویو معیاری ٹیبز استعمال کرتی ہیں جو آزاد ونڈوز کی طرح کام کرتی ہیں۔ کچھ دیگر ایپس جیسے ویب براؤزرز کسٹم ٹیبز استعمال کرتی ہیں جو منفرد طریقوں سے کام کرتی ہیں اور اصل ونڈوز نہیں ہیں۔ DockAltTab انہیں الگ الگ درج نہیں کر سکتا۔";
 "Source code repository" = "سورس کوڈ ریپوزٹری";
 "Space" = "سپیس";
 "Space Order" = "اسپیس کی ترتیب";

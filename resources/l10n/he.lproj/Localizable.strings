@@ -26,11 +26,11 @@
 "Alphabetical" = "אלפביתי";
 "Alphabetical Order" = "סדר אלפביתי";
 "Also select windows using:" = "בחר חלון גם באמצעות:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab קרס בפעם האחרונה שהשתמשת בו. שליחה של דיווח קריסה יעזור לתקן את הבעיה";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab מוגדר כעת להציג יישומים.הגדרה זו זמינה רק כאשר AltTab מוגדר להצגת Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab פועל ללא הרשאות הקלטת מסך. תצוגות מקדימות לא יופיעו.";
-"AltTab needs some permissions" = "‫AltTab צריך הרשאות מסוימות";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab תראה אם ​​החלון ממזער כרגע או מסך מלא עם סמל סטטוס.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab קרס בפעם האחרונה שהשתמשת בו. שליחה של דיווח קריסה יעזור לתקן את הבעיה";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab מוגדר כעת להציג יישומים.הגדרה זו זמינה רק כאשר DockAltTab מוגדר להצגת Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab פועל ללא הרשאות הקלטת מסך. תצוגות מקדימות לא יופיעו.";
+"DockAltTab needs some permissions" = "‫DockAltTab צריך הרשאות מסוימות";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab תראה אם ​​החלון ממזער כרגע או מסך מלא עם סמל סטטוס.";
 "Always" = "תמיד";
 "Always send crash reports" = "תמיד שלח דיווחי קריסה";
 "and press" = "ולחץ";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "מסך הכולל את שורת התפריטים";
 "Screen including mouse" = "המסך שבו העכבר הנמצא";
 "Screen Recording" = "הקלטת מסך";
-"Screen showing AltTab" = "המסך המציג את AltTab";
+"Screen showing DockAltTab" = "המסך המציג את DockAltTab";
 "Search" = "חיפוש";
 "Select next window" = "בחר בחלון הבא";
 "Select previous window" = "בחר בחלון הקודם";
@@ -231,7 +231,7 @@
 "Size" = "גוֹדֶל";
 "Skipped" = "דלג";
 "Small" = "קָטָן";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "יש אפליקציות כמו Finder או תצוגה מקדימה שמשתמשים בכרטיסיות סטנדרטיות הפועלות כמו חלונות עצמאיים.כמה אפליקציות אחרות כמו דפדפני אינטרנט משתמשים בכרטיסיות מותאמות אישית הפועלות בדרכים ייחודיות ואינן חלונות בפועל.Alttab לא יכול לרשום את אלה בנפרד.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "יש אפליקציות כמו Finder או תצוגה מקדימה שמשתמשים בכרטיסיות סטנדרטיות הפועלות כמו חלונות עצמאיים.כמה אפליקציות אחרות כמו דפדפני אינטרנט משתמשים בכרטיסיות מותאמות אישית הפועלות בדרכים ייחודיות ואינן חלונות בפועל.Alttab לא יכול לרשום את אלה בנפרד.";
 "Source code repository" = "קוד מקור";
 "Space" = "שטח";
 "Space Order" = "סדר חלל";

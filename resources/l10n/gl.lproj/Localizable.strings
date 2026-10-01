@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabética";
 "Alphabetical Order" = "Orde alfabética";
 "Also select windows using:" = "Seleccionar tamén ventás usando:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab tivo un problema a derradeira vez que o usaches. Enviar un informe de error axudará a que o problema poda ser amañado";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Actualmente AltTab está previsto para mostrar aplicacións.Esta configuración só está dispoñible cando AltTab está configurado para mostrar Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab está a executarse sen permisos de gravación de pantalla. Non se amosarán as miniaturas.";
-"AltTab needs some permissions" = "AltTab require algúns permisos";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab mostrará se a xanela está actualmente minimizada ou en pantalla completa cunha icona de estado.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab tivo un problema a derradeira vez que o usaches. Enviar un informe de error axudará a que o problema poda ser amañado";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Actualmente DockAltTab está previsto para mostrar aplicacións.Esta configuración só está dispoñible cando DockAltTab está configurado para mostrar Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab está a executarse sen permisos de gravación de pantalla. Non se amosarán as miniaturas.";
+"DockAltTab needs some permissions" = "DockAltTab require algúns permisos";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab mostrará se a xanela está actualmente minimizada ou en pantalla completa cunha icona de estado.";
 "Always" = "Sempre";
 "Always send crash reports" = "Sempre enviar informes de erro";
 "and press" = "e prema";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Pantalla que inclúe a barra de menú";
 "Screen including mouse" = "Pantalla que ten o rato";
 "Screen Recording" = "Grabación de Pantalla";
-"Screen showing AltTab" = "Pantalla que amosa AltTab";
+"Screen showing DockAltTab" = "Pantalla que amosa DockAltTab";
 "Search" = "Buscar";
 "Select next window" = "Seleccionar seguinte ventá";
 "Select previous window" = "Seleccionar ventá anterior";
@@ -231,7 +231,7 @@
 "Size" = "Tamaño";
 "Skipped" = "Omitido";
 "Small" = "Pequena";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Algunhas aplicacións como Finder ou Vista previa usan pestanas estándar que actúan como Windows independentes.Algunhas outras aplicacións como os navegadores web usan pestanas personalizadas que actúan de formas únicas e non son ventás reais.AltTab non pode listar estes por separado.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Algunhas aplicacións como Finder ou Vista previa usan pestanas estándar que actúan como Windows independentes.Algunhas outras aplicacións como os navegadores web usan pestanas personalizadas que actúan de formas únicas e non son ventás reais.DockAltTab non pode listar estes por separado.";
 "Source code repository" = "Repositorio de código fonte";
 "Space" = "Espazo";
 "Space Order" = "Orde espacial";

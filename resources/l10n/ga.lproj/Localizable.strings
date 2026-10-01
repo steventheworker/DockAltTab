@@ -26,11 +26,11 @@
 "Alphabetical" = "Aibítre";
 "Alphabetical Order" = "Ord Aibítre";
 "Also select windows using:" = "Roghnaigh fuinneoga freisin ag baint úsáide as:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Thuar AltTab an uair dheireanach a d'úsáid tú é. Má sheoltar tuairisc tuairteála, cabhrófar leis an tsaincheist a réiteach";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Tá AltTab socraithe faoi láthair chun Feidhmchláir a thaispeáint. Níl an socrú seo ar fáil ach amháin nuair atá AltTab socraithe chun Windows a thaispeáint.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "Tá AltTab ag rith gan ceadanna Taifeadta Scáileáin. Ní thaispeánfar mionsamhlacha.";
-"AltTab needs some permissions" = "Teastaíonn roinnt ceadanna ó AltTab";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Léireoidh AltTab an bhfuil an fhuinneog íoslaghdaithe faoi láthair nó an scáileán iomlán le deilbhín stádais.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Thuar DockAltTab an uair dheireanach a d'úsáid tú é. Má sheoltar tuairisc tuairteála, cabhrófar leis an tsaincheist a réiteach";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Tá DockAltTab socraithe faoi láthair chun Feidhmchláir a thaispeáint. Níl an socrú seo ar fáil ach amháin nuair atá DockAltTab socraithe chun Windows a thaispeáint.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "Tá DockAltTab ag rith gan ceadanna Taifeadta Scáileáin. Ní thaispeánfar mionsamhlacha.";
+"DockAltTab needs some permissions" = "Teastaíonn roinnt ceadanna ó DockAltTab";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Léireoidh DockAltTab an bhfuil an fhuinneog íoslaghdaithe faoi láthair nó an scáileán iomlán le deilbhín stádais.";
 "Always" = "I gcónaí";
 "Always send crash reports" = "Seol tuairiscí tuairteála i gcónaí";
 "and press" = "agus brúigh";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Scáileán lena n-áirítear barra roghchláir";
 "Screen including mouse" = "Scáileán lena n-áirítear luch";
 "Screen Recording" = "Taifeadadh Scáileáin";
-"Screen showing AltTab" = "Scáileán ag taispeáint AltTab";
+"Screen showing DockAltTab" = "Scáileán ag taispeáint DockAltTab";
 "Search" = "Cuardaigh";
 "Select next window" = "Roghnaigh an chéad fhuinneog eile";
 "Select previous window" = "Roghnaigh an fhuinneog roimhe seo";
@@ -231,7 +231,7 @@
 "Size" = "Méid";
 "Skipped" = "Scipeáladh";
 "Small" = "Beag";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Úsáideann roinnt aipeanna ar nós Aimsitheoir nó Réamhamhairc cluaisíní caighdeánacha a fheidhmíonn cosúil le fuinneoga neamhspleácha. Úsáideann roinnt aipeanna eile cosúil le brabhsálaithe gréasáin cluaisíní saincheaptha a ghníomhaíonn ar bhealaí uathúla agus nach fuinneoga iarbhír iad. Ní féidir le AltTab iad sin a liostú ar leithligh.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Úsáideann roinnt aipeanna ar nós Aimsitheoir nó Réamhamhairc cluaisíní caighdeánacha a fheidhmíonn cosúil le fuinneoga neamhspleácha. Úsáideann roinnt aipeanna eile cosúil le brabhsálaithe gréasáin cluaisíní saincheaptha a ghníomhaíonn ar bhealaí uathúla agus nach fuinneoga iarbhír iad. Ní féidir le DockAltTab iad sin a liostú ar leithligh.";
 "Source code repository" = "Stórais cód foinse";
 "Space" = "Spás";
 "Space Order" = "Ordú Spáis";

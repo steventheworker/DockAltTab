@@ -26,11 +26,11 @@
 "Alphabetical" = "Miturut Abjad";
 "Alphabetical Order" = "Urutan Abjad";
 "Also select windows using:" = "Uga pilih jendhela nggunakake:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab macet nalika pungkasan sampeyan nggunakake. Ngirim laporan macet bakal mbantu ndandani masalah kasebut.";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab saiki disetel kanggo nampilake Aplikasi. Setelan iki mung kasedhiya nalika AltTab disetel kanggo nampilake Jendhela.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab lumaku tanpa ijin Rekaman Layar. Gambar cilik ora bakal katon.";
-"AltTab needs some permissions" = "AltTab mbutuhake sawetara idin";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab bakal nuduhake yen jendhela saiki dicilikake utawa layar penuh kanthi ikon status.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab macet nalika pungkasan sampeyan nggunakake. Ngirim laporan macet bakal mbantu ndandani masalah kasebut.";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab saiki disetel kanggo nampilake Aplikasi. Setelan iki mung kasedhiya nalika DockAltTab disetel kanggo nampilake Jendhela.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab lumaku tanpa ijin Rekaman Layar. Gambar cilik ora bakal katon.";
+"DockAltTab needs some permissions" = "DockAltTab mbutuhake sawetara idin";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab bakal nuduhake yen jendhela saiki dicilikake utawa layar penuh kanthi ikon status.";
 "Always" = "Tansah";
 "Always send crash reports" = "Tansah ngirim laporan kacilakan";
 "and press" = "lan pencet";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Layar kalebu bilah menu";
 "Screen including mouse" = "Layar kalebu mouse";
 "Screen Recording" = "Rekaman Layar";
-"Screen showing AltTab" = "Layar nampilake AltTab";
+"Screen showing DockAltTab" = "Layar nampilake DockAltTab";
 "Search" = "Telusuran";
 "Select next window" = "Pilih jendhela sabanjure";
 "Select previous window" = "Pilih jendhela sadurunge";
@@ -231,7 +231,7 @@
 "Size" = "Ukuran";
 "Skipped" = "Dilewati";
 "Small" = "ꦕꦶꦭꦶꦏ꧀";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Sawetara aplikasi kaya Finder utawa Preview nggunakake tab standar sing tumindak kaya jendela independen. Sawetara aplikasi liyane kaya browser web nggunakake tab khusus sing tumindak kanthi cara unik lan dudu jendela sejatine. AltTab ora bisa nyathet kasebut kanthi kapisah.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Sawetara aplikasi kaya Finder utawa Preview nggunakake tab standar sing tumindak kaya jendela independen. Sawetara aplikasi liyane kaya browser web nggunakake tab khusus sing tumindak kanthi cara unik lan dudu jendela sejatine. DockAltTab ora bisa nyathet kasebut kanthi kapisah.";
 "Source code repository" = "Repositori kode sumber";
 "Space" = "Spasi";
 "Space Order" = "Urutan Spasi";

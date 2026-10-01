@@ -26,11 +26,11 @@
 "Alphabetical" = "അക്ഷരമാലാക്രമത്തിൽ";
 "Alphabetical Order" = "Alphabetical Order";
 "Also select windows using:" = "ഇത് ഉപയോഗിച്ചും വിൻഡോകൾ തിരഞ്ഞെടുക്കുക:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab crashed last time you used it. Sending a crash report will help get the issue fixed";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "സ്‌ക്രീൻ റെക്കോർഡിംഗ് അനുമതികളില്ലാതെയാണ് AltTab പ്രവർത്തിക്കുന്നത്. ലഘുചിത്രങ്ങൾ കാണിക്കില്ല.";
-"AltTab needs some permissions" = "AltTab needs some permissions";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab will show if the window is currently minimized or fullscreen with a status icon.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "സ്‌ക്രീൻ റെക്കോർഡിംഗ് അനുമതികളില്ലാതെയാണ് DockAltTab പ്രവർത്തിക്കുന്നത്. ലഘുചിത്രങ്ങൾ കാണിക്കില്ല.";
+"DockAltTab needs some permissions" = "DockAltTab needs some permissions";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Always" = "Always";
 "Always send crash reports" = "Always send crash reports";
 "and press" = "and press";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
 "Screen Recording" = "Screen Recording";
-"Screen showing AltTab" = "Screen showing AltTab";
+"Screen showing DockAltTab" = "Screen showing DockAltTab";
 "Search" = "തിരയുക";
 "Select next window" = "Select next window";
 "Select previous window" = "Select previous window";
@@ -231,7 +231,7 @@
 "Size" = "Size";
 "Skipped" = "ഒഴിവാക്കി";
 "Small" = "Small";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately.";
 "Source code repository" = "Source code repository";
 "Space" = "സ്പേസ്";
 "Space Order" = "Space Order";

@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetic";
 "Alphabetical Order" = "Ordinea alfabetică";
 "Also select windows using:" = "De asemenea selectează ferestre utilizând:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab s-a blocat ultima dată când l-ai folosit. Trimiterea unui raport de eroare va ajuta la remedierea problemei";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab este setat în prezent să afișeze aplicațiile. Această setare este disponibilă doar când AltTab este setat să afișeze ferestre.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab rulează fără permisiuni de Înregistrare Ecran. Miniaturile nu vor fi afișate.";
-"AltTab needs some permissions" = "AltTab necesită permisiuni";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab va afișa, printr-o pictogramă de stare, dacă fereastra este minimizată sau în ecran complet.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab s-a blocat ultima dată când l-ai folosit. Trimiterea unui raport de eroare va ajuta la remedierea problemei";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab este setat în prezent să afișeze aplicațiile. Această setare este disponibilă doar când DockAltTab este setat să afișeze ferestre.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab rulează fără permisiuni de Înregistrare Ecran. Miniaturile nu vor fi afișate.";
+"DockAltTab needs some permissions" = "DockAltTab necesită permisiuni";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab va afișa, printr-o pictogramă de stare, dacă fereastra este minimizată sau în ecran complet.";
 "Always" = "Mereu";
 "Always send crash reports" = "Trimite întotdeauna rapoarte de eroare";
 "and press" = "și apăsați";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Ecranul incluzând bara de meniu";
 "Screen including mouse" = "Ecranul include mouse";
 "Screen Recording" = "Înregistrare ecran";
-"Screen showing AltTab" = "Ecranul arată AltTab";
+"Screen showing DockAltTab" = "Ecranul arată DockAltTab";
 "Search" = "Căutare";
 "Select next window" = "Selectează următoarea fereastră";
 "Select previous window" = "Selectează fereastra anterioară";
@@ -231,7 +231,7 @@
 "Size" = "Dimensiune";
 "Skipped" = "Omis";
 "Small" = "Mic";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Unele aplicații, cum ar fi Finder sau Previzualizare, folosesc file standard care acționează ca ferestre independente. Alte aplicații, cum ar fi browserele web, folosesc file personalizate care funcționează diferit și nu sunt ferestre propriu-zise. AltTab nu le poate afișa separat.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Unele aplicații, cum ar fi Finder sau Previzualizare, folosesc file standard care acționează ca ferestre independente. Alte aplicații, cum ar fi browserele web, folosesc file personalizate care funcționează diferit și nu sunt ferestre propriu-zise. DockAltTab nu le poate afișa separat.";
 "Source code repository" = "Depozit cod sursă";
 "Space" = "Spațiu";
 "Space Order" = "Ordinea spațiilor";

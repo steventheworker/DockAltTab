@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetik";
 "Alphabetical Order" = "Alfabetik sıra";
 "Also select windows using:" = "Bunları kullanan pencereleri de seç:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Son sefer AltTab çöktü. Çökme raporlarını göndermek, hataların düzeltilmesine yardımcı olur";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab şu anda uygulamaları gösterecek şekilde ayarlanmıştır.Bu ayar yalnızca AltTab Windows'u gösterecek şekilde ayarlandığında kullanılabilir.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab, Ekran Kaydı izinleri olmadan çalışıyor. Küçük esimler gösterilmeyecek.";
-"AltTab needs some permissions" = "AltTab'ın bir kaç izne ihtiyacı var";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab, pencerenin şu anda en aza indirilmiş mi yoksa bir durum simgesiyle tam ekran olup olmadığını gösterecektir.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Son sefer DockAltTab çöktü. Çökme raporlarını göndermek, hataların düzeltilmesine yardımcı olur";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab şu anda uygulamaları gösterecek şekilde ayarlanmıştır.Bu ayar yalnızca DockAltTab Windows'u gösterecek şekilde ayarlandığında kullanılabilir.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab, Ekran Kaydı izinleri olmadan çalışıyor. Küçük esimler gösterilmeyecek.";
+"DockAltTab needs some permissions" = "DockAltTab'ın bir kaç izne ihtiyacı var";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab, pencerenin şu anda en aza indirilmiş mi yoksa bir durum simgesiyle tam ekran olup olmadığını gösterecektir.";
 "Always" = "Her zaman";
 "Always send crash reports" = "Çökme raporlarını her zaman gönder";
 "and press" = "ve basın";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Menü çubuğunun olduğu monitör";
 "Screen including mouse" = "Farenin olduğu monitör";
 "Screen Recording" = "Ekran Kaydı";
-"Screen showing AltTab" = "AltTab'ı gösteren monitör";
+"Screen showing DockAltTab" = "DockAltTab'ı gösteren monitör";
 "Search" = "Ara";
 "Select next window" = "Sonraki pencereyi seç";
 "Select previous window" = "Önceki pencereyi seç";
@@ -231,7 +231,7 @@
 "Size" = "Boyut";
 "Skipped" = "Geçildi";
 "Small" = "Küçük";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Finder veya önizleme gibi bazı uygulamalar bağımsız pencereler gibi hareket eden standart sekmeler kullanır.Web tarayıcıları gibi diğer bazı uygulamalar, benzersiz yollarla hareket eden ve gerçek pencereler olmayan özel sekmeler kullanır.Alttab bunları ayrı olarak listeleyemez.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Finder veya önizleme gibi bazı uygulamalar bağımsız pencereler gibi hareket eden standart sekmeler kullanır.Web tarayıcıları gibi diğer bazı uygulamalar, benzersiz yollarla hareket eden ve gerçek pencereler olmayan özel sekmeler kullanır.Alttab bunları ayrı olarak listeleyemez.";
 "Source code repository" = "Kaynak kodu deposu";
 "Space" = "Alan";
 "Space Order" = "Uzay siparişi";

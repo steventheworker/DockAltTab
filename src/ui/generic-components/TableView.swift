@@ -68,7 +68,7 @@ class TableView: NSTableView {
         rowSizeStyle = .medium
         addHeaders([
             NSLocalizedString("App (BundleID starting with)", comment: ""),
-            String(format: NSLocalizedString("Hide in %@", comment: "%@ is AltTab"), App.name),
+            String(format: NSLocalizedString("Hide in %@", comment: "%@ is DockAltTab"), App.name),
             NSLocalizedString("Window title contains", comment: ""),
             NSLocalizedString("Ignore shortcuts when active", comment: "")
         ])

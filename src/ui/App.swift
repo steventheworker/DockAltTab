@@ -402,7 +402,7 @@ class App: AppCenterApplication {
         #if DEBUG
 //            App.showSettingsWindow()
         #endif
-        Logger.info { "Finished launching AltTab" }
+        Logger.info { "Finished launching DockAltTab" }
     }
 }
 
@@ -411,7 +411,7 @@ extension App: NSApplicationDelegate {
         App.appCenterDelegate = AppCenterCrash()
         App.shared.disableRelaunchOnLogin()
         Logger.initialize()
-        Logger.info { "Launching AltTab \(App.version)" }
+        Logger.info { "Launching DockAltTab \(App.version)" }
         #if DEBUG
         UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
         #endif

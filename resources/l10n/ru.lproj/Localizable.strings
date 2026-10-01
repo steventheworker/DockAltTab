@@ -26,11 +26,11 @@
 "Alphabetical" = "По алфавиту";
 "Alphabetical Order" = "Алфавитный порядок";
 "Also select windows using:" = "Также выбирать окна, используя:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab аварийно завершился в последний раз, когда вы его использовали. Отправка отчета поможет исправить проблему";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab в настоящее время настроен на показ приложений. Этот параметр доступен только тогда, когда AltTab настроен на показ окон.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab запущен без разрешения на запись экрана. Миниатюры окон не будут видны.";
-"AltTab needs some permissions" = "AltTab требуются некоторые разрешения";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab покажет значком, если окно свернуто или развернуто на весь экран.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab аварийно завершился в последний раз, когда вы его использовали. Отправка отчета поможет исправить проблему";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab в настоящее время настроен на показ приложений. Этот параметр доступен только тогда, когда DockAltTab настроен на показ окон.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab запущен без разрешения на запись экрана. Миниатюры окон не будут видны.";
+"DockAltTab needs some permissions" = "DockAltTab требуются некоторые разрешения";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab покажет значком, если окно свернуто или развернуто на весь экран.";
 "Always" = "Всегда";
 "Always send crash reports" = "Всегда отправлять отчеты";
 "and press" = "и нажать";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Экран со строкой меню";
 "Screen including mouse" = "Экран с курсором";
 "Screen Recording" = "Запись экрана";
-"Screen showing AltTab" = "Экран, показывающий AltTab";
+"Screen showing DockAltTab" = "Экран, показывающий DockAltTab";
 "Search" = "Поиск";
 "Select next window" = "Выбрать следующее окно";
 "Select previous window" = "Выбрать предыдущее окно";
@@ -231,7 +231,7 @@
 "Size" = "Размер";
 "Skipped" = "Пропущено";
 "Small" = "Маленький";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Некоторые приложения, такие как Finder или Preview, используют стандартные вкладки, которые ведут себя как независимые окна. Некоторые другие приложения, например, веб-браузеры, используют кастомные вкладки, которые действуют по-разному и не являются окнами. AltTab не может отобразить их отдельно.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Некоторые приложения, такие как Finder или Preview, используют стандартные вкладки, которые ведут себя как независимые окна. Некоторые другие приложения, например, веб-браузеры, используют кастомные вкладки, которые действуют по-разному и не являются окнами. DockAltTab не может отобразить их отдельно.";
 "Source code repository" = "Репозиторий исходного кода";
 "Space" = "Пространство";
 "Space Order" = "Порядок пространств";
@@ -265,7 +265,7 @@
 "Unassign existing shortcut and continue" = "Назначение отменить и дальше";
 "Updates policy" = "Политика обновлений";
 "Updates policy:" = "Правило обновлений:";
-"Use the app without this permission. Thumbnails won’t show." = "Использовать AltTab без разрешения на запись экрана. Миниатюры окон не будут видны.";
+"Use the app without this permission. Thumbnails won’t show." = "Использовать DockAltTab без разрешения на запись экрана. Миниатюры окон не будут видны.";
 "Version" = "Версия";
 "Vertical Swipe with Four Fingers" = "Вертикальный свайп четырьмя пальцами";
 "Vertical Swipe with Three Fingers" = "Вертикальный свайп тремя пальцами";

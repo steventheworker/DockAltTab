@@ -26,11 +26,11 @@
 "Alphabetical" = "ವರ್ಣಮಾಲೆಯಂತೆ";
 "Alphabetical Order" = "ವರ್ಣಮಾಲೆಯ ಕ್ರಮಾಂಕ";
 "Also select windows using:" = "ವಿಂಡೋಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಇದನ್ನೂ ಬಳಸಿ:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ನೀವು ಕೊನೆಯ ಬಾರಿ AltTab ಬಳಸಿದಾಗ ಅದು ಕ್ರ್ಯಾಶ್ ಆಗಿದೆ. ಕ್ರ್ಯಾಶ್ ವರದಿಯನ್ನು ಕಳುಹಿಸಿದರೆ, ಸಮಸ್ಯೆಯನ್ನು ಸರಿಪಡಿಸಲು ಸಹಾಯವಾಗುತ್ತದೆ.";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab ಸ್ಕ್ರೀನ್ ರೆಕಾರ್ಡಿಂಗ್ ಅನುಮತಿಗಳಿಲ್ಲದೆ ಚಾಲನೆಯಲ್ಲಿದೆ. ಥಂಬ್‌ನೇಲ್‌ಗಳು ಕಾಣಿಸುವುದಿಲ್ಲ.";
-"AltTab needs some permissions" = "ಆಲ್ಟ್-ಟ್ಯಾಬ್ ಗೆ ಕೆಲವು ಅನುಮತಿಗಳು ಬೇಕಾಗಿದ್ದಾವೆ";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab will show if the window is currently minimized or fullscreen with a status icon.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ನೀವು ಕೊನೆಯ ಬಾರಿ DockAltTab ಬಳಸಿದಾಗ ಅದು ಕ್ರ್ಯಾಶ್ ಆಗಿದೆ. ಕ್ರ್ಯಾಶ್ ವರದಿಯನ್ನು ಕಳುಹಿಸಿದರೆ, ಸಮಸ್ಯೆಯನ್ನು ಸರಿಪಡಿಸಲು ಸಹಾಯವಾಗುತ್ತದೆ.";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab ಸ್ಕ್ರೀನ್ ರೆಕಾರ್ಡಿಂಗ್ ಅನುಮತಿಗಳಿಲ್ಲದೆ ಚಾಲನೆಯಲ್ಲಿದೆ. ಥಂಬ್‌ನೇಲ್‌ಗಳು ಕಾಣಿಸುವುದಿಲ್ಲ.";
+"DockAltTab needs some permissions" = "ಆಲ್ಟ್-ಟ್ಯಾಬ್ ಗೆ ಕೆಲವು ಅನುಮತಿಗಳು ಬೇಕಾಗಿದ್ದಾವೆ";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Always" = "ಯಾವಾಗಲೂ";
 "Always send crash reports" = "ಕ್ರ್ಯಾಶ್ ರಿಪೋರ್ಟನ್ನು ಯಾವಾಗಲೂ ಕಳುಹಿಸಿ";
 "and press" = "ಮತ್ತು ಒತ್ತಿರಿ";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "ಮೆನು ಬಾರ್ ಒಳಗೊಂಡಂತೆ ಸ್ಕ್ರೀನ್";
 "Screen including mouse" = "ಸ್ಕ್ರೀನ್ ಜೊತೆ ಮೌಸ್ ಒಳಗೂಡಿ";
 "Screen Recording" = "ಸ್ಕ್ರೀನ್ ರೆಕಾರ್ಡಿಂಗ್";
-"Screen showing AltTab" = "ಆಲ್ಟ್-ಟ್ಯಾಬ್ ತೋರಿಸುವ ಸ್ಕ್ರೀನ್";
+"Screen showing DockAltTab" = "ಆಲ್ಟ್-ಟ್ಯಾಬ್ ತೋರಿಸುವ ಸ್ಕ್ರೀನ್";
 "Search" = "ಹುಡುಕು";
 "Select next window" = "ಮುಂದಿನ ವಿಂಡೋವನ್ನು ಆರಿಸಿ";
 "Select previous window" = "ಹಿಂದಿನ ವಿಂಡೋವನ್ನು ಆರಿಸಿ";
@@ -231,7 +231,7 @@
 "Size" = "ಗಾತ್ರ";
 "Skipped" = "ಸ್ಕಿಪ್ ಮಾಡಲಾಗಿದೆ";
 "Small" = "ಸಣ್ಣ";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately.";
 "Source code repository" = "ಮೂಲ ಕೋಡ್ ಭಂಡಾರ";
 "Space" = "ಸ್ಪೇಸ್";
 "Space Order" = "Space Order";

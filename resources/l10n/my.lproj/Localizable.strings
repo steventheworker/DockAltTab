@@ -26,11 +26,11 @@
 "Alphabetical" = "အက္ခရာစဉ်အတိုင်း";
 "Alphabetical Order" = "အက္ခရာစဉ်အလိုက်";
 "Also select windows using:" = "ဝင်းဒိုးများကို အောက်ပါအတိုင်းလည်း ရွေးချယ်ပါ:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "သင် နောက်ဆုံးအသုံးပြုခဲ့စဉ်က AltTab ပျက်ကျခဲ့သည်။ ပြဿနာအစီရင်ခံစာပို့ခြင်းက ပြဿနာဖြေရှင်းရာတွင် အထောက်အကူဖြစ်စေပါမည်။";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab သည် လက်ရှိတွင် အက်ပ်များကို ပြသရန် သတ်မှတ်ထားသည်။ ဤချိန်ညှိမှုသည် AltTab ကို ဝင်းဒိုးများပြသရန် သတ်မှတ်ထားမှသာ ရနိုင်သည်။";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab သည် Screen Recording ခွင့်ပြုချက်မရှိဘဲ လည်ပတ်နေပါသည်။ ပုံသေးများ မပေါ်ပါ";
-"AltTab needs some permissions" = "AltTab သည် အချို့သော ခွင့်ပြုချက်များ လိုအပ်သည်";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab သည် ဝင်းဒိုးအား လောလောဆယ်တွင် minimize လုပ်ထားခြင်း သို့မဟုတ် fullscreen လုပ်ထားခြင်း ရှိမရှိကို status icon ဖြင့် ပြသပါမည်။";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "သင် နောက်ဆုံးအသုံးပြုခဲ့စဉ်က DockAltTab ပျက်ကျခဲ့သည်။ ပြဿနာအစီရင်ခံစာပို့ခြင်းက ပြဿနာဖြေရှင်းရာတွင် အထောက်အကူဖြစ်စေပါမည်။";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab သည် လက်ရှိတွင် အက်ပ်များကို ပြသရန် သတ်မှတ်ထားသည်။ ဤချိန်ညှိမှုသည် DockAltTab ကို ဝင်းဒိုးများပြသရန် သတ်မှတ်ထားမှသာ ရနိုင်သည်။";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab သည် Screen Recording ခွင့်ပြုချက်မရှိဘဲ လည်ပတ်နေပါသည်။ ပုံသေးများ မပေါ်ပါ";
+"DockAltTab needs some permissions" = "DockAltTab သည် အချို့သော ခွင့်ပြုချက်များ လိုအပ်သည်";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab သည် ဝင်းဒိုးအား လောလောဆယ်တွင် minimize လုပ်ထားခြင်း သို့မဟုတ် fullscreen လုပ်ထားခြင်း ရှိမရှိကို status icon ဖြင့် ပြသပါမည်။";
 "Always" = "အမြဲ";
 "Always send crash reports" = "ပြဿနာအစီရင်ခံစာများကို အမြဲပို့ပါ";
 "and press" = "နှင့် နှိပ်ပါ";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "မီနူးဘားပါဝင်သော မျက်နှာပြင်";
 "Screen including mouse" = "မောက်စ်ပါဝင်သော မျက်နှာပြင်";
 "Screen Recording" = "မျက်နှာပြင် မှတ်တမ်းတင်ခြင်း";
-"Screen showing AltTab" = "AltTab ပြသနေသော မျက်နှာပြင်";
+"Screen showing DockAltTab" = "DockAltTab ပြသနေသော မျက်နှာပြင်";
 "Search" = "ရှာဖွေပါ";
 "Select next window" = "နောက်ဝင်းဒိုးကို ရွေးပါ";
 "Select previous window" = "ယခင်ဝင်းဒိုးကို ရွေးပါ";
@@ -231,7 +231,7 @@
 "Size" = "အရွယ်အစား";
 "Skipped" = "ကျော်သွားသည်";
 "Small" = "သေး";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Finder သို့မဟုတ် Preview ကဲ့သို့သော အက်ပ်အချို့သည် သီးခြားဝင်းဒိုးများကဲ့သို့ လုပ်ဆောင်သည့် standard tab များကို အသုံးပြုသည်။ ဝဘ်ဘရောက်ဆာများကဲ့သို့သော အခြားအက်ပ်အချို့သည် ထူးခြားသောနည်းလမ်းများဖြင့် လုပ်ဆောင်ပြီး အမှန်တကယ် ဝင်းဒိုးများမဟုတ်သည့် custom tab များကို အသုံးပြုသည်။ AltTab သည် ၎င်းတို့ကို သီးခြားစီ စာရင်းပြုစု၍ မရပါ။";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Finder သို့မဟုတ် Preview ကဲ့သို့သော အက်ပ်အချို့သည် သီးခြားဝင်းဒိုးများကဲ့သို့ လုပ်ဆောင်သည့် standard tab များကို အသုံးပြုသည်။ ဝဘ်ဘရောက်ဆာများကဲ့သို့သော အခြားအက်ပ်အချို့သည် ထူးခြားသောနည်းလမ်းများဖြင့် လုပ်ဆောင်ပြီး အမှန်တကယ် ဝင်းဒိုးများမဟုတ်သည့် custom tab များကို အသုံးပြုသည်။ DockAltTab သည် ၎င်းတို့ကို သီးခြားစီ စာရင်းပြုစု၍ မရပါ။";
 "Source code repository" = "ရင်းမြစ်ကုဒ် repository";
 "Space" = "Space";
 "Space Order" = "Space အစီအစဉ်";

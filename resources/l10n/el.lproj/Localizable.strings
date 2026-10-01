@@ -26,11 +26,11 @@
 "Alphabetical" = "Αλφαβητικά";
 "Alphabetical Order" = "Αλφαβητική σειρά";
 "Also select windows using:" = "Επιπλέον, επιλογή παραθύρων με:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Το Alttab συνετρίβη την τελευταία φορά που το χρησιμοποιήσατε. Η αποστολή μιας αναφοράς συντριβής θα βοηθήσει να διορθωθεί το ζήτημα";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Το Alttab έχει οριστεί επί του παρόντος να εμφανίζει Εφαρμογές. Αυτή η ρύθμιση είναι διαθέσιμη μόνο όταν το alttab έχει ρυθμιστεί να εμφανίζει Παράθυρα.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "Το AltTab εκτελείται χωρίς δικαιώματα Εγγραφής Οθόνης. Οι μικρογραφίες δεν θα εμφανίζονται.";
-"AltTab needs some permissions" = "Το AltTab χρειάζεται κάποιες άδειες";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Το alttab θα δείχνει εάν το παράθυρο είναι ελαχιστοποιημένο ή σε πλήρη οθόνη με εικονίδιο κατάστασης.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Το Alttab συνετρίβη την τελευταία φορά που το χρησιμοποιήσατε. Η αποστολή μιας αναφοράς συντριβής θα βοηθήσει να διορθωθεί το ζήτημα";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Το Alttab έχει οριστεί επί του παρόντος να εμφανίζει Εφαρμογές. Αυτή η ρύθμιση είναι διαθέσιμη μόνο όταν το alttab έχει ρυθμιστεί να εμφανίζει Παράθυρα.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "Το DockAltTab εκτελείται χωρίς δικαιώματα Εγγραφής Οθόνης. Οι μικρογραφίες δεν θα εμφανίζονται.";
+"DockAltTab needs some permissions" = "Το DockAltTab χρειάζεται κάποιες άδειες";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Το alttab θα δείχνει εάν το παράθυρο είναι ελαχιστοποιημένο ή σε πλήρη οθόνη με εικονίδιο κατάστασης.";
 "Always" = "Πάντοτε";
 "Always send crash reports" = "Πάντα αποστολή αναφορών συντριβής";
 "and press" = "και πατήστε";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Οθόνη όπου βρίσκεται η γραμμή μενού";
 "Screen including mouse" = "Οθόνη όπου βρίσκεται το ποντίκι";
 "Screen Recording" = "Καταγραφή οθόνης";
-"Screen showing AltTab" = "Οθόνη που δείχνει AltTab";
+"Screen showing DockAltTab" = "Οθόνη που δείχνει DockAltTab";
 "Search" = "Αναζήτηση";
 "Select next window" = "Επιλογή επόμενου παραθύρου";
 "Select previous window" = "Επιλογή προηγούμενου παραθύρου";
@@ -231,7 +231,7 @@
 "Size" = "Μέγεθος";
 "Skipped" = "Παραλείφθηκε";
 "Small" = "Μικρό";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Ορισμένες εφαρμογές όπως ο Finder ή η Προεπισκόπηση χρησιμοποιούν τυπικές καρτέλες που λειτουργούν σαν ανεξάρτητα παράθυρα. Ορισμένες άλλες εφαρμογές όπως τα προγράμματα περιήγησης ιστού χρησιμοποιούν προσαρμοσμένες καρτέλες που λειτουργούν με μοναδικούς τρόπους και δεν είναι πραγματικά παράθυρα. Το Alttab δεν μπορεί να τα εμφανίσει χωριστά.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Ορισμένες εφαρμογές όπως ο Finder ή η Προεπισκόπηση χρησιμοποιούν τυπικές καρτέλες που λειτουργούν σαν ανεξάρτητα παράθυρα. Ορισμένες άλλες εφαρμογές όπως τα προγράμματα περιήγησης ιστού χρησιμοποιούν προσαρμοσμένες καρτέλες που λειτουργούν με μοναδικούς τρόπους και δεν είναι πραγματικά παράθυρα. Το Alttab δεν μπορεί να τα εμφανίσει χωριστά.";
 "Source code repository" = "Αποθετήριο πηγαίου κώδικα";
 "Space" = "Γραφείο εργασίας";
 "Space Order" = "Σειρά Γραφείων εργασίας";

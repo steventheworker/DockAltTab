@@ -26,11 +26,11 @@
 "Alphabetical" = "Theo thứ tự alphabet";
 "Alphabetical Order" = "Thứ tự bảng chữ cái";
 "Also select windows using:" = "Chọn cửa sổ thông qua:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab gặp sự cố ở lần sử dụng gần đây. Gửi báo cáo sự cố sẽ giúp giải quyết các vấn đề này";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab hiện đang được thiết lập để hiển thị các ứng dụng.Cài đặt này chỉ khả dụng khi AltTab được đặt để hiển thị Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab đang chạy mà không có quyền Ghi màn hình. Hình thu nhỏ sẽ không hiển thị.";
-"AltTab needs some permissions" = "AltTab cần một vài quyền truy cập";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab sẽ hiển thị nếu cửa sổ hiện đang được giảm thiểu hoặc toàn màn hình với biểu tượng trạng thái.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab gặp sự cố ở lần sử dụng gần đây. Gửi báo cáo sự cố sẽ giúp giải quyết các vấn đề này";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab hiện đang được thiết lập để hiển thị các ứng dụng.Cài đặt này chỉ khả dụng khi DockAltTab được đặt để hiển thị Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab đang chạy mà không có quyền Ghi màn hình. Hình thu nhỏ sẽ không hiển thị.";
+"DockAltTab needs some permissions" = "DockAltTab cần một vài quyền truy cập";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab sẽ hiển thị nếu cửa sổ hiện đang được giảm thiểu hoặc toàn màn hình với biểu tượng trạng thái.";
 "Always" = "Luôn luôn";
 "Always send crash reports" = "Luôn gửi các báo cáo sự cố";
 "and press" = "và nhấn";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Màn hình có thanh menu";
 "Screen including mouse" = "Màn hình có con trỏ chuột";
 "Screen Recording" = "Ghi hình màn hình";
-"Screen showing AltTab" = "Màn hình đang hiện AltTab";
+"Screen showing DockAltTab" = "Màn hình đang hiện DockAltTab";
 "Search" = "Tìm kiếm";
 "Select next window" = "Chọn cửa số kế tiếp";
 "Select previous window" = "Chọn cửa sổ trước đó";
@@ -231,7 +231,7 @@
 "Size" = "Kích cỡ";
 "Skipped" = "Đã bỏ qua";
 "Small" = "Bé nhỏ";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Một số ứng dụng như Finder hoặc Preview sử dụng các tab tiêu chuẩn hoạt động như Windows độc lập.Một số ứng dụng khác như trình duyệt web sử dụng các tab tùy chỉnh hoạt động theo những cách độc đáo và không phải là cửa sổ thực tế.Alttab không thể liệt kê những người riêng biệt.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Một số ứng dụng như Finder hoặc Preview sử dụng các tab tiêu chuẩn hoạt động như Windows độc lập.Một số ứng dụng khác như trình duyệt web sử dụng các tab tùy chỉnh hoạt động theo những cách độc đáo và không phải là cửa sổ thực tế.Alttab không thể liệt kê những người riêng biệt.";
 "Source code repository" = "Kho quản lý mã nguồn";
 "Space" = "Không gian";
 "Space Order" = "Lệnh không gian";

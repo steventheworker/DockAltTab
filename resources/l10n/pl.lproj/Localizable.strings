@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetycznie";
 "Alphabetical Order" = "Zakon alfabetyczny";
 "Also select windows using:" = "Wybierz okna także za pomocą:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab nieoczekiwanie zakończył pracę. Wysłanie raportu pomoże naprawić problem";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab jest obecnie ustawiony na pokazywanie Aplikacji. To ustawienie jest dostępne tylko wtedy, gdy AltTab jest ustawiony by pokazywać Okna.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab pracuje bez pozwolenia na Nagrywanie Ekranu. Miniatury nie będą widoczne.";
-"AltTab needs some permissions" = "AltTab potrzebuje niektórych uprawnień";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab pokaże, czy okno jest obecnie zminimalizowane lub w trybie pełnoekranowym za pomocą ikony statusu.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab nieoczekiwanie zakończył pracę. Wysłanie raportu pomoże naprawić problem";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab jest obecnie ustawiony na pokazywanie Aplikacji. To ustawienie jest dostępne tylko wtedy, gdy DockAltTab jest ustawiony by pokazywać Okna.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab pracuje bez pozwolenia na Nagrywanie Ekranu. Miniatury nie będą widoczne.";
+"DockAltTab needs some permissions" = "DockAltTab potrzebuje niektórych uprawnień";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab pokaże, czy okno jest obecnie zminimalizowane lub w trybie pełnoekranowym za pomocą ikony statusu.";
 "Always" = "Zawsze";
 "Always send crash reports" = "Zawsze wysyłaj raporty crashów";
 "and press" = "i naciśnij";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Ekranie na którym znajduje się pasek menu";
 "Screen including mouse" = "Ekranie na którym znajduje się mysz";
 "Screen Recording" = "Nagrywanie ekranu";
-"Screen showing AltTab" = "Ekranu wyświetlającego AltTab";
+"Screen showing DockAltTab" = "Ekranu wyświetlającego DockAltTab";
 "Search" = "Szukaj";
 "Select next window" = "Przejdź do następnego okna";
 "Select previous window" = "Przejdź do poprzedniego okna";
@@ -231,7 +231,7 @@
 "Size" = "Rozmiar";
 "Skipped" = "Pominięte";
 "Small" = "Mały";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Niektóre aplikacje, takie jak Finder lub Preview, używają standardowych kart, które działają jak niezależne okna. Niektóre inne aplikacje, takie jak przeglądarki internetowe, używają niestandardowych kart, które działają w unikalne sposoby i nie są rzeczywistymi oknami. AltTab nie może ich wyświetlić osobno.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Niektóre aplikacje, takie jak Finder lub Preview, używają standardowych kart, które działają jak niezależne okna. Niektóre inne aplikacje, takie jak przeglądarki internetowe, używają niestandardowych kart, które działają w unikalne sposoby i nie są rzeczywistymi oknami. DockAltTab nie może ich wyświetlić osobno.";
 "Source code repository" = "Repozytorium kodu źródłowego";
 "Space" = "Przestrzeń";
 "Space Order" = "Kolejność Przestrzeni";

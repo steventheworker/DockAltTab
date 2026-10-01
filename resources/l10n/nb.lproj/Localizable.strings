@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetisk";
 "Alphabetical Order" = "Alfabetisk rekkefølge";
 "Also select windows using:" = "Velg også vinduer som bruker:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab krasjet sist du brukte det. Å sende en krasjrapport vil hjelpe til med å løse problemet";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab er satt til å vise applikasjoner. Denne innstillingen er bare tilgjengelig når AltTab er satt til å vise vinduer.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab kjører uten tillatelse for skjermopptak. Miniatyrbilder vil ikke vises.";
-"AltTab needs some permissions" = "AltTab trenger noen tillatelser";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab vil indikere om vinduet er minimert eller fullskjerm med et statusikon.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab krasjet sist du brukte det. Å sende en krasjrapport vil hjelpe til med å løse problemet";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab er satt til å vise applikasjoner. Denne innstillingen er bare tilgjengelig når DockAltTab er satt til å vise vinduer.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab kjører uten tillatelse for skjermopptak. Miniatyrbilder vil ikke vises.";
+"DockAltTab needs some permissions" = "DockAltTab trenger noen tillatelser";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab vil indikere om vinduet er minimert eller fullskjerm med et statusikon.";
 "Always" = "Alltid";
 "Always send crash reports" = "Send alltid krasjrapporter";
 "and press" = "og trykk";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Skjerm med menylinje";
 "Screen including mouse" = "Skjerm med mus";
 "Screen Recording" = "Skjermopptak";
-"Screen showing AltTab" = "Skjerm som viser AltTab";
+"Screen showing DockAltTab" = "Skjerm som viser DockAltTab";
 "Search" = "Søk";
 "Select next window" = "Velg neste vindu";
 "Select previous window" = "Velg forrige vindu";
@@ -231,7 +231,7 @@
 "Size" = "Størrelse";
 "Skipped" = "Hoppet over";
 "Small" = "Liten";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Noen apper som Finder eller Forhåndsvisning bruker standardfaner som oppfører seg som uavhengige vinduer. Noen andre apper som nettlesere bruker faner som ikke oppfører seg som vanlige vinduer. AltTab kan ikke liste disse separat.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Noen apper som Finder eller Forhåndsvisning bruker standardfaner som oppfører seg som uavhengige vinduer. Noen andre apper som nettlesere bruker faner som ikke oppfører seg som vanlige vinduer. DockAltTab kan ikke liste disse separat.";
 "Source code repository" = "Kildekodearkiv";
 "Space" = "Space/Område";
 "Space Order" = "Områderekkefølge";

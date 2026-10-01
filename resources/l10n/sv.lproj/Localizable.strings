@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetiskt";
 "Alphabetical Order" = "Alfabetisk ordning";
 "Also select windows using:" = "Välj även fönster med:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab kraschade förra gången du använde det. Skicka en kraschrapport för att hjälpa till med att åtgärda problemet";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab kommer för närvarande att visa applikationer.Den här inställningen är endast tillgänglig när Alttab är inställd på att visa Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab körs utan behörighet för skärminspelning. Miniatyrbilder kommer inte att visas.";
-"AltTab needs some permissions" = "AltTab behöver behörigheter";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab kommer att visa om fönstret för närvarande är minimerat eller helskärm med en statusikon.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab kraschade förra gången du använde det. Skicka en kraschrapport för att hjälpa till med att åtgärda problemet";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab kommer för närvarande att visa applikationer.Den här inställningen är endast tillgänglig när Alttab är inställd på att visa Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab körs utan behörighet för skärminspelning. Miniatyrbilder kommer inte att visas.";
+"DockAltTab needs some permissions" = "DockAltTab behöver behörigheter";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab kommer att visa om fönstret för närvarande är minimerat eller helskärm med en statusikon.";
 "Always" = "Alltid";
 "Always send crash reports" = "Skicka alltid kraschrapporter";
 "and press" = "och press";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Skärm med menyrad";
 "Screen including mouse" = "Skärm med muspekaren";
 "Screen Recording" = "Skärminspelning";
-"Screen showing AltTab" = "Skärm som visar AltTab";
+"Screen showing DockAltTab" = "Skärm som visar DockAltTab";
 "Search" = "Sök";
 "Select next window" = "Välj nästa fönster";
 "Select previous window" = "Välj föregående fönster";
@@ -208,8 +208,8 @@
 "Shortcut 4" = "4";
 "Shortcut 5" = "5";
 "Shortcut already assigned to another action: %@" = "Kommandot är redan kopplat till en annan funktion: %@";
-"Shortcuts When Active" = "Genvägar när AltTab visas";
-"Shortcuts when active…" = "Genvägar när AltTab visas…";
+"Shortcuts When Active" = "Genvägar när DockAltTab visas";
+"Shortcuts when active…" = "Genvägar när DockAltTab visas…";
 "Show" = "Visa";
 "Show & Hide" = "Visa och dölj";
 "Show an item in the switcher for each window, or for each application. Windows will be focused, whereas applications will be activated." = "Visa ett objekt i omkopplaren för varje fönster eller för varje applikation.Windows kommer att fokuseras, medan applikationer kommer att aktiveras.";
@@ -231,7 +231,7 @@
 "Size" = "Storlek";
 "Skipped" = "Överhoppad";
 "Small" = "Liten";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Vissa appar såsom Finder eller Förhandsvisning använder standardflikar som fungerar som separata fönster. Vissa andra appar såsom webbläsare använder anpassade flikar som fungerar på unika sätt och inte är faktiska fönster. AltTab kan inte visa dessa separat.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Vissa appar såsom Finder eller Förhandsvisning använder standardflikar som fungerar som separata fönster. Vissa andra appar såsom webbläsare använder anpassade flikar som fungerar på unika sätt och inte är faktiska fönster. DockAltTab kan inte visa dessa separat.";
 "Source code repository" = "Källkodskatalog";
 "Space" = "Skrivbord";
 "Space Order" = "Skrivbordens ordning";

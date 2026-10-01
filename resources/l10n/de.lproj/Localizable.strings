@@ -26,11 +26,11 @@
 "Alphabetical" = "Alphabetisch";
 "Alphabetical Order" = "Alphabetisch sortiert";
 "Also select windows using:" = "Fenster auch auswählen mit:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab ist bei der letzten Verwendung abgestürzt. Das Senden von Absturzberichten hilft bei der Fehlerbehebung";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab zeigt derzeit Anwendungen an. Diese Einstellung ist nur verfügbar, wenn AltTab so eingestellt ist, dass Fenster angezeigt werden.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab läuft ohne Bildschirmaufzeichnungs-Berechtigungen. Vorschaubilder werden nicht angezeigt.";
-"AltTab needs some permissions" = "AltTab braucht einige Berechtigungen";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab zeigt mit Hilfe eines Statussymbols an, ob das Fenster derzeit minimiert oder im Vollbildmodus ist.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab ist bei der letzten Verwendung abgestürzt. Das Senden von Absturzberichten hilft bei der Fehlerbehebung";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab zeigt derzeit Anwendungen an. Diese Einstellung ist nur verfügbar, wenn DockAltTab so eingestellt ist, dass Fenster angezeigt werden.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab läuft ohne Bildschirmaufzeichnungs-Berechtigungen. Vorschaubilder werden nicht angezeigt.";
+"DockAltTab needs some permissions" = "DockAltTab braucht einige Berechtigungen";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab zeigt mit Hilfe eines Statussymbols an, ob das Fenster derzeit minimiert oder im Vollbildmodus ist.";
 "Always" = "Immer";
 "Always send crash reports" = "Immer Fehlerberichte senden";
 "and press" = "und drücken Sie";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Bildschirm mit Menüleiste";
 "Screen including mouse" = "Bildschirm mit Maus";
 "Screen Recording" = "Bildschirmaufnahme";
-"Screen showing AltTab" = "Bildschirm mit AltTab";
+"Screen showing DockAltTab" = "Bildschirm mit DockAltTab";
 "Search" = "Suchen";
 "Select next window" = "Nächstes Fenster auswählen";
 "Select previous window" = "Vorheriges Fenster auswählen";
@@ -231,7 +231,7 @@
 "Size" = "Größe";
 "Skipped" = "Übersprungen";
 "Small" = "Klein";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Einige Anwendungen wie Finder oder Vorschau verwenden Standard-Reiter, die sich wie unabhängige Fenster verhalten. Einige andere Anwendungen wie Webbrowser verwenden benutzerdefinierte Reiter, die sich auf einzigartige Weise verhalten und keine echten Fenster sind. AltTab kann diese nicht separat auflisten.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Einige Anwendungen wie Finder oder Vorschau verwenden Standard-Reiter, die sich wie unabhängige Fenster verhalten. Einige andere Anwendungen wie Webbrowser verwenden benutzerdefinierte Reiter, die sich auf einzigartige Weise verhalten und keine echten Fenster sind. DockAltTab kann diese nicht separat auflisten.";
 "Source code repository" = "Quellcode-Repository";
 "Space" = "Leertaste";
 "Space Order" = "Reihenfolge der Spaces";

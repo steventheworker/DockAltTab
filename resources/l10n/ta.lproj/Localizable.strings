@@ -26,11 +26,11 @@
 "Alphabetical" = "அகரவரிசைப்படி";
 "Alphabetical Order" = "அகரவரிசை வரிசை";
 "Also select windows using:" = "சாளரங்களைத் தேர்ந்தெடுக்க இதையும் பயன்படுத்தவும்:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "கடைசியாக நீங்கள் அதைப் பயன்படுத்தியபோது ஆல்டாப் செயலிழந்தார்.செயலிழப்பு அறிக்கையை அனுப்புவது சிக்கலை சரிசெய்ய உதவும்";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "பயன்பாடுகளைக் காண்பிப்பதற்காக அல்தாப் தற்போது அமைக்கப்பட்டுள்ளது.சாளரங்களைக் காண்பிக்க ஆல்டாப் அமைக்கப்படும்போது மட்டுமே இந்த அமைப்பு கிடைக்கும்.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab ஸ்கிரீன் ரெக்கார்டிங் அனுமதிகள் இல்லாமல் இயங்குகிறது. சிறுபடங்கள் காட்டப்படாது.";
-"AltTab needs some permissions" = "ஆல்டாப் சில அனுமதிகள் தேவை";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "சாளரம் தற்போது குறைக்கப்பட்டுள்ளதா அல்லது நிலை ஐகானுடன் முழுத்திர்காலமாக இருந்தால் ஆல்டாப் காண்பிக்கும்.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "கடைசியாக நீங்கள் அதைப் பயன்படுத்தியபோது ஆல்டாப் செயலிழந்தார்.செயலிழப்பு அறிக்கையை அனுப்புவது சிக்கலை சரிசெய்ய உதவும்";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "பயன்பாடுகளைக் காண்பிப்பதற்காக அல்தாப் தற்போது அமைக்கப்பட்டுள்ளது.சாளரங்களைக் காண்பிக்க ஆல்டாப் அமைக்கப்படும்போது மட்டுமே இந்த அமைப்பு கிடைக்கும்.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab ஸ்கிரீன் ரெக்கார்டிங் அனுமதிகள் இல்லாமல் இயங்குகிறது. சிறுபடங்கள் காட்டப்படாது.";
+"DockAltTab needs some permissions" = "ஆல்டாப் சில அனுமதிகள் தேவை";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "சாளரம் தற்போது குறைக்கப்பட்டுள்ளதா அல்லது நிலை ஐகானுடன் முழுத்திர்காலமாக இருந்தால் ஆல்டாப் காண்பிக்கும்.";
 "Always" = "எப்போதும்";
 "Always send crash reports" = "எப்போதும் செயலிழப்பு அறிக்கைகளை அனுப்பவும்";
 "and press" = "மற்றும் அழுத்தவும்";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "மெனு பட்டி உள்ளிட்ட திரை";
 "Screen including mouse" = "சுட்டி உள்ளிட்ட திரை";
 "Screen Recording" = "திரை பதிவு";
-"Screen showing AltTab" = "திரை அல்தாப் காட்டுகிறது";
+"Screen showing DockAltTab" = "திரை அல்தாப் காட்டுகிறது";
 "Search" = "தேடு";
 "Select next window" = "அடுத்த சாளரத்தைத் தேர்ந்தெடுக்கவும்";
 "Select previous window" = "முந்தைய சாளரத்தைத் தேர்ந்தெடுக்கவும்";
@@ -231,7 +231,7 @@
 "Size" = "அளவு";
 "Skipped" = "தவிக்கப்பட்டது";
 "Small" = "சிறிய";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "கண்டுபிடிப்பாளர் அல்லது முன்னோட்டம் போன்ற சில பயன்பாடுகள் சுயாதீன சாளரங்களைப் போல செயல்படும் நிலையான தாவல்களைப் பயன்படுத்துகின்றன.வலை உலாவிகள் போன்ற வேறு சில பயன்பாடுகள் தனிப்பயன் தாவல்களைப் பயன்படுத்துகின்றன, அவை தனித்துவமான வழிகளில் செயல்படும் மற்றும் உண்மையான சாளரங்கள் அல்ல.ஆல்டாப் அவற்றை தனித்தனியாக பட்டியலிட முடியாது.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "கண்டுபிடிப்பாளர் அல்லது முன்னோட்டம் போன்ற சில பயன்பாடுகள் சுயாதீன சாளரங்களைப் போல செயல்படும் நிலையான தாவல்களைப் பயன்படுத்துகின்றன.வலை உலாவிகள் போன்ற வேறு சில பயன்பாடுகள் தனிப்பயன் தாவல்களைப் பயன்படுத்துகின்றன, அவை தனித்துவமான வழிகளில் செயல்படும் மற்றும் உண்மையான சாளரங்கள் அல்ல.ஆல்டாப் அவற்றை தனித்தனியாக பட்டியலிட முடியாது.";
 "Source code repository" = "மூல குறியீடு களஞ்சியம்";
 "Space" = "வெளியிடம்";
 "Space Order" = "விண்வெளி வரிசை";

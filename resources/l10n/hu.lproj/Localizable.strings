@@ -26,11 +26,11 @@
 "Alphabetical" = "ABC Sorrendben";
 "Alphabetical Order" = "ABC sorrend";
 "Also select windows using:" = "Ablakok kiválasztása az következővel is:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Az AltTab összeomlott amikor utoljára használta. A hibajelentés küldése segíthet a probléma javításában";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Az AltTab jelenleg az alkalmazások megjelenítésére van beállítva.Ez a beállítás csak akkor érhető el, ha az AltTab az Ablakok megjelenítésére van beállítva.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "Az AltTab képernyőfelvételi engedélyek nélkül fut. A bélyegképek nem fognak megjelenni.";
-"AltTab needs some permissions" = "Az AltTab-nak néhány jogosultságra van szüksége";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Az AltTab megmutatja hogy az Ablak minimalizálva van-e (mínusz jel) vagy se.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Az DockAltTab összeomlott amikor utoljára használta. A hibajelentés küldése segíthet a probléma javításában";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Az DockAltTab jelenleg az alkalmazások megjelenítésére van beállítva.Ez a beállítás csak akkor érhető el, ha az DockAltTab az Ablakok megjelenítésére van beállítva.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "Az DockAltTab képernyőfelvételi engedélyek nélkül fut. A bélyegképek nem fognak megjelenni.";
+"DockAltTab needs some permissions" = "Az DockAltTab-nak néhány jogosultságra van szüksége";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Az DockAltTab megmutatja hogy az Ablak minimalizálva van-e (mínusz jel) vagy se.";
 "Always" = "Mindig";
 "Always send crash reports" = "Mindig küldjön Hibajelentést";
 "and press" = "és nyomja meg";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Képernyő a Menüsorral";
 "Screen including mouse" = "A képernyő ahol az egér van";
 "Screen Recording" = "Képernyő felvétel";
-"Screen showing AltTab" = "Az AltTab képernyője";
+"Screen showing DockAltTab" = "Az DockAltTab képernyője";
 "Search" = "Keresés";
 "Select next window" = "Következő ablak kiválasztása";
 "Select previous window" = "Előző ablak kiválasztása";
@@ -231,7 +231,7 @@
 "Size" = "Méret";
 "Skipped" = "Kihagyva";
 "Small" = "Kicsi";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Egyes alkalmazások, mint például a Finder vagy az előnézet, olyan füleket használnak, amelyek független ablakokként működnek. Néhány más alkalmazás, például a webböngészők egyedi füleket használnak, amelyek egyedi módon működnek, és nem tényleges ablakok. Az Altab nem tudja ezeket külön felsorolni.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Egyes alkalmazások, mint például a Finder vagy az előnézet, olyan füleket használnak, amelyek független ablakokként működnek. Néhány más alkalmazás, például a webböngészők egyedi füleket használnak, amelyek egyedi módon működnek, és nem tényleges ablakok. Az Altab nem tudja ezeket külön felsorolni.";
 "Source code repository" = "Forrás kód tárhelye";
 "Space" = "Íróasztal";
 "Space Order" = "Íróasztal Sorrendje";

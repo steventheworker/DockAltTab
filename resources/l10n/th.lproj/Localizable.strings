@@ -26,11 +26,11 @@
 "Alphabetical" = "ตัวอักษร";
 "Alphabetical Order" = "ลำดับตัวอักษร";
 "Also select windows using:" = "เลือกหน้าต่างโดยใช้:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab เกิดปัญหาครั้งสุดท้ายที่คุณใช้ การส่งรายงานการขัดข้องจะช่วยแก้ไขปัญหาได้";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "ขณะนี้ Alttab ถูกตั้งค่าให้แสดงแอปพลิเคชันการตั้งค่านี้จะใช้ได้เฉพาะเมื่อมีการตั้งค่า Alttab เพื่อแสดง Windows";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "ยังไม่ได้อนุญาตให้บันทึกหน้าจอ ไม่สามารถแสดงตัวอย่างหน้าต่างได้";
-"AltTab needs some permissions" = "AltTab ต้องการได้รับการอนุญาตบางอย่าง";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab จะแสดงว่าหน้าต่างถูกย่อหรือเต็มหน้าจอด้วยไอคอนสถานะ";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab เกิดปัญหาครั้งสุดท้ายที่คุณใช้ การส่งรายงานการขัดข้องจะช่วยแก้ไขปัญหาได้";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "ขณะนี้ Alttab ถูกตั้งค่าให้แสดงแอปพลิเคชันการตั้งค่านี้จะใช้ได้เฉพาะเมื่อมีการตั้งค่า Alttab เพื่อแสดง Windows";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "ยังไม่ได้อนุญาตให้บันทึกหน้าจอ ไม่สามารถแสดงตัวอย่างหน้าต่างได้";
+"DockAltTab needs some permissions" = "DockAltTab ต้องการได้รับการอนุญาตบางอย่าง";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab จะแสดงว่าหน้าต่างถูกย่อหรือเต็มหน้าจอด้วยไอคอนสถานะ";
 "Always" = "ทุกครั้ง";
 "Always send crash reports" = "ส่งรายงานการขัดข้องเสมอ";
 "and press" = "และกด";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "หน้าจอรวมถึงแถบเมนู";
 "Screen including mouse" = "หน้าจอรวมถึงเมาส์";
 "Screen Recording" = "การบันทึกหน้าจอ";
-"Screen showing AltTab" = "หน้าจอที่แสดง AltTab";
+"Screen showing DockAltTab" = "หน้าจอที่แสดง DockAltTab";
 "Search" = "ค้นหา";
 "Select next window" = "เลือกหน้าต่างถัดไป";
 "Select previous window" = "เลือกหน้าต่างก่อนหน้า";
@@ -231,7 +231,7 @@
 "Size" = "ขนาด";
 "Skipped" = "ข้ามแล้ว";
 "Small" = "เล็ก";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "แอปบางแอปเช่น Finder หรือ การแสดงตัวอย่าง ใช้แท็บมาตรฐานซึ่งทำหน้าที่เหมือนหน้าต่างปกติ แอพอื่น ๆ เช่นเว็บเบราว์เซอร์ใช้แท็บที่กำหนดเองซึ่งไม่ใช่หน้าต่างจริงAltTab ไม่สามารถแสดงแท็บพวกนั้นแยกมาได้";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "แอปบางแอปเช่น Finder หรือ การแสดงตัวอย่าง ใช้แท็บมาตรฐานซึ่งทำหน้าที่เหมือนหน้าต่างปกติ แอพอื่น ๆ เช่นเว็บเบราว์เซอร์ใช้แท็บที่กำหนดเองซึ่งไม่ใช่หน้าต่างจริงDockAltTab ไม่สามารถแสดงแท็บพวกนั้นแยกมาได้";
 "Source code repository" = "ซอร์สโค้ด";
 "Space" = "พื้นที่ทำงาน";
 "Space Order" = "ลำดับพื้นที่";

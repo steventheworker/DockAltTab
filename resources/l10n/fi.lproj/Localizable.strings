@@ -26,11 +26,11 @@
 "Alphabetical" = "Aakkosjärjestys";
 "Alphabetical Order" = "Aakkosjärjestys";
 "Also select windows using:" = "Valitse ikkunoita myös:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab kaatui viime käyttökerralla. Vikaraportin lähettäminen auttaa ongelman korjaamiseen";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab on tällä hetkellä asetettu näyttämään apit. Tämä asetus on käytettävissä vain, kun AltTab on asetettu näyttämään ikkunat.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTabilla ei ole näytöntallennusoikeuksia. Pikkukuvat eivät näy.";
-"AltTab needs some permissions" = "AltTab tarvitsee joitakin oikeuksia";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab näyttää kuvakkeella, onko ikkuna pienennetty tai koko näytöllä.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab kaatui viime käyttökerralla. Vikaraportin lähettäminen auttaa ongelman korjaamiseen";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab on tällä hetkellä asetettu näyttämään apit. Tämä asetus on käytettävissä vain, kun DockAltTab on asetettu näyttämään ikkunat.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTabilla ei ole näytöntallennusoikeuksia. Pikkukuvat eivät näy.";
+"DockAltTab needs some permissions" = "DockAltTab tarvitsee joitakin oikeuksia";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab näyttää kuvakkeella, onko ikkuna pienennetty tai koko näytöllä.";
 "Always" = "Aina";
 "Always send crash reports" = "Lähetä vikaraportit aina";
 "and press" = "ja paina";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Näytöllä, jossa valikkorivi";
 "Screen including mouse" = "Näytöllä, jossa hiiri";
 "Screen Recording" = "Näytön tallennus";
-"Screen showing AltTab" = "Näytöllä, jossa AltTab";
+"Screen showing DockAltTab" = "Näytöllä, jossa DockAltTab";
 "Search" = "Haku";
 "Select next window" = "Valitse seuraava ikkuna";
 "Select previous window" = "Valitse edellinen ikkuna";
@@ -231,7 +231,7 @@
 "Size" = "Koko";
 "Skipped" = "Ohitettu";
 "Small" = "Pieni";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Jotkut apit, kuten Finder tai Esikatselu, käyttävät vakio -välilehtiä, jotka toimivat kuin itsenäiset ikkunat. Jotkut muut apit, kuten verkkoselaimet, käyttävät mukautettuja välilehtiä, jotka toimivat ainutlaatuisilla tavoilla eivätkä ole todellisia ikkunoita. AltTab ei voi luetella niitä erikseen.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Jotkut apit, kuten Finder tai Esikatselu, käyttävät vakio -välilehtiä, jotka toimivat kuin itsenäiset ikkunat. Jotkut muut apit, kuten verkkoselaimet, käyttävät mukautettuja välilehtiä, jotka toimivat ainutlaatuisilla tavoilla eivätkä ole todellisia ikkunoita. DockAltTab ei voi luetella niitä erikseen.";
 "Source code repository" = "Lähdekoodi";
 "Space" = "Tila";
 "Space Order" = "Tilajärjestys";

@@ -1,7 +1,9 @@
 // docs: https://help.apple.com/xcode/mac/11.4/#/itcaec37c2a6
 
-PRODUCT_NAME = AltTab
-PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.alt-tab-macos
+PRODUCT_NAME = DockAltTab
+// keep the Swift module name stable: the scripting definition and the Pod integration refer to `AltTab`
+PRODUCT_MODULE_NAME = AltTab
+PRODUCT_BUNDLE_IDENTIFIER = com.steventheworker.DockAltTab
 MACOSX_DEPLOYMENT_TARGET = 12.0
 SWIFT_VERSION = 5.8 // xcode 14.2 translates this to 5.0; xcode 16.2 as 5.8
 SWIFT_TREAT_WARNINGS_AS_ERRORS = YES

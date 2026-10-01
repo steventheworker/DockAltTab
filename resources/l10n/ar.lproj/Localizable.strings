@@ -26,11 +26,11 @@
 "Alphabetical" = "أبجديّ";
 "Alphabetical Order" = "الترتيب الأبجدي";
 "Also select windows using:" = "أيضاً اختر النوافذ بـ:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "تعطل AltTab عندما استخدمته آخر مرة. ارسال بلاغ التعطل سوف يساعد في إصلاح المشكلة";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "تم تعيين Alttab حاليًا لعرض التطبيقات.هذا الإعداد متاح فقط عندما يتم تعيين Alttab لإظهار النوافذ.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "آلت تاب يعمل بدون أُذونات تسجيل الشاشة. الصور المصغّرة لَن تُعرض.";
-"AltTab needs some permissions" = "AltTab يحتاج إلى بعض الأذونات";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "سيظهر AltTab إذا كانت النافذة مقلّصة حالياً أو في وضع ملء الشاشة مع أيقونة الحالة.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "تعطل DockAltTab عندما استخدمته آخر مرة. ارسال بلاغ التعطل سوف يساعد في إصلاح المشكلة";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "تم تعيين Alttab حاليًا لعرض التطبيقات.هذا الإعداد متاح فقط عندما يتم تعيين Alttab لإظهار النوافذ.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "آلت تاب يعمل بدون أُذونات تسجيل الشاشة. الصور المصغّرة لَن تُعرض.";
+"DockAltTab needs some permissions" = "DockAltTab يحتاج إلى بعض الأذونات";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "سيظهر DockAltTab إذا كانت النافذة مقلّصة حالياً أو في وضع ملء الشاشة مع أيقونة الحالة.";
 "Always" = "دائماً";
 "Always send crash reports" = "أرسل بلاغات التعطل دائماً";
 "and press" = "ثمّ اضغط";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "شاشة شريط القوائم";
 "Screen including mouse" = "شاشة المؤشر";
 "Screen Recording" = "تسجيل الشاشة";
-"Screen showing AltTab" = "شاشة الـAltTab";
+"Screen showing DockAltTab" = "شاشة الـDockAltTab";
 "Search" = "بحث";
 "Select next window" = "حدد النافذة التالية";
 "Select previous window" = "حدد النافذة السابقة";
@@ -231,7 +231,7 @@
 "Size" = "مقاس";
 "Skipped" = "مُتخطّى";
 "Small" = "صغير";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "تستخدم بعض التطبيقات مثل Finder أو Preview علامات تبويب قياسية تعمل مثل Windows المستقلة.تستخدم بعض التطبيقات الأخرى مثل متصفحات الويب علامات تبويب مخصصة تعمل بطرق فريدة وليست نوافذ فعلية.لا يمكن لـ Alttab سردها بشكل منفصل.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "تستخدم بعض التطبيقات مثل Finder أو Preview علامات تبويب قياسية تعمل مثل Windows المستقلة.تستخدم بعض التطبيقات الأخرى مثل متصفحات الويب علامات تبويب مخصصة تعمل بطرق فريدة وليست نوافذ فعلية.لا يمكن لـ Alttab سردها بشكل منفصل.";
 "Source code repository" = "مخزن شفرة المصدر";
 "Space" = "مساحة";
 "Space Order" = "ترتيب الفضاء";

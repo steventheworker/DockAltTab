@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetisch";
 "Alphabetical Order" = "Alfabetische volgorde";
 "Also select windows using:" = "Selecteer ook vensters met:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab is de vorige keer gecrasht. Je kunt ons helpen door een crashrapportage te versturen";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab is momenteel ingesteld om applicaties te tonen.Deze instelling is alleen beschikbaar wanneer Alttab is ingesteld om Windows te tonen.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab is actief zonder Schermopname permissies. Miniatuurweergaven worden niet getoond.";
-"AltTab needs some permissions" = "AltTab heeft wat permissies nodig";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTAB zal laten zien of het venster momenteel wordt geminimaliseerd of volledig is met een statuspictogram.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab is de vorige keer gecrasht. Je kunt ons helpen door een crashrapportage te versturen";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab is momenteel ingesteld om applicaties te tonen.Deze instelling is alleen beschikbaar wanneer Alttab is ingesteld om Windows te tonen.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab is actief zonder Schermopname permissies. Miniatuurweergaven worden niet getoond.";
+"DockAltTab needs some permissions" = "DockAltTab heeft wat permissies nodig";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTAB zal laten zien of het venster momenteel wordt geminimaliseerd of volledig is met een statuspictogram.";
 "Always" = "Altijd";
 "Always send crash reports" = "Verstuur altijd crashrapportages";
 "and press" = "en druk op";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Beeldscherm met menubalk";
 "Screen including mouse" = "Beeldscherm met muis";
 "Screen Recording" = "Schermopname";
-"Screen showing AltTab" = "Beeldscherm met AltTab";
+"Screen showing DockAltTab" = "Beeldscherm met DockAltTab";
 "Search" = "Zoeken";
 "Select next window" = "Selecteer volgend venster";
 "Select previous window" = "Selecteer vorig venster";
@@ -231,7 +231,7 @@
 "Size" = "Maat";
 "Skipped" = "Overgeslagen";
 "Small" = "Klein";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Sommige apps zoals Finder of Preview gebruiken standaard tabbladen die werken als onafhankelijke Windows.Sommige andere apps zoals webbrowsers gebruiken aangepaste tabbladen die op unieke manieren werken en geen echte Windows zijn.Alttab kan die niet afzonderlijk vermelden.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Sommige apps zoals Finder of Preview gebruiken standaard tabbladen die werken als onafhankelijke Windows.Sommige andere apps zoals webbrowsers gebruiken aangepaste tabbladen die op unieke manieren werken en geen echte Windows zijn.Alttab kan die niet afzonderlijk vermelden.";
 "Source code repository" = "Broncode-repository";
 "Space" = "Spatie";
 "Space Order" = "Ruimtevolgorde";

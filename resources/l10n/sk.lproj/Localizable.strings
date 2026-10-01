@@ -26,11 +26,11 @@
 "Alphabetical" = "Abecedne";
 "Alphabetical Order" = "Abecedný poriadok";
 "Also select windows using:" = "Vybrať okná aj za pomoci:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab bol pri poslednom použití nečakane ukončený. Odoslaním správy o zlyhaní môžete pomôcť problém vyriešiť";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab je momentálne nastavený na zobrazovanie aplikácií.Toto nastavenie je k dispozícii iba vtedy, keď je alttab nastavený na zobrazenie systému Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab beží bez oprávnení na nahrávanie obrazovky. Miniatúry sa nebudú zobrazovať.";
-"AltTab needs some permissions" = "AltTab potrebuje nasledovné povolenia";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab sa zobrazí, ak je okno v súčasnosti minimalizované alebo na celej obrazovke s ikonou stavu.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab bol pri poslednom použití nečakane ukončený. Odoslaním správy o zlyhaní môžete pomôcť problém vyriešiť";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab je momentálne nastavený na zobrazovanie aplikácií.Toto nastavenie je k dispozícii iba vtedy, keď je alttab nastavený na zobrazenie systému Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab beží bez oprávnení na nahrávanie obrazovky. Miniatúry sa nebudú zobrazovať.";
+"DockAltTab needs some permissions" = "DockAltTab potrebuje nasledovné povolenia";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab sa zobrazí, ak je okno v súčasnosti minimalizované alebo na celej obrazovke s ikonou stavu.";
 "Always" = "Vždy";
 "Always send crash reports" = "Vždy zasielajte správy o zlyhaní";
 "and press" = "a stlačte";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Obrazovka vrátane panela s ponukami";
 "Screen including mouse" = "Obrazovka s kurzorom";
 "Screen Recording" = "Nahrávanie obrazovky";
-"Screen showing AltTab" = "Plocha zobrazujúca AltTab";
+"Screen showing DockAltTab" = "Plocha zobrazujúca DockAltTab";
 "Search" = "Hľadať";
 "Select next window" = "Vyber ďalšie okno";
 "Select previous window" = "Vyber predošlé okno";
@@ -231,7 +231,7 @@
 "Size" = "Veľkosť";
 "Skipped" = "Preskočené";
 "Small" = "Malý";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Niektoré aplikácie ako Finder alebo ukážka používajú štandardné karty, ktoré pôsobia ako nezávislé Windows.Niektoré ďalšie aplikácie, ako sú webové prehliadače, používajú vlastné karty, ktoré pôsobia jedinečným spôsobom a nie sú skutočnými oknami.Alttab ich nemôže uviesť osobitne.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Niektoré aplikácie ako Finder alebo ukážka používajú štandardné karty, ktoré pôsobia ako nezávislé Windows.Niektoré ďalšie aplikácie, ako sú webové prehliadače, používajú vlastné karty, ktoré pôsobia jedinečným spôsobom a nie sú skutočnými oknami.Alttab ich nemôže uviesť osobitne.";
 "Source code repository" = "Úložisko zdrojových kódov";
 "Space" = "Medzera";
 "Space Order" = "Vesmírny poriadok";

@@ -26,11 +26,11 @@
 "Alphabetical" = "アルファベット順";
 "Alphabetical Order" = "アルファベット順";
 "Also select windows using:" = "次の機能を使い、ウィンドウを選択：";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTabはあなたが最後に使用した際にクラッシュしました。クラッシュレポートの送信は、問題の改善につながります。";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTabは現在、アプリケーションを表示するように設定されています。この設定は、AltTabがWindowsを表示するように設定されている場合にのみ使用できます。";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTabには画面収録の許可が与えられていません。サムネイルは表示されません。";
-"AltTab needs some permissions" = "AltTabが許可を求めています。";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTabは、現在、ウィンドウが最小化されているか、ステータスアイコンを備えたフルスクリーンであるかどうかを示します。";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTabはあなたが最後に使用した際にクラッシュしました。クラッシュレポートの送信は、問題の改善につながります。";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTabは現在、アプリケーションを表示するように設定されています。この設定は、DockAltTabがWindowsを表示するように設定されている場合にのみ使用できます。";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTabには画面収録の許可が与えられていません。サムネイルは表示されません。";
+"DockAltTab needs some permissions" = "DockAltTabが許可を求めています。";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTabは、現在、ウィンドウが最小化されているか、ステータスアイコンを備えたフルスクリーンであるかどうかを示します。";
 "Always" = "常に";
 "Always send crash reports" = "常にクラッシュレポートを送信する";
 "and press" = "and";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "メニューバーのあるスクリーン";
 "Screen including mouse" = "マウスのあるスクリーン";
 "Screen Recording" = "画面収録";
-"Screen showing AltTab" = "AltTabが表示されるスクリーン";
+"Screen showing DockAltTab" = "DockAltTabが表示されるスクリーン";
 "Search" = "検索";
 "Select next window" = "次のウィンドウを選択";
 "Select previous window" = "前のウィンドウを選択";
@@ -231,7 +231,7 @@
 "Size" = "サイズ";
 "Skipped" = "スキップ";
 "Small" = "小さい";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "FinderやPreviewなどのアプリは、独立したウィンドウのように機能する標準タブを使用しています。Webブラウザのような他のアプリの一部は、独自の方法で機能し、実際のWindowsではないカスタムタブを使用します。AltTabはそれらを個別にリストすることはできません。";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "FinderやPreviewなどのアプリは、独立したウィンドウのように機能する標準タブを使用しています。Webブラウザのような他のアプリの一部は、独自の方法で機能し、実際のWindowsではないカスタムタブを使用します。DockAltTabはそれらを個別にリストすることはできません。";
 "Source code repository" = "ソースコードレポジトリ";
 "Space" = "スペース";
 "Space Order" = "操作スペース順";
@@ -265,7 +265,7 @@
 "Unassign existing shortcut and continue" = "既存ショートカットの割当を解除して続く";
 "Updates policy" = "アップデートポリシー";
 "Updates policy:" = "アップデートポリシー：";
-"Use the app without this permission. Thumbnails won’t show." = "許可を与えずにAltTabを使う。サムネイルは表示されません。";
+"Use the app without this permission. Thumbnails won’t show." = "許可を与えずにDockAltTabを使う。サムネイルは表示されません。";
 "Version" = "バージョン";
 "Vertical Swipe with Four Fingers" = "4本指で縦方向にスワイプ";
 "Vertical Swipe with Three Fingers" = "3本指で縦方向にスワイプ";

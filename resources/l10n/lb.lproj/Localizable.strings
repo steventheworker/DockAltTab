@@ -26,11 +26,11 @@
 "Alphabetical" = "Alphabetesch";
 "Alphabetical Order" = "Alphabetesch Uerdnung";
 "Also select windows using:" = "Fënsteren och auswielen mat:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Den Alettab huet d'lescht Kéier erofgefall, deen Dir et benotzt hutt.Schéckt e Crash Bericht wäert hëllefen d'Fro fixéiert";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Den Alttab ass de Moment gesat fir d'Applikatiounen ze weisen.Dës Astellung ass nëmme verfügbar wann den Alettab gesat ass fir Windows ze weisen.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab leeft ouni Écranopnahm-Permissiounen. Miniaturbiller ginn net gewisen.";
-"AltTab needs some permissions" = "Den Alttab brauch e puer Permissiounen";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Den Alttab wäert weisen wann d'Fënster am Moment miniméiert oder vollstänneg mat enger Statuskondokon miniméiert.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Den Alettab huet d'lescht Kéier erofgefall, deen Dir et benotzt hutt.Schéckt e Crash Bericht wäert hëllefen d'Fro fixéiert";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Den Alttab ass de Moment gesat fir d'Applikatiounen ze weisen.Dës Astellung ass nëmme verfügbar wann den Alettab gesat ass fir Windows ze weisen.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab leeft ouni Écranopnahm-Permissiounen. Miniaturbiller ginn net gewisen.";
+"DockAltTab needs some permissions" = "Den Alttab brauch e puer Permissiounen";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Den Alttab wäert weisen wann d'Fënster am Moment miniméiert oder vollstänneg mat enger Statuskondokon miniméiert.";
 "Always" = "Ëmmer";
 "Always send crash reports" = "Schéckt ëmmer Crash Berichter";
 "and press" = "an dréckt";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Écran abegraff Menu Bar";
 "Screen including mouse" = "Écran inklusiv Maus";
 "Screen Recording" = "Écran Opname";
-"Screen showing AltTab" = "Écran weist Alttab";
+"Screen showing DockAltTab" = "Écran weist Alttab";
 "Search" = "Sichen";
 "Select next window" = "Wielt déi nächst Fenster";
 "Select previous window" = "Wielt virdrun Fënster";
@@ -231,7 +231,7 @@
 "Size" = "Gréisst";
 "Skipped" = "Iwwersprangen";
 "Small" = "Klengen";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "E puer Apps wéi Finder oder Virschau wéi Standard Tabs, déi wéi onofhängeg Fensteren handelen.E puer aner Apps wéi Web Browser benotze Benotzerdefinéiert Tabs déi op eenzegaarteg Weeër handelen an net tatsächlech Fensteren.Den Alttab kann dës separat net liwweren.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "E puer Apps wéi Finder oder Virschau wéi Standard Tabs, déi wéi onofhängeg Fensteren handelen.E puer aner Apps wéi Web Browser benotze Benotzerdefinéiert Tabs déi op eenzegaarteg Weeër handelen an net tatsächlech Fensteren.Den Alttab kann dës separat net liwweren.";
 "Source code repository" = "Quellcode Repository";
 "Space" = "Space";
 "Space Order" = "Raumuerdnung";

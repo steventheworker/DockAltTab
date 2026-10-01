@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetico";
 "Alphabetical Order" = "Alfabetico";
 "Also select windows using:" = "Seleziona le finestre usando anche:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab si è arrestato in modo anomalo. L'invio di una segnalazione potrebbe aiutare a risolvere il problema.";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab è attualmente impostato per mostrare le applicazioni. Questa impostazione è disponibile solo quando AltTab è impostato per mostrare le singole finestre.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "L'app non è autorizzata a registrare lo schermo: le miniature non saranno disponibili.";
-"AltTab needs some permissions" = "AltTab richiede alcuni permessi";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Un'icona indicherà se la finestra è minimizzata o a schermo intero.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab si è arrestato in modo anomalo. L'invio di una segnalazione potrebbe aiutare a risolvere il problema.";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab è attualmente impostato per mostrare le applicazioni. Questa impostazione è disponibile solo quando DockAltTab è impostato per mostrare le singole finestre.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "L'app non è autorizzata a registrare lo schermo: le miniature non saranno disponibili.";
+"DockAltTab needs some permissions" = "DockAltTab richiede alcuni permessi";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Un'icona indicherà se la finestra è minimizzata o a schermo intero.";
 "Always" = "Sempre";
 "Always send crash reports" = "Invia sempre resoconti di arresti anomali";
 "and press" = "e premi";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Schermo con la barra dei menu";
 "Screen including mouse" = "Schermo dove si trova il mouse";
 "Screen Recording" = "Registrazione schermo";
-"Screen showing AltTab" = "Schermo con la finestra di AltTab";
+"Screen showing DockAltTab" = "Schermo con la finestra di DockAltTab";
 "Search" = "Cerca";
 "Select next window" = "Finestra successiva";
 "Select previous window" = "Finestra precedente";
@@ -217,7 +217,7 @@
 "Show at the end" = "Mostra alla fine";
 "Show fullscreen windows" = "Finestre a schermo intero";
 "Show hidden windows" = "Finestre nascoste";
-"Show in switcher" = "Mostra in AltTab";
+"Show in switcher" = "Mostra in DockAltTab";
 "Show minimized windows" = "Finestre minimizzate";
 "Show on" = "Limita a:";
 "Show on:" = "Mostra su:";
@@ -231,7 +231,7 @@
 "Size" = "Dimensione";
 "Skipped" = "Ignorato";
 "Small" = "Piccola";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Alcune applicazioni, specialmente quelle di sistema, mostrano diverse istanze come schede della stessa finestra, anziché come finestre separate (in base alle impostazioni). Le schede dei browser non sono mai schede native di macOS.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Alcune applicazioni, specialmente quelle di sistema, mostrano diverse istanze come schede della stessa finestra, anziché come finestre separate (in base alle impostazioni). Le schede dei browser non sono mai schede native di macOS.";
 "Source code repository" = "Repository del codice sorgente";
 "Space" = "Spazio";
 "Space Order" = "In base alla posizione";
@@ -265,7 +265,7 @@
 "Unassign existing shortcut and continue" = "Rimuovi comando esistente e continua";
 "Updates policy" = "Aggiornamento";
 "Updates policy:" = "Aggiornamenti:";
-"Use the app without this permission. Thumbnails won’t show." = "Usa AltTab con le impostazioni correnti (senza anteprime).";
+"Use the app without this permission. Thumbnails won’t show." = "Usa DockAltTab con le impostazioni correnti (senza anteprime).";
 "Version" = "Versione";
 "Vertical Swipe with Four Fingers" = "Scorrimento verticale con quattro dita";
 "Vertical Swipe with Three Fingers" = "Scorrimento verticale con tre dita";

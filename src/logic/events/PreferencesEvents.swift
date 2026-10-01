@@ -18,7 +18,7 @@ class PreferencesEvents {
         "RunAtLoad": true,
         "LimitLoadToSessionType": "Aqua",
         // starting from macOS 13, AssociatedBundleIdentifiers is required, otherwise the UI in
-        // System Settings > General > Login Items, will show "Louis Pontoise" instead of "AltTab.app"
+        // System Settings > General > Login Items, will show "Louis Pontoise" instead of "DockAltTab.app"
         "AssociatedBundleIdentifiers": App.bundleIdentifier,
         // "ProcessType: If left unspecified, the system will apply light resource limits to the job,
         //               throttling its CPU usage and I/O bandwidth"

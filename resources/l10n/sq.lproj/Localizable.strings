@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetike";
 "Alphabetical Order" = "Rend alfabetik";
 "Also select windows using:" = "Gjithashtu zgjedh dritaret duke përdorur:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab dështoi kur e përdorët herën e fundit. Dërgimi i një raportimi të dështimit do të ndihmojë në zgjedhjen e problemit";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab aktualisht është vendosur të tregojë aplikacione.Kjo cilësim është në dispozicion vetëm kur Alttab është vendosur të tregojë Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab po funksionon pa leje Regjistrimi të Ekranit. Miniaturat nuk do të shfaqen.";
-"AltTab needs some permissions" = "AltTab ka nevojë për disa leje";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab do të tregojë nëse dritarja aktualisht është minimizuar ose në ekran të plotë me një ikonë të statusit.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab dështoi kur e përdorët herën e fundit. Dërgimi i një raportimi të dështimit do të ndihmojë në zgjedhjen e problemit";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab aktualisht është vendosur të tregojë aplikacione.Kjo cilësim është në dispozicion vetëm kur Alttab është vendosur të tregojë Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab po funksionon pa leje Regjistrimi të Ekranit. Miniaturat nuk do të shfaqen.";
+"DockAltTab needs some permissions" = "DockAltTab ka nevojë për disa leje";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab do të tregojë nëse dritarja aktualisht është minimizuar ose në ekran të plotë me një ikonë të statusit.";
 "Always" = "Gjithmonë";
 "Always send crash reports" = "Gjithmonë dërgo raportime të dështimeve";
 "and press" = "dhe shtypni";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Ekrani përfshin shiritin e menysë";
 "Screen including mouse" = "Ekrani përfshin mous-in";
 "Screen Recording" = "Inqizimi i ekranit";
-"Screen showing AltTab" = "Ekran shfaq AltTab";
+"Screen showing DockAltTab" = "Ekran shfaq DockAltTab";
 "Search" = "Kërko";
 "Select next window" = "Zgjidh dritaren e ardhshme";
 "Select previous window" = "Zgjidh dritaren paraprake";
@@ -231,7 +231,7 @@
 "Size" = "Madhësi";
 "Skipped" = "Kapërcyer";
 "Small" = "I vogël";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Disa aplikacione si Finder ose Preview përdorin skedat standarde të cilat veprojnë si dritare të pavarura.Disa aplikacione të tjera si shfletuesit e uebit përdorin skedat me porosi që veprojnë në mënyra unike dhe nuk janë dritare aktuale.Alttab nuk mund t'i rendisë ato veç e veç.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Disa aplikacione si Finder ose Preview përdorin skedat standarde të cilat veprojnë si dritare të pavarura.Disa aplikacione të tjera si shfletuesit e uebit përdorin skedat me porosi që veprojnë në mënyra unike dhe nuk janë dritare aktuale.Alttab nuk mund t'i rendisë ato veç e veç.";
 "Source code repository" = "Depo e kodit burimor";
 "Space" = "Hapësirë";
 "Space Order" = "Urdhër për hapësirën";

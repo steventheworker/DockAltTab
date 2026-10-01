@@ -26,11 +26,11 @@
 "Alphabetical" = "Alfabetisk";
 "Alphabetical Order" = "Alfabetisk rekkjefylgje";
 "Also select windows using:" = "Vel òg vindauge med:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab kræsja sist du brukte han. Å senda ein kræsjrapport vil hjelpa til med å løysa problemet";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab viser no program. Denne innstillinga er berre tilgjengeleg når AltTab viser vindauga.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab køyrer utan skjermopptaksløyve. Miniatyrbilete vil ikkje bli viste.";
-"AltTab needs some permissions" = "AltTab treng nokre løyve";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab viser med eit statussymbol om vindauget er minimert eller i fullskjerm.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab kræsja sist du brukte han. Å senda ein kræsjrapport vil hjelpa til med å løysa problemet";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab viser no program. Denne innstillinga er berre tilgjengeleg når DockAltTab viser vindauga.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab køyrer utan skjermopptaksløyve. Miniatyrbilete vil ikkje bli viste.";
+"DockAltTab needs some permissions" = "DockAltTab treng nokre løyve";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab viser med eit statussymbol om vindauget er minimert eller i fullskjerm.";
 "Always" = "Alltid";
 "Always send crash reports" = "Send alltid kræsjrapportar";
 "and press" = "og trykkk";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Skjerm med menyline";
 "Screen including mouse" = "Skjerm med mus";
 "Screen Recording" = "Skjermopptak";
-"Screen showing AltTab" = "Skjerm som viser AltTab";
+"Screen showing DockAltTab" = "Skjerm som viser DockAltTab";
 "Search" = "Søk";
 "Select next window" = "Vel neste vindauge";
 "Select previous window" = "Vel førre vindauge";
@@ -208,8 +208,8 @@
 "Shortcut 4" = "Snarveg 4";
 "Shortcut 5" = "Snarveg 5";
 "Shortcut already assigned to another action: %@" = "Snarveg allereide tildelt ei anna handling: %@";
-"Shortcuts When Active" = "Snarvegar når AltTab er aktiv";
-"Shortcuts when active…" = "Snarvegar når AltTab er aktiv …";
+"Shortcuts When Active" = "Snarvegar når DockAltTab er aktiv";
+"Shortcuts when active…" = "Snarvegar når DockAltTab er aktiv …";
 "Show" = "Vis";
 "Show & Hide" = "Vis og gøym";
 "Show an item in the switcher for each window, or for each application. Windows will be focused, whereas applications will be activated." = "Vis eit element i bytaren for kvart vindauga eller for kvart program. Vindaugo vil bli fokuserte og program aktiverte.";
@@ -231,7 +231,7 @@
 "Size" = "Storleik";
 "Skipped" = "Hoppa over";
 "Small" = "Liten";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Nokre program, som Finder og Forhåndsvisning, har standarflikar som oppfører seg som uavhengige vindaugo. Andre program, som nettlesarar, har tilpassa flikar som oppfører seg spesielt og som ikkje er riktige vindaugo. AltTab kan ikkje visa slike separat.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Nokre program, som Finder og Forhåndsvisning, har standarflikar som oppfører seg som uavhengige vindaugo. Andre program, som nettlesarar, har tilpassa flikar som oppfører seg spesielt og som ikkje er riktige vindaugo. DockAltTab kan ikkje visa slike separat.";
 "Source code repository" = "Kjeldekodearkiv";
 "Space" = "Space/Område";
 "Space Order" = "Områderekkjefylgje";

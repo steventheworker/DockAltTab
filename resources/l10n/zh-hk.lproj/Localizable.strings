@@ -26,11 +26,11 @@
 "Alphabetical" = "字母";
 "Alphabetical Order" = "字母順序";
 "Also select windows using:" = "亦可以使用以下方式選擇視窗：";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab 在你上次使用時故障了。傳送死機報告將會有助於解決問題";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab 現時設定為顯示應用程式。僅當 AltTab 設定為顯示視窗時，才可以使用此設定。";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab 正以無螢幕錄製權限執行。不會顯示縮圖。";
-"AltTab needs some permissions" = "AltTab 需要一些權限";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab 將顯示視窗當前是縮到最細還是全螢幕，並顯示狀態圖示。";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab 在你上次使用時故障了。傳送死機報告將會有助於解決問題";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab 現時設定為顯示應用程式。僅當 DockAltTab 設定為顯示視窗時，才可以使用此設定。";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab 正以無螢幕錄製權限執行。不會顯示縮圖。";
+"DockAltTab needs some permissions" = "DockAltTab 需要一些權限";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab 將顯示視窗當前是縮到最細還是全螢幕，並顯示狀態圖示。";
 "Always" = "總是";
 "Always send crash reports" = "總是傳送死機報告";
 "and press" = "並按一下";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "包括選單列的螢幕";
 "Screen including mouse" = "包括滑鼠的螢幕";
 "Screen Recording" = "螢幕錄製";
-"Screen showing AltTab" = "顯示 AltTab 的螢幕";
+"Screen showing DockAltTab" = "顯示 DockAltTab 的螢幕";
 "Search" = "搜尋";
 "Select next window" = "選擇下一個視窗";
 "Select previous window" = "選擇上一個視窗";
@@ -231,7 +231,7 @@
 "Size" = "大小";
 "Skipped" = "已略過";
 "Small" = "小";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "一些 App 例如「Finder」或「預覽程式」使用標準標籤，這些標籤類似獨立的視窗。 其他一些 App，例如網絡瀏覽器使用自訂分頁，這些分頁透過獨有的方式工作，而並非實際的視窗。AltTab 無法分開列出它們。";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "一些 App 例如「Finder」或「預覽程式」使用標準標籤，這些標籤類似獨立的視窗。 其他一些 App，例如網絡瀏覽器使用自訂分頁，這些分頁透過獨有的方式工作，而並非實際的視窗。DockAltTab 無法分開列出它們。";
 "Source code repository" = "原始碼 repository";
 "Space" = "空間";
 "Space Order" = "空間順序";

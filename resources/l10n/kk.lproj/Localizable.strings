@@ -26,11 +26,11 @@
 "Alphabetical" = "Әліпби бойынша";
 "Alphabetical Order" = "Әліпби тәртібі";
 "Also select windows using:" = "Терезелерді келесіні қолданып та таңдау:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab соңғы рет қолданғанда апатқа ұшырады. Апат туралы есеп жіберу мәселені шешуге көмектеседі";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab қазір қолданбаларды көрсетуге орнатылған. Бұл параметр AltTab терезелерді көрсетуге орнатылған кезде ғана қолжетімді.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab экран жазу рұқсаттарынсыз жұмыс істеп тұр. Нобайлар көрсетілмейді.";
-"AltTab needs some permissions" = "AltTab үшін кейбір рұқсаттар қажет";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab терезе ағымдағы уақытта кішірейтілген немесе толық экранда екенін күй белгішесімен көрсетеді.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab соңғы рет қолданғанда апатқа ұшырады. Апат туралы есеп жіберу мәселені шешуге көмектеседі";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab қазір қолданбаларды көрсетуге орнатылған. Бұл параметр DockAltTab терезелерді көрсетуге орнатылған кезде ғана қолжетімді.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab экран жазу рұқсаттарынсыз жұмыс істеп тұр. Нобайлар көрсетілмейді.";
+"DockAltTab needs some permissions" = "DockAltTab үшін кейбір рұқсаттар қажет";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab терезе ағымдағы уақытта кішірейтілген немесе толық экранда екенін күй белгішесімен көрсетеді.";
 "Always" = "Әрдайым";
 "Always send crash reports" = "Апат туралы есептерді әрдайым жіберу";
 "and press" = "және басыңыз";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Мәзір жолағы бар экран";
 "Screen including mouse" = "Тінтуір бар экран";
 "Screen Recording" = "Экран жазу";
-"Screen showing AltTab" = "AltTab көрсетілетін экран";
+"Screen showing DockAltTab" = "DockAltTab көрсетілетін экран";
 "Search" = "Іздеу";
 "Select next window" = "Келесі терезені таңдау";
 "Select previous window" = "Алдыңғы терезені таңдау";
@@ -231,7 +231,7 @@
 "Size" = "Өлшем";
 "Skipped" = "Өткізілді";
 "Small" = "Кіші";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Finder немесе Preview сияқты кейбір қолданбалар тәуелсіз терезелер ретінде әрекет ететін стандартты қойындыларды пайдаланады. Веб-шолғыштар сияқты кейбір басқа қолданбалар ерекше әрекет ететін және нақты терезелер емес арнайы қойындыларды пайдаланады. AltTab оларды бөлек тізімдей алмайды.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Finder немесе Preview сияқты кейбір қолданбалар тәуелсіз терезелер ретінде әрекет ететін стандартты қойындыларды пайдаланады. Веб-шолғыштар сияқты кейбір басқа қолданбалар ерекше әрекет ететін және нақты терезелер емес арнайы қойындыларды пайдаланады. DockAltTab оларды бөлек тізімдей алмайды.";
 "Source code repository" = "Бастапқы код репозиторийі";
 "Space" = "Кеңістік";
 "Space Order" = "Кеңістік тәртібі";

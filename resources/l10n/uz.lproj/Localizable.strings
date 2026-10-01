@@ -26,11 +26,11 @@
 "Alphabetical" = "Alifbo tartibida";
 "Alphabetical Order" = "Alifbo tartibida";
 "Also select windows using:" = "Oynalarni shuningdek quyidagilar yordamida tanlash:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Altabab oxirgi marta siz undan foydalanganingizda qulab tushdi.Avariya hisobotini yuborish muammoni hal qilishga yordam beradi";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Hozirda Altabtob dasturlarni namoyish etish uchun o'rnatiladi.Ushbu sozlama faqat AltTab derazalarni ko'rsatish uchun mavjud bo'lganda mavjud.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab ekran yozish ruxsatlarisiz ishlayapti. Eskizlar ko'rsatilmaydi.";
-"AltTab needs some permissions" = "Olttab ba'zi ruxsatlarga muhtoj";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Altabab oynaning status belgisi bilan minimallashtirilgan yoki to'liq ekranli bo'lsa, ko'rsatadi.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Altabab oxirgi marta siz undan foydalanganingizda qulab tushdi.Avariya hisobotini yuborish muammoni hal qilishga yordam beradi";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Hozirda Altabtob dasturlarni namoyish etish uchun o'rnatiladi.Ushbu sozlama faqat DockAltTab derazalarni ko'rsatish uchun mavjud bo'lganda mavjud.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab ekran yozish ruxsatlarisiz ishlayapti. Eskizlar ko'rsatilmaydi.";
+"DockAltTab needs some permissions" = "Olttab ba'zi ruxsatlarga muhtoj";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Altabab oynaning status belgisi bilan minimallashtirilgan yoki to'liq ekranli bo'lsa, ko'rsatadi.";
 "Always" = "Har doim";
 "Always send crash reports" = "Har doim avtohalokat haqida xabarlarni yuboring";
 "and press" = "va bosing";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Ekran menyu satr";
 "Screen including mouse" = "Sichqoncha ekranini o'z ichiga oladi";
 "Screen Recording" = "Ekran yozuvi";
-"Screen showing AltTab" = "Olttab ko'rsatadigan ekran";
+"Screen showing DockAltTab" = "Olttab ko'rsatadigan ekran";
 "Search" = "Qidiruv";
 "Select next window" = "Keyingi oynani tanlang";
 "Select previous window" = "Oldingi oynani tanlang";
@@ -231,7 +231,7 @@
 "Size" = "O'lcham";
 "Skipped" = "O'tkazib yuborildi";
 "Small" = "Kichik";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Finder yoki oldindan ko'rish kabi ba'zi ilovalar mustaqil Windows kabi ishlaydigan oddiy yorliqlardan foydalaning.Veb-brauzerlar kabi ba'zi boshqa ilovalar noyob yo'llar bilan shug'ullanadigan va haqiqiy derazalar emas.Altabab alohidalarni ro'yxatga olish mumkin emas.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Finder yoki oldindan ko'rish kabi ba'zi ilovalar mustaqil Windows kabi ishlaydigan oddiy yorliqlardan foydalaning.Veb-brauzerlar kabi ba'zi boshqa ilovalar noyob yo'llar bilan shug'ullanadigan va haqiqiy derazalar emas.Altabab alohidalarni ro'yxatga olish mumkin emas.";
 "Source code repository" = "Manba kodi ombori";
 "Space" = "Bo'sh joy";
 "Space Order" = "Kosmik buyurtma";

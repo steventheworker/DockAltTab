@@ -26,11 +26,11 @@
 "Alphabetical" = "Азбучен ред";
 "Alphabetical Order" = "Азбучен ред";
 "Also select windows using:" = "Избирай прозорец";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab заби последния път. Изпращането на отчет ще помогне за отстраняване на проблема";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "В момента Alttab е настроен да показва приложения.Тази настройка е достъпна само когато Alttab е настроен да показва Windows.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab работи без разрешения за запис на екрана. Миниатюрите няма да се показват.";
-"AltTab needs some permissions" = "AltTab има нужда от разрешения";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab ще покаже дали прозорецът в момента е сведен до минимум или пълен екран с икона на състоянието.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab заби последния път. Изпращането на отчет ще помогне за отстраняване на проблема";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "В момента Alttab е настроен да показва приложения.Тази настройка е достъпна само когато Alttab е настроен да показва Windows.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab работи без разрешения за запис на екрана. Миниатюрите няма да се показват.";
+"DockAltTab needs some permissions" = "DockAltTab има нужда от разрешения";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab ще покаже дали прозорецът в момента е сведен до минимум или пълен екран с икона на състоянието.";
 "Always" = "Винаги";
 "Always send crash reports" = "Винаги пращай отчет";
 "and press" = "и натиснете";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Екрана с менщто";
 "Screen including mouse" = "Екрана с мишката";
 "Screen Recording" = "Запис на екрана";
-"Screen showing AltTab" = "Екрана с AltTab";
+"Screen showing DockAltTab" = "Екрана с DockAltTab";
 "Search" = "Търсене";
 "Select next window" = "Избери следващ прозорец";
 "Select previous window" = "Избери предишен прозорец";
@@ -231,7 +231,7 @@
 "Size" = "Размер";
 "Skipped" = "Пропуснато";
 "Small" = "Малък";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Някои приложения като Finder или Preview използват стандартни раздели, които действат като независими прозорци.Някои други приложения като уеб браузъри използват персонализирани раздели, които действат по уникални начини и не са действителни прозорци.Alttab не може да ги изброи отделно.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Някои приложения като Finder или Preview използват стандартни раздели, които действат като независими прозорци.Някои други приложения като уеб браузъри използват персонализирани раздели, които действат по уникални начини и не са действителни прозорци.Alttab не може да ги изброи отделно.";
 "Source code repository" = "Сорс код";
 "Space" = "Пространство";
 "Space Order" = "Космическа поръчка";

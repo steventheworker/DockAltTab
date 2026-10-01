@@ -45,13 +45,13 @@
 	<key>NSSupportsSuddenTermination</key>
 	<string>false</string>
 	<key>OSAScriptingDefinition</key>
-	<string>AltTab.sdef</string>
+	<string>DockAltTab.sdef</string>
 	<key>SUEnableAutomaticChecks</key>
 	<string>true</string>
 	<key>SUEnableJavaScript</key>
 	<string>true</string>
 	<key>SUFeedURL</key>
-	<string>https://dockalttab.netlify.app/appcast-AltTab.xml</string>
+	<string>https://dockalttab.netlify.app/appcast-DockAltTab.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>3LY7vHMUnCLZM+y9fvFSPe/RDU3kawtqlHEh45JTW54=</string>
 	<key>SUScheduledCheckInterval</key>

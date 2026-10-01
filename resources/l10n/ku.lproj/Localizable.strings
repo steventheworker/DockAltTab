@@ -26,11 +26,11 @@
 "Alphabetical" = "بەپێی پیتەکان";
 "Alphabetical Order" = "Fermana alfabeyê";
 "Also select windows using:" = "Di heman wextî de pacê vebijêre, bi vî re:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Alttab cara borî ku we ew bikar anî hilweşand.Sandina raporek Crash dê alîkariyê bide ku pirsgirêk çareser bibe";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Alttab niha tête danîn ku serlêdanan nîşan bide.Ev mîhengê tenê heye dema ku Alttab tê danîn da ku Windows nîşan bide.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab بەبێ مۆڵەتی تۆمارکردنی شاشە کاردەکات. وێنۆچکەکان نیشان نادرێن.";
-"AltTab needs some permissions" = "AltTab hin destûran hewce dike";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab dê nîşan bide ka pencere niha bi îkonek statûyê kêm e an tevde ye.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "Alttab cara borî ku we ew bikar anî hilweşand.Sandina raporek Crash dê alîkariyê bide ku pirsgirêk çareser bibe";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Alttab niha tête danîn ku serlêdanan nîşan bide.Ev mîhengê tenê heye dema ku Alttab tê danîn da ku Windows nîşan bide.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab بەبێ مۆڵەتی تۆمارکردنی شاشە کاردەکات. وێنۆچکەکان نیشان نادرێن.";
+"DockAltTab needs some permissions" = "DockAltTab hin destûran hewce dike";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Alttab dê nîşan bide ka pencere niha bi îkonek statûyê kêm e an tevde ye.";
 "Always" = "Herdem";
 "Always send crash reports" = "Her tim raporên qirçînê bişîne";
 "and press" = "û çapemeniyê";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Paceya menu bar nişandî";
 "Screen including mouse" = "Ekrana mişk nîşandî";
 "Screen Recording" = "Qeyda Ekranê";
-"Screen showing AltTab" = "Ekrana AltTab nîşandî";
+"Screen showing DockAltTab" = "Ekrana DockAltTab nîşandî";
 "Search" = "گەڕان";
 "Select next window" = "Paceya paşîn vebijêre";
 "Select previous window" = "Paceya pêşîn vebijêre";
@@ -231,7 +231,7 @@
 "Size" = "Mezinayî";
 "Skipped" = "بازدان بەسەردا";
 "Small" = "Biçûk";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Hin serlêdanên mîna finder an pêşgotinê tabên standard bikar bînin ku mîna pencereyên serbixwe tevdigerin.Hin serlêdanên din mîna gerokên malperê tabên xwerû bikar tînin ku bi awayên yekta tevbigerin û pencereyên rastîn ne.Alttab nikare wan ji hev veqetîne.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Hin serlêdanên mîna finder an pêşgotinê tabên standard bikar bînin ku mîna pencereyên serbixwe tevdigerin.Hin serlêdanên din mîna gerokên malperê tabên xwerû bikar tînin ku bi awayên yekta tevbigerin û pencereyên rastîn ne.Alttab nikare wan ji hev veqetîne.";
 "Source code repository" = "Repositoriya jêderka kodan";
 "Space" = "بۆشایی";
 "Space Order" = "Fermana Space";

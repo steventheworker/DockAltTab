@@ -26,11 +26,11 @@
 "Alphabetical" = "મૂળાક્ષર ક્રમમાં";
 "Alphabetical Order" = "મૂળાક્ષરોનો ક્રમ";
 "Also select windows using:" = "આનો ઉપયોગ કરીને વિન્ડો પણ પસંદ કરો:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "છેલ્લી વાર જ્યારે તમે AltTab નો ઉપયોગ કર્યો હતો ત્યારે તે ક્રેશ થયું હતું. ક્રેશ રિપોર્ટ મોકલવાથી સમસ્યાને ઠીક કરવામાં મદદ મળશે.";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab હાલમાં એપ્લિકેશન બતાવવા માટે સેટ કરેલું છે. આ સેટિંગ ફક્ત ત્યારે જ ઉપલબ્ધ છે જ્યારે AltTab વિન્ડોઝ બતાવવા માટે સેટ કરેલું હોય.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab સ્ક્રીન રેકોર્ડિંગ પરવાનગીઓ વિના ચાલી રહ્યું છે. થંબનેલ્સ દેખાશે નહીં.";
-"AltTab needs some permissions" = "AltTab ને કેટલીક પરવાનગીઓની જરૂર છે";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "જો વિન્ડો હાલમાં નાની કરેલી હોય અથવા સ્ટેટસ આઇકોન સાથે પૂર્ણસ્ક્રીન હોય તો AltTab બતાવશે.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "છેલ્લી વાર જ્યારે તમે DockAltTab નો ઉપયોગ કર્યો હતો ત્યારે તે ક્રેશ થયું હતું. ક્રેશ રિપોર્ટ મોકલવાથી સમસ્યાને ઠીક કરવામાં મદદ મળશે.";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab હાલમાં એપ્લિકેશન બતાવવા માટે સેટ કરેલું છે. આ સેટિંગ ફક્ત ત્યારે જ ઉપલબ્ધ છે જ્યારે DockAltTab વિન્ડોઝ બતાવવા માટે સેટ કરેલું હોય.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab સ્ક્રીન રેકોર્ડિંગ પરવાનગીઓ વિના ચાલી રહ્યું છે. થંબનેલ્સ દેખાશે નહીં.";
+"DockAltTab needs some permissions" = "DockAltTab ને કેટલીક પરવાનગીઓની જરૂર છે";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "જો વિન્ડો હાલમાં નાની કરેલી હોય અથવા સ્ટેટસ આઇકોન સાથે પૂર્ણસ્ક્રીન હોય તો DockAltTab બતાવશે.";
 "Always" = "હંમેશા";
 "Always send crash reports" = "ક્રેશ રિપોર્ટ્સ હંમેશા મોકલો";
 "and press" = "અને દબાવો";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "મેનુ બાર સહિતની સ્ક્રીન";
 "Screen including mouse" = "માઉસ સહિતની સ્ક્રીન";
 "Screen Recording" = "સ્ક્રીન રેકોર્ડિંગ";
-"Screen showing AltTab" = "AltTab બતાવતી સ્ક્રીન";
+"Screen showing DockAltTab" = "DockAltTab બતાવતી સ્ક્રીન";
 "Search" = "શોધો";
 "Select next window" = "આગળની વિંડો પસંદ કરો";
 "Select previous window" = "પહેલાની વિંડો પસંદ કરો";
@@ -231,7 +231,7 @@
 "Size" = "કદ";
 "Skipped" = "છોડ્યું";
 "Small" = "નાનું";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "ફાઇન્ડર અથવા પ્રીવ્યુ જેવી કેટલીક એપ્સ સ્ટાન્ડર્ડ ટેબ્સનો ઉપયોગ કરે છે જે સ્વતંત્ર વિન્ડોની જેમ કાર્ય કરે છે. વેબ બ્રાઉઝર જેવી કેટલીક અન્ય એપ્સ કસ્ટમ ટેબ્સનો ઉપયોગ કરે છે જે અનન્ય રીતે કાર્ય કરે છે અને તે વાસ્તવિક વિન્ડો નથી. AltTab તેમને અલગથી સૂચિબદ્ધ કરી શકતું નથી.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "ફાઇન્ડર અથવા પ્રીવ્યુ જેવી કેટલીક એપ્સ સ્ટાન્ડર્ડ ટેબ્સનો ઉપયોગ કરે છે જે સ્વતંત્ર વિન્ડોની જેમ કાર્ય કરે છે. વેબ બ્રાઉઝર જેવી કેટલીક અન્ય એપ્સ કસ્ટમ ટેબ્સનો ઉપયોગ કરે છે જે અનન્ય રીતે કાર્ય કરે છે અને તે વાસ્તવિક વિન્ડો નથી. DockAltTab તેમને અલગથી સૂચિબદ્ધ કરી શકતું નથી.";
 "Source code repository" = "સ્રોત કોડ રિપોઝિટરી";
 "Space" = "Space";
 "Space Order" = "સ્પેસનો ક્રમ";

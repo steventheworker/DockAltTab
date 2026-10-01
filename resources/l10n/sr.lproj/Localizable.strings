@@ -26,11 +26,11 @@
 "Alphabetical" = "Po abecedi";
 "Alphabetical Order" = "Абецедни ред";
 "Also select windows using:" = "Takođe odabiraj prozore koristeći:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab se prinudno zaustavio prilikom prošlog korišćenja. Slanje podataka o grešci će pomoći da se greška popravi";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "Алттаб је тренутно постављен да би се приказала апликације.Ово подешавање је доступно само када је Алттаб постављен да би се приказала Виндовс.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab se pokreće bez dozvola za snimanje ekrana. Sličice se neće prikazati.";
-"AltTab needs some permissions" = "AltTab zahteva dodatne dozvole";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "Алттаб ће показати да ли је прозор тренутно минимизиран или пуни екран са статусом.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab se prinudno zaustavio prilikom prošlog korišćenja. Slanje podataka o grešci će pomoći da se greška popravi";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "Алттаб је тренутно постављен да би се приказала апликације.Ово подешавање је доступно само када је Алттаб постављен да би се приказала Виндовс.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab se pokreće bez dozvola za snimanje ekrana. Sličice se neće prikazati.";
+"DockAltTab needs some permissions" = "DockAltTab zahteva dodatne dozvole";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "Алттаб ће показати да ли је прозор тренутно минимизиран или пуни екран са статусом.";
 "Always" = "Uvek";
 "Always send crash reports" = "Uvek pošalji podatke o greškama";
 "and press" = "и притисните";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Ekran sa meni linijom";
 "Screen including mouse" = "Ekran na kom je stralica miša";
 "Screen Recording" = "Snimanje Ekrana";
-"Screen showing AltTab" = "Ekran koji prikazuje AltTab";
+"Screen showing DockAltTab" = "Ekran koji prikazuje DockAltTab";
 "Search" = "Pretraži";
 "Select next window" = "Odaberi sledeći prozor";
 "Select previous window" = "Odaberi prethodni prozor";
@@ -231,7 +231,7 @@
 "Size" = "Величина";
 "Skipped" = "Preskočeno";
 "Small" = "Мали";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Неке апликације попут Финдер-а или прегледа користе стандардне картице који делују попут независних прозора.Неке друге апликације попут веб прегледача користе прилагођене картице које делују на јединствене начине и нису стварни прозори.Алттаб не може навести оне одвојено.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Неке апликације попут Финдер-а или прегледа користе стандардне картице који делују попут независних прозора.Неке друге апликације попут веб прегледача користе прилагођене картице које делују на јединствене начине и нису стварни прозори.Алттаб не може навести оне одвојено.";
 "Source code repository" = "Repozitorijum s izvornim kodom";
 "Space" = "Prostor";
 "Space Order" = "Свемирски ред";

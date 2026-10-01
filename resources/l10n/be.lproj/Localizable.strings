@@ -26,11 +26,11 @@
 "Alphabetical" = "Па алфавіце";
 "Alphabetical Order" = "Алфавітны парадак";
 "Also select windows using:" = "Таксама выбіраць вокны з дапамогай:";
-"AltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "AltTab выляцеў у мінулы раз, калі вы яго выкарыстоўвалі. Адпраўка справаздачы аб збоі дапаможа вырашыць праблему";
-"AltTab is currently set to show Applications. This setting is only available when AltTab is set to show Windows." = "AltTab зараз настроены на паказ праграм. Гэтая налада даступная толькі, калі AltTab настроены на паказ вокнаў.";
-"AltTab is running without Screen Recording permissions. Thumbnails won’t show." = "AltTab працуе без дазволаў на запіс экрана. Мініяцюры не будуць паказвацца.";
-"AltTab needs some permissions" = "AltTab патрэбны некаторыя дазволы";
-"AltTab will show if the window is currently minimized or fullscreen with a status icon." = "AltTab пакажа, калі акно ў дадзены момант згорнута або знаходзіцца ў поўнаэкранным рэжыме з дапамогай значка стану.";
+"DockAltTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "DockAltTab выляцеў у мінулы раз, калі вы яго выкарыстоўвалі. Адпраўка справаздачы аб збоі дапаможа вырашыць праблему";
+"DockAltTab is currently set to show Applications. This setting is only available when DockAltTab is set to show Windows." = "DockAltTab зараз настроены на паказ праграм. Гэтая налада даступная толькі, калі DockAltTab настроены на паказ вокнаў.";
+"DockAltTab is running without Screen Recording permissions. Thumbnails won’t show." = "DockAltTab працуе без дазволаў на запіс экрана. Мініяцюры не будуць паказвацца.";
+"DockAltTab needs some permissions" = "DockAltTab патрэбны некаторыя дазволы";
+"DockAltTab will show if the window is currently minimized or fullscreen with a status icon." = "DockAltTab пакажа, калі акно ў дадзены момант згорнута або знаходзіцца ў поўнаэкранным рэжыме з дапамогай значка стану.";
 "Always" = "Заўсёды";
 "Always send crash reports" = "Заўсёды адпраўляць справаздачы аб збоях";
 "and press" = "і націсніце";
@@ -185,7 +185,7 @@
 "Screen including menu bar" = "Экран, які ўключае радок меню";
 "Screen including mouse" = "Экран, які ўключае курсор";
 "Screen Recording" = "Запіс экрана";
-"Screen showing AltTab" = "Экран, які адлюстроўвае AltTab";
+"Screen showing DockAltTab" = "Экран, які адлюстроўвае DockAltTab";
 "Search" = "Пошук";
 "Select next window" = "Выбраць наступнае акно";
 "Select previous window" = "Выбраць папярэдняе акно";
@@ -231,7 +231,7 @@
 "Size" = "Памер";
 "Skipped" = "Прапушчана";
 "Small" = "Маленькі";
-"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. AltTab can't list those separately." = "Некаторыя праграмы, такія як Finder ці Preview, выкарыстоўваюць стандартныя ўкладкі, якія дзейнічаюць як незалежныя вокны. Іншыя праграмы, такія як вэб-браўзеры, выкарыстоўваюць карыстальніцкія ўкладкі, якія дзейнічаюць унікальнымі спосабамі і не з'яўляюцца фактычнымі вокнамі. AltTab не можа пералічыць іх асобна.";
+"Some apps like Finder or Preview use standard tabs which act like independent windows. Some other apps like web browsers use custom tabs which act in unique ways and are not actual windows. DockAltTab can't list those separately." = "Некаторыя праграмы, такія як Finder ці Preview, выкарыстоўваюць стандартныя ўкладкі, якія дзейнічаюць як незалежныя вокны. Іншыя праграмы, такія як вэб-браўзеры, выкарыстоўваюць карыстальніцкія ўкладкі, якія дзейнічаюць унікальнымі спосабамі і не з'яўляюцца фактычнымі вокнамі. DockAltTab не можа пералічыць іх асобна.";
 "Source code repository" = "Рэпазытар зыходнага коду";
 "Space" = "Прастора";
 "Space Order" = "Парадак Spaces";
