@@ -158,6 +158,11 @@ class Windows {
         }
     }
 
+    /// DockAltTab never lists windowless apps, regardless of the value of its shortcut's preference.
+    private static func effectiveShowWindowlessApps() -> ShowHowPreference {
+        App.shortcutIndex == dockAltTabShortcutIndex ? .hide : Preferences.showWindowlessApps[App.shortcutIndex]
+    }
+
     private static func refreshIfWindowShouldBeShownToTheUser(_ window: Window) {
         let appIsAllowed: Bool
         if DockAltTabMode {
@@ -178,7 +183,7 @@ class Windows {
         window.shouldShowTheUser =
             appIsAllowed &&
             !(!(Preferences.showHiddenWindows[App.shortcutIndex] != .hide) && window.isHidden) &&
-            ((Preferences.showWindowlessApps[App.shortcutIndex] != .hide && window.isWindowlessApp) ||
+            ((effectiveShowWindowlessApps() != .hide && window.isWindowlessApp) ||
                 !window.isWindowlessApp &&
                 !(!(Preferences.showFullscreenWindows[App.shortcutIndex] != .hide) && window.isFullscreen) &&
                 !(!(Preferences.showMinimizedWindows[App.shortcutIndex] != .hide) && window.isMinimized) &&

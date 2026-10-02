@@ -589,7 +589,7 @@ class ControlsTab {
     }
 
     private static func shortcutTitle(_ index: Int) -> String {
-        if index == 2 { return NSLocalizedString("DockAltTab", comment: "") }
+        if index == dockAltTabShortcutIndex { return NSLocalizedString("DockAltTab", comment: "") }
         return NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1)
     }
 

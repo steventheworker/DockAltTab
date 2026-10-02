@@ -4,7 +4,7 @@ import Cocoa
 class appSettingScriptCommand: NSScriptCommand {
     override func performDefaultImplementation() -> Any? {
         let named = self.evaluatedArguments!["named"] as! String
-        let shortcutIndex = 2 // Shortcut 3 = index 2 = DockAltTab
+        let shortcutIndex = dockAltTabShortcutIndex // Shortcut 3 = index 2 = DockAltTab
         var val = ""
         if (named == "appsToShow") {val = Preferences.appsToShow[shortcutIndex].localizedString}
         else if (named == "showHiddenWindows") {val = Preferences.showHiddenWindows[shortcutIndex].localizedString}

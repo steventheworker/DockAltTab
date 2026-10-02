@@ -35,7 +35,7 @@ func DockAltTabShowAppPreviews(tarBID: String, x: Int?, y: Int?, dockPos: String
         App.isVeryFirstSummon = false
     }
     App.isFirstSummon = false
-    App.shortcutIndex = 2 // Shortcut 3 = index 2 = DockAltTab
+    App.shortcutIndex = dockAltTabShortcutIndex
     guard Windows.updatesBeforeShowing() else {
         App.hideUi()
         DockAltTabReset()

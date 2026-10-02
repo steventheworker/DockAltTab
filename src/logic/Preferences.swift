@@ -63,7 +63,7 @@ class Preferences {
             values[indexToName("showMinimizedWindows", index)] = ShowHowPreference.show.indexAsString
             values[indexToName("showHiddenWindows", index)] = ShowHowPreference.show.indexAsString
             values[indexToName("showFullscreenWindows", index)] = ShowHowPreference.show.indexAsString
-            values[indexToName("showWindowlessApps", index)] = ShowHowPreference.showAtTheEnd.indexAsString
+            values[indexToName("showWindowlessApps", index)] = index == dockAltTabShortcutIndex ? ShowHowPreference.hide.indexAsString : ShowHowPreference.showAtTheEnd.indexAsString
             values[indexToName("windowOrder", index)] = WindowOrderPreference.recentlyFocused.indexAsString
             values[indexToName("shortcutStyle", index)] = ShortcutStylePreference.focusOnRelease.indexAsString
         }
