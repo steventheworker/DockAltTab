@@ -63,7 +63,7 @@ func DockAltTabShowAppPreviews(tarBID: String, x: Int?, y: Int?, dockPos: String
 
 /// Force the (large) preview of the currently selected window to show, fetching a HD thumbnail first.
 func DockAltTabShowThumbnailPreview() {
-    guard App.appIsBeingUsed, let selectedWin = Windows.selectedWindow() else { return }
+    guard App.appIsBeingUsed, let selectedWin = Windows.selectedWindow(), selectedWin.cgWindowId != nil else { return }
     DockAltTabThumbnailPreviewRequestHD(window: selectedWin)
     Windows.previewSelectedWindowIfNeeded()
 }
