@@ -21,6 +21,11 @@ class Window {
     var shouldShowTheUser = true
     var isTabbed: Bool = false
     var tabbedSiblingWids: [CGWindowID]?
+    /// WindowServer parent id: 0 for a normal window, or the document window this
+    /// AppKit sheet / `addChildWindow:` child is attached to. A parented surface
+    /// is represented by its parent rather than previewed on its own. Refreshed by
+    /// `Windows.refreshWindowParents()`.
+    var parentWid: CGWindowID = 0
     var isHidden: Bool { get { application.isHidden } }
     var dockLabel: String? { get { application.dockLabel } }
     var isFullscreen = false

@@ -155,6 +155,26 @@ func CGSCopySpacesForWindows(_ cid: CGSConnectionID, _ mask: CGSSpaceMask.RawVal
 @_silgen_name("CGSGetWindowLevel") @discardableResult
 func CGSGetWindowLevel(_ cid: CGSConnectionID, _ wid: CGWindowID, _ level: UnsafeMutablePointer<CGWindowLevel>) -> CGError
 
+/// One batched WindowServer query; the iterator getters then read the local
+/// snapshot (no per-field IPC). `SLSWindowIteratorGetParentID` is the exact
+/// attachment relationship: 0 for a normal window (and for native tab members),
+/// or the document window for an AppKit sheet / `addChildWindow:` child.
+/// * macOS 10.10+
+@_silgen_name("SLSWindowQueryWindows")
+func SLSWindowQueryWindows(_ cid: CGSConnectionID, _ windows: CFArray, _ count: Int32) -> Unmanaged<CFTypeRef>
+
+@_silgen_name("SLSWindowQueryResultCopyWindows")
+func SLSWindowQueryResultCopyWindows(_ query: CFTypeRef) -> Unmanaged<CFTypeRef>
+
+@_silgen_name("SLSWindowIteratorAdvance")
+func SLSWindowIteratorAdvance(_ iterator: CFTypeRef) -> Bool
+
+@_silgen_name("SLSWindowIteratorGetWindowID")
+func SLSWindowIteratorGetWindowID(_ iterator: CFTypeRef) -> CGWindowID
+
+@_silgen_name("SLSWindowIteratorGetParentID")
+func SLSWindowIteratorGetParentID(_ iterator: CFTypeRef) -> CGWindowID
+
 /// returns status of the checkbox in System Preferences > Security & Privacy > Privacy > Screen Recording
 /// returns 1 if checked or 0 if unchecked; also prompts the user the first time if unchecked
 /// the return value will be the same during the app lifetime; it will not reflect the actual status of the checkbox

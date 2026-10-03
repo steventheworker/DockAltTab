@@ -95,6 +95,7 @@ class Windows {
         // workaround: when Preferences > Mission Control > "Displays have separate Spaces" is unchecked,
         // switching between displays doesn't trigger .activeSpaceDidChangeNotification; we get the latest manually
         Spaces.refresh()
+        refreshWindowParents()
         for window in list {
             window.updateSpacesAndScreen()
             refreshIfWindowShouldBeShownToTheUser(window)
@@ -163,6 +164,18 @@ class Windows {
         App.shortcutIndex == dockAltTabShortcutIndex ? .hide : Preferences.showWindowlessApps[App.shortcutIndex]
     }
 
+    /// Refreshes every window's WindowServer parent id from one batched query.
+    /// A parented surface (AppKit sheet / `addChildWindow:` child, e.g. a
+    /// FrameBundle workspace frame) is represented by its parent and must not be
+    /// previewed as its own window. Native tab members stay roots (parent 0).
+    private static func refreshWindowParents() {
+        let wids = list.compactMap { $0.cgWindowId }
+        let parents = CGWindowID.parents(of: wids)
+        for window in list {
+            window.parentWid = window.cgWindowId.flatMap { parents[$0] } ?? 0
+        }
+    }
+
     private static func refreshIfWindowShouldBeShownToTheUser(_ window: Window) {
         let appIsAllowed: Bool
         if DockAltTabMode {
@@ -182,6 +195,7 @@ class Windows {
         }
         window.shouldShowTheUser =
             appIsAllowed &&
+            window.parentWid == 0 &&
             !(!(Preferences.showHiddenWindows[App.shortcutIndex] != .hide) && window.isHidden) &&
             ((effectiveShowWindowlessApps() != .hide && window.isWindowlessApp) ||
                 !window.isWindowlessApp &&
