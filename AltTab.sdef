@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
+ <dictionary title="AltTab Terminology">
+     <suite name="AltTab Scripting Suite" code="atss" description="Standard suite for application communication.">
+         <command name="trigger" code="atssTrig" description="Goes to the next window, without showing Overlay/UI.">
+             <cocoa class="AltTab.TriggerScriptCommand"/>
+         </command>
+         <command name="show" code="atssShow" description="Show all app windows. (Regular AltTab shortcut)">
+             <cocoa class="AltTab.ShowScriptCommand"/>
+          </command>
+         <command name="hide" code="atssHide" description="Hide Overlay/UI.">
+             <cocoa class="AltTab.HideScriptCommand"/>
+         </command>
+         <command name="showApp" code="atssSApp" description="Show specific app windows. (ignores blacklist)">
+             <cocoa class="AltTab.showAppScriptCommand"/>
+             <parameter name="appBID" code="arg1" type="text" optional="no" description="The bundle identifier of the app whose windows you want to show.">
+                 <cocoa key="appBID"/>
+             </parameter>
+             <parameter name="x" code="arg2" type="integer" optional="yes" description="The x-coordinate of the dock icon. Resets on hide. (0,0)">
+                 <cocoa key="x"/>
+             </parameter>
+             <parameter name="y" code="arg3" type="integer" optional="yes" description="The y-coordinate of the dock icon. Resets on hide. (0,0)">
+                 <cocoa key="y"/>
+             </parameter>
+             <parameter name="dockPos" code="arg4" type="text" optional="yes" description="Helps AltTab know where previews will be positioned / clip, (especially for docks on the right (preview 'panel' width is relevant))">
+                 <cocoa key="dockPos"/>
+             </parameter>
+        </command>
+         <command name="countMinimizedWindowsCurrentSpace" code="atssCMWS" description="The number of (minimized) windows for an app (FROM the current space, especially useful for keeping minimized windows contained in the space they were originally minimized in).">
+             <cocoa class="AltTab.countMinimizedWindowsCurrentSpaceScriptCommand"/>
+             <parameter name="appBID" code="arg1" type="text" optional="no" description="The bundle identifier of the app whose windows you want to count.">
+                 <cocoa key="appBID"/>
+             </parameter>
+             <result type="integer" description="integer no. of windows"/>
+        </command>
+         <command name="deminimizeFirstMinimizedWindowFromCurrentSpace" code="atssDMFW" description="Deminimize app's first minimized window originally minimized on the current space.">
+             <cocoa class="AltTab.deminimizeFirstMinimizedWindowFromCurrentSpaceScriptCommand"/>
+             <parameter name="appBID" code="arg1" type="text" optional="no" description="The bundle identifier of the app whose windows you want to deminimize.">
+                 <cocoa key="appBID"/>
+             </parameter>
+         </command>
+         <command name="countWindowStats" code="atssCntW">
+             <cocoa class="AltTab.countWindowStatsScriptCommand"/>
+             <direct-parameter type="text" name="appBID"/>
+             <result type="any"/>
+         </command>
+
+         <command name="countAllWindowStats" code="atssCntA">
+             <cocoa class="AltTab.countAllWindowStatsScriptCommand"/>
+             <result type="any"/>
+         </command>
+
+         <command name="countWindowsCurrentSpace" code="atssCWCS" description="The number of windows for an app (in the current space, especially useful for counting hidden windows (otherwise especially hard to do for the current space)).">
+             <cocoa class="AltTab.countWindowsCurrentSpaceScriptCommand"/>
+             <parameter name="appBID" code="arg1" type="text" optional="no" description="The bundle identifier of the app whose windows you want to count.">
+                 <cocoa key="appBID"/>
+             </parameter>
+             <result type="integer" description="integer no. of windows"/>
+        </command>
+         <command name="countWindows" code="atssCWin" description="The number of windows for an app (in all spaces).">
+             <cocoa class="AltTab.countWindowsScriptCommand"/>
+             <parameter name="appBID" code="arg1" type="text" optional="no" description="The bundle identifier of the app whose windows you want to count.">
+                 <cocoa key="appBID"/>
+             </parameter>
+             <result type="integer" description="integer no. of windows"/>
+        </command>
+         <command name="keyState" code="atssKSta" description="Whether a certain key is being pressed.">
+             <cocoa class="AltTab.keyStateScriptCommand"/>
+             <parameter name="key" code="arg1" type="text" optional="no" description="Name of the key you want to check the state of.">
+                 <cocoa key="key"/>
+             </parameter>
+             <result type="boolean" description="is key pressed?"/>
+        </command>
+         <command name="appSetting" code="atssApSt" description="Read settings applied on showApp previews.">
+             <cocoa class="AltTab.appSettingScriptCommand"/>
+             <parameter name="named" code="arg1" type="text" optional="no" description="Name of the setting. (appsToShow, showHiddenWindows, showFullscreenWindows, showMinimizedWindows, spacesToShow, screensToShow, showTabsAsWindows)">
+                 <cocoa key="named"/>
+             </parameter>
+             <result type="text" description="value of the setting"/>
+        </command>
+         <command name="thumbnailPreview" code="atssThPv" description="Show preview in PreviewPanel.">
+             <cocoa class="AltTab.thumbnailPreviewScriptCommand"/>
+<!--             <parameter name="no" code="arg1" type="text" optional="no" description="Show preview in PreviewPanel no. x">-->
+<!--                 <cocoa key="no"/>-->
+<!--             </parameter>-->
+        </command>
+         <command name="repositionThumbnails" code="atssRpTh" description="Reposition the main view. {x, y} being the center of the dock icon (that caused the preview)">
+             <cocoa class="AltTab.repositionThumbnailsScriptCommand"/>
+             <direct-parameter type="list of number" name="position"/>
+         </command>
+     </suite>
+ </dictionary>

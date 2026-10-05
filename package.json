@@ -1,0 +1,57 @@
+{
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/steventheworker/alt-tab-macos.git"
+	},
+	"private": true,
+	"name": "alt-tab-macos",
+	"version": "1.0.0",
+	"author": "",
+	"license": "MIT",
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.swift": [
+			"node scripts/swiftformat.js --lint"
+		]
+	},
+	"scripts": {
+		"format": "node scripts/swiftformat.js",
+		"format:check": "node scripts/swiftformat.js --lint"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^8.1.0",
+		"@commitlint/config-conventional": "^8.1.0",
+		"@semantic-release/changelog": "^3.0.4",
+		"@semantic-release/git": "^7.0.16",
+		"fontkit": "^1.8.0",
+		"glob": "^10.0.0",
+		"husky": "^3.0.4",
+		"lint-staged": "^13.0.0",
+		"marked": "^0.8.0",
+		"semantic-release": "^15.13.24"
+	},
+	"release": {
+		"branches": [
+			"scriptable"
+		],
+		"plugins": [
+			"@semantic-release/commit-analyzer",
+			"@semantic-release/release-notes-generator",
+			"@semantic-release/changelog",
+			"@semantic-release/git"
+		]
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"dependencies": {
+		"@types/node": "^22.10.2",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.7.2"
+	}
+}

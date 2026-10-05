@@ -1,16 +1,49 @@
 PODS:
-  - Sparkle (2.4.2)
+  - AppCenter/Core (4.3.0)
+  - AppCenter/Crashes (4.3.0):
+    - AppCenter/Core
+  - LetsMove (1.24)
+  - ShortcutRecorder (3.1)
+  - Sparkle (1.24.0)
+  - SwiftyBeaver (1.9.0)
 
 DEPENDENCIES:
-  - Sparkle
+  - AppCenter/Crashes (= 4.3.0)
+  - LetsMove (from `https://github.com/lwouis/LetsMove.git`, commit `7abf4daed1a25218f2b52f2dfd190aee5a50071c`)
+  - ShortcutRecorder (from `https://github.com/lwouis/ShortcutRecorder.git`, branch `alt-tab-current`)
+  - Sparkle (from `https://raw.githubusercontent.com/lwouis/Sparkle/fix-iframe-popup-1.24/Sparkle.podspec`)
+  - SwiftyBeaver (= 1.9.0)
 
 SPEC REPOS:
   trunk:
-    - Sparkle
+    - AppCenter
+    - SwiftyBeaver
+
+EXTERNAL SOURCES:
+  LetsMove:
+    :commit: 7abf4daed1a25218f2b52f2dfd190aee5a50071c
+    :git: https://github.com/lwouis/LetsMove.git
+  ShortcutRecorder:
+    :branch: alt-tab-current
+    :git: https://github.com/lwouis/ShortcutRecorder.git
+  Sparkle:
+    :podspec: https://raw.githubusercontent.com/lwouis/Sparkle/fix-iframe-popup-1.24/Sparkle.podspec
+
+CHECKOUT OPTIONS:
+  LetsMove:
+    :commit: 7abf4daed1a25218f2b52f2dfd190aee5a50071c
+    :git: https://github.com/lwouis/LetsMove.git
+  ShortcutRecorder:
+    :commit: 5bb32febdab48038ce1762bf14f5ce8024b11fe7
+    :git: https://github.com/lwouis/ShortcutRecorder.git
 
 SPEC CHECKSUMS:
-  Sparkle: 5ef7097e655c60f4aeb23fd1658fc3e8dd50f4ec
+  AppCenter: 883369ab78427b0561c688158d689dfe1f993ea9
+  LetsMove: fefe56bc7bc7fb7d37049e28a14f297961229fc5
+  ShortcutRecorder: fdf620aca34101b0cba3b10fca815e0459254189
+  Sparkle: 1fa490bb4ab2a9b37cfb9ea4feec19dd33b81cd2
+  SwiftyBeaver: d39e7c376bf15e9fffca8263b8fd1f42ea56aa2d
 
-PODFILE CHECKSUM: 6c29c404013e988288ea21fe027a9ba1e4c7cb21
+PODFILE CHECKSUM: aa75d205f0ad11974024e111d7fff313b55e6f93
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.16.2

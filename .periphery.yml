@@ -1,0 +1,6 @@
+project: alt-tab-macos.xcworkspace
+schemes:
+- Release
+index_exclude:
+  - Pods/**
+  - src/api-wrappers/private-apis/**

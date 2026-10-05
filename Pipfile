@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+fonttools = "==4.8.1"
+googletrans = "==3.0.0"
+
+[requires]
+python_version = "3.6"
+
+[scripts]
+font2png = "scripts/convert_font_to_png.sh"
+translate = "python scripts/l10n/google_translate_all_terms_locally.py resources/l10n --retry_translate"
