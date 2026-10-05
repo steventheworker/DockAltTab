@@ -169,7 +169,11 @@ ARCHIVE_BUILD=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$INFO_PLIST
 }
 
 printf 'Creating ZIP:\n  %s\n' "$ZIP_PATH"
-ditto -c -k --keepParent "$APP_PATH" "$ZIP_PATH"
+# --norsrc/--noextattr keep AppleDouble (._*) sidecar files out of the ZIP.
+# Without them, tools other than Archive Utility extract ._* files into the
+# bundle, which breaks the code seal and makes macOS report the app as
+# "damaged" instead of the usual unnotarized warning.
+ditto -c -k --keepParent --norsrc --noextattr "$APP_PATH" "$ZIP_PATH"
 
 printf '\nRelease archive ready:\n  version: %s\n  build:   %s\n  app:     %s\n  ZIP:     %s\n\nNext step (publish the ZIP that was just built):\n  cd "%s"\n  scripts/publish-release.sh %s "%s" --build-version %s --generate-notes --tag --push-site --create-release\n\nOr, next time, run the wrapper instead so it does both steps:\n  scripts/deploy.sh %s\n' \
     "$NEW_VERSION" "$NEW_BUILD" "$APP_PATH" "$ZIP_PATH" \
