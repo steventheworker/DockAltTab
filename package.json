@@ -35,17 +35,6 @@
 		"marked": "^0.8.0",
 		"semantic-release": "^15.13.24"
 	},
-	"release": {
-		"branches": [
-			"scriptable"
-		],
-		"plugins": [
-			"@semantic-release/commit-analyzer",
-			"@semantic-release/release-notes-generator",
-			"@semantic-release/changelog",
-			"@semantic-release/git"
-		]
-	},
 	"engines": {
 		"node": ">=18.0.0"
 	},
