@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/Users/lwouis/git/alt-tab-macos/DerivedData/Build/Products/Debug/AltTab.app/Contents/MacOS/AltTab --logs=debug --benchmark showUi 3
+/Users/super/Library/Developer/Xcode/DerivedData/alt-tab-macos-bxcqeldtlrhaaibcbcoxrmwqmghq/Build/Products/Debug/DockAltTab.app/Contents/MacOS/DockAltTab --logs=debug --benchmark showUi 3
