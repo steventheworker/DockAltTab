@@ -51,7 +51,7 @@ if [ "$#" -eq 1 ] && { [ "$1" = "-h" ] || [ "$1" = "--help" ]; }; then
 fi
 
 IDENTITY=$(security find-identity -v -p codesigning 2>/dev/null \
-    | sed -n 's/.*"\(Developer ID Application: .*\)"/\1/p' | head -1)
+    | sed -n 's/.*"\(Developer ID Application: .*\)"/\1/p')
 if [ -z "$IDENTITY" ] && [ "$SKIP_NOTARIZE" -eq 0 ]; then
     echo "error: no \"Developer ID Application\" identity in the keychain." >&2
     echo "       Run: security find-identity -v -p codesigning" >&2
@@ -216,11 +216,15 @@ ARCHIVE_BUILD=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$INFO_PLIST
     exit 1
 }
 
-if ! codesign -dv --verbose=2 "$APP_PATH" 2>&1 | grep -q "Authority=Developer ID Application"; then
-    echo "error: exported app is not signed with a Developer ID identity" >&2
-    codesign -dv --verbose=2 "$APP_PATH" 2>&1 | sed 's/^/  /' >&2
-    exit 1
-fi
+SIGN_OUTPUT=$(codesign -dv --verbose=2 "$APP_PATH" 2>&1 || true)
+case "$SIGN_OUTPUT" in
+    *"Authority=Developer ID Application"*) ;;
+    *)
+        echo "error: exported app is not signed with a Developer ID identity" >&2
+        printf '%s\n' "$SIGN_OUTPUT" | sed 's/^/  /' >&2
+        exit 1
+        ;;
+esac
 
 if [ "$SKIP_NOTARIZE" -eq 0 ]; then
     printf 'Notarizing (profile: %s)...\n' "$NOTARY_PROFILE"
