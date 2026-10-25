@@ -2,8 +2,6 @@ import Cocoa
 import ApplicationServices
 
 // private Dock APIs, same ones the original DockAltTab used (Boolean == UInt8)
-@_silgen_name("CoreDockGetAutoHideEnabled")
-private func CoreDockGetAutoHideEnabled() -> UInt8
 @_silgen_name("CoreDockSetAutoHideEnabled")
 private func CoreDockSetAutoHideEnabled(_ flag: UInt8)
 
@@ -21,6 +19,9 @@ class DockAltTab {
     private static var dockPid: pid_t = 0
     private static var dockPos = "bottom"
     private static var dockAutohide = false
+    /// Whether *we* turned auto-hide off to keep the Dock on screen. `CoreDockSetAutoHideEnabled` writes the
+    /// Dock's `autohide` pref, so the pref can't be trusted to describe the user's setting until we undo it.
+    private static var autohideSuppressed = false
     private static var dockMagnification = false
     private static var dockMagnificationSize = 16
 
@@ -80,7 +81,7 @@ class DockAltTab {
     static func refreshDockState() {
         dockPid = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.dock").first?.processIdentifier ?? 0
         dockPos = (dockPref("orientation") as? String) ?? dockPos
-        dockAutohide = (dockPref("autohide") as? NSNumber)?.boolValue ?? dockAutohide
+        if !autohideSuppressed { dockAutohide = (dockPref("autohide") as? NSNumber)?.boolValue ?? dockAutohide }
         dockMagnification = (dockPref("magnification") as? NSNumber)?.boolValue ?? dockMagnification
         dockMagnificationSize = (dockPref("largesize") as? NSNumber)?.intValue ?? dockMagnificationSize
     }
@@ -265,9 +266,7 @@ class DockAltTab {
     private static func handlePreviewHover(_ element: AXUIElement) {
         cancelHide()
         guard DockAltTabMode else { return }
-        if DockAltTabPreferences.keepDockShowing && dockAutohide && CoreDockGetAutoHideEnabled() != 0 {
-            CoreDockSetAutoHideEnabled(0)
-        }
+        ensureDockShowing()
         guard DockAltTabPreferences.thumbnailPreviewsEnabled else { return }
         guard let attrs = try? element.attributes([kAXRoleAttribute, kAXSubroleAttribute, kAXChildrenAttribute]),
               let role = attrs.role else { return }
@@ -291,7 +290,7 @@ class DockAltTab {
         cancelShow()
         hoveredAppBid = nil
         hoveredIcon = nil
-        guard DockAltTabMode else { isPreviewShowing = false; return }
+        guard DockAltTabMode else { isPreviewShowing = false; restoreDockAutohide(); return }
         cancelHide()
         let work = DispatchWorkItem { hidePreview() }
         hideWork = work
@@ -392,19 +391,21 @@ class DockAltTab {
         cancelShow()
         cancelThumbnail()
         previewTarget = nil
+        restoreDockAutohide()
         guard DockAltTabMode else { isPreviewShowing = false; return }
         isPreviewShowing = false
         DockAltTabHide()
-        restoreDockAutohide()
     }
 
     private static func ensureDockShowing() {
-        guard DockAltTabPreferences.keepDockShowing, dockAutohide else { return }
+        guard DockAltTabPreferences.keepDockShowing, dockAutohide, !autohideSuppressed else { return }
+        autohideSuppressed = true
         CoreDockSetAutoHideEnabled(0)
     }
 
     private static func restoreDockAutohide() {
-        guard dockAutohide, CoreDockGetAutoHideEnabled() == 0 else { return }
+        guard autohideSuppressed else { return }
+        autohideSuppressed = false
         CoreDockSetAutoHideEnabled(1)
     }
 
