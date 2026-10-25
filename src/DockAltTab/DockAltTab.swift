@@ -28,6 +28,8 @@ class DockAltTab {
     private static var hoveredIcon: AXUIElement?
     private static var previewTarget: AXUIElement?
     private static var showWork: DispatchWorkItem?
+    private static var settleWork: DispatchWorkItem?
+    private static var settleGeneration = 0
     private static var hideWork: DispatchWorkItem?
     private static var thumbnailWork: DispatchWorkItem?
     private static var pendingMouseLocation: CGPoint?
@@ -164,13 +166,11 @@ class DockAltTab {
             hidePreview()
             return
         }
-        guard let bid = app.bundleIdentifier,
-              let attrs = try? icon.attributes([kAXPositionAttribute, kAXSizeAttribute]),
-              let position = attrs.position, let size = attrs.size else { return }
+        guard let bid = app.bundleIdentifier else { return }
+        refreshDockState()
+        guard let (x, y) = iconPreviewPosition(icon) else { return }
         previewTarget = nil
         cancelThumbnail()
-        refreshDockState()
-        let (x, y) = previewPosition(position, size)
         isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
         if isPreviewShowing { ensureDockShowing(); trackPreviewPosition(icon) } else { restoreDockAutohide() }
     }
@@ -301,50 +301,95 @@ class DockAltTab {
     private static func showPreviews(bid: String, icon: AXUIElement) {
         showWork = nil
         guard hoveredAppBid == bid else { return }
-        guard let attrs = try? icon.attributes([kAXPositionAttribute, kAXSizeAttribute]),
-              let position = attrs.position, let size = attrs.size else { return }
         refreshDockState()
+        waitForSettledIconFrame(icon, previousFrame: nil, polls: 0) { frame in
+            guard hoveredAppBid == bid, let frame else { return }
+            showPreviews(bid: bid, icon: icon, frame: frame)
+        }
+    }
+
+    /// A fast pointer can reach an auto-hidden Dock before it has finished sliding in. The icon frame read
+    /// at that moment is stale, so sample it again a tick later and only show once it has stopped moving;
+    /// the panel then appears where it belongs instead of jumping there. Bounded, so a Dock we can't read,
+    /// or an animation that never settles, never ends up blocking the preview.
+    private static func waitForSettledIconFrame(_ icon: AXUIElement, previousFrame: CGRect?, polls: Int, onSettled: @escaping (CGRect?) -> Void) {
+        let generation = settleGeneration
+        guard let frame = iconFrame(icon) else { onSettled(nil); return }
+        guard previousFrame != frame else { onSettled(frame); return }
+        guard polls < settlePollLimit else { onSettled(frame); return }
+        let work = DispatchWorkItem {
+            guard generation == settleGeneration else { return }
+            waitForSettledIconFrame(icon, previousFrame: frame, polls: polls + 1, onSettled: onSettled)
+        }
+        settleWork = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + settlePollInterval, execute: work)
+    }
+
+    private static func showPreviews(bid: String, icon: AXUIElement, frame: CGRect) {
         previewTarget = nil
         cancelThumbnail()
-        let (x, y) = previewPosition(position, size)
+        let (x, y) = previewPosition(frame.origin, frame.size)
         isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
         if isPreviewShowing { ensureDockShowing(); trackPreviewPosition(icon) } else { restoreDockAutohide() }
     }
 
-    /// The Dock magnifies the hovered icon, and shrinks it back once the pointer moves off it. Follow
-    /// the icon's AX frame while the preview is up, but only reposition once it has settled; otherwise
-    /// the panel would jitter along with every frame of the magnification animation.
+    private static let settlePollInterval: TimeInterval = 0.03
+    private static let settlePollLimit = 10
+
+    /// The hovered icon's AX frame keeps moving while the Dock slides in (autohide), or magnifies and
+    /// shrinks back. Follow that frame while the preview is up, but only re-anchor once it has settled;
+    /// otherwise the panel would jitter along with every frame of the animation. Re-anchoring matters even
+    /// with the Dock always visible: a pointer reaching the Dock before it has expanded would otherwise
+    /// leave the panel stuck above a rect the Dock has already left.
     private static func trackPreviewPosition(_ icon: AXUIElement) {
-        guard DockAltTabPreferences.repositionPreviewAfterMagnification else { return }
         repositionTimer?.invalidate()
-        var candidateX: Int?
-        var candidateY: Int?
+        let followsMagnification = DockAltTabPreferences.repositionPreviewAfterMagnification
+        let settleDeadline = Date() + dockSettleTimeout
+        var candidatePosition: (Int, Int)?
         var stableTicks = 0
         repositionTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { timer in
-            guard isPreviewShowing else { timer.invalidate(); repositionTimer = nil; return }
-            guard let attrs = try? icon.attributes([kAXPositionAttribute, kAXSizeAttribute]),
-                  let position = attrs.position, let size = attrs.size else { return }
-            let (x, y) = previewPosition(position, size)
-            if candidateX == x, candidateY == y {
-                stableTicks += 1
-            } else {
-                candidateX = x
-                candidateY = y
-                stableTicks = 0
-                return
-            }
-            guard stableTicks >= 2, DockAltTabFORCEDX != x || DockAltTabFORCEDY != y else { return }
-            DockAltTabFORCEDX = x
-            DockAltTabFORCEDY = y
+            guard isPreviewShowing && (followsMagnification || Date() < settleDeadline) else { stopTrackingPosition(timer); return }
+            guard let position = iconPreviewPosition(icon) else { return }
+            guard let candidate = candidatePosition, candidate == position else { candidatePosition = position; stableTicks = 0; return }
+            stableTicks += 1
+            guard stableTicks >= 2 else { return }
             stableTicks = 0
-            if let panel = TilesPanel.shared, panel.isVisible, DockAltTabMode { panel.screen?.repositionPanel(panel) }
+            reanchorPanel(position)
         }
+    }
+
+    /// How long we keep watching the icon frame when the user only wants magnification followed explicitly.
+    private static let dockSettleTimeout: TimeInterval = 0.8
+
+    private static func iconFrame(_ icon: AXUIElement) -> CGRect? {
+        guard let attrs = try? icon.attributes([kAXPositionAttribute, kAXSizeAttribute]),
+              let position = attrs.position, let size = attrs.size, size.width > 0, size.height > 0 else { return nil }
+        return CGRect(origin: position, size: size)
+    }
+
+    private static func iconPreviewPosition(_ icon: AXUIElement) -> (Int, Int)? {
+        guard let frame = iconFrame(icon) else { return nil }
+        return previewPosition(frame.origin, frame.size)
+    }
+
+    private static func reanchorPanel(_ position: (Int, Int)) {
+        guard DockAltTabFORCEDX != position.0 || DockAltTabFORCEDY != position.1 else { return }
+        DockAltTabFORCEDX = position.0
+        DockAltTabFORCEDY = position.1
+        guard let panel = TilesPanel.shared, panel.isVisible, DockAltTabMode else { return }
+        panel.screen?.repositionPanel(panel)
+    }
+
+    private static func stopTrackingPosition(_ timer: Timer) {
+        timer.invalidate()
+        repositionTimer = nil
     }
 
     private static func hidePreview() {
         hideWork = nil
         repositionTimer?.invalidate()
         repositionTimer = nil
+        cancelShow()
         cancelThumbnail()
         previewTarget = nil
         guard DockAltTabMode else { isPreviewShowing = false; return }
@@ -464,6 +509,9 @@ class DockAltTab {
     private static func cancelShow() {
         showWork?.cancel()
         showWork = nil
+        settleWork?.cancel()
+        settleWork = nil
+        settleGeneration += 1
     }
     private static func cancelHide() {
         hideWork?.cancel()
