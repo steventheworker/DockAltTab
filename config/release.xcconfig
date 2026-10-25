@@ -3,7 +3,10 @@
 #include "Pods/Target Support Files/Pods-alt-tab-macos/Pods-alt-tab-macos.release.xcconfig"
 #include "base.xcconfig"
 
-CODE_SIGN_IDENTITY = Developer ID Application: Louis Pontoise (QXD7GW8FHY)
+// The archive is signed with Apple Development by the target's build settings;
+// scripts/make-release.sh re-signs it with Developer ID during -exportArchive,
+// which is what notarization requires.
+CODE_SIGN_IDENTITY = Developer ID Application: Steven Gonzales (L33QBJT48B)
 CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO // for notarization
 OTHER_CODE_SIGN_FLAGS = --timestamp --deep --options runtime // for notarization
 SWIFT_COMPILATION_MODE = wholemodule

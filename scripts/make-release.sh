@@ -1,4 +1,10 @@
 #!/bin/sh
+# Build, export, notarize, and zip a DockAltTab release.
+#
+# The Release configuration archives an Apple Development-signed app (see
+# config/release.xcconfig and the target's CODE_SIGN_IDENTITY). Exporting with
+# method=developer-id re-signs the whole bundle — Xcode, Sparkle helpers, and
+# sub-frameworks — with the Developer ID identity before notarization.
 set -eu
 set -o pipefail
 
@@ -9,6 +15,9 @@ CONFIG_FILE="$ROOT/config/base.xcconfig"
 APP_NAME="DockAltTab"
 DOWNLOADS="$HOME/Downloads"
 WEBSITE_ROOT=${DOCKALTTAB_WEBSITE_ROOT:-"$HOME/proj/web/js/DockAltTab-home"}
+TEAM_ID=${TEAM_ID:-L33QBJT48B}
+NOTARY_PROFILE=${NOTARY_PROFILE:-icloudappspecific}
+SKIP_NOTARIZE=${SKIP_NOTARIZE:-0}
 
 usage() {
     cat <<'EOF'
@@ -19,8 +28,14 @@ Usage:
   scripts/make-release.sh major        Bump the first component (x.yy.z -> (x+1).00.0).
   scripts/make-release.sh NUMBER       Set the first component (NUMBER.00.0).
 
+Environment:
+  TEAM_ID              Apple team id (default: L33QBJT48B)
+  NOTARY_PROFILE       notarytool keychain profile (default: icloudappspecific)
+  SKIP_NOTARIZE=1      export and zip without notarizing (local testing only)
+
 The script updates MARKETING_VERSION/CURRENT_PROJECT_VERSION in config/base.xcconfig,
-archives the Release arm64 application using the Release scheme, and creates:
+archives the Release arm64 application using the Release scheme, exports it with
+a Developer ID identity, notarizes and staples it, and creates:
 
   ~/Downloads/DockAltTab-vVERSION.zip
 
@@ -33,6 +48,14 @@ EOF
 [ "$#" -le 1 ] || usage
 if [ "$#" -eq 1 ] && { [ "$1" = "-h" ] || [ "$1" = "--help" ]; }; then
     usage
+fi
+
+IDENTITY=$(security find-identity -v -p codesigning 2>/dev/null \
+    | sed -n 's/.*"\(Developer ID Application: .*\)"/\1/p' | head -1)
+if [ -z "$IDENTITY" ] && [ "$SKIP_NOTARIZE" -eq 0 ]; then
+    echo "error: no \"Developer ID Application\" identity in the keychain." >&2
+    echo "       Run: security find-identity -v -p codesigning" >&2
+    exit 1
 fi
 
 BUILD_SETTINGS=$(xcodebuild \
@@ -133,12 +156,16 @@ if f"MARKETING_VERSION = {old_version}" in text:
 path.write_text(text)
 PY
 
+WORK=$(mktemp -d "${TMPDIR:-/tmp}/dockalttab-release.XXXXXX")
+trap 'rm -rf "$WORK"' EXIT
+
 ARCHIVE_DATE=$(date +%Y-%m-%d)
 ARCHIVE_STAMP=$(date +%H.%M.%S)
 ARCHIVE_DIR="$HOME/Library/Developer/Xcode/Archives/$ARCHIVE_DATE"
 ARCHIVE_PATH="$ARCHIVE_DIR/$APP_NAME $NEW_VERSION $ARCHIVE_STAMP.xcarchive"
+EXPORT_DIR="$WORK/export"
 ZIP_PATH="$DOWNLOADS/DockAltTab-v$NEW_VERSION.zip"
-mkdir -p "$ARCHIVE_DIR" "$DOWNLOADS"
+mkdir -p "$ARCHIVE_DIR" "$EXPORT_DIR" "$DOWNLOADS"
 rm -f "$ZIP_PATH"
 
 printf 'Archiving to:\n  %s\n' "$ARCHIVE_PATH"
@@ -149,9 +176,30 @@ xcodebuild \
     -archivePath "$ARCHIVE_PATH" \
     archive
 
-APP_PATH="$ARCHIVE_PATH/Products/Applications/$APP_NAME.app"
+cat > "$WORK/ExportOptions.plist" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>method</key>
+    <string>developer-id</string>
+    <key>signingStyle</key>
+    <string>automatic</string>
+    <key>teamID</key>
+    <string>$TEAM_ID</string>
+    <key>destination</key>
+    <string>export</string>
+</dict>
+</plist>
+EOF
+
+printf 'Exporting with a Developer ID identity (team %s)...\n' "$TEAM_ID"
+xcodebuild -exportArchive -archivePath "$ARCHIVE_PATH" \
+    -exportPath "$EXPORT_DIR" -exportOptionsPlist "$WORK/ExportOptions.plist"
+
+APP_PATH="$EXPORT_DIR/$APP_NAME.app"
 if [ ! -d "$APP_PATH" ]; then
-    echo "error: archived app was not found:" >&2
+    echo "error: exported app was not found:" >&2
     echo "  $APP_PATH" >&2
     exit 1
 fi
@@ -160,13 +208,33 @@ INFO_PLIST="$APP_PATH/Contents/Info.plist"
 ARCHIVE_VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$INFO_PLIST")
 ARCHIVE_BUILD=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$INFO_PLIST")
 [ "$ARCHIVE_VERSION" = "$NEW_VERSION" ] || {
-    echo "error: archived app version is $ARCHIVE_VERSION, expected $NEW_VERSION" >&2
+    echo "error: exported app version is $ARCHIVE_VERSION, expected $NEW_VERSION" >&2
     exit 1
 }
 [ "$ARCHIVE_BUILD" = "$NEW_BUILD" ] || {
-    echo "error: archived app build is $ARCHIVE_BUILD, expected $NEW_BUILD" >&2
+    echo "error: exported app build is $ARCHIVE_BUILD, expected $NEW_BUILD" >&2
     exit 1
 }
+
+if ! codesign -dv --verbose=2 "$APP_PATH" 2>&1 | grep -q "Authority=Developer ID Application"; then
+    echo "error: exported app is not signed with a Developer ID identity" >&2
+    codesign -dv --verbose=2 "$APP_PATH" 2>&1 | sed 's/^/  /' >&2
+    exit 1
+fi
+
+if [ "$SKIP_NOTARIZE" -eq 0 ]; then
+    printf 'Notarizing (profile: %s)...\n' "$NOTARY_PROFILE"
+    ditto -c -k --keepParent "$APP_PATH" "$WORK/notarize.zip"
+    xcrun notarytool submit "$WORK/notarize.zip" \
+        --keychain-profile "$NOTARY_PROFILE" --wait
+    xcrun stapler staple "$APP_PATH"
+    xcrun stapler validate "$APP_PATH"
+    spctl -a -vvv -t exec "$APP_PATH" || {
+        echo "warning: Gatekeeper assessment failed after stapling" >&2
+    }
+else
+    echo "Skipping notarization (SKIP_NOTARIZE=1)."
+fi
 
 printf 'Creating ZIP:\n  %s\n' "$ZIP_PATH"
 # --norsrc/--noextattr keep AppleDouble (._*) sidecar files out of the ZIP.
