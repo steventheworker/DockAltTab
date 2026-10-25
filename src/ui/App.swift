@@ -92,7 +92,6 @@ class App: AppCenterApplication {
         PermissionsWindow.canBecomeKey_ = canBecomeKey_
         FeedbackWindow.canBecomeKey_ = canBecomeKey_
         DebugWindow.canBecomeKey_ = canBecomeKey_
-        DockAltTabPreferencesWindow.canBecomeKey_ = canBecomeKey_
     }
 
     static func closeSelectedWindow() {
@@ -175,12 +174,6 @@ class App: AppCenterApplication {
             showSecondaryWindow(window)
             window.orderFrontRegardless()
         }
-    }
-
-    @objc static func showDockAltTabPreferences() {
-        if DockAltTabPreferencesWindow.shared == nil { DockAltTabPreferencesWindow.shared = DockAltTabPreferencesWindow() }
-        DockAltTabPreferencesWindow.shared?.render()
-        showSecondaryWindow(DockAltTabPreferencesWindow.shared!)
     }
 
     @objc static func showAboutWindow() {

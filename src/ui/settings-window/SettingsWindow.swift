@@ -710,6 +710,7 @@ class SettingsWindow: NSWindow {
 
     private func sectionDefinitions() -> [SettingsSectionDefinition] {
         [
+            SettingsSectionDefinition(id: "dockalttab", title: NSLocalizedString("DockAltTab", comment: ""), imageName: "general", systemSymbolName: "rectangle.on.rectangle", view: DockAltTabTab.initTab()),
             SettingsSectionDefinition(id: "appearance", title: NSLocalizedString("Appearance", comment: ""), imageName: "appearance", systemSymbolName: "paintpalette", view: AppearanceTab.initTab()),
             SettingsSectionDefinition(id: "controls", title: NSLocalizedString("Controls", comment: ""), imageName: "controls", systemSymbolName: "command", view: ControlsTab.initTab()),
             SettingsSectionDefinition(id: "general", title: NSLocalizedString("General", comment: ""), imageName: "general", systemSymbolName: "gearshape", view: GeneralTab.initTab()),
@@ -1180,6 +1181,7 @@ class SettingsWindow: NSWindow {
 
     private func refreshControlsFromSettings() {
         GeneralTab.refreshControlsFromPreferences()
+        DockAltTabTab.refreshControlsFromPreferences()
     }
 
     func beginSheetWithSearchHighlight(_ sheet: SheetWindow) {
