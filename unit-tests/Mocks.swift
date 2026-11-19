@@ -111,6 +111,7 @@ class Logger {
 }
 
 class Preferences {
+    static var screenRecordingPermissionSkipped = false
     static var shortcutStyle: ShortcutStylePreference = .focusOnRelease
     static var holdShortcut = ["⌥", "⌥", "⌥"]
     static let minShortcutCount = 1

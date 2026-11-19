@@ -105,11 +105,17 @@ class Windows {
         return true
     }
 
+    static func clearThumbnails() {
+        list.forEach { $0.thumbnail = nil }
+        PreviewPanel.shared?.orderOut(nil)
+        if App.appIsBeingUsed { App.refreshUi() }
+    }
+
     // dispatch screenshot requests off the main-thread, then wait for completion
     static func refreshThumbnailsAsync(_ windows: [Window], _ source: RefreshCausedBy, windowRemoved: Bool = false) {
         guard (!windows.isEmpty || windowRemoved) && ScreenRecordingPermission.status == .granted
                && !Preferences.onlyShowApplications()
-               && (!Appearance.hideThumbnails || (Preferences.previewSelectedWindow || DockAltTabWaitForWindow == windows[0].cgWindowId))
+               && (!Appearance.hideThumbnails || (Preferences.previewSelectedWindow || DockAltTabWaitForWindow == windows.first?.cgWindowId))
                && (Preferences.captureWindowsInBackground || App.appIsBeingUsed) else { return }
         var eligibleWindows = [Window]()
         for window in windows {

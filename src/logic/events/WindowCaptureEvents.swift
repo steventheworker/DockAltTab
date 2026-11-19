@@ -26,7 +26,7 @@ class WindowCaptureScreenshots {
     }
 
     private static func handleNotCachedWindows(_ notCachedWindows: [CGWindowID], _ source: RefreshCausedBy) {
-        guard !notCachedWindows.isEmpty else { return }
+        guard !App.isTerminating && !notCachedWindows.isEmpty && ScreenRecordingPermission.canCapture else { return }
         SCShareableContent.getExcludingDesktopWindows(true, onScreenWindowsOnly: false) { shareableContent, error in
             guard let shareableContent, error == nil else { Logger.error { "\(shareableContent == nil) \(error)" }; return }
             guard source != .refreshOnlyThumbnailsAfterShowUi || App.appIsBeingUsed else { return }
@@ -59,7 +59,8 @@ class WindowCaptureScreenshots {
     }
 
     private static func oneTimeCapture(_ scWindow: SCWindow, _ source: RefreshCausedBy) {
-        guard !App.isTerminating, let window = (Windows.list.first { $0.cgWindowId == scWindow.windowID }), window.size != nil else { return }
+        guard !App.isTerminating && ScreenRecordingPermission.canCapture,
+              let window = (Windows.list.first { $0.cgWindowId == scWindow.windowID }), window.size != nil else { return }
         let config = SCStreamConfiguration.forWindow(scWindow, window, false)
         let filter = SCContentFilter(desktopIndependentWindow: scWindow)
         ActiveWindowCaptures.increment()
@@ -95,7 +96,7 @@ class WindowCaptureScreenshotsPrivateApi {
     }
 
     private static func oneTimeCapture(_ wid: CGWindowID) -> CGImage? {
-        guard !App.isTerminating else { return nil }
+        guard !App.isTerminating && ScreenRecordingPermission.canCapture else { return nil }
         // we use CGSHWCaptureWindowList because it can screenshot minimized windows, which CGWindowListCreateImage can't
         var windowId_ = wid
         ActiveWindowCaptures.increment()

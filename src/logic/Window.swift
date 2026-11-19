@@ -117,6 +117,7 @@ class Window {
     }
 
     func refreshThumbnail(_ screenshot: CALayerContents) {
+        guard ScreenRecordingPermission.status == .granted else { return }
         thumbnail = screenshot
         if cgWindowId == DockAltTabWaitForWindow {} else {
             if !App.appIsBeingUsed || !shouldShowTheUser { return }

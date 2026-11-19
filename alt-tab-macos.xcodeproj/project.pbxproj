@@ -17,6 +17,7 @@
 		BF0C8F9B8014AD21E68B1349 /* src/api-wrappers/HelperExtensionsTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C810FA0F6BC70E5886E11 /* src/api-wrappers/HelperExtensionsTestable.swift */; };
 		BF49DF3428355372004517BD /* DockAltTab.sdef in Resources */ = {isa = PBXBuildFile; fileRef = BF49DF3328355372004517BD /* DockAltTab.sdef */; };
 		F00DCAFE0000000000001103 /* src/logic/search/SearchTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000003 /* src/logic/search/SearchTestable.swift */; };
+		F00DCAFE0000000000001104 /* src/logic/ScreenRecordingPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000004 /* src/logic/ScreenRecordingPermission.swift */; };
 		D04BA69012A483201B375D46 /* acknowledgments.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BAADF01EB8FF8A15AECC6 /* acknowledgments.md */; };
 		D04BA530F00E5989D66C6A1F /* contributors.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BA812B8DCB915B8F4B915 /* contributors.md */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		D04BAF6F617FCA44D1F75B60 /* alt_tab_macos.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = alt_tab_macos.entitlements; sourceTree = "<group>"; };
 		E20104DD2C3DE10E7CCC5B5A /* Pods-unit-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unit-tests.release.xcconfig"; path = "Target Support Files/Pods-unit-tests/Pods-unit-tests.release.xcconfig"; sourceTree = "<group>"; };
 		F00DCAFE0000000000000003 /* src/logic/search/SearchTestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = src/logic/search/SearchTestable.swift; sourceTree = SOURCE_ROOT; };
+		F00DCAFE0000000000000004 /* src/logic/ScreenRecordingPermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = src/logic/ScreenRecordingPermission.swift; sourceTree = SOURCE_ROOT; };
 		D04BAADF01EB8FF8A15AECC6 /* acknowledgments.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "docs/acknowledgments.md"; sourceTree = SOURCE_ROOT; };
 		D04BA812B8DCB915B8F4B915 /* contributors.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "docs/contributors.md"; sourceTree = SOURCE_ROOT; };
 
@@ -147,6 +149,7 @@
 				BF0C810FA0F6BC70E5886E11 /* src/api-wrappers/HelperExtensionsTestable.swift */,
 				BF0C8643F524515224BF1618 /* src/logic/events/KeyboardEventsTestable.swift */,
 				F00DCAFE0000000000000003 /* src/logic/search/SearchTestable.swift */,
+				F00DCAFE0000000000000004 /* src/logic/ScreenRecordingPermission.swift */,
 				D04BA1232AFEEFE90D5CC827 /* config/debug.xcconfig */,
 				D04BA62D5EACAAAD7BCD3E79 /* config/release.xcconfig */,
 				BF0C8645B4CD1B11FABEF027 /* config/test-debug.xcconfig */,
@@ -479,6 +482,7 @@
 				BF0C8F9B8014AD21E68B1349 /* src/api-wrappers/HelperExtensionsTestable.swift in Sources */,
 				BF0C8C5FA4B401A8C0F75B7A /* src/logic/events/KeyboardEventsTestable.swift in Sources */,
 				F00DCAFE0000000000001103 /* src/logic/search/SearchTestable.swift in Sources */,
+				F00DCAFE0000000000001104 /* src/logic/ScreenRecordingPermission.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

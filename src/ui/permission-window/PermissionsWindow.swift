@@ -55,7 +55,7 @@ class PermissionsWindow: NSWindow {
             NSLocalizedString("Accessibility", comment: ""),
             NSLocalizedString("This permission is needed to focus windows after you release the shortcut", comment: ""),
             NSLocalizedString("Open Accessibility Settings…", comment: ""),
-            "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility",
+            { NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!) },
         )
         var rows = [
             [header],
@@ -65,9 +65,10 @@ class PermissionsWindow: NSWindow {
             Self.screenRecordingView = PermissionView(
                 "screen-recording",
                 NSLocalizedString("Screen Recording", comment: ""),
-                NSLocalizedString("This permission is needed to show thumbnails and preview of open windows", comment: ""),
+                NSLocalizedString("This permission is needed to show thumbnails and preview of open windows", comment: "") + "\n" +
+                    NSLocalizedString("After granting this permission, quit and reopen DockAltTab if it still shows as not allowed.", comment: ""),
                 NSLocalizedString("Open Screen Recording Settings…", comment: ""),
-                "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture",
+                Self.openScreenRecordingSettings,
                 StackView(LabelAndControl.makeLabelWithCheckbox(NSLocalizedString("Use the app without this permission. Thumbnails won’t show.", comment: ""), "screenRecordingPermissionSkipped", labelPosition: .right))
             )
             rows.append([Self.screenRecordingView])
@@ -78,6 +79,15 @@ class PermissionsWindow: NSWindow {
         view.fit()
         setContentSize(view.fittingSize)
         contentView = view
+    }
+
+    private static func openScreenRecordingSettings() {
+        BackgroundWork.permissionsSystemCallsQueue.addOperation {
+            ScreenRecordingPermission.request()
+            DispatchQueue.main.async {
+                NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")!)
+            }
+        }
     }
 
     override func close() {

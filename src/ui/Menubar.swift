@@ -108,8 +108,8 @@ class PermissionCallout: StackView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.attributedTitle = NSAttributedString(string: NSLocalizedString("Grant permission", comment: "Menubar callout button"), attributes: [NSAttributedString.Key.foregroundColor: NSColor.white])
         button.onAction = { _ in
-            Preferences.remove("screenRecordingPermissionSkipped")
-            App.restart()
+            Menubar.menu.cancelTracking()
+            App.showPermissionsWindow()
         }
         self.init([label, button], .vertical, true, top: 8, right: 15, bottom: 10, left: 15)
         wantsLayer = true
