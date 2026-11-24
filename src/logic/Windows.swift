@@ -124,6 +124,8 @@ class Windows {
             }
         }
         guard (!eligibleWindows.isEmpty || windowRemoved) else { return }
+        eligibleWindows = WindowCaptureExclusion.eligibleWindows(eligibleWindows)
+        guard (!eligibleWindows.isEmpty || windowRemoved) else { return }
         if #available(macOS 14.0, *),
            // mitigate macOS 15 bugs with ScreenCapture Kit (see https://github.com/lwouis/alt-tab-macos/issues/5190)
            ProcessInfo.processInfo.operatingSystemVersion.majorVersion != 15 {
@@ -530,10 +532,14 @@ class Windows {
         if let window = (list.first { $0.isEqualRobust(windowAxUiElement, wid) }) {
             // on any window event, we take the opportunity to refresh all window attributes
             window.updateFromAxAttributes(title, size, position, isFullscreen, isMinimized)
+            window.axRole = role
+            window.axSubrole = subrole
             return (window, false)
         }
         guard WindowDiscriminator.isActualWindow(app, wid, level, title, subrole, role, size) else { return (nil, false) }
         let window = Window(windowAxUiElement, app, wid, title, isFullscreen, isMinimized, position, size)
+        window.axRole = role
+        window.axSubrole = subrole
         appendWindow(window)
         return (window, true)
     }

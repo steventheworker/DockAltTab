@@ -38,6 +38,11 @@ class Window {
     var spaceIndexes = [SpaceIndex.max]
     var screenId: ScreenUuid?
     var axUiElement: AXUIElement?
+    var axRole: String?
+    var axSubrole: String?
+    var isSystemAlertCandidate: Bool {
+        parentWid == 0 && axRole == kAXWindowRole && axSubrole == kAXDialogSubrole
+    }
     var application: Application
     var axObserver: AXObserver?
     var rowIndex: Int?
