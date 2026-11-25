@@ -1,21 +1,24 @@
 import ApplicationServices.HIServices.AXRoleConstants
 import CoreGraphics
 
-/// Pure classification for top-level modal alert/dialog windows.
+/// Pure classification for macOS system alert/confirmation surfaces.
 ///
-/// Those surfaces are AX dialog windows at the WindowServer modal-panel layer
-/// (`kCGWindowLayer == 8`), not attached to a parent window. Capturing one with
-/// ScreenCaptureKit blanks it on macOS 27, so it must not be captured. The rule
-/// is not version-gated, so the same windows are excluded on earlier macOS
-/// versions too.
+/// Those surfaces are AX dialog windows at a system alert layer, not attached to
+/// a parent window:
+/// - `kCGModalPanelWindowLevel` (8): AppleScript alerts, Finder confirmations
+/// - `kCGScreenSaverWindowLevel` (1000): the loginwindow Log Out confirmation
 ///
-/// The visible surface is a pair of `CGWindow`s owned by the same process: the
-/// content window above, and a larger, concentric companion window behind it.
-/// The pair is a useful confirmation, but it is deliberately not required:
-/// Finder creates the content window a few milliseconds before its companion is
-/// registered. Requiring the companion allows one capture in that gap, which is
-/// exactly enough to blank the dialog. The companion is still exposed here so
-/// callers can log/verify it.
+/// Capturing one with ScreenCaptureKit blanks it, so it must not be captured.
+///
+/// On macOS 27 the visible surface is a pair of `CGWindow`s owned by the same
+/// process: the content window above, and a larger, concentric companion window
+/// behind it. The pair is a useful confirmation, but it is deliberately not
+/// required:
+/// - Finder creates the content window a few milliseconds before its companion.
+///   Requiring the companion allows one capture in that gap, which is exactly
+///   enough to blank the dialog.
+/// - macOS 26 alerts have no companion at all.
+/// The companion is still exposed here so callers can log/verify it.
 ///
 /// The rule stays narrow: ordinary windows are layer 0, and sheets are attached
 /// to a parent (`parentWid != 0`). If a future macOS changes these properties,
@@ -25,7 +28,6 @@ class WindowCaptureExclusionTestable {
     struct CapturableWindow {
         let wid: CGWindowID
         let pid: pid_t
-        let parentWid: CGWindowID
         let axRole: String?
         let axSubrole: String?
     }
@@ -33,20 +35,24 @@ class WindowCaptureExclusionTestable {
     struct WindowServerWindow {
         let wid: CGWindowID
         let pid: pid_t
+        let parentWid: CGWindowID
         let layer: Int
         let bounds: CGRect
         let onscreen: Bool
     }
 
-    static let modalPanelLevel = CGWindowLevelForKey(.modalPanelWindow)
+    static let systemAlertLayers: Set<Int> = [
+        Int(CGWindowLevelForKey(.modalPanelWindow)),
+        Int(CGWindowLevelForKey(.screenSaverWindow)),
+    ]
     private static let concentricTolerance: CGFloat = 1
 
     static func isSystemAlertContentWindow(_ window: CapturableWindow, _ windows: [WindowServerWindow]) -> Bool {
-        guard window.parentWid == 0,
-              window.axRole == kAXWindowRole,
+        guard window.axRole == kAXWindowRole,
               window.axSubrole == kAXDialogSubrole,
               let content = windows.first(where: { $0.wid == window.wid && $0.pid == window.pid }),
-              content.layer == Int(modalPanelLevel) else { return false }
+              content.parentWid == 0,
+              systemAlertLayers.contains(content.layer) else { return false }
         return true
     }
 

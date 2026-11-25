@@ -18,6 +18,13 @@ class WindowCaptureScreenshots {
         }
     }
 
+    static func invalidate(_ wid: CGWindowID?) {
+        guard let wid else { return }
+        BackgroundWork.screenshotsQueue.addOperation {
+            cachedSCWindows.removeAll { $0.windowID == wid }
+        }
+    }
+
     private static func handleCachedWindows(_ cachedWindows: [SCWindow], _ source: RefreshCausedBy) {
         guard !cachedWindows.isEmpty else { return }
         for cachedWindow in cachedWindows {
@@ -61,7 +68,7 @@ class WindowCaptureScreenshots {
     private static func oneTimeCapture(_ scWindow: SCWindow, _ source: RefreshCausedBy) {
         guard !App.isTerminating && ScreenRecordingPermission.canCapture,
               let window = (Windows.list.first { $0.cgWindowId == scWindow.windowID }), window.size != nil else { return }
-        guard !WindowCaptureExclusion.isSystemAlertContentWindow(window, scWindow.windowLayer) else {
+        guard !WindowCaptureExclusion.isSystemAlertContentWindow(window) else {
             Logger.debug { "not capturing system alert window at capture time: \(window.debugId) layer:\(scWindow.windowLayer)" }
             return
         }
