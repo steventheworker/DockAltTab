@@ -27,6 +27,12 @@ DockAltTab has three interaction styles, selectable in its preferences:
 
 In every mode, a click that DockAltTab acts on is swallowed, so the native Dock cannot also fire a Space switch.
 
+In Windows and Ubuntu mode, DockAltTab also handles clicks with a modifier held (each can be turned off in the settings), instead of letting them reach the Dock:
+
+- **⇧ + click** — ask the app for a new window
+- **⌥ + click** — show the Dock's context menu
+- **⌘ + click** — cycle through the app's windows (skipping minimized ones)
+
 ## Preferences
 
 The menu-bar menu has a **DockAltTab** item (first in the list) that opens the *DockAltTab Preferences* window. It contains the Preview Settings:
@@ -39,6 +45,7 @@ The menu-bar menu has a **DockAltTab** item (first in the list) that opens the *
 - **Reposition preview after dock magnification** — follow the icon while the Dock magnification animation settles
 - **Preview Distance** — gap between the previews and the Dock
 - **Keep dock showing during previews** — keep an auto-hiding Dock visible while previewing
+- **Modifier clicks** — ⇧ new window / ⌥ context menu / ⌘ cycle windows, each togglable
 
 The DockAltTab menu-bar icon (a DockAltTab logo) is the default; the other AltTab icons remain selectable under **Settings → General → Menubar icon**.
 

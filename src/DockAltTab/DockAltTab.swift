@@ -41,9 +41,9 @@ class DockAltTab {
 
     private struct PressedDockIcon {
         let button: Int64
-        let bundleIdentifier: String
         let pid: pid_t
         let icon: AXUIElement
+        let action: DockClickAction
     }
     private static var pressedDockIcon: PressedDockIcon?
 
@@ -117,37 +117,55 @@ class DockAltTab {
     /// avoid the native Dock action and, in particular, an unwanted Space switch).
     private static func handleDockClick(_ type: CGEventType, _ event: CGEvent) -> Bool {
         guard DockAltTabPreviewMode.current.interceptsDockClicks else { return false }
-        guard event.flags.intersection([.maskCommand, .maskAlternate, .maskControl, .maskShift]).isEmpty else { return false }
-        let button: Int64
-        let isDown: Bool
-        switch type {
-            case .leftMouseDown: button = 0; isDown = true
-            case .leftMouseUp: button = 0; isDown = false
-            case .otherMouseDown: button = 2; isDown = true
-            case .otherMouseUp: button = 2; isDown = false
-            default: return false
-        }
-        if isDown {
-            guard let element = elementAtPoint(normalizePointForDockGap(event.location)), (try? element.pid()) == dockPid else { return false }
-            let iconElement = dockIconElement(element)
-            // the Dock's background/bottom gap has no icon: fall back to the icon we were hovering
-            let icon = iconElement ?? hoveredIcon
-            let bid = iconElement.flatMap { appBundleIdentifier(forDockIcon: $0) } ?? (dockItemSubrole(element) == nil ? hoveredAppBid : nil)
-            guard let icon, let bid,
-                  let app = NSRunningApplication.runningApplications(withBundleIdentifier: bid).first,
-                  app.activationPolicy == .regular,
-                  DockAltTabWindowStats(pid: app.processIdentifier).all > 0 else { return false }
-            pressedDockIcon = PressedDockIcon(button: button, bundleIdentifier: bid, pid: app.processIdentifier, icon: icon)
-            if button == 0, let frame = iconFrame(icon) { DockPressHighlight.shared.show(cell: frame) }
+        guard let (button, isDown) = dockClickButton(type) else { return false }
+        if !isDown {
+            guard let pressed = pressedDockIcon, pressed.button == button else { return false }
+            pressedDockIcon = nil
+            performDockClick(pressed, at: event.location)
             return true
         }
-        guard let pressed = pressedDockIcon, pressed.button == button else { return false }
-        pressedDockIcon = nil
-        performDockClick(pressed, button: button)
+        guard let target = dockPressTarget(at: event.location, button: button, flags: event.flags) else { return false }
+        pressedDockIcon = target
+        if button == 0, let frame = iconFrame(target.icon) { DockPressHighlight.shared.show(cell: frame) }
         return true
     }
 
-    private static func performDockClick(_ pressed: PressedDockIcon, button: Int64) {
+    private static func dockClickButton(_ type: CGEventType) -> (Int64, Bool)? {
+        switch type {
+            case .leftMouseDown: return (0, true)
+            case .leftMouseUp: return (0, false)
+            case .otherMouseDown: return (2, true)
+            case .otherMouseUp: return (2, false)
+            default: return nil
+        }
+    }
+
+    /// The press to remember, or nil when it should pass through to the Dock: a non-app item, a
+    /// modifier we don't handle, or a plain click on an app with nothing to preview.
+    private static func dockPressTarget(at location: CGPoint, button: Int64, flags: CGEventFlags) -> PressedDockIcon? {
+        guard let element = elementAtPoint(normalizePointForDockGap(location)), (try? element.pid()) == dockPid else { return nil }
+        let iconElement = dockIconElement(element)
+        // the Dock's background/bottom gap has no icon: fall back to the icon we were hovering
+        let icon = iconElement ?? hoveredIcon
+        let bid = iconElement.flatMap { appBundleIdentifier(forDockIcon: $0) } ?? (dockItemSubrole(element) == nil ? hoveredAppBid : nil)
+        guard let icon, let bid,
+              let app = NSRunningApplication.runningApplications(withBundleIdentifier: bid).first,
+              app.activationPolicy == .regular,
+              let action = dockClickAction(button: button, flags: flags) else { return nil }
+        guard action != .plain || DockAltTabWindowStats(pid: app.processIdentifier).all > 0 else { return nil }
+        return PressedDockIcon(button: button, pid: app.processIdentifier, icon: icon, action: action)
+    }
+
+    private static func performDockClick(_ pressed: PressedDockIcon, at location: CGPoint) {
+        switch pressed.action {
+            case .plain: handlePlainDockClick(pressed)
+            case .cycleWindows: hidePreview(); cycleAppWindows(pid: pressed.pid)
+            case .newWindow: hidePreview(); openNewWindow(pid: pressed.pid)
+            case .contextMenu: hidePreview(); postRightClick(at: location)
+        }
+    }
+
+    private static func handlePlainDockClick(_ pressed: PressedDockIcon) {
         guard let app = NSRunningApplication(processIdentifier: pressed.pid) else { return }
         let stats = DockAltTabWindowStats(pid: pressed.pid)
         // a click on a non-frontmost icon just brings that app forward
@@ -162,7 +180,7 @@ class DockAltTab {
             return
         }
         // Ubuntu: left click with 2+ windows, or middle click with 1+, toggles the preview
-        if button == 2 {
+        if pressed.button == 2 {
             if stats.all >= 1 { togglePreview(app, pressed.icon) }
         } else if stats.all >= 2 {
             togglePreview(app, pressed.icon)
@@ -185,7 +203,7 @@ class DockAltTab {
 
     /// Activating a hidden app directly can trigger a Space switch. Unhiding first and only
     /// activating once it is visible avoids the swoosh (same trick the original DockAltTab used).
-    private static func activateWithoutSpaceSwitch(_ app: NSRunningApplication) {
+    static func activateWithoutSpaceSwitch(_ app: NSRunningApplication) {
         guard app.isHidden else { activateNow(app); return }
         app.unhide()
         waitUntilVisibleThenActivate(app, attempts: 0)

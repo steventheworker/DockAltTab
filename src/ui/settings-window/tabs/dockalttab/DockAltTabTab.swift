@@ -23,6 +23,9 @@ class DockAltTabTab {
     private static var gutterSlider: NSSlider?
     private static var gutterLabel: NSTextField?
     private static var keepDockShowingSwitch: Switch?
+    private static var shiftClickSwitch: Switch?
+    private static var optionClickSwitch: Switch?
+    private static var cmdClickSwitch: Switch?
 
     static func initTab() -> NSView {
         let previewTable = TableGroupView(title: NSLocalizedString("Previews", comment: ""), subTitle: modeSubTitle, width: SettingsWindow.contentWidth)
@@ -47,6 +50,7 @@ class DockAltTabTab {
         keepDockShowingSwitch = addSwitchRow(dockTable, NSLocalizedString("Keep dock showing during previews", comment: ""), NSLocalizedString("Only applies when the dock auto-hides.", comment: ""), DockAltTabPreferences.keepDockShowing) {
             DockAltTabPreferences.keepDockShowing = $0
         }
+        addModifierClickRow(dockTable)
         refreshControlsFromPreferences()
         return TableGroupSetView(originalViews: [previewTable, dockTable], bottomPadding: 0)
     }
@@ -56,6 +60,9 @@ class DockAltTabTab {
         thumbnailEnabledSwitch?.state = DockAltTabPreferences.thumbnailPreviewsEnabled ? .on : .off
         repositionAfterMagnificationSwitch?.state = DockAltTabPreferences.repositionPreviewAfterMagnification ? .on : .off
         keepDockShowingSwitch?.state = DockAltTabPreferences.keepDockShowing ? .on : .off
+        shiftClickSwitch?.state = DockAltTabPreferences.shiftClickOpensNewWindow ? .on : .off
+        optionClickSwitch?.state = DockAltTabPreferences.optionClickShowsContextMenu ? .on : .off
+        cmdClickSwitch?.state = DockAltTabPreferences.cmdClickCyclesWindows ? .on : .off
         showDelaySlider?.doubleValue = DockAltTabPreferences.previewDelay
         hideDelaySlider?.doubleValue = DockAltTabPreferences.previewHideDelay
         thumbnailDelaySlider?.doubleValue = DockAltTabPreferences.thumbnailPreviewDelay
@@ -82,6 +89,45 @@ class DockAltTabTab {
         }
         table.addRow(leftText: title, rightViews: [slider, label], subText: delaySubTitle)
         return (slider, label)
+    }
+
+    private static func addModifierClickRow(_ table: TableGroupView) {
+        let shiftTip = NSLocalizedString("Shift-click a Dock icon to ask the app for a new window.", comment: "")
+        let optionTip = NSLocalizedString("Option-click a Dock icon to show the Dock's context menu instead of hiding the app.", comment: "")
+        let cmdTip = NSLocalizedString("Command-click a Dock icon to cycle through the app's windows.", comment: "")
+        let shift = addModifierToggle(NSLocalizedString("New window ⇧", comment: ""), shiftTip, DockAltTabPreferences.shiftClickOpensNewWindow) {
+            DockAltTabPreferences.shiftClickOpensNewWindow = $0
+        }
+        let option = addModifierToggle(NSLocalizedString("Context menu ⌥", comment: ""), optionTip, DockAltTabPreferences.optionClickShowsContextMenu) {
+            DockAltTabPreferences.optionClickShowsContextMenu = $0
+        }
+        let cmd = addModifierToggle(NSLocalizedString("Cycle windows ⌘", comment: ""), cmdTip, DockAltTabPreferences.cmdClickCyclesWindows) {
+            DockAltTabPreferences.cmdClickCyclesWindows = $0
+        }
+        shiftClickSwitch = shift.0
+        optionClickSwitch = option.0
+        cmdClickSwitch = cmd.0
+        let row = NSStackView(views: [shift.1, option.1, cmd.1])
+        row.orientation = .horizontal
+        row.spacing = 14
+        row.alignment = .centerY
+        table.addRow(leftText: NSLocalizedString("Modifier clicks", comment: ""), rightViews: [row])
+    }
+
+    private static func addModifierToggle(_ title: String, _ toolTip: String, _ value: Bool, _ onChange: @escaping (Bool) -> Void) -> (Switch, NSView) {
+        let control = Switch(value)
+        control.onAction = { sender in
+            onChange((sender as! NSButton).state == .on)
+        }
+        control.toolTip = toolTip
+        let label = NSTextField(labelWithString: title)
+        label.font = .systemFont(ofSize: 11)
+        let group = NSStackView(views: [label, control])
+        group.orientation = .horizontal
+        group.spacing = 5
+        group.alignment = .centerY
+        group.toolTip = toolTip
+        return (control, group)
     }
 
     private static func addGutterRow(_ table: TableGroupView) -> (NSSlider, NSTextField) {

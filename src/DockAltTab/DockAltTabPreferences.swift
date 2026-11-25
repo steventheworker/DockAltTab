@@ -31,6 +31,16 @@ enum DockAltTabPreferences {
     static var repositionPreviewAfterMagnification: Bool {
         get { bool("repositionPreviewAfterMagnification", false) } set { set("repositionPreviewAfterMagnification", newValue) }
     }
+    // modifier-click overrides on Dock icons, same names and defaults as Dock Exposé
+    static var cmdClickCyclesWindows: Bool {
+        get { bool("cmdClickCyclesWindows", true) } set { set("cmdClickCyclesWindows", newValue) }
+    }
+    static var optionClickShowsContextMenu: Bool {
+        get { bool("optionClickShowsContextMenu", true) } set { set("optionClickShowsContextMenu", newValue) }
+    }
+    static var shiftClickOpensNewWindow: Bool {
+        get { bool("shiftClickOpensNewWindow", true) } set { set("shiftClickOpensNewWindow", newValue) }
+    }
 
     // the sliders use a 0-100 scale where 100 == 2 seconds, like the original DockAltTab
     static var previewDelayMs: Int { Int(previewDelay * 20) }
