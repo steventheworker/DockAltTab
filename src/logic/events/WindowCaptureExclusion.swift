@@ -40,9 +40,10 @@ enum WindowCaptureExclusion {
         window.isSystemAlertCandidate && layer == Int(CGWindowLevelForKey(.modalPanelWindow))
     }
 
-    /// macOS 27.2.1 blanks certain system alert/confirmation surfaces after a
-    /// single ScreenCaptureKit window capture. Skip those windows while keeping
-    /// them in `Windows.list` so the switcher and keyboard navigation are intact.
+    /// macOS 27.2.1 blanks certain top-level modal alert/dialog windows after a
+    /// single ScreenCaptureKit window capture. Exclude them on all macOS versions
+    /// while keeping them in `Windows.list` so switcher and keyboard navigation
+    /// stay intact.
     static func eligibleWindows(_ windows: [Window]) -> [Window] {
         guard windows.contains(where: { $0.isSystemAlertCandidate }) else { return windows }
         let snapshot = WindowServerSnapshot()

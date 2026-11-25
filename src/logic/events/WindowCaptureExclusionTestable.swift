@@ -1,11 +1,13 @@
 import ApplicationServices.HIServices.AXRoleConstants
 import CoreGraphics
 
-/// Pure classification for macOS 27 system alert/confirmation surfaces.
+/// Pure classification for top-level modal alert/dialog windows.
 ///
 /// Those surfaces are AX dialog windows at the WindowServer modal-panel layer
 /// (`kCGWindowLayer == 8`), not attached to a parent window. Capturing one with
-/// ScreenCaptureKit blanks it, so it must not be captured.
+/// ScreenCaptureKit blanks it on macOS 27, so it must not be captured. The rule
+/// is not version-gated, so the same windows are excluded on earlier macOS
+/// versions too.
 ///
 /// The visible surface is a pair of `CGWindow`s owned by the same process: the
 /// content window above, and a larger, concentric companion window behind it.

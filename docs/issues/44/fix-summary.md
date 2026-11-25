@@ -4,8 +4,10 @@ Branch: `fix/issue-44-sck-alert-blanking`
 
 ## What changed
 
-DockAltTab now refuses to submit ScreenCaptureKit window captures for macOS 27
-system alert/confirmation surfaces.
+DockAltTab now refuses to submit ScreenCaptureKit window captures for top-level
+modal alert/dialog windows. The exclusion is not version-gated: it applies on
+macOS 26 and earlier as well, not only to the macOS 27 surfaces that exposed
+this blanking bug.
 
 Classification (public APIs only, no bundle-ID list, no new private APIs):
 
@@ -14,13 +16,14 @@ Classification (public APIs only, no bundle-ID list, no new private APIs):
 - no WindowServer parent (`parentWid == 0`, so sheets are not matched)
 - `kCGWindowLayer == kCGModalPanelWindowLevel` (8)
 
-The affected surfaces are pairs of windows: the AX dialog content window and a
-larger, concentric companion window behind it. At rest the companion is exactly
-75 points larger on every side; during the scale-in animation both windows scale
-together. The companion is logged as a confirmation, but it is deliberately not
-required: Finder creates the content window a few milliseconds before the
-companion. Requiring the companion allowed one capture in that gap and blanked
-the Finder Empty Trash dialog during testing.
+On macOS 27, the affected surfaces are pairs of windows: the AX dialog content
+window and a larger, concentric companion window behind it. At rest the
+companion is exactly 75 points larger on every side; during the scale-in
+animation both windows scale together. The companion is logged as a
+confirmation, but it is deliberately not required: Finder creates the content
+window a few milliseconds before the companion. Requiring the companion allowed
+one capture in that gap and blanked the Finder Empty Trash dialog during
+testing.
 
 The exclusion is enforced twice:
 
@@ -177,7 +180,8 @@ would also make the macOS 26/27 behavior diverge unnecessarily.
 - The capture-time guard is on the ScreenCaptureKit backend used by macOS 27.
   The private `CGSHWCaptureWindowList` backend used on macOS 15 and earlier is
   not affected by this macOS 27 bug; the early filter still applies to it.
-- Modal alert/confirmation windows at layer 8 intentionally have no thumbnail.
-  They still appear in the switcher with their app icon.
+- Top-level modal alert/dialog windows at layer 8 intentionally have no
+  thumbnail. They still appear in the switcher with their app icon.
 - This change does not address the separate forced-cast crash at
-  `Screens.swift:115`.
+  `Screens.swift:115`; that is fixed separately by using typed layout rows
+  instead of accessibility-child casts.

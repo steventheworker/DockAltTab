@@ -107,30 +107,33 @@ extension NSScreen {
     }
 
     func repositionPanel(_ window: NSWindow) {
-        let screenFrame = visibleFrame
         let panelFrame = window.frame
-        var x = screenFrame.minX + max(screenFrame.width - panelFrame.width, 0) * 0.5
-        var y = screenFrame.minY + max(screenFrame.height - panelFrame.height, 0) * 0.5
-        if (DockAltTabMode) {
-            let scrollView = TilesPanel.shared.contentView?.accessibilityChildren()?.first as! NSView // thumbnails container
-            let firstThumbnail = scrollView.accessibilityChildren()?.first as! NSView
-            x = CGFloat(DockAltTabFORCEDX) //the center of the dock icon (that caused the preview)
-            y = CGFloat(DockAltTabFORCEDY) //the center of the dock icon (that caused the preview)
-            if (DockAltTabDockPos == "bottom") {
-                x = x - firstThumbnail.frame.size.width / 2 //center the preview
-                //fix clipping
-                if x + panelFrame.width > (screenFrame.width + screenFrame.origin.x) {x = (screenFrame.width + screenFrame.origin.x) - panelFrame.width}
-                if x < screenFrame.origin.x {x = screenFrame.origin.x}
-            }
-            if (DockAltTabDockPos == "left" || DockAltTabDockPos == "right") {
-                y = y - firstThumbnail.frame.size.height / 2 //center the preview
-                //fix clipping
-                if y + panelFrame.height > (screenFrame.height + screenFrame.origin.y) {y = (screenFrame.height + screenFrame.origin.y) - panelFrame.height}
-                if y < screenFrame.origin.y {y = screenFrame.origin.y}
-            }
-            if (DockAltTabDockPos == "right") {x = x - panelFrame.width}
+        let origin = DockAltTabMode ? dockPreviewOrigin(panelFrame) : centeredOrigin(panelFrame)
+        window.setFrameOrigin(origin)
+    }
+
+    private func centeredOrigin(_ panelFrame: NSRect) -> NSPoint {
+        let x = visibleFrame.minX + max(visibleFrame.width - panelFrame.width, 0) * 0.5
+        let y = visibleFrame.minY + max(visibleFrame.height - panelFrame.height, 0) * 0.5
+        return NSPoint(x: x, y: y)
+    }
+
+    private func dockPreviewOrigin(_ panelFrame: NSRect) -> NSPoint {
+        let thumbnailSize = TilesView.rows.first?.first?.frame.size ?? .zero
+        var x = CGFloat(DockAltTabFORCEDX)
+        var y = CGFloat(DockAltTabFORCEDY)
+        if DockAltTabDockPos == "bottom" {
+            x = clamp(x - thumbnailSize.width / 2, visibleFrame.minX, visibleFrame.maxX - panelFrame.width)
         }
-        window.setFrameOrigin(NSPoint(x: x, y: y))
+        if DockAltTabDockPos == "left" || DockAltTabDockPos == "right" {
+            y = clamp(y - thumbnailSize.height / 2, visibleFrame.minY, visibleFrame.maxY - panelFrame.height)
+        }
+        if DockAltTabDockPos == "right" { x -= panelFrame.width }
+        return NSPoint(x: x, y: y)
+    }
+
+    private func clamp(_ value: CGFloat, _ lower: CGFloat, _ upper: CGFloat) -> CGFloat {
+        min(max(value, lower), max(lower, upper))
     }
 }
 
