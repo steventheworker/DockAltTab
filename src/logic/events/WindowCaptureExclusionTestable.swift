@@ -1,14 +1,16 @@
 import ApplicationServices.HIServices.AXRoleConstants
 import CoreGraphics
 
-/// Pure classification for macOS system alert/confirmation surfaces.
+/// Pure classification for top-level system alert/confirmation surfaces.
 ///
 /// Those surfaces are AX dialog windows at a system alert layer, not attached to
 /// a parent window:
 /// - `kCGModalPanelWindowLevel` (8): AppleScript alerts, Finder confirmations
 /// - `kCGScreenSaverWindowLevel` (1000): the loginwindow Log Out confirmation
 ///
-/// Capturing one with ScreenCaptureKit blanks it, so it must not be captured.
+/// Capturing one with ScreenCaptureKit blanks it on macOS 27, so it must not be
+/// captured. The rule is not version-gated, so the same windows are excluded on
+/// earlier macOS versions too.
 ///
 /// On macOS 27 the visible surface is a pair of `CGWindow`s owned by the same
 /// process: the content window above, and a larger, concentric companion window
