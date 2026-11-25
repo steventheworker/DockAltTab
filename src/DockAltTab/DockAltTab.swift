@@ -32,6 +32,8 @@ class DockAltTab {
     private static var settleWork: DispatchWorkItem?
     private static var settleGeneration = 0
     private static var hideWork: DispatchWorkItem?
+    /// A previews-panel show is being prepared or displayed, but the panel is not on screen yet.
+    private static var preparingShow = false
     private static var thumbnailWork: DispatchWorkItem?
     private static var pendingMouseLocation: CGPoint?
     private static var mouseSamplingTimer: Timer?
@@ -170,10 +172,7 @@ class DockAltTab {
         guard let bid = app.bundleIdentifier else { return }
         refreshDockState()
         guard let (x, y) = iconPreviewPosition(icon) else { return }
-        previewTarget = nil
-        cancelThumbnail()
-        isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
-        if isPreviewShowing { ensureDockShowing(); trackPreviewPosition(icon) } else { restoreDockAutohide() }
+        showPreviewPanel(bid: bid, icon: icon, x: x, y: y)
     }
 
     /// Activating a hidden app directly can trigger a Space switch. Unhiding first and only
@@ -209,6 +208,13 @@ class DockAltTab {
     }
 
     private static func handleMouseMoved(_ location: CGPoint) {
+        if isPointerInsideTilesPanel(cocoaPoint(location)) {
+            // The AX hit-test can miss our panel right after it is ordered front. Rely on the frame instead,
+            // so landing on the panel as it appears doesn't read as leaving the previews (and get hidden).
+            cancelHide()
+            if let element = elementAtPoint(normalizePointForDockGap(location)) { handlePreviewHover(element) }
+            return
+        }
         guard let element = elementAtPoint(normalizePointForDockGap(location)), let pid = try? element.pid() else { pointerLeft(); return }
         if pid == dockPid {
             handleDockHover(element)
@@ -216,11 +222,7 @@ class DockAltTab {
             // the Dock was restarted; pick up its new pid and keep going
             refreshDockState()
             handleDockHover(element)
-        } else if pid == ProcessInfo.processInfo.processIdentifier && isPointerInsideTilesPanel(cocoaPoint(location)) {
-            handlePreviewHover(element)
         } else {
-            // the big window preview (PreviewPanel) is its own window: hovering it, or anything else
-            // outside the tiles, means the pointer has left the previews
             pointerLeft()
         }
     }
@@ -282,6 +284,24 @@ class DockAltTab {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(delay), execute: work)
     }
 
+    /// Ask for the previews panel. It can take a tick to appear (`windowDisplayDelay`), so remember that a
+    /// pointer leaving in the meantime is waiting for it, rather than having left the previews for good.
+    private static func showPreviewPanel(bid: String, icon: AXUIElement, x: Int, y: Int) {
+        previewTarget = nil
+        cancelThumbnail()
+        preparingShow = !TilesPanel.shared.isVisible
+        isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
+        if !isPreviewShowing { preparingShow = false }
+        if isPreviewShowing { ensureDockShowing(); trackPreviewPosition(icon) } else { restoreDockAutohide() }
+    }
+
+    /// The tiles panel is on screen; a show that was being prepared is no longer in flight.
+    static func tilesPanelDidShow() {
+        preparingShow = false
+    }
+
+    private static var isPreviewShowPreparing: Bool { preparingShow && !TilesPanel.shared.isVisible }
+
     /// The thumbnail delay is long on purpose; if the pointer only crosses the tiles on its way out,
     /// the preview must not pop up afterwards. Leaving the tiles cancels the work, and this re-check
     /// covers the race where the pointer leaves between the fire time and the main-queue hop.
@@ -292,6 +312,14 @@ class DockAltTab {
     }
 
     private static func pointerLeft() {
+        if isPreviewShowPreparing {
+            // The panel is on its way, and the pointer is heading to where it will appear. Killing the show
+            // here (the settle poll may still be running) is what made the preview never show. Keep it.
+            cancelHide()
+            cancelThumbnail()
+            previewTarget = nil
+            return
+        }
         cancelShow()
         cancelThumbnail()
         previewTarget = nil
@@ -299,6 +327,10 @@ class DockAltTab {
         hoveredIcon = nil
         guard DockAltTabMode else { isPreviewShowing = false; restoreDockAutohide(); return }
         cancelHide()
+        scheduleHide()
+    }
+
+    private static func scheduleHide() {
         let work = DispatchWorkItem { hidePreview() }
         hideWork = work
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(DockAltTabPreferences.previewHideDelayMs), execute: work)
@@ -307,6 +339,7 @@ class DockAltTab {
     private static func showPreviews(bid: String, icon: AXUIElement) {
         showWork = nil
         guard hoveredAppBid == bid else { return }
+        preparingShow = true
         refreshDockState()
         waitForSettledIconFrame(icon, previousFrame: nil, polls: 0) { frame in
             guard hoveredAppBid == bid, let frame else { return }
@@ -332,11 +365,8 @@ class DockAltTab {
     }
 
     private static func showPreviews(bid: String, icon: AXUIElement, frame: CGRect) {
-        previewTarget = nil
-        cancelThumbnail()
         let (x, y) = previewPosition(frame.origin, frame.size)
-        isPreviewShowing = DockAltTabShowAppPreviews(tarBID: bid, x: x, y: y, dockPos: dockPos)
-        if isPreviewShowing { ensureDockShowing(); trackPreviewPosition(icon) } else { restoreDockAutohide() }
+        showPreviewPanel(bid: bid, icon: icon, x: x, y: y)
     }
 
     private static let settlePollInterval: TimeInterval = 0.03
@@ -393,6 +423,7 @@ class DockAltTab {
 
     private static func hidePreview() {
         hideWork = nil
+        preparingShow = false
         repositionTimer?.invalidate()
         repositionTimer = nil
         cancelShow()
@@ -532,6 +563,7 @@ class DockAltTab {
         settleWork?.cancel()
         settleWork = nil
         settleGeneration += 1
+        preparingShow = false
     }
     private static func cancelHide() {
         hideWork?.cancel()

@@ -338,6 +338,7 @@ class App: AppCenterApplication {
         refreshUi()
         guard appIsBeingUsed else { return }
         TilesPanel.shared.show()
+        DockAltTab.tilesPanelDidShow()
         Windows.previewSelectedWindowIfNeeded()
         if TilesView.isSearchEditing {
             TilesView.enableSearchEditing()
