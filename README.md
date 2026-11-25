@@ -104,6 +104,7 @@ tell application "DockAltTab" to hide
 ## Notes / differences
 
 - On launch, if the Dock's `showhidden` preference is off, DockAltTab enables it and restarts the Dock once (translucent icons for hidden apps).
+- A press DockAltTab swallows never reaches the Dock, so the Dock can't draw its pressed-icon state; DockAltTab dims the icon itself (a click-through black rounded square over it, matching the Dock's dim).
 - Some apps' windows are ignored by personal preference, e.g. BetterTouchTool "pinned"/floating windows and Screenhint floating windows.
 - Preview button order: Exit first, Quit last.
 - Fading is faster for DockAltTab previews (111 ms) than for regular previews (333 ms).

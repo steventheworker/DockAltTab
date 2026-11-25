@@ -97,13 +97,20 @@ class DockAltTab {
                 pendingMouseLocation = event.location
                 return Unmanaged.passUnretained(event)
             case .tapDisabledByTimeout, .tapDisabledByUserInput:
+                DockPressHighlight.shared.hide()
                 if let eventTap { CGEvent.tapEnable(tap: eventTap, enable: true) }
                 return Unmanaged.passUnretained(event)
             case .leftMouseDown, .leftMouseUp, .otherMouseDown, .otherMouseUp:
-                return handleDockClick(type, event) ? nil : Unmanaged.passUnretained(event)
+                return handleButtonEvent(type, event) ? nil : Unmanaged.passUnretained(event)
             default:
                 return Unmanaged.passUnretained(event)
         }
+    }
+
+    /// Any release ends the pressed-icon dim; the matching press's release is usually swallowed below.
+    private static func handleButtonEvent(_ type: CGEventType, _ event: CGEvent) -> Bool {
+        if type == .leftMouseUp || type == .otherMouseUp { DockPressHighlight.shared.hide() }
+        return handleDockClick(type, event)
     }
 
     /// Returns true when the click was handled by a DockAltTab mode and must be swallowed (to
@@ -131,6 +138,7 @@ class DockAltTab {
                   app.activationPolicy == .regular,
                   DockAltTabWindowStats(pid: app.processIdentifier).all > 0 else { return false }
             pressedDockIcon = PressedDockIcon(button: button, bundleIdentifier: bid, pid: app.processIdentifier, icon: icon)
+            if button == 0, let frame = iconFrame(icon) { DockPressHighlight.shared.show(cell: frame) }
             return true
         }
         guard let pressed = pressedDockIcon, pressed.button == button else { return false }
