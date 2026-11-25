@@ -16,10 +16,10 @@
 		BF0C8CC5057406014FD612CC /* src/logic/ATShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8BA452332236D972C60E /* src/logic/ATShortcut.swift */; };
 		BF0C8F9B8014AD21E68B1349 /* src/api-wrappers/HelperExtensionsTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C810FA0F6BC70E5886E11 /* src/api-wrappers/HelperExtensionsTestable.swift */; };
 		BF49DF3428355372004517BD /* DockAltTab.sdef in Resources */ = {isa = PBXBuildFile; fileRef = BF49DF3328355372004517BD /* DockAltTab.sdef */; };
+		D04BA530F00E5989D66C6A1F /* docs/contributors.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BA812B8DCB915B8F4B915 /* docs/contributors.md */; };
+		D04BA69012A483201B375D46 /* docs/acknowledgments.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BAADF01EB8FF8A15AECC6 /* docs/acknowledgments.md */; };
 		F00DCAFE0000000000001103 /* src/logic/search/SearchTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000003 /* src/logic/search/SearchTestable.swift */; };
 		F00DCAFE0000000000001104 /* src/logic/ScreenRecordingPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000004 /* src/logic/ScreenRecordingPermission.swift */; };
-		D04BA69012A483201B375D46 /* acknowledgments.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BAADF01EB8FF8A15AECC6 /* acknowledgments.md */; };
-		D04BA530F00E5989D66C6A1F /* contributors.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BA812B8DCB915B8F4B915 /* contributors.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,8 +51,10 @@
 		D04BA4336B6004A0A99849AD /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		D04BA459034C1885CA43A807 /* LICENCE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
 		D04BA62D5EACAAAD7BCD3E79 /* config/release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = config/release.xcconfig; sourceTree = SOURCE_ROOT; };
+		D04BA812B8DCB915B8F4B915 /* docs/contributors.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = docs/contributors.md; sourceTree = SOURCE_ROOT; };
 		D04BA82F792DF53958D92572 /* DockAltTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DockAltTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D04BA84F172AE89F210CA01D /* Pipfile.lock */ = {isa = PBXFileReference; lastKnownFileType = file.lock; path = Pipfile.lock; sourceTree = "<group>"; };
+		D04BAADF01EB8FF8A15AECC6 /* docs/acknowledgments.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = docs/acknowledgments.md; sourceTree = SOURCE_ROOT; };
 		D04BAB8A94DA69A6B5008AE5 /* Pipfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pipfile; sourceTree = "<group>"; };
 		D04BAC02D60EF22D9CC7D969 /* commitlint.config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = commitlint.config.js; sourceTree = "<group>"; };
 		D04BAD40CE2D3A8AAC3819D0 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
@@ -61,9 +63,6 @@
 		E20104DD2C3DE10E7CCC5B5A /* Pods-unit-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-unit-tests.release.xcconfig"; path = "Target Support Files/Pods-unit-tests/Pods-unit-tests.release.xcconfig"; sourceTree = "<group>"; };
 		F00DCAFE0000000000000003 /* src/logic/search/SearchTestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = src/logic/search/SearchTestable.swift; sourceTree = SOURCE_ROOT; };
 		F00DCAFE0000000000000004 /* src/logic/ScreenRecordingPermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = src/logic/ScreenRecordingPermission.swift; sourceTree = SOURCE_ROOT; };
-		D04BAADF01EB8FF8A15AECC6 /* acknowledgments.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "docs/acknowledgments.md"; sourceTree = SOURCE_ROOT; };
-		D04BA812B8DCB915B8F4B915 /* contributors.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "docs/contributors.md"; sourceTree = SOURCE_ROOT; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -88,7 +87,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BF13F89B307369650067B3E4 /* ai */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ai; sourceTree = "<group>"; };
 		BF13F89F30736A7A0067B3E4 /* src */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BF13FA010000000000000001 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = src; sourceTree = "<group>"; };
 		BF13F93730736AD60067B3E4 /* docs */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = docs; sourceTree = "<group>"; };
 		BF13F9A030736BB30067B3E4 /* scripts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = scripts; sourceTree = "<group>"; };
@@ -154,6 +152,8 @@
 				D04BA62D5EACAAAD7BCD3E79 /* config/release.xcconfig */,
 				BF0C8645B4CD1B11FABEF027 /* config/test-debug.xcconfig */,
 				BF0C81BB57B297B2432C4824 /* config/test-release.xcconfig */,
+				D04BAADF01EB8FF8A15AECC6 /* docs/acknowledgments.md */,
+				D04BA812B8DCB915B8F4B915 /* docs/contributors.md */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -162,7 +162,6 @@
 			isa = PBXGroup;
 			children = (
 				BF13F9C030736C060067B3E4 /* .github */,
-				BF13F89B307369650067B3E4 /* ai */,
 				BF13F9C130736C1C0067B3E4 /* config */,
 				BF13F93730736AD60067B3E4 /* docs */,
 				BF13F9A030736BB30067B3E4 /* scripts */,
@@ -356,8 +355,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D04BA69012A483201B375D46 /* acknowledgments.md in Resources */,
-				D04BA530F00E5989D66C6A1F /* contributors.md in Resources */,
+				D04BA69012A483201B375D46 /* docs/acknowledgments.md in Resources */,
+				D04BA530F00E5989D66C6A1F /* docs/contributors.md in Resources */,
 				BF49DF3428355372004517BD /* DockAltTab.sdef in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -212,13 +212,15 @@ class DockAltTab {
         guard let element = elementAtPoint(normalizePointForDockGap(location)), let pid = try? element.pid() else { pointerLeft(); return }
         if pid == dockPid {
             handleDockHover(element)
-        } else if pid == ProcessInfo.processInfo.processIdentifier {
-            handlePreviewHover(element)
         } else if NSRunningApplication(processIdentifier: pid)?.bundleIdentifier == "com.apple.dock" {
             // the Dock was restarted; pick up its new pid and keep going
             refreshDockState()
             handleDockHover(element)
+        } else if pid == ProcessInfo.processInfo.processIdentifier && isPointerInsideTilesPanel(cocoaPoint(location)) {
+            handlePreviewHover(element)
         } else {
+            // the big window preview (PreviewPanel) is its own window: hovering it, or anything else
+            // outside the tiles, means the pointer has left the previews
             pointerLeft()
         }
     }
@@ -264,30 +266,35 @@ class DockAltTab {
     }
 
     private static func handlePreviewHover(_ element: AXUIElement) {
-        cancelHide()
         guard DockAltTabMode else { return }
+        cancelHide()
         ensureDockShowing()
         guard DockAltTabPreferences.thumbnailPreviewsEnabled else { return }
-        guard let attrs = try? element.attributes([kAXRoleAttribute, kAXSubroleAttribute, kAXChildrenAttribute]),
-              let role = attrs.role else { return }
-        // clicking/leaving through the float preview panel itself should hide the previews
-        if role == "AXWindow" && attrs.subrole == "AXUnknown" && (attrs.children?.isEmpty ?? true) {
-            hidePreview()
-            return
-        }
+        guard let attrs = try? element.attributes([kAXRoleAttribute]), let role = attrs.role else { return }
         guard ["AXUnknown", "AXScrollArea", "AXStaticText", "AXButton"].contains(role) else { return }
         if let target = previewTarget, CFEqual(target, element) { return }
         previewTarget = element
         cancelThumbnail()
         // once the preview panel is open, hovering another thumbnail should update it immediately
         let delay = PreviewPanel.shared.isVisible ? 0 : DockAltTabPreferences.thumbnailPreviewDelayMs
-        let work = DispatchWorkItem { DockAltTabShowThumbnailPreview() }
+        let work = DispatchWorkItem { showThumbnailPreviewIfStillHovering() }
         thumbnailWork = work
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(delay), execute: work)
     }
 
+    /// The thumbnail delay is long on purpose; if the pointer only crosses the tiles on its way out,
+    /// the preview must not pop up afterwards. Leaving the tiles cancels the work, and this re-check
+    /// covers the race where the pointer leaves between the fire time and the main-queue hop.
+    private static func showThumbnailPreviewIfStillHovering() {
+        thumbnailWork = nil
+        guard isPointerInsideTilesPanel(NSEvent.mouseLocation) else { return }
+        DockAltTabShowThumbnailPreview()
+    }
+
     private static func pointerLeft() {
         cancelShow()
+        cancelThumbnail()
+        previewTarget = nil
         hoveredAppBid = nil
         hoveredIcon = nil
         guard DockAltTabMode else { isPreviewShowing = false; restoreDockAutohide(); return }
@@ -419,6 +426,18 @@ class DockAltTab {
         var element: AXUIElement?
         let result = AXUIElementCopyElementAtPosition(systemWide, Float(location.x), Float(location.y), &element)
         return result == .success ? element : nil
+    }
+
+    /// CG events use a top-left origin, NSWindow frames a bottom-left one.
+    private static func cocoaPoint(_ cgPoint: CGPoint) -> CGPoint {
+        CGPoint(x: cgPoint.x, y: (NSScreen.screens.first?.frame.height ?? 0) - cgPoint.y)
+    }
+
+    /// The tiles panel is the only part of our UI that owns the previews; the big window preview
+    /// (PreviewPanel) floats separately and must count as being outside.
+    private static func isPointerInsideTilesPanel(_ cocoaPoint: CGPoint) -> Bool {
+        guard let panel = TilesPanel.shared, panel.isVisible else { return false }
+        return panel.frame.contains(cocoaPoint)
     }
 
     /// The AX hit-test can return a dock icon child; walk up until we find the tile that carries the app URL.
